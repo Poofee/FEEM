@@ -10,6 +10,7 @@
 #include "pf_actiongroupmanager.h"
 #include "pf_actionhandler.h"
 #include "pf_widgetfactory.h"
+#include "pf_centralwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +19,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     //创建状态栏
     QStatusBar* status_bar = statusBar();
+
+    PF_CentralWidget* central = new PF_CentralWidget(this);
+    setCentralWidget(central);
+
     //创建动作列表
     PF_ActionFactory a_factory(this, actionHandler);
     a_factory.fillActionContainer(a_map,ag_manager);
