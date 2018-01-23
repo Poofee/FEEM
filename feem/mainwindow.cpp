@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     QStatusBar* status_bar = statusBar();
 
     PF_ActionFactory a_factory(this, actionHandler);
+    a_factory.fillActionContainer(a_map,ag_manager);
 
     PF_WidgetFactory w_factory(this,a_map,ag_manager);
     w_factory.createMenus(menuBar());

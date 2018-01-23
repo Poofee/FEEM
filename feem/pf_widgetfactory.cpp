@@ -25,6 +25,7 @@ void PF_WidgetFactory::createStandardToolbars(PF_ActionHandler* a_handler){
     file_toolbar->setSizePolicy(toolBarPolicy);
     file_toolbar->addAction(a_map["FileOpen"]);
     file_toolbar->setObjectName("file_toolbar");
+    file_toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
     mainwindow->addToolBar(Qt::TopToolBarArea, file_toolbar);
 }
@@ -33,7 +34,7 @@ void PF_WidgetFactory::createMenus(QMenuBar* menu_bar){
     QMenu* submenu;
 
     QMenu* file_menu = new QMenu(tr("&File"),menu_bar);
-    file_menu->setObjectName("File");
+    file_menu->setObjectName("Fileo");
     file_menu->addAction(a_map["FileOpen"]);
 
     menu_bar->addMenu(file_menu);
