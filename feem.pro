@@ -28,3 +28,6 @@ HEADERS  += \
     feem/pf_widgetfactory.h \
     feem/pf_actionfactory.h \
     feem/pf_centralwidget.h
+
+RESOURCES += \
+    feem/res/main.qrc

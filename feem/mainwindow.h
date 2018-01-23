@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QMap>
 
+class QMdiArea;
+class QMdiSubWindow;
 class PF_ActionHandler;
 class PF_WidgetFactory;
 class PF_ActionGroupManager;
@@ -33,6 +35,10 @@ public slots:
 private:
     PF_WidgetFactory* dialogFactory;
     PF_ActionHandler* actionHandler;
+
+    QMdiArea* mdiAreaCAD{nullptr};
+    QMdiSubWindow* activeMdiSubWindow;
+    QMdiSubWindow* currentSubWindow;
 };
 
 #endif // MAINWINDOW_H
