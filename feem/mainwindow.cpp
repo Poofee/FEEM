@@ -16,17 +16,56 @@ MainWindow::MainWindow(QWidget *parent)
     , ag_manager(new PF_ActionGroupManager(this))
     , actionHandler(new PF_ActionHandler(this))
 {
+    //创建状态栏
     QStatusBar* status_bar = statusBar();
-
+    //创建动作列表
     PF_ActionFactory a_factory(this, actionHandler);
     a_factory.fillActionContainer(a_map,ag_manager);
-
+    //创建组件
     PF_WidgetFactory w_factory(this,a_map,ag_manager);
     w_factory.createMenus(menuBar());
     w_factory.createStandardToolbars(actionHandler);
+
+	this->resize(QSize(800, 600));
 }
 
 MainWindow::~MainWindow()
 {
+
+}
+
+void MainWindow::slotFileNew() {
+	
+}
+
+void MainWindow::slotFileOpen() {
+
+}
+
+void MainWindow::slotFileSave() {
+
+}
+
+void MainWindow::slotFileSaveAs() {
+
+}
+
+void MainWindow::slotImportDXF() {
+
+}
+
+void MainWindow::slotExportDXF() {
+
+}
+
+void MainWindow::slotPrint() {
+
+}
+
+void MainWindow::slotPrintView() {
+
+}
+
+void MainWindow::slotFileQuit() {
 
 }

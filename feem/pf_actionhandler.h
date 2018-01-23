@@ -3,6 +3,9 @@
 
 #include <QObject>
 
+//2018-01-23
+//by Poofee
+//这个类实现菜单、工具栏的动作
 class PF_ActionHandler : public QObject
 {
     Q_OBJECT
@@ -12,8 +15,48 @@ public:
 signals:
 
 public slots:
-    void slotFileNew();
-    void slotFileOpen();
+    //File
+
+    //Edit
+    void slotUndo();
+    void slotRedo();
+    void slotCut();
+    void slotCopy();
+    void slotPaste();
+    void slotDelete();
+
+    //Operation
+    void slotSelectSingle();
+    void slotSelectAll();
+    void slotDrawPoint();
+    void slotDrawLine();
+    void slotDrawArc();
+
+    //View
+    void slotZoomIn();
+    void slotZoomOut();
+    void slotZoomAuto();
+
+    //Problems
+
+    //Grid
+    void slotShowGrid();
+    void slotSetGrid();
+
+    //Property
+
+    //Mesh
+    void slotDoMesh();
+    void slotShowMesh();
+    void slotDelMesh();
+
+    //Solve
+    void slotSolve();
+    void slotShowResult();
+    void slotSolveSetting();
+
+    //About
+    void slotShowAbout();
 };
 
 #endif // PF_ACTIONHANDLER_H

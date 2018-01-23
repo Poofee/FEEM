@@ -33,9 +33,20 @@ void PF_WidgetFactory::createStandardToolbars(PF_ActionHandler* a_handler){
 void PF_WidgetFactory::createMenus(QMenuBar* menu_bar){
     QMenu* submenu;
 
-    QMenu* file_menu = new QMenu(tr("&File"),menu_bar);
-    file_menu->setObjectName("Fileo");
+    file_menu = new QMenu(tr("&File"),menu_bar);
+    file_menu->setObjectName("File");
+    file_menu->addAction(a_map["FileNew"]);
     file_menu->addAction(a_map["FileOpen"]);
+    file_menu->addAction(a_map["FileSave"]);
+    file_menu->addAction(a_map["FileSaveAs"]);
+    file_menu->addSeparator();
+    file_menu->addAction(a_map["ImportDXF"]);
+    file_menu->addAction(a_map["ExportDXF"]);
+    file_menu->addSeparator();
+    file_menu->addAction(a_map["Print"]);
+    file_menu->addAction(a_map["PrintView"]);
+    file_menu->addSeparator();
+    file_menu->addAction(a_map["FileQuit"]);
 
     menu_bar->addMenu(file_menu);
 }
