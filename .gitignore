@@ -1,6 +1,7 @@
-/build-feem-Desktop_Qt_5_4_2_MSVC2013_OpenGL_64bit-Debug/debug/*.obj
-/build-feem-Desktop_Qt_5_4_2_MSVC2013_OpenGL_64bit-Debug/debug/*.pdb
-/build-feem-Desktop_Qt_5_4_2_MSVC2013_OpenGL_64bit-Debug/debug/*.ilk
-/build-feem-Desktop_Qt_5_4_2_MSVC2013_OpenGL_64bit-Debug/debug/*.exe
-/build-feem-Desktop_Qt_5_4_2_MSVC2013_OpenGL_64bit-Debug/*.Release
-/build-feem-Desktop_Qt_5_4_2_MSVC2013_OpenGL_64bit-Debug/*.Debug
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.Release
+*.Debug
+*.user

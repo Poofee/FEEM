@@ -12,7 +12,9 @@ TARGET = feem
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += \
+    feem/main.cpp \
+    feem/mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    feem/mainwindow.h
