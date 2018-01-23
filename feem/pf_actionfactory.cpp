@@ -60,4 +60,125 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
     connect(action, SIGNAL(triggered()), main_window, SLOT(slotPrintView()));
     action->setObjectName("PrintView");
     a_map["PrintView"] = action;
+
+	//Edit
+	action = new QAction(tr("Undo"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotUndo()));
+	action->setObjectName("Undo");
+	a_map["Undo"] = action;
+
+	action = new QAction(tr("Redo"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotRedo()));
+	action->setObjectName("Redo");
+	a_map["Redo"] = action;
+
+	action = new QAction(tr("Cut"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotCut()));
+	action->setObjectName("Cut");
+	a_map["Cut"] = action;
+
+	action = new QAction(tr("Copy"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotCopy()));
+	action->setObjectName("Copy");
+	a_map["Copy"] = action;
+
+	action = new QAction(tr("Paste"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotPaste()));
+	action->setObjectName("Paste");
+	a_map["Paste"] = action;
+
+	action = new QAction(tr("Delete"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDelete()));
+	action->setObjectName("Delete");
+	a_map["Delete"] = action;
+	//Operation
+	action = new QAction(tr("SelectSingle"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSelectSingle()));
+	action->setObjectName("SelectSingle");
+	a_map["SelectSingle"] = action;
+
+	action = new QAction(tr("SelectAll"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSelectAll()));
+	action->setObjectName("SelectAll");
+	a_map["SelectAll"] = action;
+
+	action = new QAction(tr("DrawPoint"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawPoint()));
+	action->setObjectName("DrawPoint");
+	a_map["DrawPoint"] = action;
+
+	action = new QAction(tr("DrawLine"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawLine()));
+	action->setObjectName("DrawLine");
+	a_map["DrawLine"] = action;
+
+	action = new QAction(tr("DrawArc"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawArc()));
+	action->setObjectName("DrawArc");
+	a_map["DrawArc"] = action;
+
+	//View
+	action = new QAction(tr("ZoomIn"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomIn()));
+	action->setObjectName("ZoomIn");
+	a_map["ZoomIn"] = action;
+
+	action = new QAction(tr("ZoomOut"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomOut()));
+	action->setObjectName("ZoomOut");
+	a_map["ZoomOut"] = action;
+
+	action = new QAction(tr("ZoomAuto"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomAuto()));
+	action->setObjectName("ZoomAuto");
+	a_map["ZoomAuto"] = action;
+
+	//Grid
+	action = new QAction(tr("ShowGrid"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotShowGrid()));
+	action->setObjectName("ShowGrid");
+	a_map["ShowGrid"] = action;
+
+	action = new QAction(tr("SetGrid"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSetGrid()));
+	action->setObjectName("SetGrid");
+	a_map["SetGrid"] = action;
+
+	//Mesh
+	action = new QAction(tr("DoMesh"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDoMesh()));
+	action->setObjectName("DoMesh");
+	a_map["DoMesh"] = action;
+
+	action = new QAction(tr("ShowMesh"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotShowMesh()));
+	action->setObjectName("ShowMesh");
+	a_map["ShowMesh"] = action;
+
+	action = new QAction(tr("DelMesh"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDelMesh()));
+	action->setObjectName("DelMesh");
+	a_map["DelMesh"] = action;
+
+	//Solve
+	action = new QAction(tr("Solve"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSolve()));
+	action->setObjectName("Solve");
+	a_map["Solve"] = action;
+
+	action = new QAction(tr("ShowResult"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotShowResult()));
+	action->setObjectName("ShowResult");
+	a_map["ShowResult"] = action;
+
+	action = new QAction(tr("SolveSetting"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSolveSetting()));
+	action->setObjectName("SolveSetting");
+	a_map["SolveSetting"] = action;
+	
+	//About
+	action = new QAction(tr("ShowAbout"), agm->file);
+	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotShowAbout()));
+	action->setObjectName("ShowAbout");
+	a_map["ShowAbout"] = action;
 }
