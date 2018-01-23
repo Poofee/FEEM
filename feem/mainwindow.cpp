@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     w_factory.createStandardToolbars(actionHandler);
 
     PF_MdiSubWindow* m = new PF_MdiSubWindow(mdiAreaCAD);
+    m->showMaximized();
 }
 
 MainWindow::~MainWindow()
