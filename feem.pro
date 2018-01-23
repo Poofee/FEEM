@@ -14,7 +14,15 @@ TEMPLATE = app
 
 SOURCES += \
     feem/main.cpp \
-    feem/mainwindow.cpp
+    feem/mainwindow.cpp \
+    feem/pf_actionhandler.cpp \
+    feem/pf_actiongroupmanager.cpp \
+    feem/pf_widgetfactory.cpp \
+    feem/pf_actionfactory.cpp
 
 HEADERS  += \
-    feem/mainwindow.h
+    feem/mainwindow.h \
+    feem/pf_actionhandler.h \
+    feem/pf_actiongroupmanager.h \
+    feem/pf_widgetfactory.h \
+    feem/pf_actionfactory.h
