@@ -5,12 +5,14 @@
 #include <QDockWidget>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QMdiArea>
 
 #include "pf_actionfactory.h"
 #include "pf_actiongroupmanager.h"
 #include "pf_actionhandler.h"
 #include "pf_widgetfactory.h"
 #include "pf_centralwidget.h"
+#include "pf_mdisubwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
     PF_WidgetFactory w_factory(this,a_map,ag_manager);
     w_factory.createMenus(menuBar());
     w_factory.createStandardToolbars(actionHandler);
+
+    PF_MdiSubWindow* m = new PF_MdiSubWindow(mdiAreaCAD);
 }
 
 MainWindow::~MainWindow()

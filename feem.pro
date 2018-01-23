@@ -19,7 +19,9 @@ SOURCES += \
     feem/pf_actiongroupmanager.cpp \
     feem/pf_widgetfactory.cpp \
     feem/pf_actionfactory.cpp \
-    feem/pf_centralwidget.cpp
+    feem/pf_centralwidget.cpp \
+    feem/pf_graphicview.cpp \
+    feem/pf_mdisubwindow.cpp
 
 HEADERS  += \
     feem/mainwindow.h \
@@ -27,7 +29,9 @@ HEADERS  += \
     feem/pf_actiongroupmanager.h \
     feem/pf_widgetfactory.h \
     feem/pf_actionfactory.h \
-    feem/pf_centralwidget.h
+    feem/pf_centralwidget.h \
+    feem/pf_graphicview.h \
+    feem/pf_mdisubwindow.h
 
 RESOURCES += \
     feem/res/main.qrc
