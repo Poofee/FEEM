@@ -8,6 +8,7 @@ class PF_GraphicView : public QWidget
     Q_OBJECT
 public:
     explicit PF_GraphicView(QWidget *parent = nullptr);
+    void drawLayer1(QPainter * painter);
 
 signals:
 
