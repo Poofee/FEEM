@@ -21,7 +21,8 @@ SOURCES += \
     feem/pf_actionfactory.cpp \
     feem/pf_centralwidget.cpp \
     feem/pf_graphicview.cpp \
-    feem/pf_mdisubwindow.cpp
+    feem/pf_mdisubwindow.cpp \
+    feem/pf_grid.cpp
 
 HEADERS  += \
     feem/mainwindow.h \
@@ -31,7 +32,8 @@ HEADERS  += \
     feem/pf_actionfactory.h \
     feem/pf_centralwidget.h \
     feem/pf_graphicview.h \
-    feem/pf_mdisubwindow.h
+    feem/pf_mdisubwindow.h \
+    feem/pf_grid.h
 
 RESOURCES += \
     feem/res/main.qrc

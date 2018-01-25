@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.setWindowTitle(a.applicationName());
 
-    w.resize(QSize(800,600));
+    //w.resize(QSize(800,600));
     w.showMaximized();
 
     w.show();
