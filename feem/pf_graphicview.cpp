@@ -49,6 +49,35 @@ void PF_GraphicView::paintEvent(QPaintEvent *){
         QColor color(qrand()%255,qrand()%255,qrand()%255,150);
         painter.fillPath(path,color);
     }
+    // 设置画笔颜色
+    QPen pen;
+    pen.setColor(QColor(0, 0, 0));
+    pen.setWidth(3);
+    painter.setPen(pen);
+    // 绘制x,y轴
+    painter.drawLine(QPointF(0, 0), QPointF(0, -40));//y
+    painter.drawLine(QPointF(0, 0), QPointF(40, 0));//x
+
+    QPainterPath path;
+    painter.setPen(Qt::NoPen);
+    int ww = 6;
+    int hh = 80;
+    path.moveTo(-ww,-40);
+    path.lineTo(ww,-40);
+    path.lineTo(0,-hh);
+    path.lineTo(-ww,-40);
+    painter.drawPath(path);
+
+    QColor color(0,0,0);
+    painter.fillPath(path,color);
+
+    path.moveTo(40, ww);
+    path.lineTo(40, -ww);
+    path.lineTo(hh, 0);
+    path.lineTo(40, ww);
+    painter.drawPath(path);
+
+    painter.fillPath(path,color);
 }
 
 void PF_GraphicView::drawLayer1(QPainter * painter){
