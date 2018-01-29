@@ -54,9 +54,23 @@ void PF_GraphicView::paintEvent(QPaintEvent *){
     pen.setColor(QColor(0, 0, 0));
     pen.setWidth(3);
     painter.setPen(pen);
+
+    // 设置字体：微软雅黑、点大小50、斜体
+    QFont font;
+    font.setFamily("Times New Roman");
+    font.setPointSize(15);
+    font.setItalic(true);
+    painter.setFont(font);
+
+    //translate 是按照当前的原点进行的
+    painter.translate(-0.4*width(),0.4*height());
     // 绘制x,y轴
     painter.drawLine(QPointF(0, 0), QPointF(0, -40));//y
+    // y
+    painter.drawText(QPointF(0-20, -80), QString("y"));
     painter.drawLine(QPointF(0, 0), QPointF(40, 0));//x
+    //x
+    painter.drawText(QPointF(80, 0+20), QString("x"));
 
     QPainterPath path;
     painter.setPen(Qt::NoPen);
