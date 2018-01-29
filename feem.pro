@@ -23,7 +23,8 @@ SOURCES += \
     feem/pf_graphicview.cpp \
     feem/pf_mdisubwindow.cpp \
     feem/pf_grid.cpp \
-    feem/pf_eventhandler.cpp
+    feem/pf_eventhandler.cpp \
+    feem/pf_vector.cpp
 
 HEADERS  += \
     feem/mainwindow.h \
@@ -35,7 +36,8 @@ HEADERS  += \
     feem/pf_graphicview.h \
     feem/pf_mdisubwindow.h \
     feem/pf_grid.h \
-    feem/pf_eventhandler.h
+    feem/pf_eventhandler.h \
+    feem/pf_vector.h
 
 RESOURCES += \
     feem/res/main.qrc
