@@ -96,6 +96,13 @@ void PF_GraphicView::drawLayer1(QPainter * painter){
             painter->drawPoint(i,j);
         }
     }
+    painter->setPen(Qt::gray);
+    for(int i = 0; i < this->width();i+=200){
+          painter->drawLine(QPointF(i,0),QPointF(i,height()));
+    }
+    for(int i = 0; i < this->height();i+=200){
+          painter->drawLine(QPointF(0,i),QPointF(width(),i));
+    }
 }
 
 void PF_GraphicView::getPixmapForView(QPixmap **pm)
