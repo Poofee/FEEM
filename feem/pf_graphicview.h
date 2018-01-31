@@ -10,6 +10,7 @@ class PF_GraphicView : public QWidget
     Q_OBJECT
 public:
     explicit PF_GraphicView(QWidget *parent = nullptr);
+    ~PF_GraphicView();
     void drawLayer1(QPainter * painter);
     void getPixmapForView(QPixmap **pm);
 
