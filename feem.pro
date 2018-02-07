@@ -39,7 +39,8 @@ HEADERS  += \
     feem/pf_grid.h \
     feem/pf_eventhandler.h \
     feem/pf_vector.h \
-    feem/pf_actioninterface.h
+    feem/pf_actioninterface.h \
+    feem/pf.h
 
 RESOURCES += \
     feem/res/main.qrc

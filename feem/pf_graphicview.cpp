@@ -24,6 +24,7 @@ PF_GraphicView::~PF_GraphicView()
 
 void PF_GraphicView::paintEvent(QPaintEvent *){   
     getPixmapForView(&PixmapLayer1);
+    getPixmapForView(&PixmapLayer2);
     PixmapLayer1->fill(QColor(250,250,250,80));
 
     QPainter painter1(PixmapLayer1);
@@ -31,8 +32,16 @@ void PF_GraphicView::paintEvent(QPaintEvent *){
     drawLayer1(&painter1);
     painter1.end();
 
+    PixmapLayer2->fill(Qt::transparent);
+    QPainter painter2(PixmapLayer2);
+    painter2.setRenderHint(QPainter::Antialiasing, true);
+    painter2.setPen(QColor(0,0,0));
+    painter2.drawEllipse(QPointF(width()/2,height()/2),100,100);
+    painter2.end();
+
     QPainter painter(this);
     painter.drawPixmap(0,0,*PixmapLayer1);
+    painter.drawPixmap(0,0,*PixmapLayer2);
     painter.end();
 }
 

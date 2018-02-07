@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "pf.h"
+
 class QGridLayout;
 
 class PF_GraphicView : public QWidget
@@ -41,6 +43,8 @@ protected:
     QPixmap *PixmapLayer1;//图层1，显示网格
     QPixmap *PixmapLayer2;
     QPixmap *PixmapLayer3;
+
+    PF::RedrawMethod redrawMethod;
 };
 
 #endif // PF_GRAPHICVIEW_H
