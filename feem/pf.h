@@ -11,7 +11,45 @@ public:
         ActionDefault,
 
         ActionFlieNew,
+        ActionFileOpen,
+        ActionFileSave,
+        ActionFileSaveAs,
+        ActionFileClose,
+        ActionFileExport,
+        ActionFilePrint,
+        ActionFilePrintPreview,
+        ActionFileQuit,
 
+        ActionEditKillAllActions,
+        ActionEditUndo,
+        ActionEditRedo,
+        ActionEditCut,
+        ActionEditCopy,
+        ActionEditPaste,
+        ActionEditDelete,
+
+        ActionSelectSingle,
+        ActionSelectAll,
+        ActionDrawPoint,
+        ActionDrawCircle,
+        ActionDrawLine,
+        ActionDrawArc,
+
+        ActionViewZoomIn,
+        ActionViewZoomOut,
+        ACtionViewZoomAuto,
+        ActionViewShowGrid,
+        ActionViewHideGrid,
+        ActionViewSetGrid,
+
+        ActionMeshDoMesh,
+        ActionMeshDeleteMesh,
+        ActionMeshShowMesh,
+        ActionMeshHideMesh,
+
+        ActionSolve,
+        ActionShowResult,
+        ActionSolveSetting,
     };
 
     enum Unit{

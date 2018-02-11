@@ -3,6 +3,9 @@
 
 #include <QObject>
 
+#include "pf.h"
+#include "pf_actioninterface.h"
+
 //2018-01-23
 //by Poofee
 //这个类实现菜单、工具栏的动作
@@ -11,6 +14,10 @@ class PF_ActionHandler : public QObject
     Q_OBJECT
 public:
     PF_ActionHandler(QObject *parent = nullptr);
+    virtual ~PF_ActionHandler()=default;
+
+    PF_ActionInterface* getCurrentAction();
+    PF_ActionInterface* setCurrentAction(PF::ActionType typeId);
 
 signals:
 

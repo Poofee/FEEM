@@ -23,6 +23,11 @@ public:
     virtual void mouseReleaseEvent(QMouseEvent*);
     virtual void keyPressEvent(QKeyEvent* e);
 
+    virtual void trigger();
+    virtual void finish();
+    virtual void suspend();
+    virtual void resume();
+
 signals:
 
 public slots:

@@ -11,36 +11,52 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = feem
 TEMPLATE = app
 
+INCLUDEPATH += \
+    feem \
+    feem/entity \
+    feem/action \
+
+RESOURCES += \
+    feem/res/main.qrc
+
+HEADERS += \
+    feem/mainwindow.h \
+    feem/pf.h \
+    feem/pf_centralwidget.h \
+    feem/pf_eventhandler.h \
+    feem/pf_graphicview.h \
+    feem/pf_mdisubwindow.h \
+    feem/pf_widgetfactory.h \
+    feem/action/pf_actiondrawcircle.h \
+    feem/action/pf_actionfactory.h \
+    feem/action/pf_actiongroupmanager.h \
+    feem/action/pf_actionhandler.h \
+    feem/action/pf_actioninterface.h \
+    feem/action/pf_actionpreviewinterface.h \
+    feem/entity/pf_atomicentity.h \
+    feem/entity/pf_circle.h \
+    feem/entity/pf_entity.h \
+    feem/entity/pf_grid.h \
+    feem/entity/pf_vector.h \
+    feem/action/pf_snapper.h
 
 SOURCES += \
     feem/main.cpp \
     feem/mainwindow.cpp \
-    feem/pf_actionhandler.cpp \
-    feem/pf_actiongroupmanager.cpp \
-    feem/pf_widgetfactory.cpp \
-    feem/pf_actionfactory.cpp \
     feem/pf_centralwidget.cpp \
+    feem/pf_eventhandler.cpp \
     feem/pf_graphicview.cpp \
     feem/pf_mdisubwindow.cpp \
-    feem/pf_grid.cpp \
-    feem/pf_eventhandler.cpp \
-    feem/pf_vector.cpp \
-    feem/pf_actioninterface.cpp
-
-HEADERS  += \
-    feem/mainwindow.h \
-    feem/pf_actionhandler.h \
-    feem/pf_actiongroupmanager.h \
-    feem/pf_widgetfactory.h \
-    feem/pf_actionfactory.h \
-    feem/pf_centralwidget.h \
-    feem/pf_graphicview.h \
-    feem/pf_mdisubwindow.h \
-    feem/pf_grid.h \
-    feem/pf_eventhandler.h \
-    feem/pf_vector.h \
-    feem/pf_actioninterface.h \
-    feem/pf.h
-
-RESOURCES += \
-    feem/res/main.qrc
+    feem/pf_widgetfactory.cpp \
+    feem/action/pf_actiondrawcircle.cpp \
+    feem/action/pf_actionfactory.cpp \
+    feem/action/pf_actiongroupmanager.cpp \
+    feem/action/pf_actionhandler.cpp \
+    feem/action/pf_actioninterface.cpp \
+    feem/action/pf_actionpreviewinterface.cpp \
+    feem/entity/pf_atomicentity.cpp \
+    feem/entity/pf_circle.cpp \
+    feem/entity/pf_entity.cpp \
+    feem/entity/pf_grid.cpp \
+    feem/entity/pf_vector.cpp \
+    feem/action/pf_snapper.cpp

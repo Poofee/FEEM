@@ -39,3 +39,23 @@ void PF_ActionInterface::keyPressEvent(QKeyEvent *e)
 {
 
 }
+
+void PF_ActionInterface::trigger()
+{
+
+}
+
+void PF_ActionInterface::finish()
+{
+
+}
+
+void PF_ActionInterface::suspend()
+{
+
+}
+
+void PF_ActionInterface::resume()
+{
+
+}
