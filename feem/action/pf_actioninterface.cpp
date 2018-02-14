@@ -1,6 +1,8 @@
 #include "pf_actioninterface.h"
+#include "pf_graphicview.h"
 
-PF_ActionInterface::PF_ActionInterface(QObject *parent) : QObject(parent)
+PF_ActionInterface::PF_ActionInterface(PF_GraphicView *view)
+    :PF_Snapper(view)
 {
 
 }
@@ -40,6 +42,11 @@ void PF_ActionInterface::keyPressEvent(QKeyEvent *e)
 
 }
 
+void PF_ActionInterface::keyReleaseEvent(QKeyEvent *e)
+{
+
+}
+
 void PF_ActionInterface::trigger()
 {
 
@@ -58,4 +65,14 @@ void PF_ActionInterface::suspend()
 void PF_ActionInterface::resume()
 {
 
+}
+
+bool PF_ActionInterface::isFinished()
+{
+    return finished;
+}
+
+void PF_ActionInterface::setFinished()
+{
+    status = -1;
 }

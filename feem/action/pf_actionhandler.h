@@ -64,6 +64,8 @@ public slots:
 
     //About
     void slotShowAbout();
+private:
+    PF_GraphicView* view;
 };
 
 #endif // PF_ACTIONHANDLER_H

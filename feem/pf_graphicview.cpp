@@ -2,12 +2,16 @@
 
 #include <QPainter>
 #include <QtMath>
+#include <QMouseEvent>
+
+#include "pf_eventhandler.h"
 
 PF_GraphicView::PF_GraphicView(QWidget *parent)
     : QWidget(parent)
     ,PixmapLayer1(nullptr)
     ,PixmapLayer2(nullptr)
     ,PixmapLayer3(nullptr)
+    ,eventHandler(new PF_EventHandler{this})
 {
 
 }
@@ -47,22 +51,46 @@ void PF_GraphicView::paintEvent(QPaintEvent *){
 
 void PF_GraphicView::mouseMoveEvent(QMouseEvent *e)
 {
+    e->accept();
 
+    eventHandler->mouseMoveEvent(e);
 }
 
 void PF_GraphicView::mouseDoubleClickEvent(QMouseEvent *e)
 {
+    switch (e->button()) {
+    case Qt::MiddleButton:
+        //zoom action
+        break;
+    case Qt::LeftButton:
 
+        break;
+    default:
+        break;
+    }
+    e->accept();
 }
 
 void PF_GraphicView::mouseReleaseEvent(QMouseEvent *e)
 {
+    e->accept();
 
+    switch (e->button()) {
+    case Qt::RightButton:
+
+        break;
+    default:
+        eventHandler->mouseReleaseEvent(e);
+        break;
+    }
 }
 
 void PF_GraphicView::mousePressEvent(QMouseEvent *e)
 {
-
+    if(e->button() == Qt::MiddleButton){
+        //zoom action
+    }
+    eventHandler->mousePressEvent(e);
 }
 
 void PF_GraphicView::tabletEvent(QTabletEvent *e)
@@ -178,4 +206,36 @@ void PF_GraphicView::getPixmapForView(QPixmap **pm)
     }
 
     *pm = new QPixmap(width(), height());
+}
+
+void PF_GraphicView::setCurrentAction(PF_ActionInterface *action)
+{
+    if(eventHandler){
+        eventHandler->setCurrentAction(action);
+    }
+}
+
+PF_ActionInterface *PF_GraphicView::getCurrentAction()
+{
+    if(eventHandler){
+        return eventHandler->getCurrentAction();
+    }else{
+        return nullptr;
+    }
+}
+
+void PF_GraphicView::setDefaultAction(PF_ActionInterface *action)
+{
+    if(eventHandler){
+        eventHandler->setDefaultAction(action);
+    }
+}
+
+PF_ActionInterface *PF_GraphicView::getDefaultAction()
+{
+    if(eventHandler){
+        return eventHandler->getDefaultAction();
+    }else{
+        return nullptr;
+    }
 }

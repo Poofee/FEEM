@@ -6,7 +6,7 @@
 class PF_ActionPreviewInterface: public PF_ActionInterface
 {
 public:
-    PF_ActionPreviewInterface();
+    PF_ActionPreviewInterface(PF_GraphicView* view);
     ~PF_ActionPreviewInterface() override;
 
     void init(int status=0) override;

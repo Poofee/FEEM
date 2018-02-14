@@ -6,6 +6,8 @@
 #include "pf.h"
 
 class QGridLayout;
+class PF_ActionInterface;
+class PF_EventHandler;
 
 class PF_GraphicView : public QWidget
 {
@@ -16,6 +18,10 @@ public:
     void drawLayer1(QPainter * painter);
     void getPixmapForView(QPixmap **pm);
 
+    void setCurrentAction(PF_ActionInterface* action);
+    PF_ActionInterface* getCurrentAction();
+    void setDefaultAction(PF_ActionInterface* action);
+    PF_ActionInterface* getDefaultAction();
 signals:
 
 public slots:
@@ -43,6 +49,8 @@ protected:
     QPixmap *PixmapLayer1;//图层1，显示网格
     QPixmap *PixmapLayer2;
     QPixmap *PixmapLayer3;
+
+    PF_EventHandler* eventHandler;
 
     PF::RedrawMethod redrawMethod;
 };
