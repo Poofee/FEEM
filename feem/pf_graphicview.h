@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "pf.h"
+#include "pf_entitycontainer.h"
 
 class QGridLayout;
 class PF_ActionInterface;
@@ -22,6 +23,8 @@ public:
     PF_ActionInterface* getCurrentAction();
     void setDefaultAction(PF_ActionInterface* action);
     PF_ActionInterface* getDefaultAction();
+
+    void redraw(PF::RedrawMethod method=PF::RedrawAll);
 signals:
 
 public slots:
@@ -51,6 +54,8 @@ protected:
     QPixmap *PixmapLayer3;
 
     PF_EventHandler* eventHandler;
+
+    PF_EntityContainer* container;//保存所有实体
 
     PF::RedrawMethod redrawMethod;
 };

@@ -55,7 +55,11 @@ void PF_Vector::setPolar(double radius, double angle)
 
 double PF_Vector::distanceTo(const PF_Vector &v) const
 {
-
+    if(!valid || !v.valid){
+        return 1e10;
+    }else{
+        return (*this-v).magnitude();
+    }
 }
 
 double PF_Vector::magnitude() const

@@ -173,6 +173,11 @@ void PF_ActionHandler::slotDrawArc() {
     setCurrentAction(PF::ActionDrawArc);
 }
 
+void PF_ActionHandler::slotDrawCircle()
+{
+    setCurrentAction(PF::ActionDrawCircle);
+}
+
 void PF_ActionHandler::slotZoomIn() {
     setCurrentAction(PF::ActionViewZoomIn);
 }

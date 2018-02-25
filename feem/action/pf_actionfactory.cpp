@@ -117,6 +117,11 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	action->setObjectName("DrawArc");
 	a_map["DrawArc"] = action;
 
+    action = new QAction(tr("DrawCircle"), agm->file);
+    connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawCircle()));
+    action->setObjectName("DrawCircle");
+    a_map["DrawCircle"] = action;
+
 	//View
 	action = new QAction(tr("ZoomIn"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomIn()));

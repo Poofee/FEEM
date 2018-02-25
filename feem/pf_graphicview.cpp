@@ -239,3 +239,10 @@ PF_ActionInterface *PF_GraphicView::getDefaultAction()
         return nullptr;
     }
 }
+
+void PF_GraphicView::redraw(PF::RedrawMethod method)
+{
+    redrawMethod = (PF::RedrawMethod ) (redrawMethod | method);
+    update(); // Paint when reeady to pain
+    //	repaint(); //Paint immediate
+}

@@ -38,6 +38,7 @@ public slots:
     void slotDrawPoint();
     void slotDrawLine();
     void slotDrawArc();
+    void slotDrawCircle();
 
     //View
     void slotZoomIn();

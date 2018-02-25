@@ -66,6 +66,7 @@ void PF_WidgetFactory::createMenus(QMenuBar* menu_bar){
 	operation_menu->addAction(a_map["DrawPoint"]);
 	operation_menu->addAction(a_map["DrawLine"]);
 	operation_menu->addAction(a_map["DrawArc"]);
+    operation_menu->addAction(a_map["DrawCircle"]);
 
 	QMenu* view_menu = new QMenu(tr("&View"), menu_bar);
 	view_menu->setObjectName("view");
