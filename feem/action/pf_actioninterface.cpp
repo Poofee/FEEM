@@ -1,8 +1,8 @@
 #include "pf_actioninterface.h"
 #include "pf_graphicview.h"
 
-PF_ActionInterface::PF_ActionInterface(const char *name, PF_GraphicView *view)
-    :PF_Snapper(view)
+PF_ActionInterface::PF_ActionInterface(const char *name, PF_EntityContainer *container, PF_GraphicView *view)
+    :PF_Snapper(container,view)
 {
     this->name = name;
     status = 0;

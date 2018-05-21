@@ -6,12 +6,13 @@
 
 class QKeyEvent;
 class QAction;
+class PF_Document;
 
 class PF_ActionInterface : public QObject,public PF_Snapper
 {
     Q_OBJECT
 public:
-    PF_ActionInterface(const char* name,PF_GraphicView* view);
+    PF_ActionInterface(const char* name,PF_EntityContainer* container,PF_GraphicView* view);
     virtual ~PF_ActionInterface()=default;
 
     virtual PF::ActionType rtti() const;
@@ -51,6 +52,7 @@ private:
 protected:
     QString name;
     bool finished;
+    PF_Document*document;
     PF_ActionInterface* predecessor;
     PF::ActionType actionType;
 };

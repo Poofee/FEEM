@@ -7,6 +7,7 @@ class PF_Entity;
 class PF_GraphicView;
 class PF_Vector;
 class QMouseEvent;
+class PF_EntityContainer;
 
 //2018-02-11
 //by Poofee
@@ -15,7 +16,7 @@ class PF_Snapper
 {
 public:
     PF_Snapper()=delete;
-    PF_Snapper(PF_GraphicView* view);
+    PF_Snapper(PF_EntityContainer*container,PF_GraphicView* view);
     virtual ~PF_Snapper();
 
     void init();
@@ -28,6 +29,7 @@ public:
     virtual void showOptions();
 protected:
     PF_GraphicView* view;
+    PF_EntityContainer* container;
 };
 
 #endif // PF_SNAPPER_H

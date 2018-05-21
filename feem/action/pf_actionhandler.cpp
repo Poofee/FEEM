@@ -1,5 +1,6 @@
 #include "pf_actionhandler.h"
 #include "pf_actiondrawcircle.h"
+#include "pf_document.h"
 
 PF_ActionHandler::PF_ActionHandler(QObject *parent) : QObject(parent)
 {
@@ -8,7 +9,9 @@ PF_ActionHandler::PF_ActionHandler(QObject *parent) : QObject(parent)
 
 PF_ActionInterface *PF_ActionHandler::getCurrentAction()
 {
+    if(view){
 
+    }
 }
 
 PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
@@ -23,7 +26,7 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
 
         break;
     case PF::ActionDrawCircle:
-        a = new PF_ActionDrawCircle(view);
+        a = new PF_ActionDrawCircle(document,view);
         break;
     case PF::ActionDrawLine:
 

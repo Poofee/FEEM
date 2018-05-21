@@ -1,8 +1,10 @@
 #include "pf_snapper.h"
 #include "pf_graphicview.h"
+#include "pf_entitycontainer.h"
 
-PF_Snapper::PF_Snapper(PF_GraphicView *view)
+PF_Snapper::PF_Snapper(PF_EntityContainer *container, PF_GraphicView *view)
     :view(view)
+    ,container(container)
 {
 
 }

@@ -20,7 +20,7 @@ public:
         SetRadius        /**< Setting the radius. */
     };
 public:
-    PF_ActionDrawCircle(PF_GraphicView* view);
+    PF_ActionDrawCircle(PF_EntityContainer* container, PF_GraphicView* view);
     ~PF_ActionDrawCircle() override;
 
     void reset();
@@ -29,6 +29,12 @@ public:
 
     void mouseMoveEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
+
+    void hideOptions() override;
+    void showOptions() override;
+
+    void updateMouseButtonHints() override;
+    void updateMouseCursor() override;
 protected:
     PF_CircleData* data;
 };

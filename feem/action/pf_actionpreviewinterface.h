@@ -6,7 +6,7 @@
 class PF_ActionPreviewInterface: public PF_ActionInterface
 {
 public:
-    PF_ActionPreviewInterface(const char *name, PF_GraphicView* view);
+    PF_ActionPreviewInterface(const char *name,PF_EntityContainer* container, PF_GraphicView* view);
     ~PF_ActionPreviewInterface() override;
 
     void init(int status=0) override;
@@ -17,6 +17,8 @@ public:
 
     void drawPreview();
     void deletePreview();
+protected:
+    bool hasPreview;
 };
 
 #endif // PF_ACTIONPREVIEWINTERFACE_H
