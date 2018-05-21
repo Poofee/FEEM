@@ -8,7 +8,10 @@
 class PF_AtomicEntity: public PF_Entity
 {
 public:
-    PF_AtomicEntity();
+    PF_AtomicEntity(PF_EntityContainer *parent=nullptr);
+
+    bool isContainer() const override;
+    bool isAtomic() const override;
 };
 
 #endif // PF_ATOMICENTITY_H

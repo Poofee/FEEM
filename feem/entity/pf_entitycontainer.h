@@ -11,10 +11,13 @@
 class PF_EntityContainer: public PF_Entity
 {
 public:
-    PF_EntityContainer();
+    PF_EntityContainer(PF_EntityContainer * parent=nullptr, bool owner=true);
+    ~PF_EntityContainer() override;
 
 protected:
     QList<PF_Entity*> entities;//保存所有实体
+private:
+    bool autoDelete;
 };
 
 #endif // PF_ENTITYCONTAINER_H
