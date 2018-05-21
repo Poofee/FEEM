@@ -4,7 +4,7 @@
 #include "pf_graphicview.h"
 
 PF_ActionDrawCircle::PF_ActionDrawCircle(PF_GraphicView *view)
-    :PF_ActionPreviewInterface(view)
+    :PF_ActionPreviewInterface("Draw Circles",view)
     ,data(new PF_CircleData())
 {
 

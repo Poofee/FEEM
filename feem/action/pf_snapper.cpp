@@ -21,3 +21,23 @@ void PF_Snapper::finish()
 {
 
 }
+
+void PF_Snapper::suspend()
+{
+
+}
+
+void PF_Snapper::resume()
+{
+
+}
+
+void PF_Snapper::hideOptions()
+{
+
+}
+
+void PF_Snapper::showOptions()
+{
+
+}

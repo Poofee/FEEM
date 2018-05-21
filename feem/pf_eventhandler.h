@@ -30,6 +30,7 @@ public:
     PF_ActionInterface* getDefaultAction();
 
     bool hasAction();
+    void cleanUp();
 signals:
 
 public slots:

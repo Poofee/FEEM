@@ -20,6 +20,12 @@ public:
 
     void init();
     void finish();
+
+    virtual void suspend();
+
+    virtual void resume();
+    virtual void hideOptions();
+    virtual void showOptions();
 protected:
     PF_GraphicView* view;
 };

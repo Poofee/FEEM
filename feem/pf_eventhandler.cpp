@@ -1,5 +1,5 @@
 #include <QMouseEvent>
-
+#include <QDebug>
 #include "pf_eventhandler.h"
 #include "pf_actioninterface.h"
 
@@ -39,7 +39,9 @@ void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
     if(hasAction()){
         currentAction.last()->mouseReleaseEvent(e);
 
-
+        //有的action可能会右键结束，清理一下
+        cleanUp();
+        e->accept();
     }else{
         if(defaultAction){
             defaultAction->mouseReleaseEvent(e);
@@ -103,10 +105,33 @@ void PF_EventHandler::keyReleaseEvent(QKeyEvent *e)
 
 void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
 {
+    qDebug()<<"PF_EventHandler::setCurrentAction";
     if(action == NULL){
         return;
     }
 
+    PF_ActionInterface* predecessor = NULL;
+    //处理一下当前运行的action
+    if(hasAction()){
+        predecessor = currentAction.last();
+        predecessor->suspend();
+        predecessor->hideOptions();
+    }else{
+        if(defaultAction){
+            predecessor = defaultAction;
+            predecessor->suspend();
+            predecessor->hideOptions();
+        }
+    }
+
+    currentAction.push_back(action);
+
+    //初始化新的action
+    action->init();
+    if(action->isFinished()==false){
+        currentAction.last()->showOptions();
+        action->setPredecessor(predecessor);
+    }
 }
 
 PF_ActionInterface *PF_EventHandler::getCurrentAction()
@@ -140,4 +165,26 @@ bool PF_EventHandler::hasAction()
         }
     }
     return false;
+}
+
+//清除掉已经完成的action
+void PF_EventHandler::cleanUp()
+{
+    qDebug()<<"PF_EventHandler::cleanUp";
+    for(int i=0; i < currentAction.size();++i){
+        if(currentAction.at(i)->isFinished()){
+            delete currentAction.at(i);
+            currentAction.removeAt(i--);
+        }
+    }
+    if(hasAction()){
+        currentAction.last()->resume();
+        currentAction.last()->showOptions();
+    }else{
+        if(defaultAction){
+            defaultAction->resume();
+            defaultAction->showOptions();
+        }
+    }
+    qDebug()<<"PF_EventHandler::cleanUp: OK.";
 }

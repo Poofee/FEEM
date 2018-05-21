@@ -1,8 +1,8 @@
 #include "pf_actionpreviewinterface.h"
 #include "pf_graphicview.h"
 
-PF_ActionPreviewInterface::PF_ActionPreviewInterface(PF_GraphicView *view)
-    :PF_ActionInterface(view)
+PF_ActionPreviewInterface::PF_ActionPreviewInterface(const char*name,PF_GraphicView *view)
+    :PF_ActionInterface(name,view)
 {
 
 }
