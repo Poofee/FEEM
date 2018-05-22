@@ -23,6 +23,7 @@ public:
     void drawLayer1(QPainter * painter);
     void getPixmapForView(QPixmap **pm);
 
+    void back();
     void setContainer(PF_EntityContainer* _container);
 
     void setCurrentAction(PF_ActionInterface* action);

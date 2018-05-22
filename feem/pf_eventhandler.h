@@ -24,6 +24,8 @@ public:
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
 
+    void back();
+
     void setCurrentAction(PF_ActionInterface* action);
     PF_ActionInterface* getCurrentAction();
     void setDefaultAction(PF_ActionInterface* action);

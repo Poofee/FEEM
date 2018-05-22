@@ -46,7 +46,6 @@ void PF_GraphicView::paintEvent(QPaintEvent *e){
     QPainter painter2(PixmapLayer2);
     painter2.setRenderHint(QPainter::Antialiasing, true);
     painter2.setPen(QColor(0,0,0));
-    painter2.drawEllipse(QPointF(width()/2,height()/2),100,100);
     drawEntityLayer(&painter2);
     painter2.end();
 
@@ -82,9 +81,16 @@ void PF_GraphicView::mouseReleaseEvent(QMouseEvent *e)
 {
     e->accept();
 
+    qDebug()<<e->button();
     switch (e->button()) {
     case Qt::RightButton:
+        //Ctrl+Right-Click
 
+        //Shift+Right-Click
+
+        //Right-Click menu
+
+        back();
         break;
     default:
         eventHandler->mouseReleaseEvent(e);
@@ -213,6 +219,13 @@ void PF_GraphicView::getPixmapForView(QPixmap **pm)
     }
 
     *pm = new QPixmap(width(), height());
+}
+
+void PF_GraphicView::back()
+{
+    if(eventHandler && eventHandler->hasAction()){
+        eventHandler->back();
+    }
 }
 
 void PF_GraphicView::setContainer(PF_EntityContainer *_container)

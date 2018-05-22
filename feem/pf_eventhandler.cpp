@@ -25,6 +25,7 @@ void PF_EventHandler::mousePressEvent(QMouseEvent *e)
     //当前action未执行完
     if(hasAction()){
         currentAction.last()->mousePressEvent(e);
+        e->accept();
     }else{
         if(defaultAction){
             defaultAction->mousePressEvent(e);
@@ -117,6 +118,16 @@ void PF_EventHandler::keyReleaseEvent(QKeyEvent *e)
     qDebug()<<"PF_EventHandler::keyReleaseEvent: OK.";
 }
 
+void PF_EventHandler::back()
+{
+    QMouseEvent e(QEvent::MouseButtonRelease,QPoint(0,0),
+                  Qt::RightButton,Qt::RightButton,Qt::NoModifier);
+    mouseReleaseEvent(&e);
+    if(!hasAction()){
+
+    }
+}
+
 void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
 {
     qDebug()<<"PF_EventHandler::setCurrentAction";
@@ -176,6 +187,7 @@ bool PF_EventHandler::hasAction()
 {
     for(int i = 0; i < currentAction.size();++i){
         if(!currentAction.at(i)->isFinished()){
+            qDebug()<<"PF_EventHandler::hasAction():"<<currentAction.size();
             return true;
         }
     }

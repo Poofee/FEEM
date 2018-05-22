@@ -23,9 +23,9 @@ double PF_Circle::getRadius() const
 
 void PF_Circle::draw(QPainter *painter, PF_GraphicView *view)
 {
-    qDebug()<<"PF_Circle::draw";
+    //qDebug()<<"PF_Circle::draw";
     painter->drawEllipse(QPointF(getCenter().x,getCenter().y),getRadius(),getRadius());
-    qDebug()<<"PF_Circle::draw: OK.";
+    //qDebug()<<"PF_Circle::draw: OK.";
 }
 
 PF_CircleData::PF_CircleData(PF_Vector *center, double radius)
