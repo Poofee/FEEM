@@ -74,16 +74,17 @@ double PF_Vector::magnitude() const
 PF_Vector PF_Vector::move(const PF_Vector &offset)
 {
     *this += offset;
+	return *this;
 }
 
 PF_Vector PF_Vector::rotate(const PF_Vector &angleVector)
 {
-
+	return *this;
 }
 
 PF_Vector PF_Vector::rotate(const PF_Vector &center, double angle)
 {
-
+	return *this;
 }
 
 PF_Vector PF_Vector::scale(double factor)
@@ -102,7 +103,7 @@ PF_Vector PF_Vector::scale(const PF_Vector &factor)
 
 PF_Vector PF_Vector::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
 {
-
+	return *this;
 }
 
 PF_Vector PF_Vector::operator +(const PF_Vector &v) const
