@@ -19,6 +19,9 @@ public:
     PF_ActionInterface* getCurrentAction();
     PF_ActionInterface* setCurrentAction(PF::ActionType typeId);
 
+    void set_view(PF_GraphicView * graphicView);
+    void set_document(PF_Document * _document);
+
 signals:
 
 public slots:

@@ -7,6 +7,10 @@ class PF_Document : public PF_EntityContainer
 public:
     PF_Document(PF_EntityContainer* parent=nullptr);
     ~PF_Document()=default;
+
+    virtual bool isDocument() const{
+        return true;
+    }
 protected:
     bool modified;
     QString fileName;

@@ -5,7 +5,11 @@
 
 #include "pf.h"
 #include "pf_entitycontainer.h"
+#include "pf_document.h"
+#include "pf_snapper.h"
 
+class QMouseEvent;
+class QKeyEvent;
 class QGridLayout;
 class PF_ActionInterface;
 class PF_EventHandler;
@@ -14,10 +18,12 @@ class PF_GraphicView : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PF_GraphicView(QWidget *parent = nullptr);
+    explicit PF_GraphicView(PF_Document* doc, QWidget *parent = nullptr);
     ~PF_GraphicView();
     void drawLayer1(QPainter * painter);
     void getPixmapForView(QPixmap **pm);
+
+    void setContainer(PF_EntityContainer* _container);
 
     void setCurrentAction(PF_ActionInterface* action);
     PF_ActionInterface* getCurrentAction();
@@ -25,12 +31,16 @@ public:
     PF_ActionInterface* getDefaultAction();
 
     void redraw(PF::RedrawMethod method=PF::RedrawAll);
+
+    void drawEntity(QPainter* painter, PF_Entity* e);
+
+    void drawEntityLayer(QPainter* painter);
 signals:
 
 public slots:
 
 protected:
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
     void mouseDoubleClickEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;

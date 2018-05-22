@@ -1,3 +1,4 @@
+#include <QMouseEvent>
 #include "pf_snapper.h"
 #include "pf_graphicview.h"
 #include "pf_entitycontainer.h"
@@ -22,6 +23,11 @@ void PF_Snapper::init()
 void PF_Snapper::finish()
 {
 
+}
+
+PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
+{
+    return PF_Vector(e->x(),e->y(),0);
 }
 
 void PF_Snapper::suspend()

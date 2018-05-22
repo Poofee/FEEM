@@ -22,6 +22,8 @@ public:
     void init();
     void finish();
 
+    PF_Vector snapPoint(QMouseEvent* e);
+
     virtual void suspend();
 
     virtual void resume();

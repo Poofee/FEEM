@@ -3,11 +3,17 @@
 #include <QMdiArea>
 
 #include "pf_graphicview.h"
+#include "pf_document.h"
 
-PF_MdiSubWindow::PF_MdiSubWindow(QWidget* parent)
+PF_MdiSubWindow::PF_MdiSubWindow(PF_Document* doc, QWidget* parent)
     :QMdiSubWindow(parent)
 {
-    graphicView = new PF_GraphicView(this);
+    if(doc == nullptr){
+
+    }else{
+        document = doc;
+    }
+    graphicView = new PF_GraphicView(document,this);
 
     setWidget(graphicView);
 
@@ -16,5 +22,15 @@ PF_MdiSubWindow::PF_MdiSubWindow(QWidget* parent)
 
 PF_MdiSubWindow::~PF_MdiSubWindow(){
 
+}
+
+PF_GraphicView *PF_MdiSubWindow::getGraphicView() const
+{
+    return (graphicView) ? graphicView : nullptr;
+}
+
+PF_Document *PF_MdiSubWindow::getDocument() const
+{
+    return document;
 }
 

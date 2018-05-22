@@ -21,6 +21,7 @@ PF_EventHandler::~PF_EventHandler()
 
 void PF_EventHandler::mousePressEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_EventHandler::mousePressEvent";
     //当前action未执行完
     if(hasAction()){
         currentAction.last()->mousePressEvent(e);
@@ -32,10 +33,12 @@ void PF_EventHandler::mousePressEvent(QMouseEvent *e)
             e->ignore();
         }
     }
+    qDebug()<<"PF_EventHandler::mousePressEvent: OK.";
 }
 
 void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_EventHandler::mouseReleaseEvent";
     if(hasAction()){
         currentAction.last()->mouseReleaseEvent(e);
 
@@ -49,18 +52,22 @@ void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
             e->ignore();
         }
     }
+    qDebug()<<"PF_EventHandler::mouseReleaseEvent: OK.";
 }
 
 void PF_EventHandler::mouseMoveEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_EventHandler::mouseMoveEvent";
     if(hasAction())
         currentAction.last()->mouseMoveEvent(e);
     else if(defaultAction)
         defaultAction->mouseMoveEvent(e);
+    qDebug()<<"PF_EventHandler::mouseMoveEvent: OK.";
 }
 
 void PF_EventHandler::mouseLeaveEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_EventHandler::mouseLeaveEvent";
     if(hasAction()){
         currentAction.last()->suspend();
     }else{
@@ -68,18 +75,22 @@ void PF_EventHandler::mouseLeaveEvent(QMouseEvent *e)
             defaultAction->suspend();
         }
     }
+    qDebug()<<"PF_EventHandler::mouseLeaveEvent: OK.";
 }
 
 void PF_EventHandler::mouseEnterEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_EventHandler::mouseEnterEvent";
     if(hasAction())
         currentAction.last()->resume();
     else if(defaultAction)
         defaultAction->resume();
+    qDebug()<<"PF_EventHandler::mouseEnterEvent: OK.";
 }
 
 void PF_EventHandler::keyPressEvent(QKeyEvent *e)
 {
+    qDebug()<<"PF_EventHandler::keyPressEvent";
     if(hasAction())
         currentAction.last()->keyPressEvent(e);
     else{
@@ -88,10 +99,12 @@ void PF_EventHandler::keyPressEvent(QKeyEvent *e)
         else
             e->ignore();
     }
+    qDebug()<<"PF_EventHandler::keyPressEvent: OK.";
 }
 
 void PF_EventHandler::keyReleaseEvent(QKeyEvent *e)
 {
+    qDebug()<<"PF_EventHandler::keyReleaseEvent";
     if(hasAction()){
         currentAction.last()->keyReleaseEvent(e);
     }else{
@@ -101,6 +114,7 @@ void PF_EventHandler::keyReleaseEvent(QKeyEvent *e)
             e->ignore();
         }
     }
+    qDebug()<<"PF_EventHandler::keyReleaseEvent: OK.";
 }
 
 void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
@@ -132,6 +146,7 @@ void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
         currentAction.last()->showOptions();
         action->setPredecessor(predecessor);
     }
+    qDebug()<<"PF_EventHandler::setCurrentAction: OK.";
 }
 
 PF_ActionInterface *PF_EventHandler::getCurrentAction()
@@ -164,6 +179,7 @@ bool PF_EventHandler::hasAction()
             return true;
         }
     }
+    qDebug()<<"PF_EventHandler::hasAction(): 0";
     return false;
 }
 

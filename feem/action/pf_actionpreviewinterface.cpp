@@ -1,5 +1,6 @@
 #include "pf_actionpreviewinterface.h"
 #include "pf_graphicview.h"
+#include "pf_preview.h"
 
 PF_ActionPreviewInterface::PF_ActionPreviewInterface(const char*name, PF_EntityContainer *container, PF_GraphicView *view)
     :PF_ActionInterface(name,container,view)
@@ -44,14 +45,14 @@ void PF_ActionPreviewInterface::trigger()
 
 void PF_ActionPreviewInterface::drawPreview()
 {
-
+    //获取graphicview中保存preview的entities列表
     hasPreview = true;
 }
 
 void PF_ActionPreviewInterface::deletePreview()
 {
     if(hasPreview){
-
+        //preview->clear();
         hasPreview = false;
     }
 }

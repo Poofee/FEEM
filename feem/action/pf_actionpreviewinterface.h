@@ -3,6 +3,7 @@
 
 #include "pf_actioninterface.h"
 
+class PF_Preview;
 class PF_ActionPreviewInterface: public PF_ActionInterface
 {
 public:
@@ -19,6 +20,7 @@ public:
     void deletePreview();
 protected:
     bool hasPreview;
+    PF_Preview* preview;
 };
 
 #endif // PF_ACTIONPREVIEWINTERFACE_H

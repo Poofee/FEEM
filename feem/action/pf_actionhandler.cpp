@@ -1,6 +1,8 @@
+#include <QDebug>
 #include "pf_actionhandler.h"
 #include "pf_actiondrawcircle.h"
 #include "pf_document.h"
+#include "pf_graphicview.h"
 
 PF_ActionHandler::PF_ActionHandler(QObject *parent) : QObject(parent)
 {
@@ -128,8 +130,23 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
 
         break;
     default:
+        qDebug()<<"PF_ActionHandler::setCurrentAction():No such action found!";
         break;
     }
+    if(a){
+        view->setCurrentAction(a);
+    }
+    return a;
+}
+
+void PF_ActionHandler::set_view(PF_GraphicView *graphicView)
+{
+    view = graphicView;
+}
+
+void PF_ActionHandler::set_document(PF_Document *_document)
+{
+    document = _document;
 }
 
 void PF_ActionHandler::slotUndo() {

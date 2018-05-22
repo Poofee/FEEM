@@ -14,6 +14,8 @@
 #include "pf_centralwidget.h"
 #include "pf_mdisubwindow.h"
 
+#include "pf_document.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ag_manager(new PF_ActionGroupManager(this))
@@ -34,7 +36,10 @@ MainWindow::MainWindow(QWidget *parent)
     w_factory.createMenus(menuBar());
     w_factory.createStandardToolbars(actionHandler);
 
-    PF_MdiSubWindow* m = new PF_MdiSubWindow(mdiAreaCAD);
+    PF_Document* doc = new PF_Document();
+    PF_MdiSubWindow* m = new PF_MdiSubWindow(doc,mdiAreaCAD);
+    actionHandler->set_view(m->getGraphicView());
+    actionHandler->set_document(m->getDocument());
     m->showMaximized();
 }
 

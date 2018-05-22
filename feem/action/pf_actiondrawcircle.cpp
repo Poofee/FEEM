@@ -1,4 +1,5 @@
 #include <QMouseEvent>
+#include <QDebug>
 #include "pf_actiondrawcircle.h"
 #include "pf_circle.h"
 #include "pf_graphicview.h"
@@ -37,16 +38,64 @@ void PF_ActionDrawCircle::init(int status)
 void PF_ActionDrawCircle::trigger()
 {
     PF_ActionPreviewInterface::trigger();
+
+    PF_Circle* circle = new PF_Circle(container,*data);
+
+    container->addEntity(circle);
+    view->redraw(PF::RedrawDrawing);
+    setStatus(SetCenter);
+    reset();
+
+    qDebug()<<"PF_ActionDrawCircle::trigger(): circle added";
 }
 
 void PF_ActionDrawCircle::mouseMoveEvent(QMouseEvent *e)
 {
+    PF_Vector mouse = PF_Snapper::snapPoint(e);
 
+    switch(getStatus()){
+    case SetCenter:
+        data->center = mouse;
+        break;
+    case SetRadius:
+        if(data->center.valid){
+            data->radius = data->center.distanceTo(mouse);
+            //deletePreview();
+
+            //drawPreview();
+        }
+        break;
+    }
 }
 
 void PF_ActionDrawCircle::mouseReleaseEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent";
+    if(e->button() == Qt::LeftButton){
+        qDebug()<<"Clicked LeftButton!";
+        PF_Vector mouse = PF_Vector(e->x(),e->y(),0);
 
+        switch(getStatus()){
+        case SetCenter:
+            data->center = mouse;
+            setStatus(SetRadius);
+            qDebug()<<"Set Center:("<<e->x()<<","<<e->y()<<")";
+            break;
+        case SetRadius:
+            if(data->center.valid){
+                data->radius = data->center.distanceTo(mouse);
+                qDebug()<<"Set Radius:"<<data->radius;
+                trigger();
+            }
+            break;
+        default:
+            break;
+        }
+    }else if(e->button() == Qt::RightButton){
+        qDebug()<<"Clicked RightButton!";
+        init(getStatus()-1);
+    }
+    qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent: OK.";
 }
 
 void PF_ActionDrawCircle::hideOptions()

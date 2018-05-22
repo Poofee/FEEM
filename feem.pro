@@ -40,7 +40,8 @@ HEADERS += \
     feem/entity/pf_vector.h \
     feem/action/pf_snapper.h \
     feem/entity/pf_entitycontainer.h \
-    feem/entity/pf_document.h
+    feem/entity/pf_document.h \
+    feem/entity/pf_preview.h
 
 SOURCES += \
     feem/main.cpp \
@@ -63,4 +64,5 @@ SOURCES += \
     feem/entity/pf_vector.cpp \
     feem/action/pf_snapper.cpp \
     feem/entity/pf_entitycontainer.cpp \
-    feem/entity/pf_document.cpp
+    feem/entity/pf_document.cpp \
+    feem/entity/pf_preview.cpp
