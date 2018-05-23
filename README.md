@@ -1,5 +1,5 @@
 # FEEM
-FEE's Finite Element Method software.
+**FEE**'s **F**inite **E**lement **E**lectro**M**agnetism software.
 
 ## 简介
 这是一款目标针对电器有限元仿真计算的软件。
@@ -14,7 +14,7 @@ FEE's Finite Element Method software.
 
 0.0.1
 
-- 
+- ​
 
 ##  致谢
 
