@@ -32,6 +32,7 @@ public:
 protected:
     PF_GraphicView* view;
     PF_EntityContainer* container;
+    bool finished{false};
 };
 
 #endif // PF_SNAPPER_H

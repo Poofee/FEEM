@@ -26,7 +26,13 @@ QString PF_ActionInterface::getName()
 
 void PF_ActionInterface::init(int status)
 {
+    setStatus(status);
+    if(status >= 0){
+        updateMouseButtonHints();
+        updateMouseCursor();
+    }else{
 
+    }
 }
 
 void PF_ActionInterface::mouseMoveEvent(QMouseEvent *)

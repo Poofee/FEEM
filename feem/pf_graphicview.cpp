@@ -81,7 +81,6 @@ void PF_GraphicView::mouseReleaseEvent(QMouseEvent *e)
 {
     e->accept();
 
-    qDebug()<<e->button();
     switch (e->button()) {
     case Qt::RightButton:
         //Ctrl+Right-Click

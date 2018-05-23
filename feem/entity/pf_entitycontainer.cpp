@@ -37,7 +37,7 @@ void PF_EntityContainer::addEntity(PF_Entity *entity)
     }
 
     entities.append(entity);
-    qDebug()<<entities.size();
+    qDebug()<<"PF_EntityContainer::addEntity:size:"<<entities.size();
 }
 
 void PF_EntityContainer::draw(QPainter *painter, PF_GraphicView *view)

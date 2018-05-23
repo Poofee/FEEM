@@ -201,6 +201,7 @@ void PF_EventHandler::cleanUp()
     qDebug()<<"PF_EventHandler::cleanUp";
     for(int i=0; i < currentAction.size();++i){
         if(currentAction.at(i)->isFinished()){
+            qDebug()<<"PF_EventHandler::cleanUp():   "<<i<<"   finished!";
             delete currentAction.at(i);
             currentAction.removeAt(i--);
         }

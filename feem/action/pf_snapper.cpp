@@ -22,7 +22,7 @@ void PF_Snapper::init()
 
 void PF_Snapper::finish()
 {
-
+    finished = true;
 }
 
 PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
