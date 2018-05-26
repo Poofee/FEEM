@@ -51,21 +51,25 @@ void PF_ActionDrawCircle::trigger()
 
 void PF_ActionDrawCircle::mouseMoveEvent(QMouseEvent *e)
 {
+    qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent";
     PF_Vector mouse = PF_Snapper::snapPoint(e);
 
     switch(getStatus()){
     case SetCenter:
+        qDebug()<<"SetCenter";
         data->center = mouse;
         break;
     case SetRadius:
+        qDebug()<<"SetRadius";
         if(data->center.valid){
             data->radius = data->center.distanceTo(mouse);
-            //deletePreview();
-
-            //drawPreview();
+            deletePreview();
+            preview->addEntity(new PF_Circle(preview,*data));
+            drawPreview();
         }
         break;
     }
+    qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent: OK.";
 }
 
 void PF_ActionDrawCircle::mouseReleaseEvent(QMouseEvent *e)

@@ -23,8 +23,12 @@ public:
         return true;
     }
 
+    void setOwner(bool owner) {autoDelete=owner;}
+
     virtual void addEntity(PF_Entity* entity);
     void draw(QPainter *painter, PF_GraphicView *view) override;
+
+    const QList<PF_Entity *> &getEntityList();
 protected:
     QList<PF_Entity*> entities;//保存所有实体
 private:

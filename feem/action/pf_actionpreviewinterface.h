@@ -2,8 +2,9 @@
 #define PF_ACTIONPREVIEWINTERFACE_H
 
 #include "pf_actioninterface.h"
+#include "pf_preview.h"
 
-class PF_Preview;
+//class PF_Preview;
 class PF_ActionPreviewInterface: public PF_ActionInterface
 {
 public:

@@ -2,6 +2,7 @@
 #define PF_GRAPHICVIEW_H
 
 #include <QWidget>
+#include <QMap>
 
 #include "pf.h"
 #include "pf_entitycontainer.h"
@@ -36,6 +37,12 @@ public:
     void drawEntity(QPainter* painter, PF_Entity* e);
 
     void drawEntityLayer(QPainter* painter);
+
+    virtual void drawLayer3(QPainter *painter);
+
+    virtual void drawOverlay(QPainter *painter);
+
+    virtual PF_EntityContainer *getOverlayContainer(PF::OverlayGraphics position);
 signals:
 
 public slots:
@@ -57,6 +64,7 @@ protected:
 
     void resizeEvent(QResizeEvent* e) override;
 
+
 protected:
     QGridLayout* layout;
 
@@ -69,6 +77,9 @@ protected:
     PF_EntityContainer* container;//保存所有实体
 
     PF::RedrawMethod redrawMethod;
+private:
+    //保存绘图过程当中的实体
+    QMap<int, PF_EntityContainer *> overlayEntities;
 };
 
 #endif // PF_GRAPHICVIEW_H

@@ -1,9 +1,10 @@
 #include "pf_actionpreviewinterface.h"
 #include "pf_graphicview.h"
-#include "pf_preview.h"
+#include <QDebug>
 
 PF_ActionPreviewInterface::PF_ActionPreviewInterface(const char*name, PF_EntityContainer *container, PF_GraphicView *view)
     :PF_ActionInterface(name,container,view)
+    ,preview(new PF_Preview(container))
 {
     hasPreview = true;
 }
@@ -46,13 +47,22 @@ void PF_ActionPreviewInterface::trigger()
 void PF_ActionPreviewInterface::drawPreview()
 {
     //获取graphicview中保存preview的entities列表
-    hasPreview = true;
+    PF_EntityContainer *ctainer=view->getOverlayContainer(PF::ActionPreviewEntity);
+    ctainer->clear();
+    //preview是ctainer中的一个，不能设为自动删除释放
+    ctainer->setOwner(false); // Little hack for now so we don't delete the preview twice
+    ctainer->addEntity(preview);
+    view->redraw(PF::RedrawOverlay);
+    hasPreview=true;
 }
 
 void PF_ActionPreviewInterface::deletePreview()
 {
-    if(hasPreview){
-        //preview->clear();
+    qDebug()<<"PF_ActionPreviewInterface::deletePreview";
+    //if(hasPreview){
+        preview->clear();
         hasPreview = false;
-    }
+        qDebug()<<"PF_ActionPreviewInterface::deletePreview: OK.";
+    //}
+
 }
