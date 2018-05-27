@@ -1,6 +1,7 @@
 #ifndef PF_ENTITY_H
 #define PF_ENTITY_H
 
+#include "pf.h"
 #include "pf_vector.h"
 //2018-02-11
 //by Poofee

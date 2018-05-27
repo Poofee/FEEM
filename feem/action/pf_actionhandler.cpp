@@ -2,6 +2,7 @@
 #include "pf_actionhandler.h"
 #include "pf_actiondrawcircle.h"
 #include "pf_actiondrawpoint.h"
+#include "pf_actiondrawline.h"
 #include "pf_document.h"
 #include "pf_graphicview.h"
 
@@ -32,7 +33,7 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
         a = new PF_ActionDrawCircle(document,view);
         break;
     case PF::ActionDrawLine:
-
+        a = new PF_ActionDrawLine(document,view);
         break;
     case PF::ActionDrawPoint:
         a = new PF_ActionDrawPoint(document,view);
