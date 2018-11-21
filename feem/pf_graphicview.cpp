@@ -48,8 +48,8 @@ void PF_GraphicView::paintEvent(QPaintEvent *e){
     painter1.end();
 
     PixmapLayer2->fill(Qt::transparent);
-    QPainter painter2(PixmapLayer2);
-    painter2.setRenderHint(QPainter::Antialiasing, true);
+    QPainter painter2(this);
+    painter2.setRenderHint(QPainter::HighQualityAntialiasing, true);
     painter2.setPen(QColor(0,0,0));
     drawEntityLayer(&painter2);
     painter2.end();
@@ -59,8 +59,8 @@ void PF_GraphicView::paintEvent(QPaintEvent *e){
     {
         qDebug()<<"PF_GraphicView::paintEvent RedrawOverlay";
 
-        QPainter painter3(PixmapLayer3);
-        painter3.setRenderHint(QPainter::Antialiasing,true);
+        QPainter painter3(this);
+        painter3.setRenderHint(QPainter::HighQualityAntialiasing,true);
         painter3.setPen(QColor(0,0,0));
         drawLayer3(&painter3);
         painter3.end();

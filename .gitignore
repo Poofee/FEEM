@@ -5,3 +5,9 @@
 *.Release
 *.Debug
 *.user
+*.sdf
+*.tlog
+*.log
+*.filters
+*.vcxproj
+*.suo

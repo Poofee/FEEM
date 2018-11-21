@@ -1,0 +1,150 @@
+\parindent0pt
+\null
+\thispagestyle{empty}
+%\vskip3cm
+\vfill
+\hfil
+%: définition des couleurs et des styles
+% fond Gauche et Droite bleu marron
+\definecolor{couleurGauche}{rgb}{.25,1,1}
+\definecolor{couleurDroite}{rgb}{.75,.5,0.25}
+% Post-It jaune
+\definecolor{couleurPostIt}{rgb}{.9,.9,.35}
+% logo TikZ dégradé blanc gris Top et Bottom
+\definecolor{couleurTop}{rgb}{1,1,1}
+\definecolor{couleurBottom}{rgb}{.5,.5,.5}
+
+
+
+\tikzset{fondA/.style={ball color=couleurGauche}}
+\tikzset{fondB/.style={ball color=couleurDroite}}
+\tikzset{fondPostit/.style={color= couleurPostIt}}
+\tikzset{ombrePunaise/.style={color={blue!10!gray}}}
+\tikzset{ombrePostit/.style={color={black},opacity=.5}}
+\tikzset{punaise/.style={ball color=red}}
+
+% ============ utilitaires de construction ============
+%: \ruban{angle}{point}
+\newcommand{\ruban}[2]{\shadedraw[rotate=#1] #2
+  ++(0:0.57735*\arete-0.57735*\epaisseur+2*\rayon)
+  ++(-30:\epaisseur-1.73205*\rayon)
+  arc (60:0:\rayon)   -- ++(90:\epaisseur)
+  arc (0:60:\rayon)   -- ++(150:\arete)
+  arc (60:120:\rayon) -- ++(210:\epaisseur)
+  arc (120:60:\rayon) -- cycle;}
+
+%: \logoTikZ{(point)}{angle}{TikZ}{pour}{L'impatient}
+\newcommand{\logoTikZ}[5]
+{\def\arete{3}   \def\epaisseur{5}   \def\rayon{2}
+\begin{scope} [very thick,top color= couleurTop,bottom color= couleurBottom,rotate=#2]
+	\coordinate (a) at ($#1+(0,-6)$);
+	\coordinate (b) at ($#1+(6,-6)$);
+	\coordinate (c) at ($#1+(6,6)$);
+	\coordinate (d) at ($#1+(0,6)$);
+	\ruban{0}{#1};
+	\ruban{120}{#1};
+	\ruban{-120}{#1};
+	\draw #1 ++(-60:3.5) node[scale=5,rotate={#2+30}]{#3};
+	\draw #1 ++(180:3.5) node[scale=3,rotate={#2-90}]{#5};
+	\clip (a) -- (b) -- (c) -- (d) -- cycle; % pour croiser
+	\ruban{0} {#1};
+	\draw #1 ++(60:3.5) node [gray,xscale=-3,yscale=3,rotate={360-#2+30}]{#4};
+\end{scope}}
+
+% un trait épais et trois ovales empilés
+%: \epingle{point}{angle}{échelle}
+\newcommand{\epingle}[3]{
+\coordinate[rotate=#2,yshift={#3*0.375cm}] (e) at #1;
+\coordinate[shift={++(60:0.75)}] (g) at (e);
+\begin{scope} [scale=1.5]
+ \begin{scope}[rotate=-30]
+   \coordinate[shift={++(30:0.75)}] (h) at (e);
+   \draw[ombrePunaise,line cap=round,line width=4pt] (e) -- ++(60:0.75);
+   \fill [ombrePunaise,rotate=-30,scale=0.5] (h) ellipse (.65 and .3) ;
+   \fill [ombrePunaise,rotate=60,scale=0.5] (h) ++(0.4,0) ellipse (.4 and .3);
+   \fill [ombrePunaise,rotate=60,scale=0.5] (h) ++(0.8,0) ellipse (.2 and .4);
+ \end{scope}
+ \draw[line cap=round,line width=4pt] (e) -- ++(60:0.75);
+ \fill [punaise,rotate=-30,scale=0.5] (g) ellipse (.65cm and .3cm) ;
+ \fill [punaise,rotate=60,scale=0.5] (g) ++(0.4,0) ellipse (.4 and .3);
+ \fill [punaise,rotate=60,scale=0.5] (g) ++(0.8,0) ellipse (.2 and .4);
+\end{scope}}
+
+
+%: \postIt{(point)}{angle}{échelle}{ligne 1}{ligne 2}{ligne 3}}
+\newcommand{\postIt}[6]
+{\begin{scope} [rotate=#2]
+\fill [red,ombrePostit] #1 ++ ($#3*(-1.45,0.72)$) -- ++ ($#3*(2.86,0)$)
+ .. controls+(0,0)and+($#3*(-0.25,0.05)$).. ++ ($#3*(0.25,-2.4)$)
+ .. controls+($#3*(-0.1,-0.1)$)and+(0,0).. ++ ($#3*(-2.95,0.1)$)
+ -- cycle;
+\fill [ombrePostit] #1 ++ ($#3*(-1.45,0.72)$) -- ++ ($#3*(2.86,0)$)
+ .. controls+(0,0)and+($#3*(-0.25,0.05)$).. ++ ($#3*(0.2,-2.35)$)
+ .. controls+($#3*(-0.1,-0.1)$)and+(0,0).. ++ ($#3*(-2.95,0.1)$)
+ -- cycle;
+\fill [ombrePostit] #1 ++ ($#3*(-1.45,0.72)$) -- ++ ($#3*(2.86,0)$)
+ .. controls+(0,0)and+($#3*(-0.25,0.05)$).. ++ ($#3*(0.15,-2.3)$)
+ .. controls+($#3*(-0.1,-0.1)$)and+(0,0).. ++ ($#3*(-2.95,0.1)$)
+ -- cycle;
+\fill [fondPostit] #1 ++ ($#3*(-1.45,0.72)$) -- ++ ($#3*(2.86,0)$)
+ .. controls+(0,0)and+($#3*(-0.2,0.1)$).. ++($#3*(0.1,-2.25)$)
+ .. controls+($#3*(-0.1,-0.1)$)and+(0,0).. ++ ($#3*(-2.95,0.1)$)
+ -- cycle;
+\end{scope}
+\epingle{#1}{#2}{#3}
+% texte
+\draw #1 node [scale=#3,rotate=#2] {#4};
+\draw #1 node [scale=#3,rotate=#2,below={#3*0.05cm}] {#5};
+\draw #1 node [scale=#3,rotate=#2,below={#3*0.2cm}] {#6};}
+
+% pour un placement précis des divers éléments
+\tikzset{ajustage/.style={yshift=0.cm}}
+
+%: ===== PAGE
+
+%: XeLaTeX \font\fantaisie pour sous-titre et texte du Post-It
+\font\fantaisie="Lucida Handwriting" at 10pt
+
+\thispagestyle{empty}
+%===========================================================================
+\begin{tikzpicture}[remember picture,overlay]
+% fond bicolore gauche droite
+\coordinate [ajustage] (cp) at (current page);
+\coordinate [ajustage] (cpe) at (current page.east);
+\coordinate [ajustage] (cpne) at (current page.north east);
+\coordinate [ajustage] (cpn) at (current page.north);
+\coordinate [ajustage] (cpnw) at (current page.north west);
+\coordinate [ajustage] (cpw) at (current page.west);
+\coordinate [ajustage] (cpsw) at (current page.south west);
+\coordinate [ajustage] (cps) at (current page.south);
+\coordinate [ajustage] (cpse) at (current page.south east);
+\fill[fondA] (cps) .. controls (cpw) and (cpe) .. (cpn) -- (cpnw)  -- (cpsw) -- cycle;
+\fill[fondB] (cps) .. controls (cpw) and (cpe) .. (cpn) -- (cpne)  -- (cpse) -- cycle;
+\draw[white,line width=4pt] (cps) .. controls (cpw) and (cpe) .. (cpn);
+\draw[white,line width=8pt] (cpnw)--(cpne)--(cpse)--(cpsw)--cycle;
+
+
+% Logo à peu en dessous du centre (bord interne aligné avec la courbe)
+\logoTikZ{(cp)}{25}{\scriptsize Notebook}{p{\color{orange}oo}{\color{gray}f}{\color{orange}ee}}{\Large FEM}
+
+% TikZ pour l'impatient en haut à gauche
+\draw (cp)  node [xshift=-9.5cm,yshift=12cm,scale=6.5,right] {开{\color{orange}\textit{发}}};
+\draw (cp)  node [xshift=-9cm,yshift=10cm,scale=3,right] {\fantaisie 笔记};
+
+% Auteurs au centre sous le titre
+\draw (cp)  node [xshift=-8.7cm,yshift=7.73cm,scale=2,right,color={red},align=left] {十};
+\draw (cp)  node [xshift=-8.7cm,yshift=6.95cm,scale=2,right,color={purple},align=left] {豆};
+\draw (cp)  node [xshift=-8.23cm,yshift=7.3cm,scale=3,right,color={blue},align=left] {三};
+\draw (cp)  node [xshift=-8.1cm,yshift=7.3cm,scale=4,right,color={violet},align=left] {飞};
+
+% post'it en bas à droite avec les auteurs
+\coordinate[xshift=4.5cm,yshift=-9.5cm] (postit) at (cp);
+\postIt{(postit)}{17}{1.75} {\fantaisie
+stay hungry}{}{\fantaisie stay foolish}
+%L\raisebox{0.25\height}{A}T\raisebox{-0.25\height}{E}X et TikZ}
+
+
+\end{tikzpicture}
+
+\vfill
+\parindent4pt
