@@ -28,6 +28,8 @@ HEADERS += \
     feem/pf_mdisubwindow.h \
     feem/pf_widgetfactory.h \
     feem/action/pf_actiondrawcircle.h \
+    feem/action/pf_actiondrawpoint.h \
+    feem/action/pf_actiondrawline.h \
     feem/action/pf_actionfactory.h \
     feem/action/pf_actiongroupmanager.h \
     feem/action/pf_actionhandler.h \
@@ -43,8 +45,6 @@ HEADERS += \
     feem/entity/pf_document.h \
     feem/entity/pf_preview.h \
     feem/entity/pf_point.h \
-    feem/action/pf_actiondrawpoint.h \
-    feem/action/pf_actiondrawline.h \
     feem/entity/pf_line.h
 
 SOURCES += \
@@ -56,6 +56,8 @@ SOURCES += \
     feem/pf_mdisubwindow.cpp \
     feem/pf_widgetfactory.cpp \
     feem/action/pf_actiondrawcircle.cpp \
+    feem/action/pf_actiondrawpoint.cpp \
+    feem/action/pf_actiondrawline.cpp \
     feem/action/pf_actionfactory.cpp \
     feem/action/pf_actiongroupmanager.cpp \
     feem/action/pf_actionhandler.cpp \
@@ -71,6 +73,4 @@ SOURCES += \
     feem/entity/pf_document.cpp \
     feem/entity/pf_preview.cpp \
     feem/entity/pf_point.cpp \
-    feem/action/pf_actiondrawpoint.cpp \
-    feem/action/pf_actiondrawline.cpp \
     feem/entity/pf_line.cpp

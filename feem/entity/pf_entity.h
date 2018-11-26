@@ -15,7 +15,7 @@ class PF_Entity
 {
 public:
     PF_Entity()=default;
-    PF_Entity(PF_EntityContainer*parent=nullptr);
+    PF_Entity(PF_EntityContainer*parent);
     virtual ~PF_Entity()=default;
 
     void init();

@@ -16,6 +16,7 @@ PF_ActionInterface *PF_ActionHandler::getCurrentAction()
     if(view){
 
     }
+    return nullptr;
 }
 
 PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
