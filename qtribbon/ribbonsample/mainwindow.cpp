@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget* parent)
     createQuickAccessBar();
     createRibbon();
     createStatusBar();
-//    createDockWindows();
+    createDockWindows();
 
     ribbonBar()->setTitleBackground(QPixmap(":/res/background.png") );
 
@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     setCentralWidget(m_textEdit);
     m_textEdit->setFocus();
-//    setCurrentFileName(QString());
+    setCurrentFileName(QString());
 
     fontChanged(m_textEdit->font());
     colorChanged(m_textEdit->textColor());

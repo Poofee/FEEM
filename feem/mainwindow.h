@@ -4,13 +4,15 @@
 #include <QMainWindow>
 #include <QMap>
 
+#include "ribbonwindow.h"
+
 class QMdiArea;
 class QMdiSubWindow;
 class PF_ActionHandler;
 class PF_WidgetFactory;
 class PF_ActionGroupManager;
 
-class MainWindow : public QMainWindow
+class MainWindow : public RibbonWindow
 {
     Q_OBJECT
 

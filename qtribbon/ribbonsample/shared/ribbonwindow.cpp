@@ -53,11 +53,11 @@ RibbonWindow::RibbonWindow(QWidget* parent)
     RibbonToolTip::setWrapMode(RibbonToolTip::/*AutoWrap*/NativeWrap);
     createOptions();
 
-    QAction* actionAbout = ribbonBar()->addAction(QIcon(":/shared/res/about.png"), tr("About"), Qt::ToolButtonIconOnly);
-    actionAbout->setToolTip(tr("Display program<br />information, version number and copyright"));
-    connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+    //QAction* actionAbout = ribbonBar()->addAction(QIcon(":/shared/res/about.png"), tr("About"), Qt::ToolButtonIconOnly);
+    //actionAbout->setToolTip(tr("Display program<br />information, version number and copyright"));
+    //connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 
-    m_actionRibbonMinimize = ribbonBar()->addAction(QIcon(":/shared/res/ribbonMinimize.png"), tr("Minimize the Ribbon"), Qt::ToolButtonIconOnly);
+    m_actionRibbonMinimize = ribbonBar()->addAction(QIcon(":/res/ribbonMinimize.png"), tr("Minimize the Ribbon"), Qt::ToolButtonIconOnly);
     m_actionRibbonMinimize->setStatusTip(tr("Show only the tab names on the Ribbon"));
     m_actionRibbonMinimize->setShortcut(tr("Ctrl+F1"));
     connect(m_actionRibbonMinimize, SIGNAL(triggered()), this, SLOT(maximizeToggle()));
@@ -359,8 +359,8 @@ void RibbonWindow::minimizationChanged(bool minimized)
 {
     m_actionRibbonMinimize->setChecked(minimized);
     m_actionRibbonMinimizeMenu->setChecked(minimized);
-    m_actionRibbonMinimize->setIcon(minimized ? QIcon(":/shared/res/ribbonMaximize.png") :  
-        QIcon(":/shared/res/ribbonMinimize.png"));
+    m_actionRibbonMinimize->setIcon(minimized ? QIcon(":/res/ribbonMaximize.png") :
+        QIcon(":/res/ribbonMinimize.png"));
 }
 
 void RibbonWindow::optionsFont(QAction* act)

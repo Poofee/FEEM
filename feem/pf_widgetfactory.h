@@ -1,6 +1,7 @@
 #ifndef PF_WIDGETFACTORY_H
 #define PF_WIDGETFACTORY_H
 
+#include "ribbonwindow.h"
 #include <QObject>
 #include <QMap>
 #include <QString>
@@ -28,6 +29,35 @@ public:
     void createStandardToolbars(PF_ActionHandler* a_handler);
     void createMenus(QMenuBar* menu_bar);
 
+    void createMenuFile();//创建左上角的系统菜单
+    void createQuickAccessBar();//创建顶部的快速访问按钮
+    void createRibbon();
+    void createStatusBar();
+    //Home
+    void createGroupProject(Qtitan::RibbonPage* page);
+    //definitions
+    void createGroupVariable(Qtitan::RibbonPage* page);
+    //geometry
+    void createGroupImExportGeometry(Qtitan::RibbonPage* page);
+    void createGroupBuildGeometry(Qtitan::RibbonPage* page);
+    void createGroupDrawSetting(Qtitan::RibbonPage* page);
+    void createGroupDraw(Qtitan::RibbonPage* page);
+    void createGroupDrawOperation(Qtitan::RibbonPage* page);
+    //materials
+    void createGroupMaterial(Qtitan::RibbonPage* page);
+    //mesh
+    void createGroupBuildMesh(Qtitan::RibbonPage* page);
+    void createGroupGenerator(Qtitan::RibbonPage* page);
+    void createGroupImExportMesh(Qtitan::RibbonPage* page);
+    void createGroupStatics(Qtitan::RibbonPage* page);
+    void createGroupClearMesh(Qtitan::RibbonPage* page);
+    //solve
+    void createGroupSolve(Qtitan::RibbonPage* page);
+    void createGroupSolverSetting(Qtitan::RibbonPage* page);
+    void createGroupClearSolution(Qtitan::RibbonPage* page);
+    //results
+    void createGroupPlot(Qtitan::RibbonPage* page);
+    //
     QMenu* file_menu;//留出接口，添加recentfile
 
 signals:

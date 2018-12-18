@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "QtnRibbonStyle.h"
 #include <QApplication>
 #include <QSplashScreen>
 #include <QMessageBox>
@@ -8,6 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    a.setStyle( new Qtitan::RibbonStyle() );
     QCoreApplication::setOrganizationName("HIT");
     QCoreApplication::setApplicationName("FEEM");
     QCoreApplication::setApplicationVersion("0.0.1");

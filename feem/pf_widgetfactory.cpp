@@ -102,5 +102,153 @@ void PF_WidgetFactory::createMenus(QMenuBar* menu_bar){
 	menu_bar->addMenu(grid_menu);
 	menu_bar->addMenu(mesh_menu);
 	menu_bar->addMenu(solve_menu);
-	menu_bar->addMenu(help_menu);
+    menu_bar->addMenu(help_menu);
+}
+
+void PF_WidgetFactory::createMenuFile()
+{
+
+}
+
+void PF_WidgetFactory::createQuickAccessBar()
+{
+
+}
+
+void PF_WidgetFactory::createRibbon()
+{
+    if (Qtitan::RibbonPage* pageHome = mainwindow->ribbonBar()->addPage(tr("&Home")))
+    {
+        createGroupProject(pageHome);
+    }
+
+    if (Qtitan::RibbonPage* pageDefinitions = mainwindow->ribbonBar()->addPage(tr("&Definitions")))
+    {
+        createGroupVariable(pageDefinitions);
+    }
+
+    if (Qtitan::RibbonPage* pageGeometry = mainwindow->ribbonBar()->addPage(tr("&Geometry")))
+    {
+        createGroupImExportGeometry(pageGeometry);
+        createGroupBuildGeometry(pageGeometry);
+        createGroupDrawSetting(pageGeometry);
+        createGroupDraw(pageGeometry);
+        createGroupDrawOperation(pageGeometry);
+    }
+
+    if (Qtitan::RibbonPage* pageMaterials = mainwindow->ribbonBar()->addPage(tr("&Materials")))
+    {
+        createGroupMaterial(pageMaterials);
+    }
+
+    if (Qtitan::RibbonPage* pageMesh = mainwindow->ribbonBar()->addPage(tr("&Mesh")))
+    {
+        createGroupBuildMesh(pageMesh);
+        createGroupGenerator(pageMesh);
+        createGroupImExportMesh(pageMesh);
+        createGroupStatics(pageMesh);
+        createGroupClearMesh(pageMesh);
+    }
+
+    if (Qtitan::RibbonPage* pageSolve = mainwindow->ribbonBar()->addPage(tr("&Solve")))
+    {
+        createGroupSolve(pageSolve);
+        createGroupSolverSetting(pageSolve);
+        createGroupClearSolution(pageSolve);
+    }
+
+    if (Qtitan::RibbonPage* pageResults = mainwindow->ribbonBar()->addPage(tr("&Results")))
+    {
+        createGroupPlot(pageResults);
+    }
+}
+
+void PF_WidgetFactory::createStatusBar()
+{
+
+}
+
+void PF_WidgetFactory::createGroupProject(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupVariable(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupImExportGeometry(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupBuildGeometry(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupDrawSetting(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupDrawOperation(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupMaterial(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupBuildMesh(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupGenerator(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupImExportMesh(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupStatics(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupClearMesh(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupSolve(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupSolverSetting(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupClearSolution(RibbonPage *page)
+{
+
+}
+
+void PF_WidgetFactory::createGroupPlot(RibbonPage *page)
+{
+
 }

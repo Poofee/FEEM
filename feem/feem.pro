@@ -8,8 +8,14 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QT +=  printsupport gui-private
+
 TARGET = feem
 TEMPLATE = app
+
+include($$PWD/../qtribbon/ribbonsample/qtitanribbon.pri)
+
+
 
 DESTDIR = $$PWD/../bin
 
@@ -82,3 +88,6 @@ SOURCES += \
     ./entity/pf_preview.cpp \
     ./entity/pf_point.cpp \
     ./entity/pf_line.cpp
+
+include($$PWD/../qtribbon/ribbonsample/shared/aboutdialog.pri)
+include($$PWD/../qtribbon/ribbonsample/shared/ribbonwindow.pri)

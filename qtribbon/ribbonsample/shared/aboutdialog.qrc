@@ -6,5 +6,9 @@
         <file>res/qtitanlogo64x64.png</file>
         <file>res/question.png</file>
         <file>res/topheader.png</file>
+        <file>res/about.png</file>
+        <file>res/ribbonMaximize.png</file>
+        <file>res/ribbonMinimize.png</file>
+        <file>res/sysbutton.png</file>
     </qresource>
 </RCC>
