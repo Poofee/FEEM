@@ -39,7 +39,9 @@ MainWindow::MainWindow(QWidget *parent)
     //w_factory.createMenus(menuBar());
     //w_factory.createStandardToolbars(actionHandler);
     w_factory.createRibbon();
-    ribbonBar()->showQuickAccess(false);
+    w_factory.createMenuFile();
+    ribbonBar()->setFrameThemeEnabled();//不显示一条白带
+    ribbonBar()->setTitleBackground(QPixmap(":/res/background.png") );
 
     //PF_Document* doc = new PF_Document();
     //PF_MdiSubWindow* m = new PF_MdiSubWindow(doc,mdiAreaCAD);
