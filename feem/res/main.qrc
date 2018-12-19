@@ -2,4 +2,7 @@
     <qresource prefix="/main">
         <file>splash.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>translations/feem_zh.qm</file>
+    </qresource>
 </RCC>

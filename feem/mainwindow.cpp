@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ag_manager(new PF_ActionGroupManager(this))
     , actionHandler(new PF_ActionHandler(this))
 {
-    m_ribbonStyle->setAccentColor(OfficeStyle::AccentColorGreen);
+    m_ribbonStyle->setAccentColor(OfficeStyle::AccentColorBlue);
     //创建状态栏
     //QStatusBar* status_bar = statusBar();
 
@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     w_factory.createRibbon();
     w_factory.createMenuFile();
     ribbonBar()->setFrameThemeEnabled();//不显示一条白带
-    ribbonBar()->setTitleBackground(QPixmap(":/res/background.png") );
+    ribbonBar()->setTitleBackground(QPixmap(":/main/splash.png") );
 
     //PF_Document* doc = new PF_Document();
     //PF_MdiSubWindow* m = new PF_MdiSubWindow(doc,mdiAreaCAD);
@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     QTextEdit * m_textEdit = new QTextEdit(this);
 
     setCentralWidget(m_textEdit);
-    m_textEdit->setFocus();
+    //m_textEdit->setFocus();
 
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();
     Qtitan::OfficeStyle::Theme theme = Qtitan::OfficeStyle::Office2010Silver;
@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    else
 //        ribbonBar()->getSystemButton()->setToolButtonStyle(Qt::ToolButtonFollowStyle);
 
-    if (theme != st->getTheme())
+    //if (theme != st->getTheme())
         st->setTheme(theme);
 
     updateActionsTheme();

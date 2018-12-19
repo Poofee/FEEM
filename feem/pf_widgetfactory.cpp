@@ -108,59 +108,10 @@ void PF_WidgetFactory::createMenus(QMenuBar* menu_bar){
 void PF_WidgetFactory::createMenuFile()
 {
     QIcon iconLogo;
-    iconLogo.addPixmap(QPixmap(":/res/file.png"));
     iconLogo.addPixmap(QPixmap(":/shared/res/qtitanlogo32x32.png"));
     if(QAction* actionFile = mainwindow->ribbonBar()->addSystemButton(iconLogo, tr("&File")))
     {
-        actionFile->setToolTip(tr("Click here to see everything you can do with your document"));
-        Qtitan::RibbonSystemPopupBar* popupBar = qobject_cast<Qtitan::RibbonSystemPopupBar*>(actionFile->menu());
 
-        //popupBar->addAction(m_actionFileNew);
-        //popupBar->addAction(m_actionOpenFile);
-        //popupBar->addAction(m_actionSaveFile);
-
-        QAction* actionSaveAsFile = popupBar->addAction(QIcon(":/res/largeSaveAsFile.png"), tr("Save &As..."));
-        actionSaveAsFile->setPriority(QAction::LowPriority);
-        actionSaveAsFile->setToolTip(tr("Save As"));
-        actionSaveAsFile->setStatusTip(tr("Save the active document with a new name"));
-        connect(actionSaveAsFile, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
-
-        popupBar->addSeparator();
-
-
-        QAction* actionPrepare = popupBar->addAction(QIcon(":/res/largePrepare.png"), tr("Pr&epare"));
-        popupBar->addAction(actionPrepare);
-
-        QAction* actionSend = popupBar->addAction(QIcon(":/res/largeSend.png"), tr("Sen&d"));
-        popupBar->addAction(actionSend);
-        if (RibbonPageSystemPopup* pageSystemPopup = popupBar->addPageSystemPopup(tr("Preview and print the document"), actionSend, false))
-        {
-            pageSystemPopup->setMinimumWidth(296);
-            QAction* actionMail = pageSystemPopup->addAction(QIcon(":/res/largeMail.png"), tr("E-Mail"));
-            actionMail->setToolTip(tr("Send the active document by e-mail"));
-            pageSystemPopup->addAction(actionMail);
-
-            QAction* actionIntenetFax = pageSystemPopup->addAction(QIcon(":/res/largeInternetfix.png"), tr("Intenet Fax"));
-            actionIntenetFax->setToolTip(tr("Use an Internet fax service to fax the document"));
-            pageSystemPopup->addAction(actionIntenetFax);
-        }
-
-        popupBar->addSeparator();
-        QAction* actionClose = popupBar->addAction(QIcon(":/res/largeClose.png"), tr("&Close"));
-        actionClose->setShortcut(tr("Ctrl+C"));
-        actionClose->setStatusTip(tr("Exit"));
-        actionClose->setEnabled(false);
-
-        QAction* actionExit =  popupBar->addPopupBarAction(tr("Exit Sample"));
-        connect(actionExit, SIGNAL(triggered()), this, SLOT(close()));
-
-        QAction* actionOption = popupBar->addPopupBarAction(tr("Option"));
-        actionOption->setEnabled(false);
-
-        if (RibbonPageSystemRecentFileList* pageRecentFile = popupBar->addPageRecentFile(tr("Recent Documents")))
-        {
-            Q_UNUSED(pageRecentFile);
-        }
     }
 }
 
