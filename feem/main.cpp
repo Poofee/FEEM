@@ -18,8 +18,6 @@ int main(int argc, char *argv[])
     QTranslator translator;
     if (translator.load("feem_zh.qm",":/translations")) {
         qApp->installTranslator(&translator);
-    }else{
-        return 1;
     }
 
     QSplashScreen* splash = new QSplashScreen;
