@@ -47,19 +47,13 @@ void AboutDialog::show(QWidget* parent, const QString& title, const QString& com
 {
     QString translatedTextAboutQtnCaption;
     translatedTextAboutQtnCaption = QMessageBox::tr(
-        "<h3>Developer Machines Software</h3>"
-        "<p>This program uses %1 version %2.</p>"
+        "<h3>About FEEM</h3>"
         ).arg(component).arg(version);
 
     QString translatedTextAboutQtText;
     translatedTextAboutQtText = QMessageBox::tr(
-        "<p>Qtitan is a Qt/C++ framework for cross-platform application "
-        "development.</p>"
-        "<p>Qtitan provides single-source portability across MS&nbsp;Windows, "
-        "Mac&nbsp;OS&nbsp;X, Linux (all major commercial variants).</p>"
-        "<p>Series of a components Qtitan product of Developer Machines. See <a href=\"http://www.devmachines.com/\">www.devmachines.com</a> "
-        "for more information.</p>"
-        "<p>Copyright (c) 2009-2014 Developer Machines. All Rights Reserved.</p>"
+        "<p>FEEM is FEE's Finite Element ElectroMagnetic software. "
+        "<p>Copyright (c) 2018-2028 Harbin Institute of Technology. All Rights Reserved.</p>"
         );
 
     AboutDialog* msgBox = new AboutDialog(parent);

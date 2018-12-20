@@ -53,9 +53,9 @@ RibbonWindow::RibbonWindow(QWidget* parent)
     RibbonToolTip::setWrapMode(RibbonToolTip::/*AutoWrap*/NativeWrap);
     createOptions();
 
-    //QAction* actionAbout = ribbonBar()->addAction(QIcon(":/shared/res/about.png"), tr("About"), Qt::ToolButtonIconOnly);
-    //actionAbout->setToolTip(tr("Display program<br />information, version number and copyright"));
-    //connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+    QAction* actionAbout = ribbonBar()->addAction(QIcon(":/res/about.png"), tr("About"), Qt::ToolButtonIconOnly);
+    actionAbout->setToolTip(tr("Display program<br />information, version number and copyright"));
+    connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 
     m_actionRibbonMinimize = ribbonBar()->addAction(QIcon(":/res/ribbonMinimize.png"), tr("Minimize the Ribbon"), Qt::ToolButtonIconOnly);
     m_actionRibbonMinimize->setStatusTip(tr("Show only the tab names on the Ribbon"));
@@ -236,7 +236,7 @@ void RibbonWindow::createOptions()
 
 void RibbonWindow::about()
 {
-    Qtitan::AboutDialog::show(this, tr("About Qtitan Ribbon Controls Sample"), 
+    Qtitan::AboutDialog::show(this, tr("About FEEM"),
         tr("QtitanRibbon"), QLatin1String(QTN_VERSION_RIBBON_STR));
 }
 
