@@ -125,6 +125,8 @@ void PF_WidgetFactory::createRibbon()
     if (Qtitan::RibbonPage* pageHome = mainwindow->ribbonBar()->addPage(tr("&Home")))
     {
         createGroupProject(pageHome);
+        createGroupBuildMesh(pageHome);
+        createGroupSolve(pageHome);
         createGroupLayout(pageHome);
         createGroupHelp(pageHome);
     }
@@ -217,9 +219,39 @@ void PF_WidgetFactory::createGroupProject(RibbonPage *page)
 
 void PF_WidgetFactory::createGroupLayout(RibbonPage *page)
 {
-    if(Qtitan::RibbonGroup* groupLayout = page->addGroup(QIcon(":/main/project.png"), tr("Layout")))
+    if(Qtitan::RibbonGroup* groupLayout = page->addGroup(QIcon(":/main/windows.png"), tr("Layout")))
     {
+        QMenu* menuWindows = new QMenu(mainwindow);
+        QAction *m_actionPaste1 = menuWindows->addAction(QIcon(":/res/windows.png"), tr("project"));
+        m_actionPaste1->setPriority(QAction::LowPriority);
+        m_actionPaste1->setShortcut(QKeySequence::Paste);
 
+        menuWindows->addAction(tr("material"));
+        menuWindows->addAction(tr("mesh"));
+        menuWindows->addAction(tr("geometry"));
+        menuWindows->addAction(tr("log"));
+
+        QAction *m_actionProject = groupLayout->addAction(QIcon(":/main/windows.png"),
+            tr("&window manager"), Qt::ToolButtonTextUnderIcon, menuWindows);
+        m_actionProject->setPriority(QAction::LowPriority);
+        //m_actionProject->setShortcut(QKeySequence::Paste);
+        m_actionProject->setToolTip(tr("manage all windows"));
+
+        QMenu* menuLayout = new QMenu(mainwindow);
+        QAction *m_actionPaste = menuWindows->addAction(QIcon(":/main/windows.png"), tr("project"));
+        m_actionPaste->setPriority(QAction::LowPriority);
+        //m_actionPaste1->setShortcut(QKeySequence::Paste);
+
+        menuLayout->addAction(tr("reset all"));
+        menuLayout->addAction(tr("mesh"));
+        menuLayout->addAction(tr("geometry"));
+        menuLayout->addAction(tr("log"));
+
+        QAction *m_actionLayout = groupLayout->addAction(QIcon(":/main/resetlayout.png"),
+            tr("&layout manager"), Qt::ToolButtonTextUnderIcon, menuLayout);
+        m_actionLayout->setPriority(QAction::LowPriority);
+        //m_actionProject->setShortcut(QKeySequence::Paste);
+        m_actionLayout->setToolTip(tr("manage all layouts"));
     }
 }
 
@@ -227,7 +259,7 @@ void PF_WidgetFactory::createGroupHelp(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupHelp = page->addGroup(QIcon(":/main/project.png"), tr("Help")))
     {
-
+        groupHelp->addAction(QIcon(":/main/help.png"), tr("Help"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -243,7 +275,8 @@ void PF_WidgetFactory::createGroupImExportGeometry(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupImExport = page->addGroup(QIcon(":/main/project.png"), tr("Import/Export")))
     {
-
+        groupImExport->addAction(QIcon(":/main/import.png"), tr("Import Geometry"), Qt::ToolButtonTextUnderIcon);
+        groupImExport->addAction(QIcon(":/main/export.png"), tr("Export Geometry"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -251,7 +284,7 @@ void PF_WidgetFactory::createGroupBuildGeometry(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupBuildGeometry = page->addGroup(QIcon(":/main/project.png"), tr("BuildGeometry")))
     {
-
+        groupBuildGeometry->addAction(QIcon(":/main/buildgeometry.png"), tr("Build Geometry"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -259,7 +292,9 @@ void PF_WidgetFactory::createGroupDrawSetting(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupDrawSetting = page->addGroup(QIcon(":/main/project.png"), tr("DrawSetting")))
     {
-
+        groupDrawSetting->addAction(QIcon(":/main/snapgrid.png"), tr("Snap to grid"), Qt::ToolButtonTextBesideIcon);
+        groupDrawSetting->addAction(QIcon(":/main/snapgeometry.png"), tr("Snap to geometry"), Qt::ToolButtonTextBesideIcon);
+        groupDrawSetting->addAction(QIcon(":/main/solid.png"), tr("Solid"), Qt::ToolButtonTextBesideIcon);
     }
 }
 
@@ -267,7 +302,40 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupDraw = page->addGroup(QIcon(":/main/project.png"), tr("Draw")))
     {
+        groupDraw->addAction(QIcon(":/main/dot.png"), tr("point"), Qt::ToolButtonTextUnderIcon);
+        groupDraw->addAction(QIcon(":/main/line.png"), tr("line"), Qt::ToolButtonTextUnderIcon);
 
+        QMenu* menuSquare = new QMenu(mainwindow);
+        QAction *m_actionPaste1 = menuSquare->addAction(QIcon(":/res/windows.png"), tr("project"));
+        m_actionPaste1->setPriority(QAction::LowPriority);
+        m_actionPaste1->setShortcut(QKeySequence::Paste);
+
+        menuSquare->addAction(tr("rectangle"));
+        menuSquare->addAction(tr("square"));
+        menuSquare->addAction(tr("rectangle(center)"));
+        menuSquare->addAction(tr("square(center)"));
+
+        QAction *m_actionProject = groupDraw->addAction(QIcon(":/main/square.png"),
+            tr("&Draw rectangle"), Qt::ToolButtonTextUnderIcon, menuSquare);
+        m_actionProject->setPriority(QAction::LowPriority);
+        //m_actionProject->setShortcut(QKeySequence::Paste);
+        m_actionProject->setToolTip(tr("Draw rectangle"));
+
+        QMenu* menuCircle = new QMenu(mainwindow);
+        QAction *m_actionPaste = menuCircle->addAction(QIcon(":/main/windows.png"), tr("project"));
+        m_actionPaste->setPriority(QAction::LowPriority);
+        //m_actionPaste1->setShortcut(QKeySequence::Paste);
+
+        menuCircle->addAction(tr("circle(corner+radius)"));
+        menuCircle->addAction(tr("circle(3 points)"));
+        menuCircle->addAction(tr("circle(corner+radisu+angle)"));
+        menuCircle->addAction(tr("circle"));
+
+        QAction *m_actionLayout = groupDraw->addAction(QIcon(":/main/circle.png"),
+            tr("&Draw circle"), Qt::ToolButtonTextUnderIcon, menuCircle);
+        m_actionLayout->setPriority(QAction::LowPriority);
+        //m_actionProject->setShortcut(QKeySequence::Paste);
+        m_actionLayout->setToolTip(tr("Draw circle"));
     }
 }
 
@@ -283,7 +351,8 @@ void PF_WidgetFactory::createGroupMaterial(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupMaterial = page->addGroup(QIcon(":/main/project.png"), tr("Material")))
     {
-
+        groupMaterial->addAction(QIcon(":/main/addmaterial.png"), tr("Add material"), Qt::ToolButtonTextUnderIcon);
+        groupMaterial->addAction(QIcon(":/main/materiallibrary.png"), tr("Material library"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -291,7 +360,7 @@ void PF_WidgetFactory::createGroupBuildMesh(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupBuildMesh = page->addGroup(QIcon(":/main/project.png"), tr("BuildMesh")))
     {
-
+        groupBuildMesh->addAction(QIcon(":/main/buildmesh.png"), tr("Build mesh"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -299,7 +368,7 @@ void PF_WidgetFactory::createGroupGenerator(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupGenerator = page->addGroup(QIcon(":/main/project.png"), tr("Mesh Generator")))
     {
-
+        groupGenerator->addAction(QIcon(":/main/meshgenerator.png"), tr("Mesh Generator"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -307,7 +376,8 @@ void PF_WidgetFactory::createGroupImExportMesh(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupImExportMesh = page->addGroup(QIcon(":/main/project.png"), tr("Im/ExportMesh")))
     {
-
+        groupImExportMesh->addAction(QIcon(":/main/import.png"), tr("Import mesh"), Qt::ToolButtonTextUnderIcon);
+        groupImExportMesh->addAction(QIcon(":/main/export.png"), tr("Export mesh"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -315,7 +385,7 @@ void PF_WidgetFactory::createGroupStatics(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupStatics = page->addGroup(QIcon(":/main/project.png"), tr("Statics")))
     {
-
+        groupStatics->addAction(QIcon(":/main/Statics.png"), tr("Statics"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -323,7 +393,7 @@ void PF_WidgetFactory::createGroupClearMesh(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupClearMesh = page->addGroup(QIcon(":/main/project.png"), tr("ClearMesh")))
     {
-
+        groupClearMesh->addAction(QIcon(":/main/clearmesh.png"), tr("Clear mesh"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -331,7 +401,7 @@ void PF_WidgetFactory::createGroupSolve(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupSolve = page->addGroup(QIcon(":/main/project.png"), tr("Solve")))
     {
-
+        groupSolve->addAction(QIcon(":/main/solve.png"), tr("Solve"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -339,7 +409,7 @@ void PF_WidgetFactory::createGroupSolverSetting(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupSolverSetting = page->addGroup(QIcon(":/main/project.png"), tr("SolverSetting")))
     {
-
+        groupSolverSetting->addAction(QIcon(":/main/setting.png"), tr("Solve setting"), Qt::ToolButtonTextUnderIcon);
     }
 }
 
@@ -347,7 +417,7 @@ void PF_WidgetFactory::createGroupClearSolution(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupClearSolution = page->addGroup(QIcon(":/main/project.png"), tr("ClearSolution")))
     {
-
+        groupClearSolution->addAction(QIcon(":/main/clearsolution.png"), tr("Clear solutions"), Qt::ToolButtonTextUnderIcon);
     }
 }
 

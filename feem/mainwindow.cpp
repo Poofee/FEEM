@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     w_factory.createRibbon();
     w_factory.createMenuFile();
     ribbonBar()->setFrameThemeEnabled();//不显示一条白带
-    ribbonBar()->setTitleBackground(QPixmap(":/main/splash.png") );
+    //ribbonBar()->setTitleBackground(QPixmap(":/main/splash.png") );
 
     //PF_Document* doc = new PF_Document();
     //PF_MdiSubWindow* m = new PF_MdiSubWindow(doc,mdiAreaCAD);

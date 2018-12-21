@@ -3,6 +3,28 @@
         <file>splash.png</file>
         <file>project.png</file>
         <file>icon.ico</file>
+        <file>windows.png</file>
+        <file>help.png</file>
+        <file>resetlayout.png</file>
+        <file>export.png</file>
+        <file>import.png</file>
+        <file>buildgeometry.png</file>
+        <file>snapgrid.png</file>
+        <file>snapgeometry.png</file>
+        <file>solid.png</file>
+        <file>circle.png</file>
+        <file>dot.png</file>
+        <file>square.png</file>
+        <file>line.png</file>
+        <file>buildmesh.png</file>
+        <file>Statics.png</file>
+        <file>clearmesh.png</file>
+        <file>meshgenerator.png</file>
+        <file>addmaterial.png</file>
+        <file>materiallibrary.png</file>
+        <file>solve.png</file>
+        <file>setting.png</file>
+        <file>clearsolution.png</file>
     </qresource>
     <qresource prefix="/">
         <file>translations/feem_zh.qm</file>
