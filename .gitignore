@@ -11,3 +11,5 @@
 *.filters
 *.vcxproj
 *.suo
+*.sln
+/bin

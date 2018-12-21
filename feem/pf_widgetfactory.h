@@ -35,6 +35,8 @@ public:
     void createStatusBar();
     //Home
     void createGroupProject(Qtitan::RibbonPage* page);
+    void createGroupLayout(Qtitan::RibbonPage* page);
+    void createGroupHelp(Qtitan::RibbonPage* page);
     //definitions
     void createGroupVariable(Qtitan::RibbonPage* page);
     //geometry

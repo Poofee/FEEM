@@ -1,7 +1,7 @@
 #include "pf_widgetfactory.h"
 #include "mainwindow.h"
 #include "pf_actionhandler.h"
-
+#include <QApplication>
 #include <QMenu>
 #include <QMenuBar>
 #include <QActionGroup>
@@ -108,7 +108,7 @@ void PF_WidgetFactory::createMenus(QMenuBar* menu_bar){
 void PF_WidgetFactory::createMenuFile()
 {
     QIcon iconLogo;
-    iconLogo.addPixmap(QPixmap(":/shared/res/qtitanlogo32x32.png"));
+    iconLogo.addPixmap(QPixmap(":/res/qtitanlogo32x32.png"));
     if(QAction* actionFile = mainwindow->ribbonBar()->addSystemButton(iconLogo, tr("&File")))
     {
 
@@ -125,6 +125,8 @@ void PF_WidgetFactory::createRibbon()
     if (Qtitan::RibbonPage* pageHome = mainwindow->ribbonBar()->addPage(tr("&Home")))
     {
         createGroupProject(pageHome);
+        createGroupLayout(pageHome);
+        createGroupHelp(pageHome);
     }
 
     if (Qtitan::RibbonPage* pageDefinitions = mainwindow->ribbonBar()->addPage(tr("&Definitions")))
@@ -175,85 +177,184 @@ void PF_WidgetFactory::createStatusBar()
 
 void PF_WidgetFactory::createGroupProject(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupProject = page->addGroup(QIcon(":/main/project.png"), tr("Project")))
+    {
+        //groupProject->setOptionButtonVisible();
+        //QAction* act = groupProject->optionButtonAction();
+        //act->setText(tr("Clipboard"));
+        //act->setIcon(QIcon(":/res/clipboardToolTip.png"));
+        //act->setToolTip(tr("Show the Office clipboard Task Pane"));
+        //act->setStatusTip(tr("Show the Office clipboard Task Pane"));
+        //connect(act, SIGNAL(triggered()), this, SLOT(optionClipboard()));
 
+        QMenu* newPorject = new QMenu(mainwindow);
+        QAction *m_actionPaste1 = newPorject->addAction(QIcon(":/res/smallpaste.png"), tr("2D"));
+        m_actionPaste1->setPriority(QAction::LowPriority);
+        m_actionPaste1->setShortcut(QKeySequence::Paste);
+
+        newPorject->addAction(tr("2D Axisymmetric"));
+
+        QAction *m_actionProject = groupProject->addAction(QIcon(":/main/project.png"),
+            tr("&New Project"), Qt::ToolButtonTextUnderIcon, newPorject);
+        m_actionProject->setPriority(QAction::LowPriority);
+        m_actionProject->setShortcut(QKeySequence::Paste);
+        m_actionProject->setToolTip(tr("Create new project."));
+
+
+        //QAction *m_actionCut = groupProject->addAction(QIcon(":/res/smallcut.png"),
+        //    tr("&Cut"), Qt::ToolButtonTextBesideIcon);
+        //m_actionCut->setShortcut(QKeySequence::Cut);
+        //m_actionCut->setToolTip(tr("Cut the selection and put it on the Clipboard"));
+
+        //QAction *m_actionCopy = groupProject->addAction(QIcon(":/res/smallcopy.png"),
+        //    tr("&Copy"), Qt::ToolButtonTextBesideIcon);
+        //m_actionCopy->setShortcut(QKeySequence::Copy);
+
+        //QAction *m_actionFormatPointerAction = groupProject->addAction(QIcon(":/res/smallformatpainter.png"),
+        //    tr("F&ormat Pointer"), Qt::ToolButtonTextBesideIcon);
+    }
+}
+
+void PF_WidgetFactory::createGroupLayout(RibbonPage *page)
+{
+    if(Qtitan::RibbonGroup* groupLayout = page->addGroup(QIcon(":/main/project.png"), tr("Layout")))
+    {
+
+    }
+}
+
+void PF_WidgetFactory::createGroupHelp(RibbonPage *page)
+{
+    if(Qtitan::RibbonGroup* groupHelp = page->addGroup(QIcon(":/main/project.png"), tr("Help")))
+    {
+
+    }
 }
 
 void PF_WidgetFactory::createGroupVariable(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupVariable = page->addGroup(QIcon(":/main/project.png"), tr("Variable")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupImExportGeometry(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupImExport = page->addGroup(QIcon(":/main/project.png"), tr("Import/Export")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupBuildGeometry(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupBuildGeometry = page->addGroup(QIcon(":/main/project.png"), tr("BuildGeometry")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupDrawSetting(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupDrawSetting = page->addGroup(QIcon(":/main/project.png"), tr("DrawSetting")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupDraw = page->addGroup(QIcon(":/main/project.png"), tr("Draw")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupDrawOperation(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupDrawOperation = page->addGroup(QIcon(":/main/project.png"), tr("DrawOperation")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupMaterial(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupMaterial = page->addGroup(QIcon(":/main/project.png"), tr("Material")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupBuildMesh(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupBuildMesh = page->addGroup(QIcon(":/main/project.png"), tr("BuildMesh")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupGenerator(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupGenerator = page->addGroup(QIcon(":/main/project.png"), tr("Mesh Generator")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupImExportMesh(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupImExportMesh = page->addGroup(QIcon(":/main/project.png"), tr("Im/ExportMesh")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupStatics(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupStatics = page->addGroup(QIcon(":/main/project.png"), tr("Statics")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupClearMesh(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupClearMesh = page->addGroup(QIcon(":/main/project.png"), tr("ClearMesh")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupSolve(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupSolve = page->addGroup(QIcon(":/main/project.png"), tr("Solve")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupSolverSetting(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupSolverSetting = page->addGroup(QIcon(":/main/project.png"), tr("SolverSetting")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupClearSolution(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupClearSolution = page->addGroup(QIcon(":/main/project.png"), tr("ClearSolution")))
+    {
 
+    }
 }
 
 void PF_WidgetFactory::createGroupPlot(RibbonPage *page)
 {
+    if(Qtitan::RibbonGroup* groupPlot = page->addGroup(QIcon(":/main/project.png"), tr("Plot")))
+    {
 
+    }
 }

@@ -13,6 +13,7 @@ QT +=  printsupport gui-private
 TARGET = feem
 TEMPLATE = app
 
+
 include($$PWD/../qtribbon/ribbonsample/qtitanribbon.pri)
 
 
@@ -32,6 +33,8 @@ INCLUDEPATH += \
 
 RESOURCES += \
     ./res/main.qrc
+
+RC_FILE = ./res/icon.rc
 
 HEADERS += \
     ./mainwindow.h \
@@ -89,10 +92,10 @@ SOURCES += \
     ./entity/pf_point.cpp \
     ./entity/pf_line.cpp
 
-TRANSLATIONS = $$PWD/res/translations/feem_en.ts \
-                $$PWD/res/translations/feem_zh.ts \
+
 
 include($$PWD/../qtribbon/ribbonsample/shared/aboutdialog.pri)
 include($$PWD/../qtribbon/ribbonsample/shared/ribbonwindow.pri)
 
-DISTFILES +=
+DISTFILES += \
+    res/icon.rc
