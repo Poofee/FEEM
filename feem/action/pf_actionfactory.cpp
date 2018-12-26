@@ -103,11 +103,13 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	a_map["SelectAll"] = action;
 
 	action = new QAction(tr("DrawPoint"), agm->file);
+    action->setIcon(QIcon(":/main/dot.png"));
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawPoint()));
 	action->setObjectName("DrawPoint");
 	a_map["DrawPoint"] = action;
 
 	action = new QAction(tr("DrawLine"), agm->file);
+    action->setIcon(QIcon(":/main/line.png"));
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawLine()));
 	action->setObjectName("DrawLine");
 	a_map["DrawLine"] = action;

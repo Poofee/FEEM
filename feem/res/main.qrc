@@ -25,6 +25,17 @@
         <file>solve.png</file>
         <file>setting.png</file>
         <file>clearsolution.png</file>
+        <file>point.svg</file>
+        <file>line.svg</file>
+        <file>face.svg</file>
+        <file>project.svg</file>
+        <file>definition.svg</file>
+        <file>geometry.svg</file>
+        <file>mesh.svg</file>
+        <file>geoentity.svg</file>
+        <file>material.svg</file>
+        <file>post.svg</file>
+        <file>solver.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>translations/feem_zh.qm</file>

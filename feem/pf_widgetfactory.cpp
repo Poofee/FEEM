@@ -192,14 +192,14 @@ void PF_WidgetFactory::createGroupProject(RibbonPage *page)
         QMenu* newPorject = new QMenu(mainwindow);
         QAction *m_actionPaste1 = newPorject->addAction(QIcon(":/res/smallpaste.png"), tr("2D"));
         m_actionPaste1->setPriority(QAction::LowPriority);
-        m_actionPaste1->setShortcut(QKeySequence::Paste);
+        //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
         newPorject->addAction(tr("2D Axisymmetric"));
 
         QAction *m_actionProject = groupProject->addAction(QIcon(":/main/project.png"),
             tr("&New Project"), Qt::ToolButtonTextUnderIcon, newPorject);
         m_actionProject->setPriority(QAction::LowPriority);
-        m_actionProject->setShortcut(QKeySequence::Paste);
+        //m_actionProject->setShortcut(QKeySequence::Paste);
         m_actionProject->setToolTip(tr("Create new project."));
 
 
@@ -222,9 +222,9 @@ void PF_WidgetFactory::createGroupLayout(RibbonPage *page)
     if(Qtitan::RibbonGroup* groupLayout = page->addGroup(QIcon(":/main/windows.png"), tr("Layout")))
     {
         QMenu* menuWindows = new QMenu(mainwindow);
-        QAction *m_actionPaste1 = menuWindows->addAction(QIcon(":/res/windows.png"), tr("project"));
-        m_actionPaste1->setPriority(QAction::LowPriority);
-        m_actionPaste1->setShortcut(QKeySequence::Paste);
+        //QAction *m_actionPaste1 = menuWindows->addAction(QIcon(":/res/windows.png"), tr("project"));
+        //m_actionPaste1->setPriority(QAction::LowPriority);
+        //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
         menuWindows->addAction(tr("material"));
         menuWindows->addAction(tr("mesh"));
@@ -238,8 +238,8 @@ void PF_WidgetFactory::createGroupLayout(RibbonPage *page)
         m_actionProject->setToolTip(tr("manage all windows"));
 
         QMenu* menuLayout = new QMenu(mainwindow);
-        QAction *m_actionPaste = menuWindows->addAction(QIcon(":/main/windows.png"), tr("project"));
-        m_actionPaste->setPriority(QAction::LowPriority);
+        //QAction *m_actionPaste = menuWindows->addAction(QIcon(":/main/windows.png"), tr("project"));
+        //m_actionPaste->setPriority(QAction::LowPriority);
         //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
         menuLayout->addAction(tr("reset all"));
@@ -302,13 +302,10 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupDraw = page->addGroup(QIcon(":/main/project.png"), tr("Draw")))
     {
-        groupDraw->addAction(QIcon(":/main/dot.png"), tr("point"), Qt::ToolButtonTextUnderIcon);
-        groupDraw->addAction(QIcon(":/main/line.png"), tr("line"), Qt::ToolButtonTextUnderIcon);
+        groupDraw->addAction(a_map["DrawPoint"], Qt::ToolButtonTextUnderIcon);
+        groupDraw->addAction(a_map["DrawLine"], Qt::ToolButtonTextUnderIcon);
 
         QMenu* menuSquare = new QMenu(mainwindow);
-        QAction *m_actionPaste1 = menuSquare->addAction(QIcon(":/res/windows.png"), tr("project"));
-        m_actionPaste1->setPriority(QAction::LowPriority);
-        m_actionPaste1->setShortcut(QKeySequence::Paste);
 
         menuSquare->addAction(tr("rectangle"));
         menuSquare->addAction(tr("square"));
@@ -322,8 +319,8 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
         m_actionProject->setToolTip(tr("Draw rectangle"));
 
         QMenu* menuCircle = new QMenu(mainwindow);
-        QAction *m_actionPaste = menuCircle->addAction(QIcon(":/main/windows.png"), tr("project"));
-        m_actionPaste->setPriority(QAction::LowPriority);
+        //QAction *m_actionPaste = menuCircle->addAction(QIcon(":/main/windows.png"), tr("project"));
+        //m_actionPaste->setPriority(QAction::LowPriority);
         //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
         menuCircle->addAction(tr("circle(corner+radius)"));
@@ -343,7 +340,8 @@ void PF_WidgetFactory::createGroupDrawOperation(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupDrawOperation = page->addGroup(QIcon(":/main/project.png"), tr("DrawOperation")))
     {
-
+        groupDrawOperation->addAction(QIcon(":/main/dot.png"), tr("point"), Qt::ToolButtonTextUnderIcon);
+        groupDrawOperation->addAction(QIcon(":/main/line.png"), tr("line"), Qt::ToolButtonTextUnderIcon);
     }
 }
 

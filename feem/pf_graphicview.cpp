@@ -40,8 +40,9 @@ void PF_GraphicView::paintEvent(QPaintEvent *e){
     getPixmapForView(&PixmapLayer1);
     getPixmapForView(&PixmapLayer2);
     getPixmapForView(&PixmapLayer3);
-    PixmapLayer1->fill(QColor(250,250,250,80));
+    PixmapLayer1->fill(QColor(120,250,250,80));
 
+    //draw grid
     QPainter painter1(PixmapLayer1);
     painter1.setPen(QColor(0,0,0));
     drawLayer1(&painter1);

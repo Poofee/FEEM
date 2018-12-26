@@ -11,6 +11,7 @@ class QMdiSubWindow;
 class PF_ActionHandler;
 class PF_WidgetFactory;
 class PF_ActionGroupManager;
+class FlexWidget;
 
 class MainWindow : public RibbonWindow
 {
@@ -20,8 +21,14 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void openView_N(int n);
+    void fillSolutionExplorer(QWidget * w);
+    void createTree(QWidget * w);
+    void createTable(QWidget * w);
+
     QMap<QString, QAction*> a_map;//动作列表
     PF_ActionGroupManager* ag_manager;
+    FlexWidget* content;
 
 public slots:
     void slotFileOpen();
