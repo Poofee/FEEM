@@ -49,9 +49,12 @@ void PF_GraphicView::paintEvent(QPaintEvent *e){
     painter1.end();
 
     PixmapLayer2->fill(Qt::transparent);
-    QPainter painter2(this);
+    QPainter painter2(PixmapLayer2);
     painter2.setRenderHint(QPainter::HighQualityAntialiasing, true);
-    painter2.setPen(QColor(0,0,0));
+    QPen pen1 = QPen(QColor(0,0,0));
+    pen1.setWidth(2);
+    painter2.setPen(pen1);
+
     drawEntityLayer(&painter2);
     painter2.end();
 
@@ -60,9 +63,11 @@ void PF_GraphicView::paintEvent(QPaintEvent *e){
     {
         qDebug()<<"PF_GraphicView::paintEvent RedrawOverlay";
 
-        QPainter painter3(this);
+        QPainter painter3(PixmapLayer3);
         painter3.setRenderHint(QPainter::HighQualityAntialiasing,true);
-        painter3.setPen(QColor(0,0,0));
+        QPen pen1 = QPen(QColor(0,0,0));
+        pen1.setWidth(2);
+        painter3.setPen(pen1);
         drawLayer3(&painter3);
         painter3.end();
     }
@@ -183,7 +188,57 @@ PF_EntityContainer *PF_GraphicView::getOverlayContainer(PF::OverlayGraphics posi
 
 //绘制坐标轴和网格
 void PF_GraphicView::drawLayer1(QPainter * painter){
+    int numgridw = 10;
+    int numgridh = 5;
+    int leftmargin = 50;
+    int rightmargin = 50;
+    int topmargin = 50;
+    int bottommargin = 50;
+    int spaceW = (width()-rightmargin-leftmargin)/numgridw;
+    int spaceH = (height()-topmargin-bottommargin)/numgridh;
+    int subspaceW = spaceW/5;
+    int subspaceH = spaceH/5;
 
+    //    for(int i = 0+leftmargin; i < this->width()-rightmargin;i+=10){
+    //        for(int j = 0+topmargin; j < this->height()-bottommargin;j+=10){
+    //            painter->drawPoint(i,j);
+    //        }
+    //    }
+    painter->setPen(Qt::gray);
+
+    for(int i = 1; i < numgridw;i+=1){
+        painter->drawLine(QPointF(i*spaceW+leftmargin,0+topmargin),QPointF(i*spaceW+leftmargin,spaceH*numgridh+topmargin));
+    }
+    for(int i = 1; i < numgridh;i+=1){
+        painter->drawLine(QPointF(0+leftmargin,i*spaceH+topmargin),QPointF(spaceW*numgridw+leftmargin,i*spaceH+topmargin));
+    }
+    QPen pen1;
+    pen1.setColor(Qt::black);
+    pen1.setWidth(2);
+    painter->setPen(pen1);
+    painter->drawRect(leftmargin,topmargin,spaceW*numgridw,spaceH*numgridh);
+    int mainTickH = 10;
+    int subTickH = 5;
+    for(int i = 0; i < numgridw;i+=1){
+        pen1.setWidth(2);painter->setPen(pen1);
+        painter->drawLine(QPointF(i*spaceW+leftmargin,0+topmargin),QPointF(i*spaceW+leftmargin,mainTickH+topmargin));
+        painter->drawLine(QPointF(i*spaceW+leftmargin,spaceH*numgridh+topmargin),QPointF(i*spaceW+leftmargin,spaceH*numgridh-mainTickH+topmargin));
+        pen1.setWidth(1);painter->setPen(pen1);
+        for(int j = 1; j <= 4;j++){
+            painter->drawLine(QPointF(i*spaceW+leftmargin+j*subspaceW,0+topmargin),QPointF(i*spaceW+leftmargin+j*subspaceW,subTickH+topmargin));
+            painter->drawLine(QPointF(i*spaceW+leftmargin+j*subspaceW,spaceH*numgridh+topmargin),QPointF(i*spaceW+leftmargin+j*subspaceW,spaceH*numgridh-subTickH+topmargin));
+        }
+    }
+    for(int i = 0; i < numgridh;i+=1){
+        pen1.setWidth(2);painter->setPen(pen1);
+        painter->drawLine(QPointF(0+leftmargin,i*spaceH+topmargin),QPointF(mainTickH+leftmargin,i*spaceH+topmargin));
+        painter->drawLine(QPointF(spaceW*numgridw+leftmargin,i*spaceH+topmargin),QPointF(spaceW*numgridw-mainTickH+leftmargin,i*spaceH+topmargin));
+        pen1.setWidth(1);painter->setPen(pen1);
+        for(int j = 1; j <= 4;j++){
+            painter->drawLine(QPointF(0+leftmargin,i*spaceH+topmargin+j*subspaceH),QPointF(subTickH+leftmargin,i*spaceH+topmargin+j*subspaceH));
+            painter->drawLine(QPointF(spaceW*numgridw+leftmargin,i*spaceH+topmargin+j*subspaceH),QPointF(spaceW*numgridw-subTickH+leftmargin,i*spaceH+topmargin+j*subspaceH));
+        }
+    }
 }
 
 void PF_GraphicView::getPixmapForView(QPixmap **pm)

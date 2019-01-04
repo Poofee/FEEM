@@ -45,6 +45,7 @@ public:
     void createGroupDrawSetting(Qtitan::RibbonPage* page);
     void createGroupDraw(Qtitan::RibbonPage* page);
     void createGroupDrawOperation(Qtitan::RibbonPage* page);
+    void createGroupView(Qtitan::RibbonPage* page);
     //materials
     void createGroupMaterial(Qtitan::RibbonPage* page);
     //mesh

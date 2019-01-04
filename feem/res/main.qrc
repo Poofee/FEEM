@@ -36,6 +36,18 @@
         <file>material.svg</file>
         <file>post.svg</file>
         <file>solver.svg</file>
+        <file>delete16x16.png</file>
+        <file>delete32x32.png</file>
+        <file>copy16x16.png</file>
+        <file>copy32x32.png</file>
+        <file>cut16x16.png</file>
+        <file>cut32x32.png</file>
+        <file>paste16x16.png</file>
+        <file>paste32x32.png</file>
+        <file>select16x16.png</file>
+        <file>zoomauto32x32.png</file>
+        <file>zoomin32x32.png</file>
+        <file>zoomout32x32.png</file>
     </qresource>
     <qresource prefix="/">
         <file>translations/feem_zh.qm</file>

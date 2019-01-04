@@ -143,6 +143,7 @@ void PF_WidgetFactory::createRibbon()
         createGroupDrawSetting(pageGeometry);
         createGroupDraw(pageGeometry);
         createGroupDrawOperation(pageGeometry);
+        createGroupView(pageGeometry);
     }
 
     if (Qtitan::RibbonPage* pageMaterials = mainwindow->ribbonBar()->addPage(tr("&Materials")))
@@ -189,15 +190,18 @@ void PF_WidgetFactory::createGroupProject(RibbonPage *page)
         //act->setStatusTip(tr("Show the Office clipboard Task Pane"));
         //connect(act, SIGNAL(triggered()), this, SLOT(optionClipboard()));
 
-        QMenu* newPorject = new QMenu(mainwindow);
-        QAction *m_actionPaste1 = newPorject->addAction(QIcon(":/res/smallpaste.png"), tr("2D"));
+        QMenu* newProject = new QMenu(mainwindow);
+        QAction *m_actionPaste1 = newProject->addAction(QIcon(":/res/smallpaste.png"), tr("2DMagStatic"));
         m_actionPaste1->setPriority(QAction::LowPriority);
         //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
-        newPorject->addAction(tr("2D Axisymmetric"));
+        newProject->addAction(tr("2D Axisymmetric MagStatic"));
+        newProject->addSeparator();
+        newProject->addAction(tr("2D transient magnetic"));
+        newProject->addAction(tr("2D Axisymmetric transient magnetic"));
 
         QAction *m_actionProject = groupProject->addAction(QIcon(":/main/project.png"),
-            tr("&New Project"), Qt::ToolButtonTextUnderIcon, newPorject);
+            tr("&New Project"), Qt::ToolButtonTextUnderIcon, newProject);
         m_actionProject->setPriority(QAction::LowPriority);
         //m_actionProject->setShortcut(QKeySequence::Paste);
         m_actionProject->setToolTip(tr("Create new project."));
@@ -323,7 +327,7 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
         //m_actionPaste->setPriority(QAction::LowPriority);
         //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
-        menuCircle->addAction(tr("circle(corner+radius)"));
+        menuCircle->addAction(a_map["DrawCircle"]);
         menuCircle->addAction(tr("circle(3 points)"));
         menuCircle->addAction(tr("circle(corner+radisu+angle)"));
         menuCircle->addAction(tr("circle"));
@@ -340,8 +344,24 @@ void PF_WidgetFactory::createGroupDrawOperation(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupDrawOperation = page->addGroup(QIcon(":/main/project.png"), tr("DrawOperation")))
     {
-        groupDrawOperation->addAction(QIcon(":/main/dot.png"), tr("point"), Qt::ToolButtonTextUnderIcon);
-        groupDrawOperation->addAction(QIcon(":/main/line.png"), tr("line"), Qt::ToolButtonTextUnderIcon);
+        groupDrawOperation->addAction(QIcon(":/main/select16x16.png"), tr("Select"), Qt::ToolButtonTextBesideIcon);
+        groupDrawOperation->addAction(QIcon(":/main/snapgeometry.png"), tr("Select All"), Qt::ToolButtonTextBesideIcon);
+        groupDrawOperation->addAction(QIcon(":/main/solid.png"), tr("Unselect All"), Qt::ToolButtonTextBesideIcon);
+        groupDrawOperation->addAction(QIcon(":/main/cut32x32.png"), tr("Cut"), Qt::ToolButtonTextUnderIcon);
+        groupDrawOperation->addAction(QIcon(":/main/copy32x32.png"), tr("Copy"), Qt::ToolButtonTextUnderIcon);
+        groupDrawOperation->addAction(QIcon(":/main/paste32x32.png"), tr("Paste"), Qt::ToolButtonTextUnderIcon);
+        groupDrawOperation->addAction(QIcon(":/main/delete32x32.png"), tr("Delete"), Qt::ToolButtonTextUnderIcon);
+    }
+}
+
+void PF_WidgetFactory::createGroupView(RibbonPage *page)
+{
+    if(Qtitan::RibbonGroup* groupView = page->addGroup(QIcon(":/main/project.png"), tr("View")))
+    {
+        groupView->addAction(QIcon(":/main/zoomin32x32.png"), tr("Zoom In"), Qt::ToolButtonTextUnderIcon);
+        groupView->addAction(QIcon(":/main/zoomout32x32.png"), tr("Zoom Out"), Qt::ToolButtonTextUnderIcon);
+        groupView->addAction(QIcon(":/main/zoomauto32x32.png"), tr("Zoom Auto"), Qt::ToolButtonTextUnderIcon);
+
     }
 }
 
