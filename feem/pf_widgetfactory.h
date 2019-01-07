@@ -18,7 +18,7 @@ class PF_ActionHandler;
 
 //2018-01-23
 //by Poofee
-//这个类实现菜单、工具栏的创建
+/**这个类实现菜单、工具栏的创建**/
 class PF_WidgetFactory : public QObject
 {
     Q_OBJECT
@@ -29,8 +29,8 @@ public:
     void createStandardToolbars(PF_ActionHandler* a_handler);
     void createMenus(QMenuBar* menu_bar);
 
-    void createMenuFile();//创建左上角的系统菜单
-    void createQuickAccessBar();//创建顶部的快速访问按钮
+    void createMenuFile();/**创建左上角的系统菜单**/
+    void createQuickAccessBar();/**创建顶部的快速访问按钮**/
     void createRibbon();
     void createStatusBar();
     //Home
@@ -61,7 +61,7 @@ public:
     //results
     void createGroupPlot(Qtitan::RibbonPage* page);
     //
-    QMenu* file_menu;//留出接口，添加recentfile
+    QMenu* file_menu;/**留出接口，添加recentfile**/
 
 signals:
 

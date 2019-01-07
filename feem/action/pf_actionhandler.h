@@ -8,7 +8,7 @@
 
 //2018-01-23
 //by Poofee
-//这个类实现菜单、工具栏的动作
+/**这个类实现菜单、工具栏的动作**/
 class PF_ActionHandler : public QObject
 {
     Q_OBJECT

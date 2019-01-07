@@ -11,7 +11,7 @@ class PF_EntityContainer;
 
 //2018-02-11
 //by Poofee
-//该类用于实现实体的捕捉
+/**该类用于实现实体的捕捉**/
 class PF_Snapper
 {
 public:

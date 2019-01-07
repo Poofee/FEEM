@@ -49,7 +49,7 @@ void PF_ActionDrawLine::trigger()
 void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
 {
     PF_Vector mouse = snapPoint(e);
-    //只有起始点设置好之后才有预览
+    /**只有起始点设置好之后才有预览**/
     if(getStatus() == SetEndpoint && data->startpoint.valid){
         deletePreview();
 

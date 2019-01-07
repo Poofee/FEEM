@@ -46,10 +46,10 @@ void PF_ActionPreviewInterface::trigger()
 
 void PF_ActionPreviewInterface::drawPreview()
 {
-    //获取graphicview中保存preview的entities列表
+    /**获取graphicview中保存preview的entities列表**/
     PF_EntityContainer *ctainer=view->getOverlayContainer(PF::ActionPreviewEntity);
     ctainer->clear();
-    //preview是ctainer中的一个，不能设为自动删除释放
+    /**preview是ctainer中的一个，不能设为自动删除释放**/
     ctainer->setOwner(false); // Little hack for now so we don't delete the preview twice
     ctainer->addEntity(preview);
     view->redraw(PF::RedrawOverlay);

@@ -68,17 +68,17 @@ protected:
 protected:
     QGridLayout* layout;
 
-    QPixmap *PixmapLayer1;//图层1，显示网格
+    QPixmap *PixmapLayer1;/**图层1，显示网格**/
     QPixmap *PixmapLayer2;
     QPixmap *PixmapLayer3;
 
     PF_EventHandler* eventHandler;
 
-    PF_EntityContainer* container;//保存所有实体
+    PF_EntityContainer* container;/**保存所有实体**/
 
     PF::RedrawMethod redrawMethod;
 private:
-    //保存绘图过程当中的实体
+    /**保存绘图过程当中的实体**/
     QMap<int, PF_EntityContainer *> overlayEntities;
 };
 

@@ -10,7 +10,7 @@ class QAction;
 
 //2018-01-23
 //by Poofee
-//这个类实现将动作进行分组
+/**这个类实现将动作进行分组**/
 class PF_ActionGroupManager : public QObject
 {
     Q_OBJECT

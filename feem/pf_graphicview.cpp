@@ -21,8 +21,8 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
         setContainer(doc);
     }
 
-    //鼠标跟踪失效（默认），当鼠标被移动的时候只有在至少一个鼠标按键被按下时，
-    //这个窗口部件才会接收鼠标移动事件。
+    /**鼠标跟踪失效（默认），当鼠标被移动的时候只有在至少一个鼠标按键被按下时，
+    这个窗口部件才会接收鼠标移动事件。**/
     setMouseTracking(true);
 }
 
@@ -186,7 +186,7 @@ PF_EntityContainer *PF_GraphicView::getOverlayContainer(PF::OverlayGraphics posi
     return overlayEntities[position];
 }
 
-//绘制坐标轴和网格
+/**绘制坐标轴和网格**/
 void PF_GraphicView::drawLayer1(QPainter * painter){
     int numgridw = 10;
     int numgridh = 5;

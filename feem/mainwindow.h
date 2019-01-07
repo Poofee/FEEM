@@ -26,7 +26,7 @@ public:
     void createTree(QWidget * w);
     void createTable(QWidget * w);
 
-    QMap<QString, QAction*> a_map;//动作列表
+    QMap<QString, QAction*> a_map;/**动作列表**/
     PF_ActionGroupManager* ag_manager;
     FlexWidget* content;
 

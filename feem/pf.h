@@ -2,7 +2,7 @@
 #define PF_H
 //2018-02-07
 //by Poofee
-//该类定义一些枚举
+/**该类定义一些枚举**/
 
 class PF{
 public:

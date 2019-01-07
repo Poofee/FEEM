@@ -5,7 +5,7 @@
 #include "pf_vector.h"
 //2018-02-11
 //by Poofee
-//实体类，基类
+/**实体类，基类**/
 class QPainter;
 class PF_GraphicView;
 class PF_Vector;

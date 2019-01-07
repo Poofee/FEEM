@@ -13,7 +13,7 @@ PF_Vector::PF_Vector(double vx, double vy, double vz)
 {
 
 }
-//构造一个单位向量
+/**构造一个单位向量**/
 PF_Vector::PF_Vector(double angle)
     :x(cos(angle))
     ,y(sin(angle))
@@ -28,7 +28,7 @@ PF_Vector::PF_Vector(bool valid)
 
 }
 
-//按照角度设为一个单位向量
+/**按照角度设为一个单位向量**/
 void PF_Vector::set(double angle)
 {
     x = cos(angle);

@@ -9,7 +9,7 @@ TARGET      = qtnribbondsgn
 }
 
 QTITANDIR = $$(QTITANDIR)
-include($$QTITANDIR/src/shared/platform.pri)
+include($$PWD/../shared/platform.pri)
 
 DESTDIR = $$PWD/../../../bin
 DESTDIR = $$member(DESTDIR, 0)$$QTITAN_LIB_PREFIX

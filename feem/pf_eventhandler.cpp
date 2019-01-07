@@ -22,7 +22,7 @@ PF_EventHandler::~PF_EventHandler()
 void PF_EventHandler::mousePressEvent(QMouseEvent *e)
 {
     qDebug()<<"PF_EventHandler::mousePressEvent";
-    //当前action未执行完
+    /**当前action未执行完**/
     if(hasAction()){
         currentAction.last()->mousePressEvent(e);
         e->accept();
@@ -43,7 +43,7 @@ void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
     if(hasAction()){
         currentAction.last()->mouseReleaseEvent(e);
 
-        //有的action可能会右键结束，清理一下
+        /**有的action可能会右键结束，清理一下**/
         cleanUp();
         e->accept();
     }else{
@@ -136,7 +136,7 @@ void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
     }
 
     PF_ActionInterface* predecessor = NULL;
-    //处理一下当前运行的action
+    /**处理一下当前运行的action**/
     if(hasAction()){
         predecessor = currentAction.last();
         predecessor->suspend();
@@ -151,7 +151,7 @@ void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
 
     currentAction.push_back(action);
 
-    //初始化新的action
+    /*初始化新的action*/
     action->init();
     if(action->isFinished()==false){
         currentAction.last()->showOptions();
@@ -195,7 +195,7 @@ bool PF_EventHandler::hasAction()
     return false;
 }
 
-//清除掉已经完成的action
+/*清除掉已经完成的action*/
 void PF_EventHandler::cleanUp()
 {
     qDebug()<<"PF_EventHandler::cleanUp";
