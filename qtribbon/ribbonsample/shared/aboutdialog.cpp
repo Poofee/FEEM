@@ -47,19 +47,19 @@ void AboutDialog::show(QWidget* parent, const QString& title, const QString& com
 {
     QString translatedTextAboutQtnCaption;
     translatedTextAboutQtnCaption = QMessageBox::tr(
-        "<h3>About FEEM</h3>"
-        ).arg(component).arg(version);
+        "<h2>About FEEM</h2>"
+        );//.arg(component).arg(version);
 
     QString translatedTextAboutQtText;
     translatedTextAboutQtText = QMessageBox::tr(
-        "<p>FEEM is FEE's Finite Element ElectroMagnetic software. "
+        "<p><b>FEEM</b> is <b>FEE</b>'s <b>F</b>inite <b>E</b>lement <b>E</b>lectro<b>M</b>agnetic software. "
         "<p>Copyright (c) 2018-2028 Harbin Institute of Technology. All Rights Reserved.</p>"
         );
 
     AboutDialog* msgBox = new AboutDialog(parent);
 
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowTitle(title.isEmpty() ? tr("About Developer Machines") : title);
+     msgBox->setWindowTitle(title.isEmpty() ? tr("About Developer Machines") : title);
     msgBox->setText(translatedTextAboutQtnCaption);
     msgBox->setInformativeText(translatedTextAboutQtText);
 

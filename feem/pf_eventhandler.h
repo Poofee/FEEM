@@ -38,7 +38,7 @@ signals:
 public slots:
 private:
     PF_ActionInterface* defaultAction{nullptr};
-    QList<PF_ActionInterface*> currentAction;
+    QList<PF_ActionInterface*> currentAction; /**< TODO: describe */
 };
 
 #endif // PF_EVENTHANDLER_H
