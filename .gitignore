@@ -13,3 +13,4 @@
 *.suo
 *.sln
 /bin
+*.pro.user.*

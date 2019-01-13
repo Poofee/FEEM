@@ -1,3 +1,4 @@
+#include "pf_plot.h"
 #include "pf_graphicview.h"
 
 #include <QPainter>
@@ -9,12 +10,141 @@
 #include "pf_actioninterface.h"
 #include "pf_eventhandler.h"
 
+
+/*! \var QCPAxis *PF_GraphicView::xAxis
+
+  A pointer to the primary x Axis (bottom) of the main axis rect of the plot.
+
+  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
+  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
+  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
+  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
+  default legend is removed due to manipulation of the layout system (e.g. by removing the main
+  axis rect), the corresponding pointers become 0.
+
+  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
+  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
+  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
+  added after the main legend was removed before.
+*/
+
+/*! \var QCPAxis *PF_GraphicView::yAxis
+
+  A pointer to the primary y Axis (left) of the main axis rect of the plot.
+
+  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
+  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
+  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
+  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
+  default legend is removed due to manipulation of the layout system (e.g. by removing the main
+  axis rect), the corresponding pointers become 0.
+
+  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
+  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
+  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
+  added after the main legend was removed before.
+*/
+
+/*! \var QCPAxis *PF_GraphicView::xAxis2
+
+  A pointer to the secondary x Axis (top) of the main axis rect of the plot. Secondary axes are
+  invisible by default. Use QCPAxis::setVisible to change this (or use \ref
+  QCPAxisRect::setupFullAxesBox).
+
+  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
+  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
+  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
+  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
+  default legend is removed due to manipulation of the layout system (e.g. by removing the main
+  axis rect), the corresponding pointers become 0.
+
+  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
+  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
+  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
+  added after the main legend was removed before.
+*/
+
+/*! \var QCPAxis *PF_GraphicView::yAxis2
+
+  A pointer to the secondary y Axis (right) of the main axis rect of the plot. Secondary axes are
+  invisible by default. Use QCPAxis::setVisible to change this (or use \ref
+  QCPAxisRect::setupFullAxesBox).
+
+  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
+  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
+  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
+  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
+  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
+  default legend is removed due to manipulation of the layout system (e.g. by removing the main
+  axis rect), the corresponding pointers become 0.
+
+  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
+  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
+  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
+  added after the main legend was removed before.
+*/
+
+/*! \var QCPLegend *PF_GraphicView::legend
+
+  A pointer to the default legend of the main axis rect. The legend is invisible by default. Use
+  QCPLegend::setVisible to change this.
+
+  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
+  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
+  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
+  layout system\endlink to add multiple legends to the plot, use the layout system interface to
+  access the new legend. For example, legends can be placed inside an axis rect's \ref
+  QCPAxisRect::insetLayout "inset layout", and must then also be accessed via the inset layout. If
+  the default legend is removed due to manipulation of the layout system (e.g. by removing the main
+  axis rect), the corresponding pointer becomes 0.
+
+  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
+  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
+  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
+  added after the main legend was removed before.
+*/
+
+/* end of documentation of public members */
+
+/*!
+  Constructs a PF_GraphicView and sets reasonable default values.
+*/
 PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
-    : QWidget(parent)
-    ,PixmapLayer1(nullptr)
-    ,PixmapLayer2(nullptr)
-    ,PixmapLayer3(nullptr)
-    ,eventHandler(new PF_EventHandler(this))
+    : QWidget(parent),
+    xAxis(nullptr),
+    yAxis(nullptr),
+    xAxis2(nullptr),
+    yAxis2(nullptr),
+    legend(nullptr),
+    eventHandler(new PF_EventHandler(this)),
+    mBufferDevicePixelRatio(1.0), // will be adapted to primary screen below
+    mPlotLayout(nullptr),
+    mAutoAddPlottableToLegend(true),
+    mAntialiasedElements(QCP::aeNone),
+    mNotAntialiasedElements(QCP::aeNone),
+    mInteractions(nullptr),
+    mSelectionTolerance(8),
+    mNoAntialiasingOnDrag(false),
+    mBackgroundBrush(Qt::white, Qt::SolidPattern),
+    mBackgroundScaled(true),
+    mBackgroundScaledMode(Qt::KeepAspectRatioByExpanding),
+    mCurrentLayer(nullptr),
+    mPlottingHints(QCP::phCacheLabels|QCP::phImmediateRefresh),
+    mMultiSelectModifier(Qt::ControlModifier),
+    mSelectionRectMode(QCP::srmNone),
+    mSelectionRect(nullptr),
+    mOpenGl(false),
+    mMouseHasMoved(false),
+    mMouseEventLayerable(nullptr),
+    mMouseSignalLayerable(nullptr),
+    mReplotting(false),
+    mReplotQueued(false),
+    mOpenGlMultisamples(16),
+    mOpenGlAntialiasedElementsBackup(QCP::aeNone),
+    mOpenGlCacheLabelsBackup(true)
 {
     qDebug()<<"PF_GraphicView::PF_GraphicView";
     if(doc){
@@ -24,116 +154,141 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     /**鼠标跟踪失效（默认），当鼠标被移动的时候只有在至少一个鼠标按键被按下时，
     这个窗口部件才会接收鼠标移动事件。**/
     setMouseTracking(true);
+
+
+    setAttribute(Qt::WA_NoMousePropagation);
+    setAttribute(Qt::WA_OpaquePaintEvent);
+    setFocusPolicy(Qt::ClickFocus);
+    setMouseTracking(true);
+    QLocale currentLocale = locale();
+    currentLocale.setNumberOptions(QLocale::OmitGroupSeparator);
+    setLocale(currentLocale);
+#ifdef QCP_DEVICEPIXELRATIO_SUPPORTED
+#  ifdef QCP_DEVICEPIXELRATIO_FLOAT
+    setBufferDevicePixelRatio(QWidget::devicePixelRatioF());
+#  else
+    setBufferDevicePixelRatio(QWidget::devicePixelRatio());
+#  endif
+#endif
+
+    mOpenGlAntialiasedElementsBackup = mAntialiasedElements;
+    mOpenGlCacheLabelsBackup = mPlottingHints.testFlag(QCP::phCacheLabels);
+    // create initial layers:
+    mLayers.append(new QCPLayer(this, QLatin1String("background")));
+    mLayers.append(new QCPLayer(this, QLatin1String("grid")));
+    mLayers.append(new QCPLayer(this, QLatin1String("main")));
+    mLayers.append(new QCPLayer(this, QLatin1String("axes")));
+    mLayers.append(new QCPLayer(this, QLatin1String("legend")));
+    mLayers.append(new QCPLayer(this, QLatin1String("overlay")));
+    updateLayerIndices();
+    setCurrentLayer(QLatin1String("main"));
+    layer(QLatin1String("overlay"))->setMode(QCPLayer::lmBuffered);
+
+    // create initial layout, axis rect and legend:
+    mPlotLayout = new QCPLayoutGrid;
+    mPlotLayout->initializeParentPlot(this);
+    mPlotLayout->setParent(this); // important because if parent is QWidget, QCPLayout::sizeConstraintsChanged will call QWidget::updateGeometry
+    mPlotLayout->setLayer(QLatin1String("main"));
+    QCPAxisRect *defaultAxisRect = new QCPAxisRect(this, true);
+    mPlotLayout->addElement(0, 0, defaultAxisRect);
+    xAxis = defaultAxisRect->axis(QCPAxis::atBottom);
+    yAxis = defaultAxisRect->axis(QCPAxis::atLeft);
+    xAxis2 = defaultAxisRect->axis(QCPAxis::atTop);
+    yAxis2 = defaultAxisRect->axis(QCPAxis::atRight);
+    legend = new QCPLegend;
+    legend->setVisible(false);
+    defaultAxisRect->insetLayout()->addElement(legend, Qt::AlignRight|Qt::AlignTop);
+    defaultAxisRect->insetLayout()->setMargins(QMargins(12, 12, 12, 12));
+
+    defaultAxisRect->setLayer(QLatin1String("background"));
+    xAxis->setLayer(QLatin1String("axes"));
+    yAxis->setLayer(QLatin1String("axes"));
+    xAxis2->setLayer(QLatin1String("axes"));
+    xAxis2->setVisible(true);
+    xAxis2->setTickLabels(false);
+    yAxis2->setLayer(QLatin1String("axes"));
+    yAxis2->setVisible(true);
+    yAxis2->setTickLabels(false);
+    xAxis->grid()->setLayer(QLatin1String("grid"));
+    yAxis->grid()->setLayer(QLatin1String("grid"));
+    xAxis2->grid()->setLayer(QLatin1String("grid"));
+    yAxis2->grid()->setLayer(QLatin1String("grid"));
+    legend->setLayer(QLatin1String("legend"));
+
+    // create selection rect instance:
+    mSelectionRect = new QCPSelectionRect(this);
+    mSelectionRect->setLayer(QLatin1String("overlay"));
+
+    setViewport(rect()); // needs to be called after mPlotLayout has been created
+
+    replot(rpQueuedReplot);
 }
 
 PF_GraphicView::~PF_GraphicView()
 {
-    if(!PixmapLayer1)
-        delete PixmapLayer1;
-    if(!PixmapLayer2)
-        delete PixmapLayer2;
-    if(!PixmapLayer3)
-        delete PixmapLayer3;
-}
+    //clearPlottables();
+    clearItems();
 
-void PF_GraphicView::paintEvent(QPaintEvent *e){
-    getPixmapForView(&PixmapLayer1);
-    getPixmapForView(&PixmapLayer2);
-    getPixmapForView(&PixmapLayer3);
-    PixmapLayer1->fill(QColor(120,250,250,80));
-
-    //draw grid
-    QPainter painter1(PixmapLayer1);
-    painter1.setPen(QColor(0,0,0));
-    drawLayer1(&painter1);
-    painter1.end();
-
-    PixmapLayer2->fill(Qt::transparent);
-    QPainter painter2(PixmapLayer2);
-    painter2.setRenderHint(QPainter::HighQualityAntialiasing, true);
-    QPen pen1 = QPen(QColor(0,0,0));
-    pen1.setWidth(2);
-    painter2.setPen(pen1);
-
-    drawEntityLayer(&painter2);
-    painter2.end();
-
-    PixmapLayer3->fill(Qt::transparent);
-    if (redrawMethod & PF::RedrawOverlay)
+    if (mPlotLayout)
     {
-        qDebug()<<"PF_GraphicView::paintEvent RedrawOverlay";
-
-        QPainter painter3(PixmapLayer3);
-        painter3.setRenderHint(QPainter::HighQualityAntialiasing,true);
-        QPen pen1 = QPen(QColor(0,0,0));
-        pen1.setWidth(2);
-        painter3.setPen(pen1);
-        drawLayer3(&painter3);
-        painter3.end();
+        delete mPlotLayout;
+        mPlotLayout = nullptr;
     }
 
-    QPainter painter(this);
-    painter.drawPixmap(0,0,*PixmapLayer1);
-    painter.drawPixmap(0,0,*PixmapLayer2);
-    painter.drawPixmap(0,0,*PixmapLayer3);
-    painter.end();
-
-    redrawMethod=PF::RedrawNone;
+    mCurrentLayer = nullptr;
+    qDeleteAll(mLayers); // don't use removeLayer, because it would prevent the last layer to be removed
+    mLayers.clear();
 }
 
-void PF_GraphicView::mouseMoveEvent(QMouseEvent *e)
-{
-    e->accept();
+//void PF_GraphicView::paintEvent(QPaintEvent *e){
+//    getPixmapForView(&PixmapLayer1);
+//    getPixmapForView(&PixmapLayer2);
+//    getPixmapForView(&PixmapLayer3);
+//    PixmapLayer1->fill(QColor(120,250,250,80));
 
-    eventHandler->mouseMoveEvent(e);
-}
+//    //draw grid
+//    QPainter painter1(PixmapLayer1);
+//    painter1.setPen(QColor(0,0,0));
+//    drawLayer1(&painter1);
+//    painter1.end();
 
-void PF_GraphicView::mouseDoubleClickEvent(QMouseEvent *e)
-{
-    switch (e->button()) {
-    case Qt::MiddleButton:
-        //zoom action
-        break;
-    case Qt::LeftButton:
+//    PixmapLayer2->fill(Qt::transparent);
+//    QPainter painter2(PixmapLayer2);
+//    painter2.setRenderHint(QPainter::HighQualityAntialiasing, true);
+//    QPen pen1 = QPen(QColor(0,0,0));
+//    pen1.setWidth(2);
+//    painter2.setPen(pen1);
 
-        break;
-    default:
-        break;
-    }
-    e->accept();
-}
+//    drawEntityLayer(&painter2);
+//    painter2.end();
 
-void PF_GraphicView::mouseReleaseEvent(QMouseEvent *e)
-{
-    e->accept();
+//    PixmapLayer3->fill(Qt::transparent);
+//    if (redrawMethod & PF::RedrawOverlay)
+//    {
+//        qDebug()<<"PF_GraphicView::paintEvent RedrawOverlay";
 
-    switch (e->button()) {
-    case Qt::RightButton:
-        //Ctrl+Right-Click
+//        QPainter painter3(PixmapLayer3);
+//        painter3.setRenderHint(QPainter::HighQualityAntialiasing,true);
+//        QPen pen1 = QPen(QColor(0,0,0));
+//        pen1.setWidth(2);
+//        painter3.setPen(pen1);
+//        drawLayer3(&painter3);
+//        painter3.end();
+//    }
 
-        //Shift+Right-Click
+//    QPainter painter(this);
+//    painter.drawPixmap(0,0,*PixmapLayer1);
+//    painter.drawPixmap(0,0,*PixmapLayer2);
+//    painter.drawPixmap(0,0,*PixmapLayer3);
+//    painter.end();
 
-        //Right-Click menu
+//    redrawMethod=PF::RedrawNone;
+//}
 
-        back();
-        break;
-    default:
-        eventHandler->mouseReleaseEvent(e);
-        break;
-    }
-}
-
-void PF_GraphicView::mousePressEvent(QMouseEvent *e)
-{
-    if(e->button() == Qt::MiddleButton){
-        //zoom action
-    }
-    eventHandler->mousePressEvent(e);
-}
 
 void PF_GraphicView::tabletEvent(QTabletEvent *e)
 {
-
+    Q_UNUSED(e)
 }
 
 void PF_GraphicView::leaveEvent(QEvent *)
@@ -156,25 +311,17 @@ void PF_GraphicView::focusOutEvent(QFocusEvent *)
 
 }
 
-void PF_GraphicView::wheelEvent(QWheelEvent *e)
-{
-
-}
 
 void PF_GraphicView::keyPressEvent(QKeyEvent *e)
 {
-
+    Q_UNUSED(e)
 }
 
 void PF_GraphicView::keyReleaseEvent(QKeyEvent *e)
 {
-
+    Q_UNUSED(e)
 }
 
-void PF_GraphicView::resizeEvent(QResizeEvent *e)
-{
-
-}
 
 PF_EntityContainer *PF_GraphicView::getOverlayContainer(PF::OverlayGraphics position)
 {
@@ -339,219 +486,7 @@ void PF_GraphicView::drawOverlay(QPainter *painter)
     }
 }
 
-/*! \var QCPAxis *PF_GraphicView::xAxis
 
-  A pointer to the primary x Axis (bottom) of the main axis rect of the plot.
-
-  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
-  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
-  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
-  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
-  default legend is removed due to manipulation of the layout system (e.g. by removing the main
-  axis rect), the corresponding pointers become 0.
-
-  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
-  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
-  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
-  added after the main legend was removed before.
-*/
-
-/*! \var QCPAxis *PF_GraphicView::yAxis
-
-  A pointer to the primary y Axis (left) of the main axis rect of the plot.
-
-  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
-  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
-  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
-  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
-  default legend is removed due to manipulation of the layout system (e.g. by removing the main
-  axis rect), the corresponding pointers become 0.
-
-  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
-  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
-  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
-  added after the main legend was removed before.
-*/
-
-/*! \var QCPAxis *PF_GraphicView::xAxis2
-
-  A pointer to the secondary x Axis (top) of the main axis rect of the plot. Secondary axes are
-  invisible by default. Use QCPAxis::setVisible to change this (or use \ref
-  QCPAxisRect::setupFullAxesBox).
-
-  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
-  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
-  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
-  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
-  default legend is removed due to manipulation of the layout system (e.g. by removing the main
-  axis rect), the corresponding pointers become 0.
-
-  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
-  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
-  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
-  added after the main legend was removed before.
-*/
-
-/*! \var QCPAxis *PF_GraphicView::yAxis2
-
-  A pointer to the secondary y Axis (right) of the main axis rect of the plot. Secondary axes are
-  invisible by default. Use QCPAxis::setVisible to change this (or use \ref
-  QCPAxisRect::setupFullAxesBox).
-
-  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
-  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
-  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple axis rects or multiple axes to one side, use the \ref
-  QCPAxisRect::axis interface to access the new axes. If one of the four default axes or the
-  default legend is removed due to manipulation of the layout system (e.g. by removing the main
-  axis rect), the corresponding pointers become 0.
-
-  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
-  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
-  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
-  added after the main legend was removed before.
-*/
-
-/*! \var QCPLegend *PF_GraphicView::legend
-
-  A pointer to the default legend of the main axis rect. The legend is invisible by default. Use
-  QCPLegend::setVisible to change this.
-
-  PF_GraphicView offers convenient pointers to the axes (\ref xAxis, \ref yAxis, \ref xAxis2, \ref
-  yAxis2) and the \ref legend. They make it very easy working with plots that only have a single
-  axis rect and at most one axis at each axis rect side. If you use \link thelayoutsystem the
-  layout system\endlink to add multiple legends to the plot, use the layout system interface to
-  access the new legend. For example, legends can be placed inside an axis rect's \ref
-  QCPAxisRect::insetLayout "inset layout", and must then also be accessed via the inset layout. If
-  the default legend is removed due to manipulation of the layout system (e.g. by removing the main
-  axis rect), the corresponding pointer becomes 0.
-
-  If an axis convenience pointer is currently zero and a new axis rect or a corresponding axis is
-  added in the place of the main axis rect, PF_GraphicView resets the convenience pointers to the
-  according new axes. Similarly the \ref legend convenience pointer will be reset if a legend is
-  added after the main legend was removed before.
-*/
-
-/* end of documentation of public members */
-
-/*!
-  Constructs a PF_GraphicView and sets reasonable default values.
-*/
-PF_GraphicView::PF_GraphicView(QWidget *parent) :
-    QWidget(parent),
-    xAxis(0),
-    yAxis(0),
-    xAxis2(0),
-    yAxis2(0),
-    legend(0),
-    mBufferDevicePixelRatio(1.0), // will be adapted to primary screen below
-    mPlotLayout(0),
-    mAutoAddPlottableToLegend(true),
-    mAntialiasedElements(QCP::aeNone),
-    mNotAntialiasedElements(QCP::aeNone),
-    mInteractions(0),
-    mSelectionTolerance(8),
-    mNoAntialiasingOnDrag(false),
-    mBackgroundBrush(Qt::white, Qt::SolidPattern),
-    mBackgroundScaled(true),
-    mBackgroundScaledMode(Qt::KeepAspectRatioByExpanding),
-    mCurrentLayer(0),
-    mPlottingHints(QCP::phCacheLabels|QCP::phImmediateRefresh),
-    mMultiSelectModifier(Qt::ControlModifier),
-    mSelectionRectMode(QCP::srmNone),
-    mSelectionRect(0),
-    mOpenGl(false),
-    mMouseHasMoved(false),
-    mMouseEventLayerable(0),
-    mMouseSignalLayerable(0),
-    mReplotting(false),
-    mReplotQueued(false),
-    mOpenGlMultisamples(16),
-    mOpenGlAntialiasedElementsBackup(QCP::aeNone),
-    mOpenGlCacheLabelsBackup(true)
-{
-    setAttribute(Qt::WA_NoMousePropagation);
-    setAttribute(Qt::WA_OpaquePaintEvent);
-    setFocusPolicy(Qt::ClickFocus);
-    setMouseTracking(true);
-    QLocale currentLocale = locale();
-    currentLocale.setNumberOptions(QLocale::OmitGroupSeparator);
-    setLocale(currentLocale);
-#ifdef QCP_DEVICEPIXELRATIO_SUPPORTED
-#  ifdef QCP_DEVICEPIXELRATIO_FLOAT
-    setBufferDevicePixelRatio(QWidget::devicePixelRatioF());
-#  else
-    setBufferDevicePixelRatio(QWidget::devicePixelRatio());
-#  endif
-#endif
-
-    mOpenGlAntialiasedElementsBackup = mAntialiasedElements;
-    mOpenGlCacheLabelsBackup = mPlottingHints.testFlag(QCP::phCacheLabels);
-    // create initial layers:
-    mLayers.append(new QCPLayer(this, QLatin1String("background")));
-    mLayers.append(new QCPLayer(this, QLatin1String("grid")));
-    mLayers.append(new QCPLayer(this, QLatin1String("main")));
-    mLayers.append(new QCPLayer(this, QLatin1String("axes")));
-    mLayers.append(new QCPLayer(this, QLatin1String("legend")));
-    mLayers.append(new QCPLayer(this, QLatin1String("overlay")));
-    updateLayerIndices();
-    setCurrentLayer(QLatin1String("main"));
-    layer(QLatin1String("overlay"))->setMode(QCPLayer::lmBuffered);
-
-    // create initial layout, axis rect and legend:
-    mPlotLayout = new QCPLayoutGrid;
-    mPlotLayout->initializeParentPlot(this);
-    mPlotLayout->setParent(this); // important because if parent is QWidget, QCPLayout::sizeConstraintsChanged will call QWidget::updateGeometry
-    mPlotLayout->setLayer(QLatin1String("main"));
-    QCPAxisRect *defaultAxisRect = new QCPAxisRect(this, true);
-    mPlotLayout->addElement(0, 0, defaultAxisRect);
-    xAxis = defaultAxisRect->axis(QCPAxis::atBottom);
-    yAxis = defaultAxisRect->axis(QCPAxis::atLeft);
-    xAxis2 = defaultAxisRect->axis(QCPAxis::atTop);
-    yAxis2 = defaultAxisRect->axis(QCPAxis::atRight);
-    legend = new QCPLegend;
-    legend->setVisible(false);
-    defaultAxisRect->insetLayout()->addElement(legend, Qt::AlignRight|Qt::AlignTop);
-    defaultAxisRect->insetLayout()->setMargins(QMargins(12, 12, 12, 12));
-
-    defaultAxisRect->setLayer(QLatin1String("background"));
-    xAxis->setLayer(QLatin1String("axes"));
-    yAxis->setLayer(QLatin1String("axes"));
-    xAxis2->setLayer(QLatin1String("axes"));
-    yAxis2->setLayer(QLatin1String("axes"));
-    xAxis->grid()->setLayer(QLatin1String("grid"));
-    yAxis->grid()->setLayer(QLatin1String("grid"));
-    xAxis2->grid()->setLayer(QLatin1String("grid"));
-    yAxis2->grid()->setLayer(QLatin1String("grid"));
-    legend->setLayer(QLatin1String("legend"));
-
-    // create selection rect instance:
-    mSelectionRect = new QCPSelectionRect(this);
-    mSelectionRect->setLayer(QLatin1String("overlay"));
-
-    setViewport(rect()); // needs to be called after mPlotLayout has been created
-
-    replot(rpQueuedReplot);
-}
-
-PF_GraphicView::~PF_GraphicView()
-{
-    clearPlottables();
-    clearItems();
-
-    if (mPlotLayout)
-    {
-        delete mPlotLayout;
-        mPlotLayout = 0;
-    }
-
-    mCurrentLayer = 0;
-    qDeleteAll(mLayers); // don't use removeLayer, because it would prevent the last layer to be removed
-    mLayers.clear();
-}
 
 /*!
   Sets which elements are forcibly drawn antialiased as an \a or combination of QCP::AntialiasedElement.
@@ -1085,17 +1020,17 @@ void PF_GraphicView::setBackgroundScaledMode(Qt::AspectRatioMode mode)
 
   \see plottableCount
 */
-QCPAbstractPlottable *PF_GraphicView::plottable(int index)
-{
-    if (index >= 0 && index < mPlottables.size())
-    {
-        return mPlottables.at(index);
-    } else
-    {
-        qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
-        return 0;
-    }
-}
+//QCPAbstractPlottable *PF_GraphicView::plottable(int index)
+//{
+//    if (index >= 0 && index < mPlottables.size())
+//    {
+//        return mPlottables.at(index);
+//    } else
+//    {
+//        qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
+//        return nullptr;
+//    }
+//}
 
 /*! \overload
 
@@ -1104,14 +1039,14 @@ QCPAbstractPlottable *PF_GraphicView::plottable(int index)
 
   \see plottableCount
 */
-QCPAbstractPlottable *PF_GraphicView::plottable()
-{
-    if (!mPlottables.isEmpty())
-    {
-        return mPlottables.last();
-    } else
-        return 0;
-}
+//QCPAbstractPlottable *PF_GraphicView::plottable()
+//{
+//    if (!mPlottables.isEmpty())
+//    {
+//        return mPlottables.last();
+//    } else
+//        return nullptr;
+//}
 
 /*!
   Removes the specified plottable from the plot and deletes it. If necessary, the corresponding
@@ -1121,39 +1056,39 @@ QCPAbstractPlottable *PF_GraphicView::plottable()
 
   \see clearPlottables
 */
-bool PF_GraphicView::removePlottable(QCPAbstractPlottable *plottable)
-{
-    if (!mPlottables.contains(plottable))
-    {
-        qDebug() << Q_FUNC_INFO << "plottable not in list:" << reinterpret_cast<quintptr>(plottable);
-        return false;
-    }
+//bool PF_GraphicView::removePlottable(QCPAbstractPlottable *plottable)
+//{
+//    if (!mPlottables.contains(plottable))
+//    {
+//        qDebug() << Q_FUNC_INFO << "plottable not in list:" << reinterpret_cast<quintptr>(plottable);
+//        return false;
+//    }
 
-    // remove plottable from legend:
-    plottable->removeFromLegend();
-    // special handling for QCPGraphs to maintain the simple graph interface:
-    if (QCPGraph *graph = qobject_cast<QCPGraph*>(plottable))
-        mGraphs.removeOne(graph);
-    // remove plottable:
-    delete plottable;
-    mPlottables.removeOne(plottable);
-    return true;
-}
+//    // remove plottable from legend:
+//    plottable->removeFromLegend();
+//    // special handling for QCPGraphs to maintain the simple graph interface:
+//    if (QCPGraph *graph = qobject_cast<QCPGraph*>(plottable))
+//        mGraphs.removeOne(graph);
+//    // remove plottable:
+//    delete plottable;
+//    mPlottables.removeOne(plottable);
+//    return true;
+//}
 
 /*! \overload
 
   Removes and deletes the plottable by its \a index.
 */
-bool PF_GraphicView::removePlottable(int index)
-{
-    if (index >= 0 && index < mPlottables.size())
-        return removePlottable(mPlottables[index]);
-    else
-    {
-        qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
-        return false;
-    }
-}
+//bool PF_GraphicView::removePlottable(int index)
+//{
+//    if (index >= 0 && index < mPlottables.size())
+//        return removePlottable(mPlottables[index]);
+//    else
+//    {
+//        qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
+//        return false;
+//    }
+//}
 
 /*!
   Removes all plottables from the plot and deletes them. Corresponding legend items are also
@@ -1163,23 +1098,23 @@ bool PF_GraphicView::removePlottable(int index)
 
   \see removePlottable
 */
-int PF_GraphicView::clearPlottables()
-{
-    int c = mPlottables.size();
-    for (int i=c-1; i >= 0; --i)
-        removePlottable(mPlottables[i]);
-    return c;
-}
+//int PF_GraphicView::clearPlottables()
+//{
+//    int c = mPlottables.size();
+//    for (int i=c-1; i >= 0; --i)
+//        removePlottable(mPlottables[i]);
+//    return c;
+//}
 
 /*!
   Returns the number of currently existing plottables in the plot
 
   \see plottable
 */
-int PF_GraphicView::plottableCount() const
-{
-    return mPlottables.size();
-}
+//int PF_GraphicView::plottableCount() const
+//{
+//    return mPlottables.size();
+//}
 
 /*!
   Returns a list of the selected plottables. If no plottables are currently selected, the list is empty.
@@ -1188,16 +1123,16 @@ int PF_GraphicView::plottableCount() const
 
   \see setInteractions, QCPAbstractPlottable::setSelectable, QCPAbstractPlottable::setSelection
 */
-QList<QCPAbstractPlottable*> PF_GraphicView::selectedPlottables() const
-{
-    QList<QCPAbstractPlottable*> result;
-    foreach (QCPAbstractPlottable *plottable, mPlottables)
-    {
-        if (plottable->selected())
-            result.append(plottable);
-    }
-    return result;
-}
+//QList<QCPAbstractPlottable*> PF_GraphicView::selectedPlottables() const
+//{
+//    QList<QCPAbstractPlottable*> result;
+//    foreach (QCPAbstractPlottable *plottable, mPlottables)
+//    {
+//        if (plottable->selected())
+//            result.append(plottable);
+//    }
+//    return result;
+//}
 
 /*!
   Returns the plottable at the pixel position \a pos. Plottables that only consist of single lines
@@ -1211,36 +1146,36 @@ QList<QCPAbstractPlottable*> PF_GraphicView::selectedPlottables() const
 
   \see itemAt, layoutElementAt
 */
-QCPAbstractPlottable *PF_GraphicView::plottableAt(const QPointF &pos, bool onlySelectable) const
-{
-    QCPAbstractPlottable *resultPlottable = 0;
-    double resultDistance = mSelectionTolerance; // only regard clicks with distances smaller than mSelectionTolerance as selections, so initialize with that value
+//QCPAbstractPlottable *PF_GraphicView::plottableAt(const QPointF &pos, bool onlySelectable) const
+//{
+//    QCPAbstractPlottable *resultPlottable = nullptr;
+//    double resultDistance = mSelectionTolerance; // only regard clicks with distances smaller than mSelectionTolerance as selections, so initialize with that value
 
-    foreach (QCPAbstractPlottable *plottable, mPlottables)
-    {
-        if (onlySelectable && !plottable->selectable()) // we could have also passed onlySelectable to the selectTest function, but checking here is faster, because we have access to QCPabstractPlottable::selectable
-            continue;
-        if ((plottable->keyAxis()->axisRect()->rect() & plottable->valueAxis()->axisRect()->rect()).contains(pos.toPoint())) // only consider clicks inside the rect that is spanned by the plottable's key/value axes
-        {
-            double currentDistance = plottable->selectTest(pos, false);
-            if (currentDistance >= 0 && currentDistance < resultDistance)
-            {
-                resultPlottable = plottable;
-                resultDistance = currentDistance;
-            }
-        }
-    }
+//    foreach (QCPAbstractPlottable *plottable, mPlottables)
+//    {
+//        if (onlySelectable && !plottable->selectable()) // we could have also passed onlySelectable to the selectTest function, but checking here is faster, because we have access to QCPabstractPlottable::selectable
+//            continue;
+//        if ((plottable->keyAxis()->axisRect()->rect() & plottable->valueAxis()->axisRect()->rect()).contains(pos.toPoint())) // only consider clicks inside the rect that is spanned by the plottable's key/value axes
+//        {
+//            double currentDistance = plottable->selectTest(pos, false);
+//            if (currentDistance >= 0 && currentDistance < resultDistance)
+//            {
+//                resultPlottable = plottable;
+//                resultDistance = currentDistance;
+//            }
+//        }
+//    }
 
-    return resultPlottable;
-}
+//    return resultPlottable;
+//}
 
 /*!
   Returns whether this PF_GraphicView instance contains the \a plottable.
 */
-bool PF_GraphicView::hasPlottable(QCPAbstractPlottable *plottable) const
-{
-    return mPlottables.contains(plottable);
-}
+//bool PF_GraphicView::hasPlottable(QCPAbstractPlottable *plottable) const
+//{
+//    return mPlottables.contains(plottable);
+//}
 
 /*!
   Returns the graph with \a index. If the index is invalid, returns 0.
@@ -1250,17 +1185,17 @@ bool PF_GraphicView::hasPlottable(QCPAbstractPlottable *plottable) const
 
   \see graphCount, addGraph
 */
-QCPGraph *PF_GraphicView::graph(int index) const
-{
-    if (index >= 0 && index < mGraphs.size())
-    {
-        return mGraphs.at(index);
-    } else
-    {
-        qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
-        return 0;
-    }
-}
+//QCPGraph *PF_GraphicView::graph(int index) const
+//{
+//    if (index >= 0 && index < mGraphs.size())
+//    {
+//        return mGraphs.at(index);
+//    } else
+//    {
+//        qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
+//        return nullptr;
+//    }
+//}
 
 /*! \overload
 
@@ -1269,14 +1204,14 @@ QCPGraph *PF_GraphicView::graph(int index) const
 
   \see graphCount, addGraph
 */
-QCPGraph *PF_GraphicView::graph() const
-{
-    if (!mGraphs.isEmpty())
-    {
-        return mGraphs.last();
-    } else
-        return 0;
-}
+//QCPGraph *PF_GraphicView::graph() const
+//{
+//    if (!mGraphs.isEmpty())
+//    {
+//        return mGraphs.last();
+//    } else
+//        return nullptr;
+//}
 
 /*!
   Creates a new graph inside the plot. If \a keyAxis and \a valueAxis are left unspecified (0), the
@@ -1290,25 +1225,25 @@ QCPGraph *PF_GraphicView::graph() const
 
   \see graph, graphCount, removeGraph, clearGraphs
 */
-QCPGraph *PF_GraphicView::addGraph(QCPAxis *keyAxis, QCPAxis *valueAxis)
-{
-    if (!keyAxis) keyAxis = xAxis;
-    if (!valueAxis) valueAxis = yAxis;
-    if (!keyAxis || !valueAxis)
-    {
-        qDebug() << Q_FUNC_INFO << "can't use default PF_GraphicView xAxis or yAxis, because at least one is invalid (has been deleted)";
-        return 0;
-    }
-    if (keyAxis->parentPlot() != this || valueAxis->parentPlot() != this)
-    {
-        qDebug() << Q_FUNC_INFO << "passed keyAxis or valueAxis doesn't have this PF_GraphicView as parent";
-        return 0;
-    }
+//QCPGraph *PF_GraphicView::addGraph(QCPAxis *keyAxis, QCPAxis *valueAxis)
+//{
+//    if (!keyAxis) keyAxis = xAxis;
+//    if (!valueAxis) valueAxis = yAxis;
+//    if (!keyAxis || !valueAxis)
+//    {
+//        qDebug() << Q_FUNC_INFO << "can't use default PF_GraphicView xAxis or yAxis, because at least one is invalid (has been deleted)";
+//        return nullptr;
+//    }
+//    if (keyAxis->parentPlot() != this || valueAxis->parentPlot() != this)
+//    {
+//        qDebug() << Q_FUNC_INFO << "passed keyAxis or valueAxis doesn't have this PF_GraphicView as parent";
+//        return nullptr;
+//    }
 
-    QCPGraph *newGraph = new QCPGraph(keyAxis, valueAxis);
-    newGraph->setName(QLatin1String("Graph ")+QString::number(mGraphs.size()));
-    return newGraph;
-}
+//    QCPGraph *newGraph = new QCPGraph(keyAxis, valueAxis);
+//    newGraph->setName(QLatin1String("Graph ")+QString::number(mGraphs.size()));
+//    return newGraph;
+//}
 
 /*!
   Removes the specified \a graph from the plot and deletes it. If necessary, the corresponding
@@ -1320,22 +1255,22 @@ QCPGraph *PF_GraphicView::addGraph(QCPAxis *keyAxis, QCPAxis *valueAxis)
 
   \see clearGraphs
 */
-bool PF_GraphicView::removeGraph(QCPGraph *graph)
-{
-    return removePlottable(graph);
-}
+//bool PF_GraphicView::removeGraph(QCPGraph *graph)
+//{
+//    return removePlottable(graph);
+//}
 
 /*! \overload
 
   Removes and deletes the graph by its \a index.
 */
-bool PF_GraphicView::removeGraph(int index)
-{
-    if (index >= 0 && index < mGraphs.size())
-        return removeGraph(mGraphs[index]);
-    else
-        return false;
-}
+//bool PF_GraphicView::removeGraph(int index)
+//{
+//    if (index >= 0 && index < mGraphs.size())
+//        return removeGraph(mGraphs[index]);
+//    else
+//        return false;
+//}
 
 /*!
   Removes all graphs from the plot and deletes them. Corresponding legend items are also removed
@@ -1345,23 +1280,23 @@ bool PF_GraphicView::removeGraph(int index)
 
   \see removeGraph
 */
-int PF_GraphicView::clearGraphs()
-{
-    int c = mGraphs.size();
-    for (int i=c-1; i >= 0; --i)
-        removeGraph(mGraphs[i]);
-    return c;
-}
+//int PF_GraphicView::clearGraphs()
+//{
+//    int c = mGraphs.size();
+//    for (int i=c-1; i >= 0; --i)
+//        removeGraph(mGraphs[i]);
+//    return c;
+//}
 
 /*!
   Returns the number of currently existing graphs in the plot
 
   \see graph, addGraph
 */
-int PF_GraphicView::graphCount() const
-{
-    return mGraphs.size();
-}
+//int PF_GraphicView::graphCount() const
+//{
+//    return mGraphs.size();
+//}
 
 /*!
   Returns a list of the selected graphs. If no graphs are currently selected, the list is empty.
@@ -1371,16 +1306,16 @@ int PF_GraphicView::graphCount() const
 
   \see setInteractions, selectedPlottables, QCPAbstractPlottable::setSelectable, QCPAbstractPlottable::setSelection
 */
-QList<QCPGraph*> PF_GraphicView::selectedGraphs() const
-{
-    QList<QCPGraph*> result;
-    foreach (QCPGraph *graph, mGraphs)
-    {
-        if (graph->selected())
-            result.append(graph);
-    }
-    return result;
-}
+//QList<QCPGraph*> PF_GraphicView::selectedGraphs() const
+//{
+//    QList<QCPGraph*> result;
+//    foreach (QCPGraph *graph, mGraphs)
+//    {
+//        if (graph->selected())
+//            result.append(graph);
+//    }
+//    return result;
+//}
 
 /*!
   Returns the item with \a index. If the index is invalid, returns 0.
@@ -1398,7 +1333,7 @@ QCPAbstractItem *PF_GraphicView::item(int index) const
     } else
     {
         qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
-        return 0;
+        return nullptr;
     }
 }
 
@@ -1415,7 +1350,7 @@ QCPAbstractItem *PF_GraphicView::item() const
     {
         return mItems.last();
     } else
-        return 0;
+        return nullptr;
 }
 
 /*!
@@ -1510,7 +1445,7 @@ QList<QCPAbstractItem*> PF_GraphicView::selectedItems() const
 */
 QCPAbstractItem *PF_GraphicView::itemAt(const QPointF &pos, bool onlySelectable) const
 {
-    QCPAbstractItem *resultItem = 0;
+    QCPAbstractItem *resultItem = nullptr;
     double resultDistance = mSelectionTolerance; // only regard clicks with distances smaller than mSelectionTolerance as selections, so initialize with that value
 
     foreach (QCPAbstractItem *item, mItems)
@@ -1556,7 +1491,7 @@ QCPLayer *PF_GraphicView::layer(const QString &name) const
         if (layer->name() == name)
             return layer;
     }
-    return 0;
+    return nullptr;
 }
 
 /*! \overload
@@ -1573,7 +1508,7 @@ QCPLayer *PF_GraphicView::layer(int index) const
     } else
     {
         qDebug() << Q_FUNC_INFO << "index out of bounds:" << index;
-        return 0;
+        return nullptr;
     }
 }
 
@@ -1805,7 +1740,7 @@ QCPAxisRect *PF_GraphicView::axisRect(int index) const
     } else
     {
         qDebug() << Q_FUNC_INFO << "invalid axis rect index" << index;
-        return 0;
+        return nullptr;
     }
 }
 
@@ -1884,7 +1819,7 @@ QCPLayoutElement *PF_GraphicView::layoutElementAt(const QPointF &pos) const
 */
 QCPAxisRect *PF_GraphicView::axisRectAt(const QPointF &pos) const
 {
-    QCPAxisRect *result = 0;
+    QCPAxisRect *result = nullptr;
     QCPLayoutElement *currentElement = mPlotLayout;
     bool searchSubElements = true;
     while (searchSubElements && currentElement)
@@ -1975,7 +1910,7 @@ void PF_GraphicView::deselectAll()
     foreach (QCPLayer *layer, mLayers)
     {
         foreach (QCPLayerable *layerable, layer->children())
-            layerable->deselectEvent(0);
+            layerable->deselectEvent(nullptr);
     }
 }
 
@@ -2398,7 +2333,7 @@ void PF_GraphicView::mouseDoubleClickEvent(QMouseEvent *event)
         else if (QCPAbstractItem *ai = qobject_cast<QCPAbstractItem*>(candidates.first()))
             emit itemDoubleClick(ai, event);
         else if (QCPLegend *lg = qobject_cast<QCPLegend*>(candidates.first()))
-            emit legendDoubleClick(lg, 0, event);
+            emit legendDoubleClick(lg, nullptr, event);
         else if (QCPAbstractLegendItem *li = qobject_cast<QCPAbstractLegendItem*>(candidates.first()))
             emit legendDoubleClick(li->parentLegend(), li, event);
     }
@@ -2451,6 +2386,11 @@ void PF_GraphicView::mousePressEvent(QMouseEvent *event)
     }
 
     event->accept(); // in case QCPLayerable reimplementation manipulates event accepted state. In QWidget event system, PF_GraphicView wants to accept the event.
+
+    if(event->button() == Qt::MiddleButton){
+        //zoom action
+    }
+    eventHandler->mousePressEvent(event);
 }
 
 /*! \internal
@@ -2478,6 +2418,8 @@ void PF_GraphicView::mouseMoveEvent(QMouseEvent *event)
         mMouseEventLayerable->mouseMoveEvent(event, mMousePressPos);
 
     event->accept(); // in case QCPLayerable reimplementation manipulates event accepted state. In QWidget event system, PF_GraphicView wants to accept the event.
+
+    eventHandler->mouseMoveEvent(event);
 }
 
 /*! \internal
@@ -2517,10 +2459,10 @@ void PF_GraphicView::mouseReleaseEvent(QMouseEvent *event)
         else if (QCPAbstractItem *ai = qobject_cast<QCPAbstractItem*>(mMouseSignalLayerable))
             emit itemClick(ai, event);
         else if (QCPLegend *lg = qobject_cast<QCPLegend*>(mMouseSignalLayerable))
-            emit legendClick(lg, 0, event);
+            emit legendClick(lg, nullptr, event);
         else if (QCPAbstractLegendItem *li = qobject_cast<QCPAbstractLegendItem*>(mMouseSignalLayerable))
             emit legendClick(li->parentLegend(), li, event);
-        mMouseSignalLayerable = 0;
+        mMouseSignalLayerable = nullptr;
     }
 
     if (mSelectionRect && mSelectionRect->isActive()) // Note: if a click was detected above, the selection rect is canceled there
@@ -2533,7 +2475,7 @@ void PF_GraphicView::mouseReleaseEvent(QMouseEvent *event)
         if (mMouseEventLayerable)
         {
             mMouseEventLayerable->mouseReleaseEvent(event, mMousePressPos);
-            mMouseEventLayerable = 0;
+            mMouseEventLayerable = nullptr;
         }
     }
 
@@ -2541,6 +2483,21 @@ void PF_GraphicView::mouseReleaseEvent(QMouseEvent *event)
         replot(rpQueuedReplot);
 
     event->accept(); // in case QCPLayerable reimplementation manipulates event accepted state. In QWidget event system, PF_GraphicView wants to accept the event.
+
+    switch (event->button()) {
+    case Qt::RightButton:
+        //Ctrl+Right-Click
+
+        //Shift+Right-Click
+
+        //Right-Click menu
+
+        back();
+        break;
+    default:
+        eventHandler->mouseReleaseEvent(event);
+        break;
+    }
 }
 
 /*! \internal
@@ -2841,13 +2798,13 @@ void PF_GraphicView::freeOpenGl()
 void PF_GraphicView::axisRemoved(QCPAxis *axis)
 {
     if (xAxis == axis)
-        xAxis = 0;
+        xAxis = nullptr;
     if (xAxis2 == axis)
-        xAxis2 = 0;
+        xAxis2 = nullptr;
     if (yAxis == axis)
-        yAxis = 0;
+        yAxis = nullptr;
     if (yAxis2 == axis)
-        yAxis2 = 0;
+        yAxis2 = nullptr;
 
     // Note: No need to take care of range drag axes and range zoom axes, because they are stored in smart pointers
 }
@@ -2860,7 +2817,7 @@ void PF_GraphicView::axisRemoved(QCPAxis *axis)
 void PF_GraphicView::legendRemoved(QCPLegend *legend)
 {
     if (this->legend == legend)
-        this->legend = 0;
+        this->legend = nullptr;
 }
 
 /*! \internal
@@ -2891,15 +2848,15 @@ void PF_GraphicView::processRectSelection(QRect rect, QMouseEvent *event)
         if (QCPAxisRect *affectedAxisRect = axisRectAt(rectF.topLeft()))
         {
             // determine plottables that were hit by the rect and thus are candidates for selection:
-            foreach (QCPAbstractPlottable *plottable, affectedAxisRect->plottables())
-            {
-                if (QCPPlottableInterface1D *plottableInterface = plottable->interface1D())
-                {
-                    QCPDataSelection dataSel = plottableInterface->selectTestRect(rectF, true);
-                    if (!dataSel.isEmpty())
-                        potentialSelections.insertMulti(dataSel.dataPointCount(), QPair<QCPAbstractPlottable*, QCPDataSelection>(plottable, dataSel));
-                }
-            }
+//            foreach (QCPAbstractPlottable *plottable, affectedAxisRect->plottables())
+//            {
+//                if (QCPPlottableInterface1D *plottableInterface = plottable->interface1D())
+//                {
+//                    QCPDataSelection dataSel = plottableInterface->selectTestRect(rectF, true);
+//                    if (!dataSel.isEmpty())
+//                        potentialSelections.insertMulti(dataSel.dataPointCount(), QPair<QCPAbstractPlottable*, QCPDataSelection>(plottable, dataSel));
+//                }
+//            }
 
             if (!mInteractions.testFlag(QCP::iMultiSelect))
             {
@@ -2971,7 +2928,7 @@ void PF_GraphicView::processRectZoom(QRect rect, QMouseEvent *event)
     if (QCPAxisRect *axisRect = axisRectAt(rect.topLeft()))
     {
         QList<QCPAxis*> affectedAxes = QList<QCPAxis*>() << axisRect->rangeZoomAxes(Qt::Horizontal) << axisRect->rangeZoomAxes(Qt::Vertical);
-        affectedAxes.removeAll(static_cast<QCPAxis*>(0));
+        affectedAxes.removeAll(static_cast<QCPAxis*>(nullptr));
         axisRect->zoom(QRectF(rect), affectedAxes);
     }
     replot(rpQueuedReplot); // always replot to make selection rect disappear
@@ -3148,13 +3105,13 @@ void PF_GraphicView::updateLayerIndices() const
 QCPLayerable *PF_GraphicView::layerableAt(const QPointF &pos, bool onlySelectable, QVariant *selectionDetails) const
 {
     QList<QVariant> details;
-    QList<QCPLayerable*> candidates = layerableListAt(pos, onlySelectable, selectionDetails ? &details : 0);
+    QList<QCPLayerable*> candidates = layerableListAt(pos, onlySelectable, selectionDetails ? &details : nullptr);
     if (selectionDetails && !details.isEmpty())
         *selectionDetails = details.first();
     if (!candidates.isEmpty())
         return candidates.first();
     else
-        return 0;
+        return nullptr;
 }
 
 /*! \internal
@@ -3186,7 +3143,7 @@ QList<QCPLayerable*> PF_GraphicView::layerableListAt(const QPointF &pos, bool on
             if (!layerables.at(i)->realVisibility())
                 continue;
             QVariant details;
-            double dist = layerables.at(i)->selectTest(pos, onlySelectable, selectionDetails ? &details : 0);
+            double dist = layerables.at(i)->selectTest(pos, onlySelectable, selectionDetails ? &details : nullptr);
             if (dist >= 0 && dist < selectionTolerance())
             {
                 result.append(layerables.at(i));
@@ -3324,4 +3281,4 @@ void PF_GraphicView::toPainter(QCPPainter *painter, int width, int height)
         setViewport(oldViewport);
     } else
         qDebug() << Q_FUNC_INFO << "Passed painter is not active";
-}s
+}

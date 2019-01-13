@@ -8,13 +8,36 @@
 #include "pf_entitycontainer.h"
 #include "pf_document.h"
 #include "pf_snapper.h"
-#include "pf_plot.h"
+//#include "pf_plot.h"
 
 class QMouseEvent;
 class QKeyEvent;
 class QGridLayout;
 class PF_ActionInterface;
 class PF_EventHandler;
+
+#include "pf_plot.h"
+/**来自pf_plot的前置声明**/
+//class QCPPainter;
+//class QCPLayerable;
+//class QCPLayoutElement;
+//class QCPLayout;
+//class QCPAxis;
+//class QCPAxisRect;
+//class QCPAxisPainterPrivate;
+//class QCPAbstractPlottable;
+//class QCPGraph;
+//class QCPAbstractItem;
+//class QCPPlottableInterface1D;
+//class QCPLegend;
+//class QCPItemPosition;
+//class QCPLayer;
+//class QCPAbstractLegendItem;
+//class QCPSelectionRect;
+//class QCPColorMap;
+//class QCPColorScale;
+//class QCPBars;
+//class QCPAbstractPaintBuffer;
 
 class PF_GraphicView : public QWidget
 {
@@ -56,6 +79,7 @@ public:
 
     explicit PF_GraphicView(PF_Document* doc, QWidget *parent = nullptr);
     ~PF_GraphicView();
+
     void drawLayer1(QPainter * painter);
     void getPixmapForView(QPixmap **pm);
 
@@ -124,25 +148,25 @@ public:
 
     // non-property methods:
     // plottable interface:
-    QCPAbstractPlottable *plottable(int index);
-    QCPAbstractPlottable *plottable();
-    bool removePlottable(QCPAbstractPlottable *plottable);
-    bool removePlottable(int index);
-    int clearPlottables();
-    int plottableCount() const;
-    QList<QCPAbstractPlottable*> selectedPlottables() const;
-    QCPAbstractPlottable *plottableAt(const QPointF &pos, bool onlySelectable=false) const;
-    bool hasPlottable(QCPAbstractPlottable *plottable) const;
+//    QCPAbstractPlottable *plottable(int index);
+//    QCPAbstractPlottable *plottable();
+//    bool removePlottable(QCPAbstractPlottable *plottable);
+//    bool removePlottable(int index);
+//    int clearPlottables();
+//    int plottableCount() const;
+//    QList<QCPAbstractPlottable*> selectedPlottables() const;
+//    QCPAbstractPlottable *plottableAt(const QPointF &pos, bool onlySelectable=false) const;
+//    bool hasPlottable(QCPAbstractPlottable *plottable) const;
 
     // specialized interface for QCPGraph:
-    QCPGraph *graph(int index) const;
-    QCPGraph *graph() const;
-    QCPGraph *addGraph(QCPAxis *keyAxis=0, QCPAxis *valueAxis=0);
-    bool removeGraph(QCPGraph *graph);
-    bool removeGraph(int index);
-    int clearGraphs();
-    int graphCount() const;
-    QList<QCPGraph*> selectedGraphs() const;
+//    QCPGraph *graph(int index) const;
+//    QCPGraph *graph() const;
+//    QCPGraph *addGraph(QCPAxis *keyAxis=0, QCPAxis *valueAxis=0);
+//    bool removeGraph(QCPGraph *graph);
+//    bool removeGraph(int index);
+//    int clearGraphs();
+//    int graphCount() const;
+//    QList<QCPGraph*> selectedGraphs() const;
 
     // item interface:
     QCPAbstractItem *item(int index) const;
@@ -211,23 +235,6 @@ signals:
 
 public slots:
 
-protected:
-    void paintEvent(QPaintEvent* e) override;
-    void mouseMoveEvent(QMouseEvent* e) override;
-    void mouseDoubleClickEvent(QMouseEvent* e) override;
-    void mouseReleaseEvent(QMouseEvent* e) override;
-    void mousePressEvent(QMouseEvent* e) override;
-    void tabletEvent(QTabletEvent* e) override;
-    void leaveEvent(QEvent*) override;
-    void enterEvent(QEvent*) override;
-    void focusInEvent(QFocusEvent*) override;
-    void focusOutEvent(QFocusEvent*) override;
-    void wheelEvent(QWheelEvent* e) override;
-    void keyPressEvent(QKeyEvent* e) override;
-    void keyReleaseEvent(QKeyEvent* e) override;
-
-    void resizeEvent(QResizeEvent* e) override;
-
 
 protected:
     QGridLayout* layout;
@@ -292,13 +299,20 @@ protected:
     // reimplemented virtual methods:
     virtual QSize minimumSizeHint() const Q_DECL_OVERRIDE;
     virtual QSize sizeHint() const Q_DECL_OVERRIDE;
-    //virtual void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-    //virtual void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    //virtual void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    //virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    //virtual void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    //virtual void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    //virtual void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    virtual void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    virtual void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    virtual void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    virtual void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    virtual void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    virtual void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    virtual void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    virtual void tabletEvent(QTabletEvent* e) Q_DECL_OVERRIDE;
+    virtual void leaveEvent(QEvent*) Q_DECL_OVERRIDE;
+    virtual void enterEvent(QEvent*) Q_DECL_OVERRIDE;
+    virtual void focusInEvent(QFocusEvent*) Q_DECL_OVERRIDE;
+    virtual void focusOutEvent(QFocusEvent*) Q_DECL_OVERRIDE;
+    virtual void keyPressEvent(QKeyEvent* e) Q_DECL_OVERRIDE;
+    virtual void keyReleaseEvent(QKeyEvent* e) Q_DECL_OVERRIDE;
 
     // introduced virtual methods:
     virtual void draw(QCPPainter *painter);
