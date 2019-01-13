@@ -21,7 +21,7 @@ PF_EventHandler::~PF_EventHandler()
 
 void PF_EventHandler::mousePressEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_EventHandler::mousePressEvent";
+    qDebug()<<Q_FUNC_INFO;
     /**当前action未执行完**/
     if(hasAction()){
         currentAction.last()->mousePressEvent(e);
@@ -39,7 +39,7 @@ void PF_EventHandler::mousePressEvent(QMouseEvent *e)
 
 void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_EventHandler::mouseReleaseEvent";
+    qDebug()<<Q_FUNC_INFO;
     if(hasAction()){
         currentAction.last()->mouseReleaseEvent(e);
 
@@ -58,7 +58,7 @@ void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
 
 void PF_EventHandler::mouseMoveEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_EventHandler::mouseMoveEvent";
+    qDebug()<<Q_FUNC_INFO;
     if(hasAction())
         currentAction.last()->mouseMoveEvent(e);
     else if(defaultAction)
@@ -68,7 +68,7 @@ void PF_EventHandler::mouseMoveEvent(QMouseEvent *e)
 
 void PF_EventHandler::mouseLeaveEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_EventHandler::mouseLeaveEvent";
+    qDebug()<<Q_FUNC_INFO;
     if(hasAction()){
         currentAction.last()->suspend();
     }else{
@@ -81,7 +81,7 @@ void PF_EventHandler::mouseLeaveEvent(QMouseEvent *e)
 
 void PF_EventHandler::mouseEnterEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_EventHandler::mouseEnterEvent";
+    qDebug()<<Q_FUNC_INFO;
     if(hasAction())
         currentAction.last()->resume();
     else if(defaultAction)

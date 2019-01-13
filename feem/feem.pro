@@ -62,7 +62,8 @@ HEADERS += \
     ./entity/pf_document.h \
     ./entity/pf_preview.h \
     ./entity/pf_point.h \
-    ./entity/pf_line.h
+    ./entity/pf_line.h \
+    pf_plot.h
 
 SOURCES += \
     ./main.cpp \
@@ -90,7 +91,8 @@ SOURCES += \
     ./entity/pf_document.cpp \
     ./entity/pf_preview.cpp \
     ./entity/pf_point.cpp \
-    ./entity/pf_line.cpp
+    ./entity/pf_line.cpp \
+    pf_plot.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdockd

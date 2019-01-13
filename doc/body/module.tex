@@ -92,6 +92,26 @@ Ribbon模块是一个能够提供类似Office界面风格的组件。同时，CO
 绘制几何图形之前，需要建立一个绘制的画布，也就是具有横纵坐标的网格区域。需要注意的是，坐标轴上显示的数值跟屏幕上像素点的位置不是一样的，需要进行一下转化。
 
 大多数的有限元仿真软件似乎不提供数学上的那种坐标轴网络，只有COMSOL是这样做的。我觉得提供一个坐标轴的显示还是比一个空白的背景要好很多。其实，flux2d也是有的，在你刚新建一个项目的时候会出现。
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{figures/AxisNamesOverview}
+	\caption{}
+	\label{fig:axisnamesoverview}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{figures/AxisRectSpacingOverview}
+	\caption{}
+	\label{fig:axisrectspacingoverview}
+\end{figure}
+
+接下来记录一下如何开发一个比较不错的简单坐标轴系统。
+
+\begin{enumerate}
+	\item 首先，需要建立一块画布，QWidget或者其子类，需要在上面进行绘图。这个画布类当中包含有各种画图需用的数据。
+	\item 为了显示实际绘制的图形坐标而不是像素，需要一个基本的坐标轴，初始化的时候有一个默认的坐标轴大小区域。由于坐标轴的刻度与像素是一一对应的，所以，在绘制每一个图形之前，都需要调用坐标轴的转换函数来转换坐标，然后再绘制在画布上。需要注意的是，绘制的区域是有限制的，是被坐标轴所限制的，不能绘制在坐标轴之外。对于图形的缩放，似乎不需要特别处理，只需要更新一下坐标轴的范围，然后进行重画就可以了。
+	\item 那么重头戏就是坐标轴了。
+\end{enumerate}
 
 主要功能：
 \begin{enumerate}
