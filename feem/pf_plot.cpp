@@ -8479,6 +8479,8 @@ void QCPAxis::setScaleRatio(const QCPAxis *otherAxis, double ratio)
 
     double newRangeSize = ratio*otherAxis->range().size()*ownPixelSize/(double)otherPixelSize;
     setRange(range().center(), newRangeSize, Qt::AlignCenter);
+    int newTickerCount = ratio*otherAxis->mTicker->tickCount()*ownPixelSize/(double)otherPixelSize;
+    mTicker->setTickCount(newTickerCount);
 }
 
 /*!

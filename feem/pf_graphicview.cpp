@@ -210,11 +210,44 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     yAxis2->setVisible(true);
     yAxis2->setTickLabels(false);
     xAxis->grid()->setLayer(QLatin1String("grid"));
+    xAxis->grid()->setSubGridVisible(true);
+    xAxis->grid()->setPen(QPen(QColor(205,220,231)));
+    xAxis->grid()->setSubGridPen(QPen(QColor(205,220,231)));
     yAxis->grid()->setLayer(QLatin1String("grid"));
+    yAxis->grid()->setSubGridVisible(true);
+    yAxis->grid()->setPen(QPen(QColor(205,220,231)));
+    yAxis->grid()->setSubGridPen(QPen(QColor(205,220,231)));
     xAxis2->grid()->setLayer(QLatin1String("grid"));
     yAxis2->grid()->setLayer(QLatin1String("grid"));
     legend->setLayer(QLatin1String("legend"));
-
+    /**设置坐标轴背景**/
+    defaultAxisRect->setBackground(QBrush(QColor(248,253,255)));
+    /**设置xy轴等比例**/
+    xAxis->setScaleRatio(yAxis,1);/**该函数在构造函数内无效**/
+    /**设置top轴和right轴随着其他两个轴变化**/
+    connect(xAxis, SIGNAL(rangeChanged(QCPRange)), xAxis2, SLOT(setRange(QCPRange)));
+    connect(yAxis, SIGNAL(rangeChanged(QCPRange)), yAxis2, SLOT(setRange(QCPRange)));
+    connect(yAxis, SIGNAL(rangeChanged(QCPRange)), xAxis, SLOT(setScaleRatio(yAxis,1)));
+    /**设置坐标轴可缩放**/
+    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    /**设置坐标轴上tick的长度长一点**/
+    int subTickLength = 7;
+    int tickLength = 10;
+    xAxis->setTickLength(tickLength,0);
+    xAxis->setSubTickLength(subTickLength,0);
+    xAxis->setSubTickPen(QPen(QColor(128,128,128)));
+    yAxis->setTickLength(tickLength,0);
+    yAxis->setSubTickLength(subTickLength,0);
+    yAxis->setSubTickPen(QPen(QColor(128,128,128)));
+    xAxis2->setTickLength(tickLength,0);
+    xAxis2->setSubTickLength(subTickLength,0);
+    xAxis2->setSubTickPen(QPen(QColor(128,128,128)));
+    yAxis2->setTickLength(tickLength,0);
+    yAxis2->setSubTickLength(subTickLength,0);
+    yAxis2->setSubTickPen(QPen(QColor(128,128,128)));
+    /**设置tickLabel字体**/
+    xAxis->setTickLabelFont(QFont(QLatin1String("sans serif"), 12));
+    yAxis->setTickLabelFont(QFont(QLatin1String("sans serif"), 12));
     // create selection rect instance:
     mSelectionRect = new QCPSelectionRect(this);
     mSelectionRect->setLayer(QLatin1String("overlay"));
@@ -1956,8 +1989,11 @@ void PF_GraphicView::replot(PF_GraphicView::RefreshPriority refreshPriority)
     mReplotting = true;
     mReplotQueued = false;
     emit beforeReplot();
-
     updateLayout();
+    /**必须在坐标轴重新计算后再设置**/
+    xAxis->setScaleRatio(yAxis,1);
+    updateLayout();
+
     // draw all layered objects (grid, axes, plottables, items, legend,...) into their buffers:
     setupPaintBuffers();
     foreach (QCPLayer *layer, mLayers)
