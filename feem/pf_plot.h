@@ -1565,15 +1565,19 @@ public:
     void setTickStepStrategy(TickStepStrategy strategy);
     void setTickCount(int count);
     void setTickOrigin(double origin);
+    void setTickStep(double step);
+    void setAutoTickStep(bool on);
 
     // introduced virtual methods:
     virtual void generate(const QCPRange &range, const QLocale &locale, QChar formatChar, int precision, QVector<double> &ticks, QVector<double> *subTicks, QVector<QString> *tickLabels);
 
-protected:
+public:
     // property members:
     TickStepStrategy mTickStepStrategy;
     int mTickCount;
-    double mTickOrigin;
+    double mTickOrigin;    
+    double mTickStep;
+    bool mAutoTickStep;
 
     // introduced virtual methods:
     virtual double getTickStep(const QCPRange &range);
@@ -2066,8 +2070,8 @@ public:
     void setRangeUpper(double upper);
     void setRangeReversed(bool reversed);
     void setTicker(QSharedPointer<QCPAxisTicker> ticker);
-    void setTicks(bool show);
-    void setTickLabels(bool show);
+    void setTicks(bool show);    
+    void setTickLabels(bool show);    
     void setTickLabelPadding(int padding);
     void setTickLabelFont(const QFont &font);
     void setTickLabelColor(const QColor &color);
@@ -2160,7 +2164,7 @@ protected:
     //bool mNumberMultiplyCross; // QCPAxisPainter
     // ticks and subticks:
     bool mTicks;
-    bool mSubTicks;
+    bool mSubTicks;    
     //int mTickLengthIn, mTickLengthOut, mSubTickLengthIn, mSubTickLengthOut; // QCPAxisPainter
     QPen mTickPen, mSelectedTickPen;
     QPen mSubTickPen, mSelectedSubTickPen;

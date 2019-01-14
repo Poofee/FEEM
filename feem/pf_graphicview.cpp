@@ -223,13 +223,12 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     /**设置坐标轴背景**/
     defaultAxisRect->setBackground(QBrush(QColor(248,253,255)));
     /**设置xy轴等比例**/
-    xAxis->setScaleRatio(yAxis,1);/**该函数在构造函数内无效**/
+    //xAxis->setScaleRatio(yAxis,1);/**该函数在构造函数内无效**/
     /**设置top轴和right轴随着其他两个轴变化**/
     connect(xAxis, SIGNAL(rangeChanged(QCPRange)), xAxis2, SLOT(setRange(QCPRange)));
     connect(yAxis, SIGNAL(rangeChanged(QCPRange)), yAxis2, SLOT(setRange(QCPRange)));
-    connect(yAxis, SIGNAL(rangeChanged(QCPRange)), xAxis, SLOT(setScaleRatio(yAxis,1)));
     /**设置坐标轴可缩放**/
-    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    setInteractions(QCP::iRangeZoom);
     /**设置坐标轴上tick的长度长一点**/
     int subTickLength = 7;
     int tickLength = 10;
@@ -246,8 +245,8 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     yAxis2->setSubTickLength(subTickLength,0);
     yAxis2->setSubTickPen(QPen(QColor(128,128,128)));
     /**设置tickLabel字体**/
-    xAxis->setTickLabelFont(QFont(QLatin1String("sans serif"), 12));
-    yAxis->setTickLabelFont(QFont(QLatin1String("sans serif"), 12));
+    xAxis->setTickLabelFont(QFont(QLatin1String("sans serif"), 10));
+    yAxis->setTickLabelFont(QFont(QLatin1String("sans serif"), 10));
     // create selection rect instance:
     mSelectionRect = new QCPSelectionRect(this);
     mSelectionRect->setLayer(QLatin1String("overlay"));
@@ -1993,6 +1992,7 @@ void PF_GraphicView::replot(PF_GraphicView::RefreshPriority refreshPriority)
     /**必须在坐标轴重新计算后再设置**/
     xAxis->setScaleRatio(yAxis,1);
     updateLayout();
+    xAxis->setScaleRatio(yAxis,1);
 
     // draw all layered objects (grid, axes, plottables, items, legend,...) into their buffers:
     setupPaintBuffers();
@@ -2300,6 +2300,7 @@ QSize PF_GraphicView::sizeHint() const
 void PF_GraphicView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
+    xAxis->setScaleRatio(yAxis,1);
     QCPPainter painter(this);
     if (painter.isActive())
     {

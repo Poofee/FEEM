@@ -5469,7 +5469,9 @@ void QCPLineEnding::draw(QCPPainter *painter, const QCPVector2D &pos, double ang
 QCPAxisTicker::QCPAxisTicker() :
     mTickStepStrategy(tssReadability),
     mTickCount(5),
-    mTickOrigin(0)
+    mTickOrigin(0),
+    mTickStep(1),
+    mAutoTickStep(true)
 {
 }
 
@@ -5515,7 +5517,38 @@ void QCPAxisTicker::setTickOrigin(double origin)
 {
     mTickOrigin = origin;
 }
+/*!
+  Sets whether the tick step, i.e. the interval between two (major) ticks, is calculated
+  automatically. If \a on is set to true, the axis finds a tick step that is reasonable for human
+  readable plots.
 
+  The number of ticks the algorithm aims for within the visible range can be specified with \ref
+  setAutoTickCount.
+
+  If \a on is set to false, you may set the tick step manually with \ref setTickStep.
+
+  \see setAutoTicks, setAutoSubTicks, setAutoTickCount
+*/
+void QCPAxisTicker::setAutoTickStep(bool on)
+{
+    if (mAutoTickStep != on)
+    {
+        mAutoTickStep = on;
+    }
+}
+
+/*!
+  If \ref setAutoTickStep is set to false, use this function to set the tick step manually.
+  The tick step is the interval between (major) ticks, in plot coordinates.
+  \see setSubTickCount
+*/
+void QCPAxisTicker::setTickStep(double step)
+{
+  if (mTickStep != step)
+  {
+    mTickStep = step;
+  }
+}
 /*!
   This is the method called by QCPAxis in order to actually generate tick coordinates (\a ticks),
   tick label strings (\a tickLabels) and sub tick coordinates (\a subTicks).
@@ -5532,8 +5565,9 @@ void QCPAxisTicker::setTickOrigin(double origin)
 void QCPAxisTicker::generate(const QCPRange &range, const QLocale &locale, QChar formatChar, int precision, QVector<double> &ticks, QVector<double> *subTicks, QVector<QString> *tickLabels)
 {
     // generate (major) ticks:
-    double tickStep = getTickStep(range);
-    ticks = createTickVector(tickStep, range);
+    if(mAutoTickStep)
+        mTickStep = getTickStep(range);
+    ticks = createTickVector(mTickStep, range);
     trimTicks(range, ticks, true); // trim ticks to visible range plus one outer tick on each side (incase a subclass createTickVector creates more)
 
     // generate sub ticks between major ticks:
@@ -5541,7 +5575,7 @@ void QCPAxisTicker::generate(const QCPRange &range, const QLocale &locale, QChar
     {
         if (ticks.size() > 0)
         {
-            *subTicks = createSubTickVector(getSubTickCount(tickStep), ticks);
+            *subTicks = createSubTickVector(getSubTickCount(mTickStep), ticks);
             trimTicks(range, *subTicks, false);
         } else
             *subTicks = QVector<double>();
@@ -7886,6 +7920,7 @@ void QCPAxis::setTickLabels(bool show)
     }
 }
 
+
 /*!
   Sets the distance between the axis base line (including any outward ticks) and the tick labels.
   \see setLabelPadding, setPadding
@@ -8477,10 +8512,11 @@ void QCPAxis::setScaleRatio(const QCPAxis *otherAxis, double ratio)
     else
         ownPixelSize = axisRect()->height();
 
+    qDebug()<<"x,y: "<<otherPixelSize<<","<<ownPixelSize;
     double newRangeSize = ratio*otherAxis->range().size()*ownPixelSize/(double)otherPixelSize;
     setRange(range().center(), newRangeSize, Qt::AlignCenter);
-    int newTickerCount = ratio*otherAxis->mTicker->tickCount()*ownPixelSize/(double)otherPixelSize;
-    mTicker->setTickCount(newTickerCount);
+    mTicker->setAutoTickStep(false);
+    mTicker->setTickStep(otherAxis->mTicker->getTickStep(otherAxis->range()));
 }
 
 /*!
