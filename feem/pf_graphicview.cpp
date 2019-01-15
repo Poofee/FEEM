@@ -228,7 +228,7 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     connect(xAxis, SIGNAL(rangeChanged(QCPRange)), xAxis2, SLOT(setRange(QCPRange)));
     connect(yAxis, SIGNAL(rangeChanged(QCPRange)), yAxis2, SLOT(setRange(QCPRange)));
     /**设置坐标轴可缩放**/
-    setInteractions(QCP::iRangeZoom);
+    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     /**设置坐标轴上tick的长度长一点**/
     int subTickLength = 7;
     int tickLength = 10;
@@ -1991,8 +1991,10 @@ void PF_GraphicView::replot(PF_GraphicView::RefreshPriority refreshPriority)
     updateLayout();
     /**必须在坐标轴重新计算后再设置**/
     xAxis->setScaleRatio(yAxis,1);
+    xAxis2->setScaleRatio(yAxis,1);
     updateLayout();
     xAxis->setScaleRatio(yAxis,1);
+    xAxis2->setScaleRatio(yAxis,1);
 
     // draw all layered objects (grid, axes, plottables, items, legend,...) into their buffers:
     setupPaintBuffers();
