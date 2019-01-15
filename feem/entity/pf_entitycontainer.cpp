@@ -21,7 +21,7 @@ PF_EntityContainer::~PF_EntityContainer()
 
 void PF_EntityContainer::clear()
 {
-    qDebug()<<"PF_EntityContainer::clear";
+    //qDebug()<<"PF_EntityContainer::clear";
     if(autoDelete){
         while(!entities.isEmpty()){
             delete entities.takeFirst();
@@ -29,7 +29,7 @@ void PF_EntityContainer::clear()
     }else{
         entities.clear();
     }
-    qDebug()<<"PF_EntityContainer::clear: OK.";
+    //qDebug()<<"PF_EntityContainer::clear: OK.";
 }
 
 void PF_EntityContainer::addEntity(PF_Entity *entity)
@@ -39,7 +39,7 @@ void PF_EntityContainer::addEntity(PF_Entity *entity)
     }
 
     entities.append(entity);
-    qDebug()<<"PF_EntityContainer::addEntity:size:"<<entities.size();
+    //qDebug()<<"PF_EntityContainer::addEntity:size:"<<entities.size();
 }
 
 void PF_EntityContainer::draw(QPainter *painter, PF_GraphicView *view)

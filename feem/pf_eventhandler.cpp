@@ -21,7 +21,7 @@ PF_EventHandler::~PF_EventHandler()
 
 void PF_EventHandler::mousePressEvent(QMouseEvent *e)
 {
-    qDebug()<<Q_FUNC_INFO;
+    //qDebug()<<Q_FUNC_INFO;
     /**当前action未执行完**/
     if(hasAction()){
         currentAction.last()->mousePressEvent(e);
@@ -34,12 +34,12 @@ void PF_EventHandler::mousePressEvent(QMouseEvent *e)
             e->ignore();
         }
     }
-    qDebug()<<"PF_EventHandler::mousePressEvent: OK.";
+    //qDebug()<<"PF_EventHandler::mousePressEvent: OK.";
 }
 
 void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
 {
-    qDebug()<<Q_FUNC_INFO;
+    //qDebug()<<Q_FUNC_INFO;
     if(hasAction()){
         currentAction.last()->mouseReleaseEvent(e);
 
@@ -53,22 +53,22 @@ void PF_EventHandler::mouseReleaseEvent(QMouseEvent *e)
             e->ignore();
         }
     }
-    qDebug()<<"PF_EventHandler::mouseReleaseEvent: OK.";
+    //qDebug()<<"PF_EventHandler::mouseReleaseEvent: OK.";
 }
 
 void PF_EventHandler::mouseMoveEvent(QMouseEvent *e)
 {
-    qDebug()<<Q_FUNC_INFO;
+    //qDebug()<<Q_FUNC_INFO;
     if(hasAction())
         currentAction.last()->mouseMoveEvent(e);
     else if(defaultAction)
         defaultAction->mouseMoveEvent(e);
-    qDebug()<<"PF_EventHandler::mouseMoveEvent: OK.";
+    //qDebug()<<"PF_EventHandler::mouseMoveEvent: OK.";
 }
 
 void PF_EventHandler::mouseLeaveEvent(QMouseEvent *e)
 {
-    qDebug()<<Q_FUNC_INFO;
+    //qDebug()<<Q_FUNC_INFO;
     if(hasAction()){
         currentAction.last()->suspend();
     }else{
@@ -76,22 +76,22 @@ void PF_EventHandler::mouseLeaveEvent(QMouseEvent *e)
             defaultAction->suspend();
         }
     }
-    qDebug()<<"PF_EventHandler::mouseLeaveEvent: OK.";
+    //qDebug()<<"PF_EventHandler::mouseLeaveEvent: OK.";
 }
 
 void PF_EventHandler::mouseEnterEvent(QMouseEvent *e)
 {
-    qDebug()<<Q_FUNC_INFO;
+    //qDebug()<<Q_FUNC_INFO;
     if(hasAction())
         currentAction.last()->resume();
     else if(defaultAction)
         defaultAction->resume();
-    qDebug()<<"PF_EventHandler::mouseEnterEvent: OK.";
+    //qDebug()<<"PF_EventHandler::mouseEnterEvent: OK.";
 }
 
 void PF_EventHandler::keyPressEvent(QKeyEvent *e)
 {
-    qDebug()<<"PF_EventHandler::keyPressEvent";
+    //qDebug()<<"PF_EventHandler::keyPressEvent";
     if(hasAction())
         currentAction.last()->keyPressEvent(e);
     else{
@@ -100,12 +100,12 @@ void PF_EventHandler::keyPressEvent(QKeyEvent *e)
         else
             e->ignore();
     }
-    qDebug()<<"PF_EventHandler::keyPressEvent: OK.";
+    //qDebug()<<"PF_EventHandler::keyPressEvent: OK.";
 }
 
 void PF_EventHandler::keyReleaseEvent(QKeyEvent *e)
 {
-    qDebug()<<"PF_EventHandler::keyReleaseEvent";
+    //qDebug()<<"PF_EventHandler::keyReleaseEvent";
     if(hasAction()){
         currentAction.last()->keyReleaseEvent(e);
     }else{
@@ -115,7 +115,7 @@ void PF_EventHandler::keyReleaseEvent(QKeyEvent *e)
             e->ignore();
         }
     }
-    qDebug()<<"PF_EventHandler::keyReleaseEvent: OK.";
+    //qDebug()<<"PF_EventHandler::keyReleaseEvent: OK.";
 }
 
 void PF_EventHandler::back()
@@ -130,12 +130,12 @@ void PF_EventHandler::back()
 
 void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
 {
-    qDebug()<<"PF_EventHandler::setCurrentAction";
-    if(action == NULL){
+    //qDebug()<<"PF_EventHandler::setCurrentAction";
+    if(action == nullptr){
         return;
     }
 
-    PF_ActionInterface* predecessor = NULL;
+    PF_ActionInterface* predecessor = nullptr;
     /**处理一下当前运行的action**/
     if(hasAction()){
         predecessor = currentAction.last();
@@ -187,21 +187,21 @@ bool PF_EventHandler::hasAction()
 {
     for(int i = 0; i < currentAction.size();++i){
         if(!currentAction.at(i)->isFinished()){
-            qDebug()<<"PF_EventHandler::hasAction():"<<currentAction.size();
+            //qDebug()<<"PF_EventHandler::hasAction():"<<currentAction.size();
             return true;
         }
     }
-    qDebug()<<"PF_EventHandler::hasAction(): 0";
+    //qDebug()<<"PF_EventHandler::hasAction(): 0";
     return false;
 }
 
 /*清除掉已经完成的action*/
 void PF_EventHandler::cleanUp()
 {
-    qDebug()<<"PF_EventHandler::cleanUp";
+    //qDebug()<<"PF_EventHandler::cleanUp";
     for(int i=0; i < currentAction.size();++i){
         if(currentAction.at(i)->isFinished()){
-            qDebug()<<"PF_EventHandler::cleanUp():   "<<i<<"   finished!";
+            //qDebug()<<"PF_EventHandler::cleanUp():   "<<i<<"   finished!";
             delete currentAction.at(i);
             currentAction.removeAt(i--);
         }
@@ -215,5 +215,5 @@ void PF_EventHandler::cleanUp()
             defaultAction->showOptions();
         }
     }
-    qDebug()<<"PF_EventHandler::cleanUp: OK.";
+    //qDebug()<<"PF_EventHandler::cleanUp: OK.";
 }

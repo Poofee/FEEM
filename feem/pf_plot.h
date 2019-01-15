@@ -3773,6 +3773,7 @@ protected:
     QCP::AntialiasedElements mAADragBackup, mNotAADragBackup;
     bool mDragging;
     QHash<QCPAxis::AxisType, QList<QCPAxis*> > mAxes;
+    bool isSyncAxis;/**是否设置xy同步轴**/
 
     // reimplemented virtual methods:
     virtual void applyDefaultAntialiasingHint(QCPPainter *painter) const Q_DECL_OVERRIDE;

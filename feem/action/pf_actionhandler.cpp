@@ -133,7 +133,7 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
 
         break;
     default:
-        qDebug()<<"PF_ActionHandler::setCurrentAction():No such action found!";
+        qDebug()<<Q_FUNC_INFO<<": No such action found!";
         break;
     }
     if(a){

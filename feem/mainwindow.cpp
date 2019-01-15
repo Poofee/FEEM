@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
     hbox->addWidget(logEdit);
     widgetLog->setLayout(hbox);
     dockLogWindow->setWidget(widgetLog);
-    addDockWidget(Qt::BottomDockWidgetArea,dockLogWindow);
+    addDockWidget(Qt::RightDockWidgetArea,dockLogWindow);
 
 
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();

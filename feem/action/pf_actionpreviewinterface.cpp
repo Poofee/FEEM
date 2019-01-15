@@ -58,11 +58,11 @@ void PF_ActionPreviewInterface::drawPreview()
 
 void PF_ActionPreviewInterface::deletePreview()
 {
-    qDebug()<<"PF_ActionPreviewInterface::deletePreview";
+    //qDebug()<<"PF_ActionPreviewInterface::deletePreview";
     //if(hasPreview){
         preview->clear();
         hasPreview = false;
-        qDebug()<<"PF_ActionPreviewInterface::deletePreview: OK.";
+        //qDebug()<<"PF_ActionPreviewInterface::deletePreview: OK.";
     //}
 
 }

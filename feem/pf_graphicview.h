@@ -81,7 +81,7 @@ public:
     ~PF_GraphicView();
 
     void drawLayer1(QPainter * painter);
-    void getPixmapForView(QPixmap **pm);
+//    void getPixmapForView(QPixmap **pm);
 
     void back();
     void setContainer(PF_EntityContainer* _container);
@@ -239,9 +239,9 @@ public slots:
 protected:
     QGridLayout* layout;
 
-    QPixmap *PixmapLayer1;/**图层1，显示网格**/
-    QPixmap *PixmapLayer2;
-    QPixmap *PixmapLayer3;
+//    QPixmap *PixmapLayer1;/**图层1，显示网格**/
+//    QPixmap *PixmapLayer2;
+//    QPixmap *PixmapLayer3;
 
     PF_EventHandler* eventHandler;
 

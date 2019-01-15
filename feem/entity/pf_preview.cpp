@@ -13,12 +13,12 @@ void PF_Preview::addEntity(PF_Entity *entity)
         return;
     }
     PF_EntityContainer::addEntity(entity);
-    qDebug()<<"PF_Preview::addEntity: OK.";
+    //qDebug()<<"PF_Preview::addEntity: OK.";
 }
 
 void PF_Preview::draw(QPainter *painter, PF_GraphicView *view)
 {
-    qDebug()<<"PF_Preview::draw";
+    //qDebug()<<"PF_Preview::draw";
     if(!(painter && view)){
         return;
     }
@@ -26,5 +26,5 @@ void PF_Preview::draw(QPainter *painter, PF_GraphicView *view)
     for(int i=0;i < entities.size();++i){
         entities.at(i)->draw(painter,view);
     }
-    qDebug()<<"PF_Preview::draw: OK.";
+    //qDebug()<<"PF_Preview::draw: OK.";
 }

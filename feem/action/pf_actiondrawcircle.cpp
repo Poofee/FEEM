@@ -46,21 +46,21 @@ void PF_ActionDrawCircle::trigger()
     setStatus(SetCenter);
     reset();
 
-    qDebug()<<"PF_ActionDrawCircle::trigger(): circle added";
+    //qDebug()<<"PF_ActionDrawCircle::trigger(): circle added";
 }
 
 void PF_ActionDrawCircle::mouseMoveEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent";
+    //qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent";
     PF_Vector mouse = PF_Snapper::snapPoint(e);
 
     switch(getStatus()){
     case SetCenter:
-        qDebug()<<"SetCenter";
+        //qDebug()<<"SetCenter";
         data->center = mouse;
         break;
     case SetRadius:
-        qDebug()<<"SetRadius";
+        //qDebug()<<"SetRadius";
         if(data->center.valid){
             data->radius = data->center.distanceTo(mouse);
             deletePreview();
@@ -69,26 +69,26 @@ void PF_ActionDrawCircle::mouseMoveEvent(QMouseEvent *e)
         }
         break;
     }
-    qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent: OK.";
+    //qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent: OK.";
 }
 
 void PF_ActionDrawCircle::mouseReleaseEvent(QMouseEvent *e)
 {
-    qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent";
+    //qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent";
     if(e->button() == Qt::LeftButton){
-        qDebug()<<"Clicked LeftButton!";
+        //qDebug()<<"Clicked LeftButton!";
         PF_Vector mouse = PF_Vector(e->x(),e->y(),0);
 
         switch(getStatus()){
         case SetCenter:
             data->center = mouse;
             setStatus(SetRadius);
-            qDebug()<<"Set Center:("<<e->x()<<","<<e->y()<<")";
+            //qDebug()<<"Set Center:("<<e->x()<<","<<e->y()<<")";
             break;
         case SetRadius:
             if(data->center.valid){
                 data->radius = data->center.distanceTo(mouse);
-                qDebug()<<"Set Radius:"<<data->radius;
+                //qDebug()<<"Set Radius:"<<data->radius;
                 trigger();
             }
             break;
@@ -96,10 +96,10 @@ void PF_ActionDrawCircle::mouseReleaseEvent(QMouseEvent *e)
             break;
         }
     }else if(e->button() == Qt::RightButton){
-        qDebug()<<"Clicked RightButton!";
+        //qDebug()<<"Clicked RightButton!";
         init(getStatus()-1);
     }
-    qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent: OK.";
+    //qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent: OK.";
 }
 
 void PF_ActionDrawCircle::hideOptions()

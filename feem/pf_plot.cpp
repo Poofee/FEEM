@@ -8512,7 +8512,6 @@ void QCPAxis::setScaleRatio(const QCPAxis *otherAxis, double ratio)
     else
         ownPixelSize = axisRect()->height();
 
-    qDebug()<<"x,y: "<<otherPixelSize<<","<<ownPixelSize;
     double newRangeSize = ratio*otherAxis->range().size()*ownPixelSize/(double)otherPixelSize;
     setRange(range().center(), newRangeSize, Qt::AlignCenter);
     mTicker->setAutoTickStep(false);
@@ -8946,6 +8945,7 @@ void QCPAxis::wheelEvent(QWheelEvent *event)
     const double wheelSteps = event->delta()/120.0; // a single step delta is +/-120 usually
     const double factor = qPow(mAxisRect->rangeZoomFactor(orientation()), wheelSteps);
     scaleRange(factor, pixelToCoord(orientation() == Qt::Horizontal ? event->pos().x() : event->pos().y()));
+    /**设置同步轴的新刻度**/
     mParentPlot->replot();
 }
 
@@ -13567,7 +13567,8 @@ QCPAxisRect::QCPAxisRect(PF_GraphicView *parentPlot, bool setupDefaultAxes) :
     mRangeZoom(Qt::Horizontal|Qt::Vertical),
     mRangeZoomFactorHorz(0.85),
     mRangeZoomFactorVert(0.85),
-    mDragging(false)
+    mDragging(false),
+    isSyncAxis(false)
 {
     mInsetLayout->initializeParentPlot(mParentPlot);
     mInsetLayout->setParentLayerable(this);
