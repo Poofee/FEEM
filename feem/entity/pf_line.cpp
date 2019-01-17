@@ -3,7 +3,7 @@
 #include <QPainter>
 
 
-PF_Line::PF_Line(PF_EntityContainer *parent, const PF_LineData &d)
+PF_Line::PF_Line(PF_EntityContainer *parent, PF_GraphicView *view, const PF_LineData &d)
     :PF_AtomicEntity(parent)
     ,data(d)
 {
@@ -24,13 +24,13 @@ PF_Line::PF_Line(PF_EntityContainer *parent, const PF_Vector &pStart, const PF_V
     data.endpoint = pEnd;
 }
 
-void PF_Line::draw(QPainter *painter, PF_GraphicView *view)
+void PF_Line::draw(QCPPainter *painter)
 {
-    if(!(painter && view)){
+    if(!(painter && mParentPlot)){
         return;
     }
-    painter->drawLine(data.startpoint.x,data.startpoint.y,
-                      data.endpoint.x,data.endpoint.y);
+    painter->drawLine(QPointF(data.startpoint.x,data.startpoint.y),
+                      QPointF(data.endpoint.x,data.endpoint.y));
 }
 
 PF_LineData::PF_LineData(PF_Vector &startpoint, PF_Vector &endpoint)

@@ -11,7 +11,7 @@
 class PF_EntityContainer: public PF_Entity
 {
 public:
-    PF_EntityContainer(PF_EntityContainer * parent=nullptr, bool owner=true);
+    PF_EntityContainer(PF_EntityContainer * parent=nullptr, PF_GraphicView* view=nullptr, bool owner=true);
     ~PF_EntityContainer() override;
 
     virtual void clear();
@@ -26,7 +26,7 @@ public:
     void setOwner(bool owner) {autoDelete=owner;}
 
     virtual void addEntity(PF_Entity* entity);
-    void draw(QPainter *painter, PF_GraphicView *view) override;
+    void draw(QCPPainter *painter) ;
 
     const QList<PF_Entity *> &getEntityList();
 protected:

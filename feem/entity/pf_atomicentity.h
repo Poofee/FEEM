@@ -8,7 +8,7 @@
 class PF_AtomicEntity: public PF_Entity
 {
 public:
-    PF_AtomicEntity(PF_EntityContainer *parent=nullptr);
+    PF_AtomicEntity(PF_EntityContainer *parent=nullptr, PF_GraphicView* view=nullptr);
 
     bool isContainer() const override;
     bool isAtomic() const override;

@@ -14,11 +14,11 @@ class PF_Line : public PF_AtomicEntity
 {
 public:
     PF_Line()=default;
-    PF_Line(PF_EntityContainer* parent, const PF_LineData& d);
+    PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_LineData& d);
     PF_Line(const PF_Vector& pStart, const PF_Vector& pEnd);
     PF_Line(PF_EntityContainer *parent, const PF_Vector& pStart, const PF_Vector& pEnd);
 
-    void draw(QPainter *painter, PF_GraphicView *view) override;
+    void draw(QCPPainter *painter) ;
 protected:
     PF_LineData data;
 };

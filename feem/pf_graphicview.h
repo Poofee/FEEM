@@ -93,13 +93,13 @@ public:
 
     void redraw(PF::RedrawMethod method=PF::RedrawAll);
 
-    void drawEntity(QPainter* painter, PF_Entity* e);
+    void drawEntity(QCPPainter* painter, PF_Entity* e);
 
-    void drawEntityLayer(QPainter* painter);
+    //void drawEntityLayer(QPainter* painter);
 
-    virtual void drawLayer3(QPainter *painter);
+    //virtual void drawLayer3(QPainter *painter);
 
-    virtual void drawOverlay(QPainter *painter);
+    virtual void drawOverlay(QCPPainter *painter);
 
     virtual PF_EntityContainer *getOverlayContainer(PF::OverlayGraphics position);
 
@@ -201,6 +201,20 @@ public:
     QList<QCPAxis*> selectedAxes() const;
     QList<QCPLegend*> selectedLegends() const;
     Q_SLOT void deselectAll();
+
+    /**坐标转换**/
+    PF_Vector toGui(PF_Vector v) const;
+    double toGuiX(double x) const;
+    double toGuiY(double y) const;
+    double toGuiDX(double d) const;
+    double toGuiDY(double d) const;
+
+    PF_Vector toGraph(PF_Vector v) const;
+    PF_Vector toGraph(int x, int y) const;
+    double toGraphX(int x) const;
+    double toGraphY(int y) const;
+    double toGraphDX(int d) const;
+    double toGraphDY(int d) const;
 
     bool savePdf(const QString &fileName, int width=0, int height=0, QCP::ExportPen exportPen=QCP::epAllowCosmetic, const QString &pdfCreator=QString(), const QString &pdfTitle=QString());
     bool savePng(const QString &fileName, int width=0, int height=0, double scale=1.0, int quality=-1, int resolution=96, QCP::ResolutionUnit resolutionUnit=QCP::ruDotsPerInch);

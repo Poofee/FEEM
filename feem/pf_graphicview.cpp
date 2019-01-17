@@ -490,32 +490,32 @@ void PF_GraphicView::redraw(PF::RedrawMethod method)
     repaint(); //Paint immediate
 }
 
-void PF_GraphicView::drawEntity(QPainter *painter, PF_Entity *e)
+void PF_GraphicView::drawEntity(QCPPainter *painter, PF_Entity *e)
 {
     if(!e){
         return;
     }
-    e->draw(painter,this);
+    e->draw(painter);
 }
 
-void PF_GraphicView::drawEntityLayer(QPainter *painter)
-{
-    drawEntity(painter, container);
-}
+//void PF_GraphicView::drawEntityLayer(QPainter *painter)
+//{
+//    drawEntity(painter, container);
+//}
 
-void PF_GraphicView::drawLayer3(QPainter *painter)
-{
-    drawOverlay(painter);
-}
+//void PF_GraphicView::drawLayer3(QPainter *painter)
+//{
+//    drawOverlay(painter);
+//}
 
-void PF_GraphicView::drawOverlay(QPainter *painter)
+void PF_GraphicView::drawOverlay(QCPPainter *painter)
 {
     foreach (auto ec, overlayEntities)
     {
         foreach (auto e, ec->getEntityList())
         {
             //setPenForEntity(painter, e);
-            e->draw(painter, this);
+            e->draw(painter);
         }
     }
 }
@@ -1948,6 +1948,143 @@ void PF_GraphicView::deselectAll()
     }
 }
 
+
+/*!
+ \brief 将一个实际的向量转换为屏幕上的向量
+
+ \param v
+ \return PF_Vector
+*/
+PF_Vector PF_GraphicView::toGui(PF_Vector v) const
+{
+    return PF_Vector(toGuiX(v.x), toGuiY(v.y));
+}
+
+
+/*!
+ \brief 将一个实际的水平位置转换为屏幕上的位置
+
+ \param x
+ \return double
+*/
+double PF_GraphicView::toGuiX(double x) const
+{
+    return xAxis->coordToPixel(x);
+}
+
+
+/*!
+ \brief 将一个实际的竖直位置转换为屏幕上的位置
+
+ \param y
+ \return double
+*/
+double PF_GraphicView::toGuiY(double y) const
+{
+    return yAxis->coordToPixel(y);
+}
+
+
+/*!
+ \brief 将一个实际的水平距离转换为屏幕上的水平距离
+
+ \param d
+ \return double
+*/
+double PF_GraphicView::toGuiDX(double d) const
+{
+    double factor = viewport().width() / xAxis->range().size();
+    return d*factor;
+}
+
+
+/*!
+ \brief 讲一个实际的竖直距离转换为屏幕上的竖直距离
+
+ \param d
+ \return double
+*/
+double PF_GraphicView::toGuiDY(double d) const
+{
+    double factor = viewport().height() / yAxis->range().size();
+    return d*factor;
+}
+
+
+/*!
+ \brief 将一个屏幕上的向量转换为实际坐标系内的向量
+
+ \param v
+ \return PF_Vector
+*/
+PF_Vector PF_GraphicView::toGraph(PF_Vector v) const
+{
+    return PF_Vector(toGraphX(v.x),toGraphY(v.y));
+}
+
+
+/*!
+ \brief 将一个屏幕上的位置转换为实际的向量
+
+ \param x
+ \param y
+ \return PF_Vector
+*/
+PF_Vector PF_GraphicView::toGraph(int x, int y) const
+{
+    return PF_Vector(toGraphX(x), toGraphY(y));
+}
+
+
+/*!
+ \brief 将一个屏幕上的水平位置转换为实际的x坐标
+
+ \param x
+ \return double
+*/
+double PF_GraphicView::toGraphX(int x) const
+{
+    return xAxis->pixelToCoord(x);
+}
+
+
+/*!
+ \brief 将一个屏幕上的竖直位置转换为实际的y坐标
+
+ \param y
+ \return double
+*/
+double PF_GraphicView::toGraphY(int y) const
+{
+    return yAxis->pixelToCoord(y);
+}
+
+
+/*!
+ \brief 将一个屏幕上的水平距离转换为实际坐标系的水平距离
+
+ \param d
+ \return double
+*/
+double PF_GraphicView::toGraphDX(int d) const
+{
+    double factor = xAxis->range().size()/viewport().width();
+    return d*factor;
+}
+
+
+/*!
+ \brief 将一个屏幕上的竖直距离转换为实际坐标系的竖直距离
+
+ \param d
+ \return double
+*/
+double PF_GraphicView::toGraphDY(int d) const
+{
+    double factor = yAxis->range().size()/viewport().height();
+    return d*factor;
+}
+
 /*!
   Causes a complete replot into the internal paint buffer(s). Finally, the widget surface is
   refreshed with the new buffer contents. This is the method that must be called to make changes to
@@ -1996,6 +2133,7 @@ void PF_GraphicView::replot(PF_GraphicView::RefreshPriority refreshPriority)
     updateLayout();
 
     // draw all layered objects (grid, axes, plottables, items, legend,...) into their buffers:
+    /**在这里建立图像缓存**/
     setupPaintBuffers();
     foreach (QCPLayer *layer, mLayers)
         layer->drawToPaintBuffer();

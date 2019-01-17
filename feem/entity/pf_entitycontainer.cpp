@@ -2,8 +2,8 @@
 #include "pf_graphicview.h"
 #include <QDebug>
 
-PF_EntityContainer::PF_EntityContainer(PF_EntityContainer *parent, bool owner)
-    :PF_Entity(parent)
+PF_EntityContainer::PF_EntityContainer(PF_EntityContainer *parent, PF_GraphicView *view, bool owner)
+    :PF_Entity(parent,view)
 {
     autoDelete = owner;
 }
@@ -42,14 +42,14 @@ void PF_EntityContainer::addEntity(PF_Entity *entity)
     //qDebug()<<"PF_EntityContainer::addEntity:size:"<<entities.size();
 }
 
-void PF_EntityContainer::draw(QPainter *painter, PF_GraphicView *view)
+void PF_EntityContainer::draw(QCPPainter *painter)
 {
-    if(!(painter && view)){
+    if(!(painter && mParentPlot)){
         return;
     }
 
     for(int i=0;i < entities.size();++i){
-        view->drawEntity(painter,entities.at(i));
+        mParentPlot->drawEntity(painter,entities.at(i));
     }
 }
 

@@ -16,7 +16,8 @@ TEMPLATE = app
 
 include($$PWD/../qtribbon/ribbonsample/qtitanribbon.pri)
 
-
+#ignore warning C4819
+QMAKE_CXXFLAGS += /wd"4819"
 
 DESTDIR = $$PWD/../bin
 

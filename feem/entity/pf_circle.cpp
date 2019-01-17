@@ -4,8 +4,8 @@
 #include "pf_graphicview.h"
 
 
-PF_Circle::PF_Circle(PF_EntityContainer *parent, const PF_CircleData &d)
-    :PF_AtomicEntity(parent)
+PF_Circle::PF_Circle(PF_EntityContainer *parent, PF_GraphicView *view, const PF_CircleData &d)
+    :PF_AtomicEntity(parent,view)
     ,data(d)
 {
 
@@ -21,10 +21,10 @@ double PF_Circle::getRadius() const
     return data.radius;
 }
 
-void PF_Circle::draw(QPainter *painter, PF_GraphicView *view)
+void PF_Circle::draw(QCPPainter *painter)
 {
     //qDebug()<<"PF_Circle::draw";
-    painter->drawEllipse(QPointF(getCenter().x,getCenter().y),getRadius(),getRadius());
+    painter->drawEllipse(QPointF(mParentPlot->toGuiX(getCenter().x),mParentPlot->toGuiY(getCenter().y)),mParentPlot->toGuiDY(getRadius()),mParentPlot->toGuiDY(getRadius()));
     //qDebug()<<"PF_Circle::draw: OK.";
 }
 

@@ -19,12 +19,12 @@ class PF_Circle: public PF_AtomicEntity
 {
 public:
     PF_Circle()=default;
-    PF_Circle(PF_EntityContainer* parent, const PF_CircleData &d);
+    PF_Circle(PF_EntityContainer* parent, PF_GraphicView* view, const PF_CircleData &d);
     ~PF_Circle()=default;
 
     PF_Vector getCenter() const;
     double getRadius() const;
-    void draw(QPainter* painter, PF_GraphicView* view) override;
+    void draw(QCPPainter* painter) ;
 protected:
     PF_CircleData data;
 };

@@ -1,7 +1,7 @@
 #include "pf_atomicentity.h"
 
-PF_AtomicEntity::PF_AtomicEntity(PF_EntityContainer* parent)
-    :PF_Entity(parent)
+PF_AtomicEntity::PF_AtomicEntity(PF_EntityContainer* parent, PF_GraphicView *view)
+    :PF_Entity(parent,view)
 {
 
 }

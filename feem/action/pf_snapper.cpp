@@ -27,7 +27,7 @@ void PF_Snapper::finish()
 
 PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
 {
-    return PF_Vector(e->x(),e->y(),0);
+    return view->toGraph(PF_Vector(e->x(),e->y(),0));
 }
 
 void PF_Snapper::suspend()

@@ -19,7 +19,7 @@ PF_ActionDrawPoint::~PF_ActionDrawPoint()
 void PF_ActionDrawPoint::trigger()
 {
     if(pt->valid){
-        PF_Point * point = new PF_Point(container,PF_PointData(*pt));
+        PF_Point * point = new PF_Point(container,view,PF_PointData(*pt));
         container->addEntity(point);
 
         view->redraw((PF::RedrawMethod) (PF::RedrawDrawing | PF::RedrawOverlay));

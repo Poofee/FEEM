@@ -14,9 +14,9 @@ struct PF_PointData{
 class PF_Point : public PF_AtomicEntity
 {
 public:
-    PF_Point(PF_EntityContainer* parent, const PF_PointData & d);
+    PF_Point(PF_EntityContainer* parent, PF_GraphicView* view, const PF_PointData & d);
 
-    void draw(QPainter* painter, PF_GraphicView* view) override;
+    void draw(QCPPainter* painter) override;
 
 protected:
     PF_PointData data;

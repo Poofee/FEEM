@@ -39,10 +39,11 @@ void PF_ActionDrawCircle::trigger()
 {
     PF_ActionPreviewInterface::trigger();
 
-    PF_Circle* circle = new PF_Circle(container,*data);
+    PF_Circle* circle = new PF_Circle(container,view,*data);
 
     container->addEntity(circle);
-    view->redraw(PF::RedrawDrawing);
+    //view->redraw(PF::RedrawDrawing);
+    view->replot();
     setStatus(SetCenter);
     reset();
 
@@ -56,17 +57,17 @@ void PF_ActionDrawCircle::mouseMoveEvent(QMouseEvent *e)
 
     switch(getStatus()){
     case SetCenter:
-        //qDebug()<<"SetCenter";
+        //qDebug()<<"SetCenter"<<mouse.x<<","<<mouse.y;
         data->center = mouse;
         break;
     case SetRadius:
         //qDebug()<<"SetRadius";
-        if(data->center.valid){
-            data->radius = data->center.distanceTo(mouse);
-            deletePreview();
-            preview->addEntity(new PF_Circle(preview,*data));
-            drawPreview();
-        }
+//        if(data->center.valid){
+//            data->radius = data->center.distanceTo(mouse);
+//            deletePreview();
+//            preview->addEntity(new PF_Circle(preview,view,*data));
+//            drawPreview();
+//        }
         break;
     }
     //qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent: OK.";
@@ -77,7 +78,7 @@ void PF_ActionDrawCircle::mouseReleaseEvent(QMouseEvent *e)
     //qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent";
     if(e->button() == Qt::LeftButton){
         //qDebug()<<"Clicked LeftButton!";
-        PF_Vector mouse = PF_Vector(e->x(),e->y(),0);
+        PF_Vector mouse = snapPoint(e);
 
         switch(getStatus()){
         case SetCenter:
