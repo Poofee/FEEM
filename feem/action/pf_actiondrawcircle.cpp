@@ -62,12 +62,14 @@ void PF_ActionDrawCircle::mouseMoveEvent(QMouseEvent *e)
         break;
     case SetRadius:
         //qDebug()<<"SetRadius";
-//        if(data->center.valid){
-//            data->radius = data->center.distanceTo(mouse);
-//            deletePreview();
-//            preview->addEntity(new PF_Circle(preview,view,*data));
-//            drawPreview();
-//        }
+        if(data->center.valid){
+            data->radius = data->center.distanceTo(mouse);
+            deletePreview();
+            view->setCurrentLayer(QLatin1String("overlay"));
+            preview->addEntity(new PF_Circle(preview,view,*data));
+            view->setCurrentLayer(QLatin1String("main"));
+            drawPreview();
+        }
         break;
     }
     //qDebug()<<"PF_ActionDrawCircle::mouseMoveEvent: OK.";

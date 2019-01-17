@@ -43,7 +43,8 @@ void PF_ActionDrawLine::trigger()
     setStatus(SetStartpoint);
     reset();
 
-    view->redraw(PF::RedrawDrawing);
+    //view->redraw(PF::RedrawDrawing);
+    view->replot();
 }
 
 void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
@@ -52,8 +53,9 @@ void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
     /**只有起始点设置好之后才有预览**/
     if(getStatus() == SetEndpoint && data->startpoint.valid){
         deletePreview();
-
-        PF_Line* line = new PF_Line(data->startpoint,mouse);
+        view->setCurrentLayer(QLatin1String("overlay"));
+        PF_Line* line = new PF_Line(container,view,data->startpoint,mouse);
+        view->setCurrentLayer(QLatin1String("main"));
         preview->addEntity(line);
         drawPreview();
     }
@@ -67,6 +69,7 @@ void PF_ActionDrawLine::mouseReleaseEvent(QMouseEvent *e)
         switch(getStatus()){
         case SetStartpoint:
             data->startpoint = mouse;
+            //qDebug()<<"setstartpoint"<<mouse.x<<","<<mouse.y;
 
             setStatus(SetEndpoint);
             updateMouseButtonHints();

@@ -52,7 +52,8 @@ void PF_ActionPreviewInterface::drawPreview()
     /**preview是ctainer中的一个，不能设为自动删除释放**/
     ctainer->setOwner(false); // Little hack for now so we don't delete the preview twice
     ctainer->addEntity(preview);
-    view->redraw(PF::RedrawOverlay);
+    //view->redraw(PF::RedrawOverlay);
+    view->replot();
     hasPreview=true;
 }
 
