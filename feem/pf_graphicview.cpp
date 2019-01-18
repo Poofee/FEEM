@@ -146,7 +146,7 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     mOpenGlAntialiasedElementsBackup(QCP::aeNone),
     mOpenGlCacheLabelsBackup(true)
 {
-    qDebug()<<"PF_GraphicView::PF_GraphicView";
+    //qDebug()<<"PF_GraphicView::PF_GraphicView";
     if(doc){
         setContainer(doc);
     }
@@ -451,11 +451,11 @@ void PF_GraphicView::setContainer(PF_EntityContainer *_container)
 
 void PF_GraphicView::setCurrentAction(PF_ActionInterface *action)
 {
-    qDebug()<<"PF_GraphicView::setCurrentAction";
+    //qDebug()<<"PF_GraphicView::setCurrentAction";
     if(eventHandler){
         eventHandler->setCurrentAction(action);
     }
-    qDebug()<<"PF_GraphicView::setCurrentAction: OK.";
+    //qDebug()<<"PF_GraphicView::setCurrentAction: OK.";
 }
 
 PF_ActionInterface *PF_GraphicView::getCurrentAction()
@@ -1993,7 +1993,7 @@ double PF_GraphicView::toGuiY(double y) const
 */
 double PF_GraphicView::toGuiDX(double d) const
 {
-    double factor = viewport().width() / xAxis->range().size();
+    double factor = double(xAxis->axisRect()->width()) / double(xAxis->range().size());
     return d*factor;
 }
 
@@ -2006,7 +2006,7 @@ double PF_GraphicView::toGuiDX(double d) const
 */
 double PF_GraphicView::toGuiDY(double d) const
 {
-    double factor = viewport().height() / yAxis->range().size();
+    double factor = double(yAxis->axisRect()->height()) / double(yAxis->range().size());
     return d*factor;
 }
 
@@ -2068,7 +2068,7 @@ double PF_GraphicView::toGraphY(int y) const
 */
 double PF_GraphicView::toGraphDX(int d) const
 {
-    double factor = xAxis->range().size()/viewport().width();
+    double factor = double(xAxis->range().size()) / double(xAxis->axisRect()->width());
     return d*factor;
 }
 
@@ -2081,7 +2081,7 @@ double PF_GraphicView::toGraphDX(int d) const
 */
 double PF_GraphicView::toGraphDY(int d) const
 {
-    double factor = yAxis->range().size()/viewport().height();
+    double factor = double(yAxis->range().size()) / double(xAxis->axisRect()->height());
     return d*factor;
 }
 

@@ -49,7 +49,7 @@ void PF_EntityContainer::draw(QCPPainter *painter)
     }
 
     for(int i=0;i < entities.size();++i){
-        mParentPlot->drawEntity(painter,entities.at(i));
+        //mParentPlot->drawEntity(painter,entities.at(i));
     }
 }
 

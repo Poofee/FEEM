@@ -157,7 +157,7 @@ void PF_EventHandler::setCurrentAction(PF_ActionInterface *action)
         currentAction.last()->showOptions();
         action->setPredecessor(predecessor);
     }
-    qDebug()<<"PF_EventHandler::setCurrentAction: OK.";
+    //qDebug()<<"PF_EventHandler::setCurrentAction: OK.";
 }
 
 PF_ActionInterface *PF_EventHandler::getCurrentAction()
