@@ -25,8 +25,19 @@ public:
 
     void setOwner(bool owner) {autoDelete=owner;}
 
+    PF_Entity* first() const;
+    PF_Entity* last() const;
+
+    /**一系列对Entity的操作**/
     virtual void addEntity(PF_Entity* entity);
-    void draw(QCPPainter *painter) ;
+    virtual void appendEntity(PF_Entity* entity);
+    virtual void prependEntity(PF_Entity* entity);
+    virtual void moveEntity(int index, QList<PF_Entity *>& entList);
+    virtual void insertEntity(int index, PF_Entity* entity);
+    virtual bool removeEntity(PF_Entity* entity);
+
+    virtual void addRectangle(PF_Vector const& corner1, PF_Vector const & corner2);
+    void draw(QCPPainter *painter) override;
 
     const QList<PF_Entity *> &getEntityList();
 protected:

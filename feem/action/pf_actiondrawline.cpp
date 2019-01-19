@@ -83,6 +83,7 @@ void PF_ActionDrawLine::mouseReleaseEvent(QMouseEvent *e)
         }
     }else if(e->button() == Qt::RightButton){
         deletePreview();
+        drawPreview();
         init(getStatus()-1);
     }
 }

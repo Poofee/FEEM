@@ -4,7 +4,7 @@
 
 PF_ActionPreviewInterface::PF_ActionPreviewInterface(const char*name, PF_EntityContainer *container, PF_GraphicView *view)
     :PF_ActionInterface(name,container,view)
-    ,preview(new PF_Preview(container))
+    ,preview(new PF_Preview(container,view))
 {
     hasPreview = true;
 }

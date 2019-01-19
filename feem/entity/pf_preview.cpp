@@ -20,9 +20,9 @@ void PF_Preview::draw(QCPPainter *painter)
 {
     //qDebug()<<"PF_Preview::draw";
     if(!(painter && mParentPlot)){
+        qDebug()<<Q_FUNC_INFO;
         return;
     }
-
     for(int i=0;i < entities.size();++i){
         entities.at(i)->draw(painter);
     }

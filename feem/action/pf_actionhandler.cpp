@@ -3,6 +3,7 @@
 #include "pf_actiondrawcircle.h"
 #include "pf_actiondrawpoint.h"
 #include "pf_actiondrawline.h"
+#include "pf_actiondrawrectangle.h"
 #include "pf_document.h"
 #include "pf_graphicview.h"
 
@@ -21,7 +22,7 @@ PF_ActionInterface *PF_ActionHandler::getCurrentAction()
 
 PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
 {
-    PF_ActionInterface* a = NULL;
+    PF_ActionInterface* a = nullptr;
 
     switch (typeId) {
     case PF::ActionDefault:
@@ -38,6 +39,9 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
         break;
     case PF::ActionDrawPoint:
         a = new PF_ActionDrawPoint(document,view);
+        break;
+    case PF::ActionDrawRectangle:
+        a = new PF_ActionDrawRectangle(document,view);
         break;
     case PF::ActionEditCopy:
 
@@ -199,6 +203,11 @@ void PF_ActionHandler::slotDrawArc() {
 void PF_ActionHandler::slotDrawCircle()
 {
     setCurrentAction(PF::ActionDrawCircle);
+}
+
+void PF_ActionHandler::slotDrawRectangle()
+{
+    setCurrentAction(PF::ActionDrawRectangle);
 }
 
 void PF_ActionHandler::slotZoomIn() {

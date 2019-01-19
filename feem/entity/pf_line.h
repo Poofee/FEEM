@@ -17,6 +17,15 @@ public:
     PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_LineData& d);
     PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vector& pStart, const PF_Vector& pEnd);
 
+    /** @return Start point of the entity */
+    PF_Vector getStartpoint() const override{
+        return data.startpoint;
+    }
+    /** @return End point of the entity */
+    PF_Vector getEndpoint() const override{
+        return data.endpoint;
+    }
+
     void draw(QCPPainter *painter) ;
 protected:
     PF_LineData data;

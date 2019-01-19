@@ -48,6 +48,8 @@ HEADERS += \
     ./action/pf_actiondrawcircle.h \
     ./action/pf_actiondrawpoint.h \
     ./action/pf_actiondrawline.h \
+    ./action/pf_actiondrawrectangle.h \
+    ./entity/pf_polyline.h \
     ./action/pf_actionfactory.h \
     ./action/pf_actiongroupmanager.h \
     ./action/pf_actionhandler.h \
@@ -64,7 +66,7 @@ HEADERS += \
     ./entity/pf_preview.h \
     ./entity/pf_point.h \
     ./entity/pf_line.h \
-    pf_plot.h
+    pf_plot.h \
 
 SOURCES += \
     ./main.cpp \
@@ -77,6 +79,8 @@ SOURCES += \
     ./action/pf_actiondrawcircle.cpp \
     ./action/pf_actiondrawpoint.cpp \
     ./action/pf_actiondrawline.cpp \
+    ./action/pf_actiondrawrectangle.cpp \
+    ./entity/pf_polyline.cpp \
     ./action/pf_actionfactory.cpp \
     ./action/pf_actiongroupmanager.cpp \
     ./action/pf_actionhandler.cpp \
@@ -93,7 +97,8 @@ SOURCES += \
     ./entity/pf_preview.cpp \
     ./entity/pf_point.cpp \
     ./entity/pf_line.cpp \
-    pf_plot.cpp
+    pf_plot.cpp \
+
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdockd

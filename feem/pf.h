@@ -32,6 +32,7 @@ public:
         ActionSelectAll,
         ActionDrawPoint,
         ActionDrawCircle,
+        ActionDrawRectangle,
         ActionDrawLine,
         ActionDrawArc,
 

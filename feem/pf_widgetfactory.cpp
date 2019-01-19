@@ -311,7 +311,7 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
 
         QMenu* menuSquare = new QMenu(mainwindow);
 
-        menuSquare->addAction(tr("rectangle"));
+        menuSquare->addAction(a_map["DrawRectangle"]);
         menuSquare->addAction(tr("square"));
         menuSquare->addAction(tr("rectangle(center)"));
         menuSquare->addAction(tr("square(center)"));

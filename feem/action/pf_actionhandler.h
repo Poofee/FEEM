@@ -42,6 +42,7 @@ public slots:
     void slotDrawLine();
     void slotDrawArc();
     void slotDrawCircle();
+    void slotDrawRectangle();
 
     //View
     void slotZoomIn();

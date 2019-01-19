@@ -102,27 +102,37 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	action->setObjectName("SelectAll");
 	a_map["SelectAll"] = action;
 
+    /**画点**/
 	action = new QAction(tr("DrawPoint"), agm->file);
     action->setIcon(QIcon(":/main/dot.png"));
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawPoint()));
 	action->setObjectName("DrawPoint");
 	a_map["DrawPoint"] = action;
 
+    /**画线段**/
 	action = new QAction(tr("DrawLine"), agm->file);
     action->setIcon(QIcon(":/main/line.png"));
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawLine()));
 	action->setObjectName("DrawLine");
 	a_map["DrawLine"] = action;
 
+    /**画圆弧**/
 	action = new QAction(tr("DrawArc"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawArc()));
 	action->setObjectName("DrawArc");
 	a_map["DrawArc"] = action;
 
+    /**画圆**/
     action = new QAction(tr("DrawCircle"), agm->file);
     connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawCircle()));
     action->setObjectName("DrawCircle");
     a_map["DrawCircle"] = action;
+
+    /**画长方形**/
+    action = new QAction(tr("DrawRectangle"), agm->file);
+    connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawRectangle()));
+    action->setObjectName("DrawRectangle");
+    a_map["DrawRectangle"] = action;
 
 	//View
 	action = new QAction(tr("ZoomIn"), agm->file);

@@ -2462,6 +2462,10 @@ void PF_GraphicView::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event)
     // resize and repaint the buffer:
     setViewport(rect());
+    /**窗口大小改变时，要更新一下布局，防止坐标轴发生变形，否则要在replot当中更新两次**/
+    xAxis->setScaleRatio(yAxis,1);
+    xAxis2->setScaleRatio(yAxis,1);
+    updateLayout();
     replot(rpQueuedRefresh); // queued refresh is important here, to prevent painting issues in some contexts (e.g. MDI subwindow)
 }
 

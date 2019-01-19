@@ -25,6 +25,9 @@ public:
     virtual bool isContainer() const = 0;/**纯虚函数**/
     virtual bool isAtomic() const = 0;
 
+    virtual PF_Vector getStartpoint() const;
+    virtual PF_Vector getEndpoint() const;
+
     /**继承的非虚函数**/
     virtual QRect clipRect() const;
 

@@ -100,6 +100,8 @@ void PF_ActionDrawCircle::mouseReleaseEvent(QMouseEvent *e)
         }
     }else if(e->button() == Qt::RightButton){
         //qDebug()<<"Clicked RightButton!";
+        deletePreview();
+        drawPreview();
         init(getStatus()-1);
     }
     //qDebug()<<"PF_ActionDrawCircle::mouseReleaseEvent: OK.";
