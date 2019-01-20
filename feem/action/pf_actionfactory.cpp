@@ -126,12 +126,14 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
     action = new QAction(tr("DrawCircle"), agm->file);
     connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawCircle()));
     action->setObjectName("DrawCircle");
+    action->setIcon(QIcon(":/main/circle.png"));
     a_map["DrawCircle"] = action;
 
     /**画长方形**/
     action = new QAction(tr("DrawRectangle"), agm->file);
     connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawRectangle()));
     action->setObjectName("DrawRectangle");
+    action->setIcon(QIcon(":/main/square.png"));
     a_map["DrawRectangle"] = action;
 
 	//View

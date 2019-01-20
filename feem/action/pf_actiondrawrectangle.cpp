@@ -31,6 +31,20 @@ void PF_ActionDrawRectangle::trigger()
     PF_ActionPreviewInterface::trigger();
 
     /**创建一个矩形变量**/
+    PF_Polyline* polyline = new PF_Polyline(container,view);
+
+    // create and add rectangle:
+    polyline->addVertex(pPoints->corner1);
+    //polyline->setLayerToActive();
+    //polyline->setPenToActive();
+    polyline->addVertex({pPoints->corner2.x, pPoints->corner1.y});
+    polyline->addVertex(pPoints->corner2);
+    polyline->addVertex({pPoints->corner1.x, pPoints->corner2.y});
+    polyline->setClosed(true);
+    polyline->endPolyline();
+    container->addEntity(polyline);
+
+    view->replot();
 }
 
 void PF_ActionDrawRectangle::mouseMoveEvent(QMouseEvent *e)

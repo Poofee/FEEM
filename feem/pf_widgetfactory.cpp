@@ -316,24 +316,18 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
         menuSquare->addAction(tr("rectangle(center)"));
         menuSquare->addAction(tr("square(center)"));
 
-        QAction *m_actionProject = groupDraw->addAction(QIcon(":/main/square.png"),
-            tr("&Draw rectangle"), Qt::ToolButtonTextUnderIcon, menuSquare);
+        QAction *m_actionProject = groupDraw->addAction(a_map["DrawRectangle"], Qt::ToolButtonTextUnderIcon, menuSquare);
         m_actionProject->setPriority(QAction::LowPriority);
-        //m_actionProject->setShortcut(QKeySequence::Paste);
         m_actionProject->setToolTip(tr("Draw rectangle"));
 
         QMenu* menuCircle = new QMenu(mainwindow);
-        //QAction *m_actionPaste = menuCircle->addAction(QIcon(":/main/windows.png"), tr("project"));
-        //m_actionPaste->setPriority(QAction::LowPriority);
-        //m_actionPaste1->setShortcut(QKeySequence::Paste);
 
         menuCircle->addAction(a_map["DrawCircle"]);
         menuCircle->addAction(tr("circle(3 points)"));
         menuCircle->addAction(tr("circle(corner+radisu+angle)"));
         menuCircle->addAction(tr("circle"));
 
-        QAction *m_actionLayout = groupDraw->addAction(QIcon(":/main/circle.png"),
-            tr("&Draw circle"), Qt::ToolButtonTextUnderIcon, menuCircle);
+        QAction *m_actionLayout = groupDraw->addAction(a_map["DrawCircle"], Qt::ToolButtonTextUnderIcon, menuCircle);
         m_actionLayout->setPriority(QAction::LowPriority);
         //m_actionProject->setShortcut(QKeySequence::Paste);
         m_actionLayout->setToolTip(tr("Draw circle"));

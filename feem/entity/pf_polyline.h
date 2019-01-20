@@ -27,6 +27,7 @@ class PF_Polyline : public PF_EntityContainer
 {
 public:
     PF_Polyline() = default;
+    PF_Polyline(PF_EntityContainer* parent, PF_GraphicView* view);
     PF_Polyline(PF_EntityContainer* parent, PF_GraphicView* view, const PF_PolylineData &d);
     ~PF_Polyline() = default;
 
