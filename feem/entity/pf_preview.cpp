@@ -24,7 +24,7 @@ void PF_Preview::draw(QCPPainter *painter)
         return;
     }
     for(int i=0;i < entities.size();++i){
-        entities.at(i)->draw(painter);
+        //entities.at(i)->draw(painter);
     }
     //qDebug()<<"PF_Preview::draw: OK.";
 }

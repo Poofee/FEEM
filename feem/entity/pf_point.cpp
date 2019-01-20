@@ -1,4 +1,5 @@
 #include "pf_point.h"
+#include "pf_graphicview.h"
 #include <QPainter>
 
 PF_Point::PF_Point(PF_EntityContainer *parent, PF_GraphicView *view, const PF_PointData &d)
@@ -13,8 +14,8 @@ void PF_Point::draw(QCPPainter *painter)
     if(!(painter && mParentPlot)){
         return;
     }
-    painter->drawLine(QPointF(data.pos.x-1,data.pos.y),
-                      QPointF(data.pos.x+1,data.pos.y));
-    painter->drawLine(QPointF(data.pos.x,data.pos.y-1),
-                      QPointF(data.pos.x,data.pos.y+1));
+    double x = mParentPlot->toGuiX(data.pos.x);
+    double y = mParentPlot->toGuiY(data.pos.y);
+    painter->drawLine(QPointF(x-1,y),QPointF(x+1,y));
+    painter->drawLine(QPointF(x,y-1),QPointF(x,y+1));
 }

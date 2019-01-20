@@ -22,7 +22,8 @@ void PF_ActionDrawPoint::trigger()
         PF_Point * point = new PF_Point(container,view,PF_PointData(*pt));
         container->addEntity(point);
 
-        view->redraw((PF::RedrawMethod) (PF::RedrawDrawing | PF::RedrawOverlay));
+        //view->redraw((PF::RedrawMethod) (PF::RedrawDrawing | PF::RedrawOverlay));
+        view->replot();
     }
 }
 
