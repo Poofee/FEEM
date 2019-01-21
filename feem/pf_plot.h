@@ -707,7 +707,7 @@ class QCP_LIB_DECL QCPLayerable : public QObject
     Q_PROPERTY(bool antialiased READ antialiased WRITE setAntialiased)
     /// \endcond
 public:
-    QCPLayerable(PF_GraphicView *plot, QString targetLayer=QString(), QCPLayerable *parentLayerable=0);
+    QCPLayerable(PF_GraphicView *plot, QString targetLayer=QString(), QCPLayerable *parentLayerable=nullptr);
     virtual ~QCPLayerable();
 
     // getters:

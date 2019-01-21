@@ -145,6 +145,7 @@ void PF_EntityContainer::addRectangle(const PF_Vector &corner1, const PF_Vector 
 void PF_EntityContainer::draw(QCPPainter *painter)
 {
     if(!(painter && mParentPlot)){
+        qDebug()<<Q_FUNC_INFO<<"NULL";
         return;
     }
 

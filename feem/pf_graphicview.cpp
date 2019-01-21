@@ -149,6 +149,7 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     //qDebug()<<"PF_GraphicView::PF_GraphicView";
     if(doc){
         setContainer(doc);
+        container->mParentPlot = this;
     }
 
     /**鼠标跟踪失效（默认），当鼠标被移动的时候只有在至少一个鼠标按键被按下时，
@@ -220,6 +221,8 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     xAxis2->grid()->setLayer(QLatin1String("grid"));
     yAxis2->grid()->setLayer(QLatin1String("grid"));
     legend->setLayer(QLatin1String("legend"));
+    /**将container添加到main层，这样才能够进行绘制**/
+    container->setLayer(QLatin1String("main"));
     /**设置坐标轴背景**/
     defaultAxisRect->setBackground(QBrush(QColor(248,253,255)));
     /**设置xy轴等比例**/

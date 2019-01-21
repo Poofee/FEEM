@@ -7,6 +7,8 @@ PF_ActionPreviewInterface::PF_ActionPreviewInterface(const char*name, PF_EntityC
     ,preview(new PF_Preview(container,view))
 {
     hasPreview = true;
+    /**需要添加到layer当中才能显示**/
+    preview->setLayer(QLatin1String("overlay"));
 }
 
 PF_ActionPreviewInterface::~PF_ActionPreviewInterface()
