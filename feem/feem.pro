@@ -67,6 +67,16 @@ HEADERS += \
     ./entity/pf_point.h \
     ./entity/pf_line.h \
     pf_plot.h \
+    project/pf_project.h \
+    project/pf_projecttree.h \
+    project/pf_node.h \
+    project/pf_projectexplorer.h \
+    project/pf_projectwelcomepage.h \
+    project/pf_projecttreewidget.h \
+    project/pf_projectmanager.h \
+    material/pf_material.h \
+    material/pf_materialmanager.h \
+    project/pf_projectmodel.h
 
 SOURCES += \
     ./main.cpp \
@@ -98,6 +108,16 @@ SOURCES += \
     ./entity/pf_point.cpp \
     ./entity/pf_line.cpp \
     pf_plot.cpp \
+    project/pf_project.cpp \
+    project/pf_projecttree.cpp \
+    project/pf_node.cpp \
+    project/pf_projectexplorer.cpp \
+    project/pf_projectwelcomepage.cpp \
+    project/pf_projecttreewidget.cpp \
+    project/pf_projectmanager.cpp \
+    material/pf_material.cpp \
+    material/pf_materialmanager.cpp \
+    project/pf_projectmodel.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
