@@ -1,0 +1,525 @@
+\chapter{编码规范}
+本编码规范参考自Qt，目的是为了让开发者在开发FEEM的过程当中，能写出更容易让人理解和可维护的代码，减小阅读者的困惑。在编写代码的过程当中，请尽量遵守。本文档也是让新的程序员开发者对软件开发有一个基本的概念。
+
+为了向FEEM贡献您自己的源代码，请务必遵守以下准则：
+
+\begin{enumerate}
+	\item KISS。保持简短，保持简洁。永远选择一个更简单的实现方案，而不是更复杂的实现。
+	\item 写出好的C++代码。也就是，必要的注释，面向对象。
+	\item 不重复造轮子。
+	\item 遵循“代码结构”，“格式”等的准则。
+	\item 定义好接口文档。
+\end{enumerate}
+
+
+\section{二进制兼容和源代码兼容}
+以下内容描述了如何对版本进行编号，并在版本之间定义“二进制兼容性”和“源代码兼容性”
+
+\begin{enumerate}
+	\item 主要版本，次要版本以及补丁版本：'QC 3.0.0'指的是主要版本(major release)，'QC 3.1.0'指的是次要版本(minor release)，'QC 3.1.3'指的是补丁版本(patch release)。
+	\item “向后二进制兼容性(Backward binary compatibility)”指的是链接到早期版本的库库的代码仍然有效。
+	\item “向前二进制兼容性(Forward binary compatibility)”指的是链接到较新版本库的代码适用于较旧的库。
+	\item “源代码兼容性(Source code compatibility)”指的是代码编译无需修改。
+\end{enumerate}
+
+我们目前不保证主要版本和次要版本的二进制或源代码兼容性，然而我们要尽量保证同一次要版本的补丁版本之间的后向二进制兼容性和后向源代码兼容性。
+
+\begin{enumerate}
+	\item 软API冻结(Soft API Freeze)：在次要版本的测试版发布后不久，我们开始在该次要版本中保持向后的源代码兼容性，包括其补丁版本。这意味着从那时起，使用 QC API的代码将针对此次要版本的所有即将发布的版本的API进行编译，包括其补丁版本。此规则可能偶尔会有例外。
+	\item 硬API冻结(Hard API Freeze)：从次要版本的候选版本开始，我们在该次要版本中保留了向后的源代码兼容性，包括其补丁版本。我们也开始保持向后二进制兼容性但这不会反映在插件的compatVersion设置中。因此，针对候选版本的QC插件实际上不会在最终版本或更高版本中加载，即使理论上允许库的二进制兼容性。请参阅下面有关插件规范的部分。
+	\item 硬ABI冻结(Hard ABI Freeze)：从次要版本的最终版本开始，我们为此版本及其所有补丁版本保留了向后的源代码和二进制兼容性。
+\end{enumerate}
+
+为了保留向后兼容性：
+
+\begin{enumerate}
+	\item 不要添加或移除任何公共的API.
+	\item 不要重新实现函数（包括内联，也包括保护和私有函数）。
+	\item 参阅\url{https://wiki.qt.io/Binary_Compatibility_Workarounds} 二进制兼容性解决办法(Binary Compatibility Workarounds)。
+\end{enumerate}
+
+想要得到更多有关二进制兼容性的信息，参阅\url{http://techbase.kde.org/Policies/Binary_Compatibility_Issues_With_C++}， C++中的二进制兼容性(Binary Compatibility Issues With C++)部分。
+
+从“插件规格(Plugin Specifications)”的角度来看，这意味着：
+
+\begin{enumerate}
+	\item 补丁版本中的QC插件将具有 compatVersion 的次要版本。 例如，版本3.1.2中的插件将具有compatVersion =“3.1.0”.
+	\item 次要版本的预发布版本（包括候选版本）仍将自己作为 compatVersion，这意味着针对最终版本编译的插件将不会在预发行版中加载。
+	\item QC插件开发人员可以决定他们的插件是否需要某个补丁版本（或更高版本）的其他QC插件，或者它们是否适用于此次要版本的所有补丁版本，通过在声明依赖关系时设置相应的version在另一个插件上。Qt工程提供的QC插件的默认值是要求最新的补丁版本。
+\end{enumerate}
+
+举个栗子，QC 3.1 beta版本（内部版本号（3.0.82）中的'Find'插件包含如下代码：
+
+\begin{lstlisting}
+<plugin name="Find" version="3.0.82" compatVersion="3.0.82">
+ <dependencyList>
+  <dependency name="Core" version="3.0.82"/>
+   ....
+\end{lstlisting}
+
+QC 3.1.0最终版本的'Find'插件包含：
+
+\begin{lstlisting}
+<plugin name="Find" version="3.1.0" compatVersion="3.1.0">
+ <dependencyList>
+  <dependency name="Core" version="3.1.0"/>
+   ....
+\end{lstlisting}
+
+QC3.1.1补丁版本中的'Find'插件版本为3.1.1，向后二进制兼容'Find'插件版本3.1.0(compatVersion="3.1.0")，并且需要一个与‘Core’插件版本3.1.1二进制向后兼容的‘Core’插件：
+
+\begin{lstlisting}
+<plugin name="Find" version="3.1.1" compatVersion="3.1.0">
+ <dependencyList>
+  <dependency name="Core" version="3.1.1"/>
+   ....
+\end{lstlisting}
+
+\section{代码结构}
+遵循如下的准则来使得代码更快、更清晰。此外该指南允许您利用C++中的强类型检查。
+
+\begin{enumerate}
+	\item 尽量使用前自增（减）。即：
+	\begin{lstlisting}
+	++T;
+	-U;
+	\end{lstlisting}
+	\item 尽量减小对相同代码的重复执行，主要是用在循环里面。
+	\begin{lstlisting}
+    Container::iterator end = large.end();
+	for (Container::iterator it = large.begin(); it != end; ++it) {
+	...;
+	}
+	\end{lstlisting}
+\end{enumerate}
+
+\section{代码格式}
+\subsection{首字母}
+标识符使用驼峰命名法。\url{http://en.wikipedia.org/wiki/CamelCase}，camel case部分。
+
+标识符的第一个字母是否大写遵循：
+\begin{enumerate}
+	\item 类名的首字母大写
+	\item 函数名首字母小写
+	\item 变量名首字母小写
+	\item 枚举类型和值首字母大写 
+\end{enumerate}
+
+\subsection{空白}
+\begin{enumerate}
+	\item 使用四个空格来进行缩进，而不是Tab键
+	\item 使用空白行来组织代码块
+	\item 永远只使用一个空行
+\end{enumerate}
+
+\subsubsection{指针和引用}
+对于指针或者引用类型，永远在*或者\&符号之前添加空格，而不是之后添加空格。
+
+尽可能避免C风格的类型转换：
+\begin{lstlisting}
+    char *blockOfMemory = (char *)malloc(data.size());
+	char *blockOfMemory = reinterpret_cast<char *>(malloc(data.size()));
+
+-NOT-
+
+	char* blockOfMemory = (char* ) malloc(data.size());
+\end{lstlisting}
+
+\subsubsection{操作符名字和括弧}
+在操作符和括弧之间不要打空格，否则看起来像一个表达式：
+\begin{lstlisting}
+	operator==(type)
+
+-NOT-
+
+	operator == (type)
+\end{lstlisting}
+
+\subsubsection{函数名和括弧}
+函数名和括弧之间不要打空格：
+\begin{lstlisting}
+    void mangle()
+
+-NOT-
+
+	void mangle ()
+\end{lstlisting}
+
+\subsubsection{关键字}
+始终在关键字后面和花括号之前使用单个空格:
+\begin{lstlisting}
+    if (foo) {
+	}
+
+-NOT-
+
+	if(foo){
+	}
+\end{lstlisting}
+
+\subsubsection{备注}
+通常，在“//”之后放一个空格。 要在多行注释中对齐文本，可以插入多个空格。
+
+\subsection{花括号}
+作为基本规则，将左花括号放在与语句开头相同的行上
+\begin{lstlisting}
+    if (codec) {
+	}
+
+-NOT-
+
+	if (codec)
+	{
+	}
+\end{lstlisting}
+
+例外：函数实现和类声明总是在行的开头有左括号
+
+当条件语句的主体包含多行时，以及单行语句有点复杂时，请使用花括号。否则，请省略它们：
+\begin{lstlisting}
+    if (address.isEmpty())
+	return false;
+
+-NOT-
+
+	if (address.isEmpty()) {
+	return false;
+	}
+
+\end{lstlisting}
+
+例外1：如果父语句包含多行，使用花括号：
+\begin{lstlisting}
+    if (address.isEmpty()
+	|| !isValid()
+	|| !codec) {
+	return false;
+	}
+\end{lstlisting}
+
+例外2：如果if-then-else中if部分或者else部分其中一部分需要用到花括号，另一部分也要加上。
+
+当条件语句的主体为空时使用花括号：
+\begin{lstlisting}
+    while (a) {}
+
+-NOT-
+
+	while (a);
+\end{lstlisting}
+
+\subsection{括弧}
+通过括弧来组织表达式：
+\begin{lstlisting}
+    if ((a && b) || c)
+
+-NOT-
+
+	if (a && b || c)
+\end{lstlisting}
+
+\subsection{换行符}
+\begin{enumerate}
+	\item 每行小于100个字符。
+	\item 如有必要，插入换行符。
+	\item 逗号放在每一行的最后
+	\item 运算符放在每一行的最前面
+	\begin{lstlisting}
+		if (longExpression
+		|| otherLongExpression
+		|| otherOtherLongExpression) {
+		}
+	
+	-NOT-
+	
+		if (longExpression ||
+		otherLongExpression ||
+		otherOtherLongExpression) {
+		}
+	\end{lstlisting}
+\end{enumerate}
+
+\subsection{声明}
+\begin{enumerate}
+	\item 按照public, protected, private的顺序声明类的成员。
+	\item 避免在类的声明文件中声明全局对象。 如果对所有对象使用相同的变量，请使用静态成员。
+	\item 使用class而不是用struct声明一个类。
+\end{enumerate}
+
+\subsubsection{声明变量}
+\begin{enumerate}
+	\item 避免使用类类型的全局变量来排除初始化顺序问题。
+	\item 将全局字符串文字声明为:
+	\begin{lstlisting}
+	 const char aString[] = "Hello";
+	\end{lstlisting}
+	\item 尽可能避免使用短名称（例如，a，rbarr，nughdeget）。 仅对计数器和临时值使用单字符变量名称。
+	\item 每个变量都在不同的行中定义：
+	\begin{lstlisting}
+    QString a = "Joe";
+	QString b = "Foo";
+	\end{lstlisting}
+	
+	\item 避免缩写
+	\item Wait with declaring a variable until it is needed. This is especially important when initialization is done at the same time.（什么意思）
+\end{enumerate}
+
+\subsection{命名空间}
+\begin{enumerate}
+	\item 将左花括号和namespace放在同一行。
+	\item 声明或定义不要缩进。
+	\item 建议：如果命名空间跨越多行：在右花括号重复命名空间后添加注释：
+	\begin{lstlisting}
+	void someFunction() { ... }
+	
+	}  // namespace MyPlugin
+	\end{lstlisting}
+	
+	\item 如果命名空间里面只声明一个类，将所有代码放在同一行:
+	\begin{lstlisting}
+	namespace MyPlugin { class MyClass; }
+	\end{lstlisting}
+	
+	\item 不要在头文件中使用using指令。
+	\item 定义类和函数的时候不要依赖using指令，而是在正确命名的声明区域中定义它。
+	\item 访问全局函数时不要依赖using指令。
+	\item 在其他情况下建议使用using指令，这能避免代码混乱。将using指令放在所有的include之后。
+	\begin{lstlisting}
+	[in foo.cpp]
+	...
+	#include "foos.h"
+	...
+	#include <utils/filename.h>
+	...
+	using namespace Utils;
+	
+	namespace Foo {
+	namespace Internal {
+	
+	void SomeThing::bar()
+	{
+		FileName f;              // or Utils::FileName f
+		...
+	}
+	...
+	} // namespace Internal      // or only // Internal
+	} // namespace Foo           // or only // Foo
+	\end{lstlisting}
+	
+\end{enumerate}
+\section{模式和实践}
+\subsection{命名空间}
+FEEM的命名空间策略如下：
+\begin{enumerate}
+	\item Classes/Symbols of a library or plugin that are exported for use of other libraries or plugins are in a namespace specific to that library/plugin, e.g. \c{MyPlugin}.
+	\item Classes/Symbols of a library or plugin that are not exported are in an additional \c{Internal} namespace, e.g. \c{MyPlugin::Internal}.
+\end{enumerate}
+
+\subsection{传递文件名}
+\subsection{插件拓展点}
+插件扩展点是由一个插件提供的接口，由其他人实现。然后，插件检索接口的所有实现并使用它们。也就是说，他们扩展了插件的功能。通常，在插件初始化期间，接口的实现被放入全局对象池中，并且插件在初始化结束时从对象池中检索它们。
+\subsection{使用全局对象池}
+\subsection{C++特点}
+\begin{enumerate}
+	\item 首选 \#pragma once作为头文件保护符。
+	\item 不要使用exceptions。
+	\item 不要使用RTTI(运行时类型信息。包含typeinfo结构，dynamic\_cast或typeid运算符，抛出exceptions)。
+	\item 不要使用虚拟继承。
+	\item 明智地使用模板(Template)。
+	\item 所有的代码仅为ASCII。
+	\item 尽可能使用静态关键字而不是而不是匿名命名空间。
+\end{enumerate}
+\subsubsection{空指针}
+将nullptr用于空指针常量。作为例外，导入的第三方代码以及连接本机API(src / support / os\_ *)的代码可以使用NULL或0。
+\subsection{C++11和C++14特点}
+代码需要通过Microsoft Visual Studio 2013, g++ 4.7, and Clang 3.1来编译。
+\subsubsection{Lambda表达式}
+使用lambda表达式时要注意：
+\begin{enumerate}
+	\item 您不必显式指定返回类型。 如果您没有使用前面提到的编译器之一，请注意这是一个C++ 14功能，您可能需要在编译器中启用C++ 14支持。
+	\begin{lstlisting}
+		[]() {
+			Foo *foo = activeFoo();
+			return foo ? foo->displayName() : QString();
+		});
+	\end{lstlisting}
+	\item 如果您使用lambda所在类中的静态函数，则必须显式捕获this。 否则它不能用g++ 4.7及更早版本编译。
+	\begin{lstlisting}
+		void Foo::something()
+		{
+			...
+			[this]() { Foo::someStaticFunction(); }
+			...
+		}
+	\end{lstlisting}
+\end{enumerate}
+根据以下规则格式化lambda表达式：
+\begin{enumerate}
+	\item 将捕获列表，参数列表，返回类型和左花括号放在第一行，主体在以下行上缩进，并在新行上放置右花括号。
+	\begin{lstlisting}
+		[]() -> bool {
+			something();
+			return isSomethingElse();
+		}
+	\end{lstlisting}
+	
+	\item 将封闭函数调用的右括号和分号放在与lambda的右括号相同的行上。
+	\begin{lstlisting}
+		foo([]() {
+			something();
+		});
+	\end{lstlisting}
+	
+	\item 如果在'if'语句中使用lambda，则在新行上开始lambda，以避免lambda的左括号和'if'语句的左括号之间的混淆。
+	\begin{lstlisting}
+        if (anyOf(fooList,
+			[](Foo foo) {
+				return foo.isGreat();
+			}) {
+			return;
+		}
+	\end{lstlisting}
+	
+	\item 可选：将lambda表达式放在一行中
+	\begin{lstlisting}
+		foo([] { return true; });
+		
+		if (foo([] { return true; })) {
+			...
+		}
+	\end{lstlisting}
+	
+\end{enumerate}
+\subsubsection{auto关键字}
+通常在下列情况可以使用auto关键字。如果使用auto关键字使得代码的可读性变差，不要使用。
+\begin{enumerate}
+	\item 当它避免在同一语句中重复某种类型时。
+	\begin{lstlisting}
+		auto something = new MyCustomType;
+		auto keyEvent = static_cast<QKeyEvent *>(event);
+		auto myList = QStringList({ "FooThing",  "BarThing" });
+	\end{lstlisting}
+	
+	\item 声明迭代器种类时
+	\begin{lstlisting}
+		auto it = myList.const_iterator();
+	\end{lstlisting}
+\end{enumerate}
+\subsubsection{有作用域的枚举}
+在无作用域的枚举隐式转换成int是不必要的，或者是其它作用域有用的情况下可以使用有作用域的枚举。
+\subsubsection{委托构造函数}
+如果多个构造函数使用基本相同的代码，请使用委托构造函数。
+\subsubsection{初始化列表}
+使用初始化列表来初始化容器：
+\begin{lstlisting}
+	const QVector<int> values = {1, 2, 3, 4, 5};
+\end{lstlisting}
+\subsubsection{使用花括号初始化}
+如果使用花括号进行初始化，遵循与使用括弧初始化相同的规则。但是不要过量使用:
+\begin{lstlisting}
+    class Values // the following code is quite useful for test fixtures
+	{
+		float floatValue = 4; // prefer that for simple types
+		QVector<int> values = {1, 2, 3, 4, integerValue}; // prefer that syntax for initializer lists
+		SomeValues someValues{"One", 2, 3.4}; // not an initializer_list
+		SomeValues &someValuesReference = someValues;
+		ComplexType complexType{values, otherValues} // constructor call
+	}
+
+	object.setEntry({"SectionA", value, doubleValue}); // calls a 	constructor
+	object.setEntry({}); // calls default constructor
+\end{lstlisting}
+\subsubsection{非静态成员初始化}
+除了公共导出的类之外，使用非静态数据成员初始化来进行简单的初始化。
+\subsubsection{默认和删除功能}
+考虑使用 =default 和 =delete来控制特别的函数。
+\subsubsection{重载}
+在重载虚函数时建议使用override关键字，不要在重载的函数上使用virtual。
+\subsubsection{空指针}
+所有编译器都支持使用nullptr关键字。
+\subsubsection{基于范围的for-Loop}
+您可以使用基于范围的for循环，但要注意虚假的脱离问题。如果for循环只读取容器并且容器是const还是非共享不明显，请使用std::cref()以确保容器不会被不必要地分离。
+\subsection{使用QObject}
+\begin{enumerate}
+	\item 记得在QObject的子类中添加Q\_OBJECT宏。
+	\item 首选Qt5风格的connect()调用。
+	\item 规范化connect语句中信号和槽的参数。可以使用 QTDIR/util/normalize来规范化已经写好的代码. 
+\end{enumerate}
+\subsection{文件头}
+如果您创建一个新文件，该文件的顶部应包含一个标题注释，该注释等于在Qt Creator的其他源文件中找到的标题注释。
+\subsection{include头文件}
+\begin{enumerate}
+	\item 使用以下的格式来包含Qt头文件：
+	\#include <QWhatEver>
+	\item include的顺序应该从具体到通用，以确保头文件是自包含的：
+	\begin{lstlisting}
+		#include "myclass.h"
+		#include "otherclassinplugin.h"
+		#include <otherplugin/someclass.h>
+		#include <QtClass>
+		#include <stdthing>
+		#include <system.h>
+	\end{lstlisting}
+	
+	\item 将来自其它插件中的头文件用方括号<>包含而不是双引号""，以便更容易发现源中的外部依赖项。
+	\item 在很长的头文件块之间插入空行，并且尽量在头文件块内按照字母顺序排列头文件。
+\end{enumerate}
+\subsection{类型转换}
+\begin{enumerate}
+	\item 避免C风格的类型转换，使用C++风格的类型转换。
+	\item 不要使用dynamic\_cast，使用qobject\_cast来转换QObjects对象，或者重构你的设计。
+\end{enumerate}
+\subsection{编译器和具体平台的问题}
+\begin{enumerate}
+	\item 使用问号运算符时要格外小心。 如果返回的类型不相同，则某些编译器会生成在运行时崩溃的代码（您甚至不会收到编译器警告）。
+	\item 要特别注意对齐。 Whenever a pointer is cast such that the required alignment of the target is increased, the resulting code might crash at runtime on some architectures. For example, if a const char * is cast to a const int *, it will crash on machines where integers have to be aligned at two-byte or four-byte boundaries.
+	
+	Use a union to force the compiler to align variables correctly.
+	In the example below, you can be sure that all instances of
+	AlignHelper are aligned at integer-boundaries.(不会)
+	\item 坚持使用整数类型，整数类型的数组及其结构，以便在标题中进行静态声明。
+	\item 任何具有构造函数或需要运行代码来进行初始化的对象都不能用作库代码中的全局对象，因为在运行该构造函数或代码时它是未定义的。
+	\item char的类型是是signed还是unsigned是由体系结构决定的。如果明确需要使用signed char或unsigned char，使用signed char或uchar。
+	\item 避免使用64位枚举值。
+	\item 不要混合const和非const迭代器。
+	\item 不要在导出的类中内联虚析构函数
+\end{enumerate}
+\subsection{美观}
+\begin{enumerate}
+	\item 首选无范围的枚举来定义const，而不是static const int或者define。枚举值将在编译时被编译器替换，从而产生更快的代码。定义不是名称空间安全的。
+	\item 首选头文件中冗长的参数名称。
+\end{enumerate}
+\subsection{继承自模板或工具类}
+继承模板或工具类存在如下问题：
+\begin{enumerate}
+	\item 析构函数不是虚拟的，可能导致内存泄漏。
+	\item 符号不会被导出（主要是内联），这可能导致符号冲突。
+\end{enumerate}
+\subsection{继承与聚合}
+\begin{enumerate}
+	\item 如果存在明确的is-a关系，请使用继承。
+	\item 使用聚合来重用正交的构建块。
+	\item 如果有选择，则优先选择继承聚合。
+\end{enumerate}
+\subsection{公共头文件的约定}
+所有头文件都应该遵循如下规则：
+\begin{enumerate}
+	\item 没有c风格的类型转换，使用static\_cast，const\_cast或者reinterpret\_cast。对于基本类型，使用构造函数形式int(a)。
+	\item 没有浮点比较。使用qFuzzyCompare来比较某个值和delta，使用qIsNull来检查某个浮点数是否为二进制0，而不是将其与0.0进行比较。更好的方法是将此类代码放到实现文件中。
+	\item 不要在子类中隐藏虚函数。
+	\item 不要隐藏变量。
+	\item 避免出现像 this->x = x 这样的代码
+	\item 不要为变量赋予与类中声明的函数相同的名称。
+	\item 为了提高代码的可读性，始终在探测预处理器变量的值之前检查其是否在被定义。
+	\item 使用defined运算符检查预处理器定义时，始终在括号中包含变量名称。
+\end{enumerate}
+\section{类成员命名}
+我们使用“m\_”前缀约定，除了公共struct成员（通常在* Private类和非常罕见的真正公共结构的情况下）。d和q指针不受“m\_”规则的约束。
+
+d指针("Pimpls")被命名为"d"，而不是"m\_d"。Foo类中d指针的类型是FooPrivate *，其中FooPrivate在与Foo相同的命名空间中被声明，或者如果Foo被导出，在相应的Internal命名空间中。
+
+如果有需要，FooPrivate可以作为Foo的friend成员
+
+如果私有类需要对实际类进行反向引用，则指针名为q，其类型为Foo *。 与Qt中的约定相同：“q”看起来像倒“d”）。
+
+不要使用智能指针来保护d指针，因为它会增加编译和链接时间。

@@ -1,0 +1,187 @@
+% This is a nice eclipse-like style for displaying Java with the
+% listings package.  I originally found it here
+%
+% http://trac.rtsys.informatik.uni-kiel.de/trac/rtsys/attachment/wiki/Latex/Listings/lstcustom.sty
+%
+% and modified it so that it was just for Java.  I also added some
+% more markup for Javadoc and anything else I could think of.
+%
+% Requires texlive-fonts-extra package for beramono.sty
+% 
+% Modified by Mark Royer
+%
+
+
+\usepackage{color}
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+
+
+% beramono or luximono give very nice ttfamily fonts
+%\usepackage[scaled=0.8]{beramono}
+%\usepackage[scaled=0.8]{luximono} 
+
+% Use the ttfamily font here will be used below
+\newcommand{\lstfontfamily}{\ttfamily}
+
+
+% Some useful colors...
+\definecolor{darkviolet}{rgb}{0.5,0,0.4}
+\definecolor{darkgreen}{rgb}{0,0.4,0.2} 
+\definecolor{darkblue}{rgb}{0.1,0.1,0.9}
+\definecolor{darkgrey}{rgb}{0.5,0.5,0.5}
+\definecolor{lightblue}{rgb}{0.4,0.4,1}
+
+\definecolor{stringColor}{rgb}{0.16,0.00,1.00}
+\definecolor{annotationColor}{rgb}{0.39,0.39,0.39}
+\definecolor{keywordColor}{rgb}{0.50,0.00,0.33}
+\definecolor{commentColor}{rgb}{0.25,0.50,0.37}
+\definecolor{javadocColor}{rgb}{0.25,0.37,0.75}
+\definecolor{jTagColor}{rgb}{0.50,0.62,0.75}
+\definecolor{eTagColor}{rgb}{0.50,0.62,0.75}
+\definecolor{lineNumberColor}{rgb}{0.47,0.47,0.47}
+
+
+% Here are the Javadoc tags and the version they were introduced based on the Java 7 docs here:
+%
+% http://docs.oracle.com/javase/7/docs/technotes/tools/solaris/javadoc.html#javadoctags
+%
+% Currently does not handle the tags that are surrounded by brackets for example {@code}.
+% 
+% @author 	1.0
+% {@code} 	1.5
+% {@docRoot} 	1.3
+% @deprecated 	1.0
+% @exception 	1.0
+% {@inheritDoc} 1.4
+% {@link} 	1.2
+% {@linkplain} 	1.4
+% {@literal} 	1.5
+% @param 	1.0
+% @return 	1.0
+% @see 		1.0
+% @serial 	1.2
+% @serialData 	1.2
+% @serialField 	1.2
+% @since	1.1
+% @throws 	1.2
+% {@value} 	1.4
+% @version	1.0
+
+
+% Inline tags not added to the list
+\def\jTags{@author, @deprecated, @exception, @param, @return, @see, @serial, @serialData, @serialField, @since, @throws, @version}
+
+% Here is standard annotations as listed here: 
+%
+% http://en.wikipedia.org/wiki/Java_annotation
+% 
+% @Override - Checks that the function is an override. Causes a compile warning if the function is not found in one of the parent classes.
+% @Deprecated - Marks the function as obsolete. Causes a compile warning if the function is used.
+% @SuppressWarnings - Instructs the compiler to suppress the compile time warnings specified in the annotation parameters
+%
+% Annotations applied to other annotations:
+%
+% @Retention - Specifies how the marked annotation is stored -- Whether in code only, compiled into the class, or available at runtime through reflection.
+% @Documented - Marks another annotation for inclusion in the documentation.
+% @Target - Marks another annotation to restrict what kind of java elements the annotation may be applied to
+% @Inherited - Marks another annotation to inherit features from a parent annotation
+
+\def\jAnnotations{
+    classoffset=1,
+    morekeywords={@Override, @Deperecated, @SuppressWarnings, @Retention, @Documented, @Target, @Inherited},
+    keywordstyle=\color{annotationColor},
+    classoffset=0
+}
+
+% Eclipse Task Tags
+\def\eTags{FIXME, TODO, XXX}
+
+
+%
+% Markup Javadoc code. If it's a Tag, bold it.
+%
+\newrobustcmd{\markupJavadocs}[1]{%
+\edef\mytok{\the\lst@token}%
+\renewcommand*{\do}[1]{%
+\ifdefstring{\mytok}{##1}%
+{\color{jTagColor}\bfseries\listbreak}%
+{}%
+}%
+{\color{javadocColor}%
+\expandafter\docsvlist\expandafter{\jTags}%
+\renewcommand*{\do}[1]{%
+\ifdefstring{\mytok}{##1}%
+{\color{eTagColor}\bfseries\listbreak}%
+{}%
+}%
+\expandafter\docsvlist\expandafter{\eTags}%
+#1}%
+}%
+
+%
+% Markup regular comment. If it's a Tag, bold it.
+%
+\newrobustcmd{\markupComments}[1]{%
+\edef\mytok{\the\lst@token}%
+\renewcommand*{\do}[1]{%
+\ifdefstring{\mytok}{##1}%
+{\color{eTagColor}\bfseries\listbreak}%
+{}%
+}%
+{\color{commentColor}%
+\expandafter\docsvlist\expandafter{\eTags}#1}%
+}%
+
+
+\lstdefinestyle{eclipse}{
+  basicstyle={\lstfontfamily},
+  emphstyle=\bfseries,
+  keywordstyle=\color{keywordColor}\bfseries,
+  commentstyle=\markupComments,
+  stringstyle=\color{stringColor},
+  numberstyle=\color{lineNumberColor}\lstfontfamily,
+  morecomment=[s][\markupJavadocs]{/**}{*/}, % For Javadoc comments
+  showstringspaces=false,
+  numbers=left
+%  ,frame=lines%shadowbox%trBL
+}
+
+\lstdefinestyle{black}{
+  basicstyle=\small\lstfontfamily,
+  numbers=left,
+  columns=fullflexible,
+  breaklines=true,
+  mathescape=true,
+  escapechar=\#,
+  tabsize=4,
+  frame=lines,
+  showstringspaces=false
+}
+
+% use proper tt font that supports bold printing, e.g. by
+% \usepackage{courier}
+\lstdefinestyle{seminar}{
+  basicstyle=\small\ttfamily,
+  numbers=left,
+  breaklines=true,
+  mathescape=true,
+  escapechar=\#,
+  tabsize=4,
+  showstringspaces=false
+}
+
+\lstset{
+  language=c++,
+  style=eclipse,
+  showspaces=false, 
+  numbers=left,
+  frame=lrtb,
+  captionpos=b,
+  breaklines=true,
+  % From http://tex.stackexchange.com/questions/116534/lstlisting-line-wrapping
+  postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+
+\expandafter\lstset\expandafter{\jAnnotations}

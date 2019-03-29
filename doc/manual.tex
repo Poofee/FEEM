@@ -59,7 +59,7 @@
     tabsize=2
 }
 \usepackage{threeparttable}
-
+\usepackage{lstcustom}
 \begin{document}
 
 \input{front/titlepage}
@@ -77,10 +77,10 @@
 \input{body/build.tex}
 \input{body/module.tex}
 \input{body/bench.tex}
-\input{body/problems.tex}
-\input{body/bugs.tex}
 \input{body/automation.tex}
-\input{body/verision.tex}
+\input{body/datatype.tex}
+\input{body/softwarestudy.tex}
+\input{body/techniques.tex}
 \input{body/acknowledge.tex}
 
 \backmatter
@@ -90,7 +90,10 @@
 \bibliography{reference}
 
 \begin{appendix}%附录
-	
+\input{body/codeguide.tex}
+\input{body/problems.tex}
+\input{body/bugs.tex}	
+\input{body/verision.tex}
 \end{appendix}
 
 \end{document}
