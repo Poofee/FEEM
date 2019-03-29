@@ -29,44 +29,46 @@ DESTDIR = $$PWD/../bin
 
 INCLUDEPATH += \
     . \
-    ./entity \
-    ./action \
+    ./CAD \
+    ./CAD/entity \
+    ./CAD/action \
+    ./util \
+    ./material \
+    ./project \
+    ./fem \
 
 RESOURCES += \
     ./res/main.qrc
 
 RC_FILE = ./res/icon.rc
 
-HEADERS += \
-    ./mainwindow.h \
-    ./pf.h \
-    ./pf_centralwidget.h \
+HEADERS += \    
+    ./util/pf.h \
+    ./CAD/pf_centralwidget.h \
     ./pf_eventhandler.h \
-    ./pf_graphicview.h \
-    ./pf_mdisubwindow.h \
     ./pf_widgetfactory.h \
-    ./action/pf_actiondrawcircle.h \
-    ./action/pf_actiondrawpoint.h \
-    ./action/pf_actiondrawline.h \
-    ./action/pf_actiondrawrectangle.h \
-    ./entity/pf_polyline.h \
-    ./action/pf_actionfactory.h \
-    ./action/pf_actiongroupmanager.h \
-    ./action/pf_actionhandler.h \
-    ./action/pf_actioninterface.h \
-    ./action/pf_actionpreviewinterface.h \
-    ./entity/pf_atomicentity.h \
-    ./entity/pf_circle.h \
-    ./entity/pf_entity.h \
-    ./entity/pf_grid.h \
-    ./entity/pf_vector.h \
-    ./action/pf_snapper.h \
-    ./entity/pf_entitycontainer.h \
-    ./entity/pf_document.h \
-    ./entity/pf_preview.h \
-    ./entity/pf_point.h \
-    ./entity/pf_line.h \
-    pf_plot.h \
+    ./CAD/action/pf_actiondrawcircle.h \
+    ./CAD/action/pf_actiondrawpoint.h \
+    ./CAD/action/pf_actiondrawline.h \
+    ./CAD/action/pf_actiondrawrectangle.h \
+    ./CAD/entity/pf_polyline.h \
+    ./pf_actionfactory.h \
+    ./pf_actiongroupmanager.h \
+    ./pf_actionhandler.h \
+    ./CAD/action/pf_actioninterface.h \
+    ./CAD/action/pf_actionpreviewinterface.h \
+    ./CAD/entity/pf_atomicentity.h \
+    ./CAD/entity/pf_circle.h \
+    ./CAD/entity/pf_entity.h \
+    ./CAD/entity/pf_grid.h \
+    ./CAD/entity/pf_vector.h \
+    ./CAD/action/pf_snapper.h \
+    ./CAD/entity/pf_entitycontainer.h \
+    ./CAD/entity/pf_document.h \
+    ./CAD/entity/pf_preview.h \
+    ./CAD/entity/pf_point.h \
+    ./CAD/entity/pf_line.h \
+    ./CAD/pf_plot.h \
     project/pf_project.h \
     project/pf_projecttree.h \
     project/pf_node.h \
@@ -76,38 +78,38 @@ HEADERS += \
     project/pf_projectmanager.h \
     material/pf_material.h \
     material/pf_materialmanager.h \
-    project/pf_projectmodel.h
+    project/pf_projectmodel.h \
+    util/constants.h \
+    ./mainwindow.h \
+    ./CAD/pf_graphicview.h \
+    ./CAD/pf_graphicwindow.h \
 
-SOURCES += \
-    ./main.cpp \
-    ./mainwindow.cpp \
-    ./pf_centralwidget.cpp \
+SOURCES += \    
+    ./CAD/pf_centralwidget.cpp \
     ./pf_eventhandler.cpp \
-    ./pf_graphicview.cpp \
-    ./pf_mdisubwindow.cpp \
     ./pf_widgetfactory.cpp \
-    ./action/pf_actiondrawcircle.cpp \
-    ./action/pf_actiondrawpoint.cpp \
-    ./action/pf_actiondrawline.cpp \
-    ./action/pf_actiondrawrectangle.cpp \
-    ./entity/pf_polyline.cpp \
-    ./action/pf_actionfactory.cpp \
-    ./action/pf_actiongroupmanager.cpp \
-    ./action/pf_actionhandler.cpp \
-    ./action/pf_actioninterface.cpp \
-    ./action/pf_actionpreviewinterface.cpp \
-    ./entity/pf_atomicentity.cpp \
-    ./entity/pf_circle.cpp \
-    ./entity/pf_entity.cpp \
-    ./entity/pf_grid.cpp \
-    ./entity/pf_vector.cpp \
-    ./action/pf_snapper.cpp \
-    ./entity/pf_entitycontainer.cpp \
-    ./entity/pf_document.cpp \
-    ./entity/pf_preview.cpp \
-    ./entity/pf_point.cpp \
-    ./entity/pf_line.cpp \
-    pf_plot.cpp \
+    ./CAD/action/pf_actiondrawcircle.cpp \
+    ./CAD/action/pf_actiondrawpoint.cpp \
+    ./CAD/action/pf_actiondrawline.cpp \
+    ./CAD/action/pf_actiondrawrectangle.cpp \
+    ./CAD/entity/pf_polyline.cpp \
+    ./pf_actionfactory.cpp \
+    ./pf_actiongroupmanager.cpp \
+    ./pf_actionhandler.cpp \
+    ./CAD/action/pf_actioninterface.cpp \
+    ./CAD/action/pf_actionpreviewinterface.cpp \
+    ./CAD/entity/pf_atomicentity.cpp \
+    ./CAD/entity/pf_circle.cpp \
+    ./CAD/entity/pf_entity.cpp \
+    ./CAD/entity/pf_grid.cpp \
+    ./CAD/entity/pf_vector.cpp \
+    ./CAD/action/pf_snapper.cpp \
+    ./CAD/entity/pf_entitycontainer.cpp \
+    ./CAD/entity/pf_document.cpp \
+    ./CAD/entity/pf_preview.cpp \
+    ./CAD/entity/pf_point.cpp \
+    ./CAD/entity/pf_line.cpp \
+    ./CAD/pf_plot.cpp \
     project/pf_project.cpp \
     project/pf_projecttree.cpp \
     project/pf_node.cpp \
@@ -117,7 +119,11 @@ SOURCES += \
     project/pf_projectmanager.cpp \
     material/pf_material.cpp \
     material/pf_materialmanager.cpp \
-    project/pf_projectmodel.cpp
+    project/pf_projectmodel.cpp \
+    ./main.cpp \
+    ./mainwindow.cpp \
+    ./CAD/pf_graphicview.cpp \
+    ./CAD/pf_graphicwindow.cpp \
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

@@ -12,13 +12,14 @@
 
 #include <QTreeWidget>
 #include <QTableWidget>
+#include <QTabWidget>
 
 #include "pf_actionfactory.h"
 #include "pf_actiongroupmanager.h"
 #include "pf_actionhandler.h"
 #include "pf_widgetfactory.h"
 #include "pf_centralwidget.h"
-#include "pf_mdisubwindow.h"
+#include "pf_graphicwindow.h"
 
 #include "QtFlexWidget.h"
 #include "QtFlexHelper.h"
@@ -36,6 +37,19 @@ MainWindow::MainWindow(QWidget *parent)
     m_ribbonStyle->setAccentColor(OfficeStyle::AccentColorBlue);
     //创建状态栏
     QStatusBar* status_bar = statusBar();
+    QLabel* label1 = new QLabel("Make by Poofee");
+    QLabel* statusLabel = new QLabel();
+    statusLabel->setMinimumWidth(200);
+    statusLabel->setAlignment(Qt::AlignHCenter);
+    statusLabel->setText("x: 100, y: 200");
+
+    label1->setMinimumWidth(200);
+    label1->setAlignment(Qt::AlignHCenter);
+
+    status_bar->addPermanentWidget(new QLabel());/**左侧占位**/
+    status_bar->addPermanentWidget(statusLabel);
+    status_bar->addPermanentWidget(label1);
+
 
     PF_CentralWidget* central = new PF_CentralWidget(this);
     setCentralWidget(central);
@@ -76,16 +90,23 @@ MainWindow::MainWindow(QWidget *parent)
     dockProjectTree->setWidget(widgetProjectTree);
     addDockWidget(Qt::LeftDockWidgetArea,dockProjectTree);
 
-    QDockWidget* dockLogWindow = new QDockWidget(this);
+    QDockWidget *dockLogWindow = new QDockWidget(this);
+
     dockLogWindow->setWindowTitle(tr("Log Infor"));
     dockLogWindow->setObjectName("log_dockwidget");
     QWidget * widgetLog = new QWidget(dockLogWindow);
     QHBoxLayout * hbox = new QHBoxLayout(dockLogWindow);
-    QTextEdit * logEdit = new QTextEdit(widgetLog);
-    hbox->addWidget(logEdit);
+    QTabWidget *tabInfo = new QTabWidget(widgetLog);
+    QTextEdit * logEdit = new QTextEdit;
+    tabInfo->addTab(logEdit,tr("Run log"));
+    QTextEdit * logEdit1 = new QTextEdit;
+    tabInfo->addTab(logEdit1,tr("pythonconsole"));
+    logEdit->append("hello, this is one");
+    logEdit1->append(("hello, this is two."));
+    hbox->addWidget(tabInfo);
     widgetLog->setLayout(hbox);
     dockLogWindow->setWidget(widgetLog);
-    addDockWidget(Qt::RightDockWidgetArea,dockLogWindow);
+    addDockWidget(Qt::BottomDockWidgetArea,dockLogWindow);
 
 
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();

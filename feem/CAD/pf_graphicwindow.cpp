@@ -1,4 +1,4 @@
-#include "pf_mdisubwindow.h"
+#include "pf_graphicwindow.h"
 
 #include <QMdiArea>
 
