@@ -83,6 +83,8 @@ HEADERS += \
     ./mainwindow.h \
     ./CAD/pf_graphicview.h \
     ./CAD/pf_graphicwindow.h \
+    project/viewitem.h \
+    project/navigationtreeview.h
 
 SOURCES += \    
     ./CAD/pf_centralwidget.cpp \
@@ -124,6 +126,8 @@ SOURCES += \
     ./mainwindow.cpp \
     ./CAD/pf_graphicview.cpp \
     ./CAD/pf_graphicwindow.cpp \
+    project/viewitem.cpp \
+    project/navigationtreeview.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
