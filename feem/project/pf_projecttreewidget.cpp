@@ -15,7 +15,6 @@
 #include <QMenu>
 
 
-namespace {
 
 class PF_ProjectTreeItemDelegate : public QStyledItemDelegate
 {
@@ -87,8 +86,6 @@ private:
     QTreeView *m_view;
 };
 
-bool debug = false;
-}
 
 class PF_ProjectTreeView : public NavigationTreeView
 {

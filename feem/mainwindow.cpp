@@ -33,23 +33,11 @@ MainWindow::MainWindow(QWidget *parent)
     : RibbonWindow(parent)
     , ag_manager(new PF_ActionGroupManager(this))
     , actionHandler(new PF_ActionHandler(this))
+    , dock_modelBuilderTree(nullptr)
+    , dock_messageOutputPane(nullptr)
+    , dock_materialLibraryTree(nullptr)
 {
     m_ribbonStyle->setAccentColor(OfficeStyle::AccentColorBlue);
-    //创建状态栏
-    QStatusBar* status_bar = statusBar();
-    QLabel* label1 = new QLabel("Make by Poofee");
-    QLabel* statusLabel = new QLabel();
-    statusLabel->setMinimumWidth(200);
-    statusLabel->setAlignment(Qt::AlignHCenter);
-    statusLabel->setText("x: 100, y: 200");
-
-    label1->setMinimumWidth(200);
-    label1->setAlignment(Qt::AlignHCenter);
-
-    status_bar->addPermanentWidget(new QLabel());/**左侧占位**/
-    status_bar->addPermanentWidget(statusLabel);
-    status_bar->addPermanentWidget(label1);
-
 
     PF_CentralWidget* central = new PF_CentralWidget(this);
     setCentralWidget(central);
@@ -73,41 +61,8 @@ MainWindow::MainWindow(QWidget *parent)
     actionHandler->set_document(m->getDocument());
     m->showMaximized();
 
-    //QWidget *p = takeCentralWidget();
-    //if(p) delete p;
-    //setDockNestingEnabled(true);
-    // make the left and right dock areas dominant
-    setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-    setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-    setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
-
-    QDockWidget* dockProjectTree = new QDockWidget(this);
-    dockProjectTree->setWindowTitle(tr("Project tree"));
-    dockProjectTree->setObjectName("project_dockwidget");
-    QWidget * widgetProjectTree = new QWidget(dockProjectTree);
-    fillSolutionExplorer(widgetProjectTree);
-    dockProjectTree->setWidget(widgetProjectTree);
-    addDockWidget(Qt::LeftDockWidgetArea,dockProjectTree);
-
-    QDockWidget *dockLogWindow = new QDockWidget(this);
-
-    dockLogWindow->setWindowTitle(tr("Log Infor"));
-    dockLogWindow->setObjectName("log_dockwidget");
-    QWidget * widgetLog = new QWidget(dockLogWindow);
-    QHBoxLayout * hbox = new QHBoxLayout(dockLogWindow);
-    QTabWidget *tabInfo = new QTabWidget(widgetLog);
-    QTextEdit * logEdit = new QTextEdit;
-    tabInfo->addTab(logEdit,tr("Run log"));
-    QTextEdit * logEdit1 = new QTextEdit;
-    tabInfo->addTab(logEdit1,tr("pythonconsole"));
-    logEdit->append("hello, this is one");
-    logEdit1->append(("hello, this is two."));
-    hbox->addWidget(tabInfo);
-    widgetLog->setLayout(hbox);
-    dockLogWindow->setWidget(widgetLog);
-    addDockWidget(Qt::BottomDockWidgetArea,dockLogWindow);
-
+    setupDockWidgets();
+    setupStatusBar();
 
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();
     Qtitan::OfficeStyle::Theme theme = Qtitan::OfficeStyle::Office2010Silver;
@@ -125,7 +80,7 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::slotFileNew() {
-	
+
 }
 
 void MainWindow::slotFileOpen() {
@@ -188,16 +143,16 @@ void MainWindow::fillSolutionExplorer(QWidget * w){
     treeWidget->insertTopLevelItem(0, mainItem);
     treeWidget->expandItem(mainItem);
 
-//    strings.clear();
-//    strings.append(tr("Definitions"));
-//    QTreeWidgetItem* item = new QTreeWidgetItem(mainItem, strings);
-//    QFont font = item->font(0);
-//    font.setBold(true);
-//    item->setFont(0, font);
-//    item->setIcon(0, QIcon(":/Resources/cpp_project.png"));
-//    item->setExpanded(true);
-//    treeWidget->insertTopLevelItem(1, item);
-//    treeWidget->expandItem(item);
+    //    strings.clear();
+    //    strings.append(tr("Definitions"));
+    //    QTreeWidgetItem* item = new QTreeWidgetItem(mainItem, strings);
+    //    QFont font = item->font(0);
+    //    font.setBold(true);
+    //    item->setFont(0, font);
+    //    item->setIcon(0, QIcon(":/Resources/cpp_project.png"));
+    //    item->setExpanded(true);
+    //    treeWidget->insertTopLevelItem(1, item);
+    //    treeWidget->expandItem(item);
 
     strings.clear();
     strings.append(tr("Definitions"));
@@ -571,4 +526,76 @@ void MainWindow::createTable(QWidget * w){
 
     layout->addWidget(tableWidget,1);
     w->setLayout(layout);
+}
+
+/*!
+ \brief 添加侧边栏以及周围的控件
+
+*/
+void MainWindow::setupDockWidgets()
+{
+    //QWidget *p = takeCentralWidget();
+    //if(p) delete p;
+    //setDockNestingEnabled(true);
+    // make the left and right dock areas dominant
+    setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+    setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+    setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+
+    if(!dock_modelBuilderTree){
+        dock_modelBuilderTree = new QDockWidget(this);
+        dock_modelBuilderTree->setWindowTitle(tr("Project tree"));
+        dock_modelBuilderTree->setObjectName("project_dockwidget");
+        QWidget * widgetProjectTree = new QWidget(dock_modelBuilderTree);
+        fillSolutionExplorer(widgetProjectTree);
+        dock_modelBuilderTree->setWidget(widgetProjectTree);
+        addDockWidget(Qt::LeftDockWidgetArea,dock_modelBuilderTree);
+    }
+
+    if(!dock_messageOutputPane){
+        dock_messageOutputPane = new QDockWidget(this);
+
+        dock_messageOutputPane->setWindowTitle(tr("Log Infor"));
+        dock_messageOutputPane->setObjectName("log_dockwidget");
+        QWidget * widgetLog = new QWidget(dock_messageOutputPane);
+        QHBoxLayout * hbox = new QHBoxLayout(dock_messageOutputPane);
+        QTabWidget *tabInfo = new QTabWidget(widgetLog);
+        QTextEdit * logEdit = new QTextEdit;
+        tabInfo->addTab(logEdit,tr("Run log"));
+        QTextEdit * logEdit1 = new QTextEdit;
+        tabInfo->addTab(logEdit1,tr("pythonconsole"));
+        logEdit->append("hello, this is one");
+        logEdit1->append(("hello, this is two."));
+        hbox->addWidget(tabInfo);
+        widgetLog->setLayout(hbox);
+        dock_messageOutputPane->setWidget(widgetLog);
+        addDockWidget(Qt::BottomDockWidgetArea,dock_messageOutputPane);
+    }
+
+    if(!dock_materialLibraryTree){
+
+    }
+}
+
+/*!
+ \brief 初始化状态栏
+
+*/
+void MainWindow::setupStatusBar()
+{
+    //创建状态栏
+    QStatusBar* status_bar = statusBar();
+    QLabel* label1 = new QLabel("Make by Poofee");
+    QLabel* statusLabel = new QLabel();
+    statusLabel->setMinimumWidth(200);
+    statusLabel->setAlignment(Qt::AlignHCenter);
+    statusLabel->setText("x: 100, y: 200");
+
+    label1->setMinimumWidth(200);
+    label1->setAlignment(Qt::AlignHCenter);
+
+    status_bar->addPermanentWidget(new QLabel());/**左侧占位**/
+    status_bar->addPermanentWidget(statusLabel);
+    status_bar->addPermanentWidget(label1);
 }

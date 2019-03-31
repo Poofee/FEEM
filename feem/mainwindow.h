@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMap>
+#include <QDockWidget>
 
 #include "ribbonwindow.h"
 
@@ -25,6 +26,8 @@ public:
     void fillSolutionExplorer(QWidget * w);
     void createTree(QWidget * w);
     void createTable(QWidget * w);
+    void setupDockWidgets();
+    void setupStatusBar();
 
     QMap<QString, QAction*> a_map;/**动作列表**/
     PF_ActionGroupManager* ag_manager;
@@ -45,9 +48,14 @@ private:
     PF_WidgetFactory* dialogFactory;
     PF_ActionHandler* actionHandler;
 
+    // GUI
     QMdiArea* mdiAreaCAD{nullptr};
     QMdiSubWindow* activeMdiSubWindow;
     QMdiSubWindow* currentSubWindow;
+
+    QDockWidget* dock_modelBuilderTree;
+    QDockWidget* dock_messageOutputPane;
+    QDockWidget* dock_materialLibraryTree;
 };
 
 #endif // MAINWINDOW_H
