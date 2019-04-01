@@ -1,6 +1,7 @@
 #include "pf_projecttreewidget.h"
 
 #include "navigationtreeview.h"
+#include "pf_projectmodel.h"
 
 #include <QApplication>
 #include <QSettings>

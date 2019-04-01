@@ -1,17 +1,42 @@
 #ifndef PF_NODE_H
 #define PF_NODE_H
 
-#include <QObject>
+#include <QIcon>
+#include <QStringList>
+/*!
+ \brief 定义Node的类型
 
-class PF_Node : public QObject
+*/
+enum class NodeType : quint16 {
+    File = 1,
+    Folder,
+    Geometry,
+    Component,
+    Material,
+    Variable,
+    Parameter,
+    GolobalDefinition,
+    Project
+};
+
+/*!
+ \brief 项目树的节点的基类，用来保存节点内的数据
+
+*/
+class Node
 {
-    Q_OBJECT
 public:
-    explicit PF_Node(QObject *parent = nullptr);
+    virtual ~Node();
+    Node(const Node &other) = delete;
 
-signals:
+    NodeType nodeType() const;
 
-public slots:
+    virtual QString displayName() const;
+    virtual QString tooltip() const;
+
+private:
+    QString m_displayName;
+    const NodeType m_nodeType;
 };
 
 #endif // PF_NODE_H

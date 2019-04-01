@@ -3,6 +3,11 @@
 
 #include <QObject>
 
+
+/*!
+ \brief
+
+*/
 class PF_ProjectTree : public QObject
 {
     Q_OBJECT

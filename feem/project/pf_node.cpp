@@ -1,6 +1,13 @@
 #include "pf_node.h"
 
-PF_Node::PF_Node(QObject *parent) : QObject(parent)
-{
+Node::~Node() = default;
 
+NodeType Node::nodeType() const
+{
+    return m_nodeType;
+}
+
+QString Node::displayName() const
+{
+    return m_displayName;
 }
