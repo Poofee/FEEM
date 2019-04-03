@@ -1,34 +1,9 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of Qt Creator.
-**
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-****************************************************************************/
-
 #pragma once
 
-#include <coreplugin/core_global.h>
-#include <coreplugin/id.h>
+//#include <coreplugin/core_global.h>
+#include "id.h"
 
-#include <utils/hostosinfo.h>
+//#include <utils/hostosinfo.h>
 
 #include <QObject>
 
@@ -39,13 +14,13 @@ class QToolButton;
 QT_END_NAMESPACE
 
 
-namespace Core {
+//namespace Core {
 
 class Context;
 
-constexpr bool useMacShortcuts = Utils::HostOsInfo::isMacHost();
+//constexpr bool useMacShortcuts = Utils::HostOsInfo::isMacHost();
 
-class CORE_EXPORT Command : public QObject
+class Command : public QObject
 {
     Q_OBJECT
 public:
@@ -60,10 +35,10 @@ public:
     virtual void setDefaultKeySequence(const QKeySequence &key) = 0;
     virtual QKeySequence defaultKeySequence() const = 0;
     virtual QKeySequence keySequence() const = 0;
-    // explicitly set the description (used e.g. in shortcut settings)
-    // default is to use the action text for actions, or the whatsThis for shortcuts,
-    // or, as a last fall back if these are empty, the command ID string
-    // override the default e.g. if the text is context dependent and contains file names etc
+    /**明确设置描述（例如在快捷方式设置中使用）
+    默认是使用动作文本进行操作，或者使用whatsThis作为快捷方式，
+    或者，如果这些是空的，则作为最后一个回退，命令ID字符串
+    覆盖默认值，例如 如果文本是依赖于上下文的并且包含文件名等**/
     virtual void setDescription(const QString &text) = 0;
     virtual QString description() const = 0;
 
@@ -91,6 +66,6 @@ signals:
     void activeStateChanged();
 };
 
-} // namespace Core
+//} // namespace Core
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Core::Command::CommandAttributes)
+//Q_DECLARE_OPERATORS_FOR_FLAGS(Command::CommandAttributes)

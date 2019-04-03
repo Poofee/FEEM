@@ -1,33 +1,9 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of Qt Creator.
-**
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-****************************************************************************/
-
 #include "actionmanager.h"
 #include "actionmanager_p.h"
 #include "actioncontainer_p.h"
 #include "command_p.h"
 
+#include "id.h"
 //#include <coreplugin/icore.h>
 //#include <coreplugin/id.h>
 //#include <utils/fadingindicator.h>
@@ -47,52 +23,43 @@ namespace {
 
 static const char kKeyboardSettingsKey[] = "KeyboardShortcuts";
 
-using namespace Core;
-using namespace Core::Internal;
+//using namespace Core;
+//using namespace Core::Internal;
 
 /*!
     \class Core::ActionManager
     \mainclass
     \inmodule Qt Creator
 
-    \brief The ActionManager class is responsible for registration of menus and
-    menu items and keyboard shortcuts.
+    \brief ActionManager类负责菜单的注册和菜单项和键盘快捷键。
 
-    The ActionManager is the central bookkeeper of actions and their shortcuts and layout.
-    It is a singleton containing mostly static functions. If you need access to the instance,
-    e.g. for connecting to signals, is its ActionManager::instance() function.
+    ActionManager是操作及其快捷方式和布局的中央簿记员。它是一
+个主要包含静态函数的单例。如果需要访问实例，例如，用于连接信号，
+是它的ActionManager :: instance（）函数。
 
-    The main reasons for the need of this class is to provide a central place where the user
-    can specify all his keyboard shortcuts, and to provide a solution for actions that should
-    behave differently in different contexts (like the copy/replace/undo/redo actions).
+    需要这个类的主要原因是为用户提供一个中心位置可以指定他的所
+有键盘快捷键，并为应该采取的操作提供解决方案在不同的上下文中表
+现不同（例如复制/替换/撤消/重做操作）。
 
     \section1 Contexts
 
-    All actions that are registered with the same Id (but different context lists)
-    are considered to be overloads of the same command, represented by an instance
-    of the Command class.
-    Exactly only one of the registered actions with the same ID is active at any time.
-    Which action this is, is defined by the context list that the actions were registered
-    with:
+    使用相同Id（但不同的上下文列表）注册的所有操作都被视为同
+一命令的重载，由Command类的实例表示。
+确切地说，只有一个具有相同ID的已注册操作在任何时候都是活动的。
+这是哪个操作，是由注册操作的上下文列表定义的：
 
-    If the current focus widget was registered via \l{ICore::addContextObject()},
-    all the contexts returned by its IContext object are active. In addition all
-    contexts set via \l{ICore::addAdditionalContext()} are active as well. If one
-    of the actions was registered for one of these active contexts, it is the one
-    active action, and receives \c triggered and \c toggled signals. Also the
-    appearance of the visible action for this ID might be adapted to this
-    active action (depending on the settings of the corresponding \l{Command} object).
+如果当前焦点窗口小部件是通过\ l {ICore :: addContextObject（）}注册的，则其IContext对象返回的所有上下文都是活动的。
+此外，通过\ l {ICore :: addAdditionalContext（）}设置的所有上下文也是活动的。
+如果其中一个操作已为其中一个活动上下文注册，则它是一个活动操作，并接收\ c触发和\ c切换信号。
+此ID的可见操作的外观也可能适用于此活动操作（取决于相应的\ l {Command}对象的设置）。
 
-    The action that is visible to the user is the one returned by Command::action().
-    If you provide yourself a user visible representation of your action you need
-    to use Command::action() for this.
-    When this action is invoked by the user,
-    the signal is forwarded to the registered action that is valid for the current context.
+用户可见的操作是Command :: action（）返回的操作。
+如果您为自己提供了用户可见的动作表示，则需要使用Command :: action（）。
+当用户调用此操作时，信号将转发到对当前上下文有效的已注册操作。
 
     \section1 Registering Actions
 
-    To register a globally active action "My Action"
-    put the following in your plugin's IPlugin::initialize function:
+    要注册全局激活的操作“我的操作”，请在插件的IPlugin :: initialize函数中添加以下内容：
     \code
         QAction *myAction = new QAction(tr("My Action"), this);
         Command *cmd = ActionManager::registerAction(myAction,
@@ -102,36 +69,28 @@ using namespace Core::Internal;
         connect(myAction, &QAction::triggered, this, &MyPlugin::performMyAction);
     \endcode
 
-    So the \c connect is done to your own QAction instance. If you create e.g.
-    a tool button that should represent the action you add the action
-    from Command::action() to it:
+所以\ c connect连接到你自己的QAction实例。
+如果您创建例如 一个工具按钮，应该表示从Command :: action（）向其添加操作的操作：
     \code
         QToolButton *myButton = new QToolButton(someParentWidget);
         myButton->setDefaultAction(cmd->action());
     \endcode
 
-    Also use the ActionManager to add items to registered
-    action containers like the applications menu bar or menus in that menu bar.
-    To do this, you register your action via the
-    registerAction functions, get the action container for a specific ID (like specified in
-    the Core::Constants namespace) with a call of
-    actionContainer(const Id&) and add your command to this container.
+还可以使用ActionManager将项添加到已注册的操作容器，如应用程序菜单栏或该菜单栏中的菜单。
+为此，您可以通过registerAction函数注册您的操作，通过调用actionContainer（const Id＆）
+获取特定ID（如Core :: Constants命名空间中指定的）的操作容器，并将您的命令添加到此容器中。
 
-    Following the example adding "My Action" to the "Tools" menu would be done by
+    按照示例将“我的操作”添加到“工具”菜单中即可完成
     \code
         ActionManager::actionContainer(M_TOOLS)->addAction(cmd);
     \endcode
 
-    \section1 Important Guidelines:
+    \section1 重要指南：
     \list
-    \li Always register your actions and shortcuts!
-    \li Register your actions and shortcuts during your plugin's \l{ExtensionSystem::IPlugin::initialize()}
-       or \l{ExtensionSystem::IPlugin::extensionsInitialized()} functions, otherwise the shortcuts won't appear
-       in the keyboard settings dialog from the beginning.
-    \li When registering an action with \c{cmd=registerAction(action, id, contexts)} be sure to connect
-       your own action \c{connect(action, SIGNAL...)} but make \c{cmd->action()} visible to the user, i.e.
-       \c{widget->addAction(cmd->action())}.
-    \li Use this class to add actions to the applications menus
+    \li 始终注册您的操作和快捷方式！
+    \li 在插件的\ l {ExtensionSystem :: IPlugin :: initialize（）}或\ l {ExtensionSystem :: IPlugin :: extensionsInitialized（）}函数中注册您的操作和快捷方式，否则快捷方式将不会出现在键盘设置对话框中 一开始。
+    \li 使用\ c {cmd = registerAction（action，id，contexts）}注册操作时，请确保连接您自己的操作\ c {connect（action，SIGNAL ...）}但是make \ c {cmd-> action（） 对用户可见，即 \ C {小窗口>的addAction（CMD->动作（））}。
+    \li 使用此类可以向应用程序菜单添加操作
     \endlist
 
     \sa Core::ICore
@@ -143,13 +102,13 @@ using namespace Core::Internal;
 /*!
     \fn void ActionManager::commandListChanged()
 
-    Emitted when the command list has changed.
+    命令列表发生更改时发出。
 */
 
 /*!
     \fn void ActionManager::commandAdded(const QString &id)
 
-    Emitted when a command (with the \a id) is added.
+    添加命令（带有\ id）时发出。
 */
 
 static ActionManager *m_instance = nullptr;
@@ -163,8 +122,8 @@ ActionManager::ActionManager(QObject *parent)
 {
     m_instance = this;
     d = new ActionManagerPrivate;
-    if (Utils::HostOsInfo::isMacHost())
-        QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
+//    if (Utils::HostOsInfo::isMacHost())
+//        QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 }
 
 /*!
@@ -186,11 +145,9 @@ ActionManager *ActionManager::instance()
 /*!
     Creates a new menu with the given \a id.
 
-    Returns a new ActionContainer that you can use to get the QMenu instance
-    or to add menu items to the menu. The ActionManager owns
-    the returned ActionContainer.
-    Add your menu to some other menu or a menu bar via the
-    ActionManager::actionContainer and ActionContainer::addMenu functions.
+返回一个新的ActionContainer，您可以使用它来获取QMenu实例或将菜单项添加到菜单中。
+ActionManager拥有返回的ActionContainer。
+通过ActionManager :: actionContainer和ActionContainer :: addMenu函数将菜单添加到其他菜单或菜单栏。
 */
 ActionContainer *ActionManager::createMenu(Id id)
 {
@@ -207,11 +164,9 @@ ActionContainer *ActionManager::createMenu(Id id)
 }
 
 /*!
-    Creates a new menu bar with the given \a id.
-
-    Returns a new ActionContainer that you can use to get the QMenuBar instance
-    or to add menus to the menu bar. The ActionManager owns
-    the returned ActionContainer.
+使用给定的\ a id创建一个新的菜单栏。
+返回一个新的ActionContainer，可用于获取QMenuBar实例或将菜单添加到菜单栏。
+ActionManager拥有返回的ActionContainer。
 */
 ActionContainer *ActionManager::createMenuBar(Id id)
 {
@@ -232,17 +187,13 @@ ActionContainer *ActionManager::createMenuBar(Id id)
 }
 
 /*!
-    Makes an \a action known to the system under the specified \a id.
+    在指定的\ a id下制作一个系统已知的\动作。
 
-    Returns a command object that represents the action in the application and is
-    owned by the ActionManager. You can register several actions with the
-    same \a id as long as the \a context is different. In this case
-    a trigger of the actual action is forwarded to the registered QAction
-    for the currently active context.
-    If the optional \a context argument is not specified, the global context
-    will be assumed.
-    A scriptable action can be called from a script without the need for the user
-    to interact with it.
+返回一个命令对象，该对象表示应用程序中的操作，并由ActionManager拥有。
+只要\ _上下文不同，您就可以使用相同的\ id注册多个操作。
+在这种情况下，实际操作的触发器被转发到当前活动上下文的已注册QAction。
+如果未指定可选的\ a上下文参数，则将假定全局上下文。
+可以从脚本调用脚本化操作，而无需用户与其进行交互。
 */
 Command *ActionManager::registerAction(QAction *action, Id id, const Context &context, bool scriptable)
 {
@@ -256,8 +207,7 @@ Command *ActionManager::registerAction(QAction *action, Id id, const Context &co
 }
 
 /*!
-    Returns the Command object that is known to the system
-    under the given \a id.
+    返回给定\ a id下系统已知的Command对象。
 
     \sa ActionManager::registerAction()
 */
@@ -274,8 +224,7 @@ Command *ActionManager::command(Id id)
 }
 
 /*!
-    Returns the IActionContainter object that is know to the system
-    under the given \a id.
+    返回给定\ _id下系统知道的IActionContainter对象。
 
     \sa ActionManager::createMenu()
     \sa ActionManager::createMenuBar()
@@ -293,7 +242,7 @@ ActionContainer *ActionManager::actionContainer(Id id)
 }
 
 /*!
-    Returns all commands that have been registered.
+    返回已注册的所有命令。
 */
 QList<Command *> ActionManager::commands()
 {
@@ -305,12 +254,11 @@ QList<Command *> ActionManager::commands()
 }
 
 /*!
-    Removes the knowledge about an \a action under the specified \a id.
+    删除有关指定\ a id下的\ a操作的知识。
 
-    Usually you do not need to unregister actions. The only valid use case for unregistering
-    actions, is for actions that represent user definable actions, like for the custom Locator
-    filters. If the user removes such an action, it also has to be unregistered from the action manager,
-    to make it disappear from shortcut settings etc.
+通常，您无需取消注册操作。
+取消注册操作的唯一有效用例是用于表示用户可定义操作的操作，例如自定义定位器过滤器。
+如果用户删除了此类操作，则还必须从操作管理器中取消注册，以使其从快捷方式设置等中消失。
 */
 void ActionManager::unregisterAction(QAction *action, Id id)
 {
@@ -334,9 +282,9 @@ void ActionManager::unregisterAction(QAction *action, Id id)
 }
 
 /*!
-    Handles the display of the used shortcuts in the presentation mode. The presentation mode is
-    enabled when starting \QC with the command line argument \c{-presentationMode}. In the
-    presentation mode, \QC displays any pressed shortcut in a grey box.
+在演示模式下处理使用过的快捷方式的显示。
+使用命令行参数\ c {-presentationMode}启动\ QC时启用演示模式。
+在演示模式中，\ QC在灰色框中显示任何按下的快捷方式。
 */
 void ActionManager::setPresentationModeEnabled(bool enabled)
 {
@@ -363,8 +311,8 @@ bool ActionManager::isPresentationModeEnabled()
 
 QString ActionManager::withNumberAccelerator(const QString &text, const int number)
 {
-    if (Utils::HostOsInfo::isMacHost() || number > 9)
-        return text;
+//    if (Utils::HostOsInfo::isMacHost() || number > 9)
+//        return text;
     return QString("&%1 | %2").arg(number).arg(text);
 }
 
@@ -436,9 +384,13 @@ void ActionManagerPrivate::showShortcutPopup(const QString &shortcut)
         if (!QApplication::topLevelWidgets().isEmpty()) {
             window = QApplication::topLevelWidgets().first();
         } else {
-            QTC_ASSERT(QApplication::desktop(), return);
+            if(QApplication::desktop())
+                ;
+            else
+                return;
             window = QApplication::desktop()->screen();
-            QTC_ASSERT(window, return);
+            if(!window)
+                return;
         }
     }
 

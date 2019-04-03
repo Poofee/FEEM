@@ -5,11 +5,14 @@
 
 #include <QObject>
 
-//QT_BEGIN_NAMESPACE
+#include "id.h"
+#include "context.h"
+
+QT_BEGIN_NAMESPACE
 class QMenu;
 class QMenuBar;
 class QAction;
-//QT_END_NAMESPACE
+QT_END_NAMESPACE
 
 //namespace Core {
 
@@ -43,8 +46,8 @@ public:
     Command *addSeparator(Id group = Id());
     virtual Command *addSeparator(const Context &context, Id group = Id(), QAction **outSeparator = nullptr) = 0;
 
-    // This clears this menu and submenus from all actions and submenus.
-    // It does not destroy the submenus and commands, just removes them from their parents.
+    /** 这会从所有操作和子菜单中清除此菜单和子菜单。
+     它不会破坏子菜单和命令，只是将它们从父母身上移除。**/
     virtual void clear() = 0;
 };
 

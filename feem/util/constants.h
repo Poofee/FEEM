@@ -1,5 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
+
+namespace Constants {
 /** 定义项目中的常量 **/
 
 /** RibbonBar **/
@@ -13,9 +15,15 @@ const char RB_MESH[] = "FEEM.RibbonBar.Mesh";
 const char RB_SOLVER[] = "FEEM.RibbonBar.Solver";
 const char RB_Result[] = "FEEM.RibbonBar.Result";
 
+// Contexts
+const char C_GLOBAL[]              = "Global Context";
 
 /**  actions **/
 
+/** Default groups **/
+const char G_DEFAULT_ONE[]         = "QtCreator.Group.Default.One";
+const char G_DEFAULT_TWO[]         = "QtCreator.Group.Default.Two";
+const char G_DEFAULT_THREE[]       = "QtCreator.Group.Default.Three";
 
 /** RibbonBar groups **/
 
@@ -32,5 +40,5 @@ const char RB_Result[] = "FEEM.RibbonBar.Result";
 /** Solver RibbonBar groups **/
 
 /** Result RibbonBar groups **/
-
+}
 #endif // CONSTANTS_H

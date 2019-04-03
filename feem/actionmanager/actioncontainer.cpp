@@ -1,34 +1,9 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of Qt Creator.
-**
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 as published by the Free Software
-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-****************************************************************************/
-
 #include "actioncontainer_p.h"
 #include "actionmanager.h"
 
-//#include <coreplugin/coreconstants.h>
-//#include <coreplugin/icontext.h>
-//#include <coreplugin/id.h>
+#include "id.h"
+#include "constants.h"
+#include "context.h"
 
 //#include <utils/hostosinfo.h>
 //#include <utils/qtcassert.h>
@@ -47,51 +22,41 @@
     \class ActionContainer
     \mainclass
 
-    \brief The ActionContainer class represents a menu or menu bar in Qt Creator.
+    \brief ActionContainer类表示Qt Creator中的菜单或菜单栏。
 
-    You don't create instances of this class directly, but instead use the
-    \l{ActionManager::createMenu()}
-    and \l{ActionManager::createMenuBar()} functions.
-    Retrieve existing action containers for an ID with
-    \l{ActionManager::actionContainer()}.
+    您不直接创建此类的实例，而是使用\ l {ActionManager :: createMenu（）}和\ l {ActionManager :: createMenuBar（）}函数。
+使用\ l {ActionManager :: actionContainer（）}检索ID的现有操作容器。
 
-    Within a menu or menu bar you can group menus and items together by defining groups
-    (the order of the groups is defined by the order of the \l{ActionContainer::appendGroup()} calls), and
-    adding menus/actions to these groups. If no custom groups are defined, an action container
-    has three default groups \c{Core::Constants::G_DEFAULT_ONE}, \c{Core::Constants::G_DEFAULT_TWO}
-    and \c{Core::Constants::G_DEFAULT_THREE}.
+在菜单或菜单栏中，您可以通过定义组（组的顺序由\ l {ActionContainer :: appendGroup（）}调用的顺序定义）将菜单和项目组合在一起，并向这些组添加菜单/操作 。
+如果未定义自定义组，则操作容器具有三个默认组\ c {Core :: Constants :: G_DEFAULT_ONE}，\ c {Core :: Constants :: G_DEFAULT_TWO}和\ c {Core :: Constants :: G_DEFAULT_THREE}。
 
-    You can define if the menu represented by this action container should automatically disable
-    or hide whenever it only contains disabled items and submenus by setting the corresponding
-    \l{ActionContainer::setOnAllDisabledBehavior()}{OnAllDisabledBehavior}. The default is
-    ActionContainer::Disable for menus, and ActionContainer::Show for menu bars.
+您可以通过设置相应的\ l {ActionContainer :: setOnAllDisabledBehavior（）} {OnAllDisabledBehavior}来定义此操作容器所表示的菜单是否应自动禁用或隐藏，只要它包含禁用的项目和子菜单。
+对于菜单，默认值为ActionContainer :: Disable，对于菜单栏，默认为ActionContainer :: Show。
 */
 
 /*!
     \enum ActionContainer::OnAllDisabledBehavior
-    Defines what happens when the represented menu is empty or contains only disabled/invisible items.
+    定义当表示的菜单为空或仅包含禁用/不可见项时发生的情况。
     \value Disable
-        The menu will be visible but disabled.
+        菜单将可见但已禁用。
     \value Hide
-        The menu will not be visible until the state of the subitems change.
+        在子项的状态发生变化之前，菜单将不可见。
     \value Show
-        The menu will still be visible and active.
+        菜单仍然可见并处于活动状态。
 */
 
 /*!
     \fn ActionContainer::setOnAllDisabledBehavior(OnAllDisabledBehavior behavior)
-    Defines the \a behavior of the menu represented by this action container for the case
-    whenever it only contains disabled items and submenus.
-    The default is ActionContainer::Disable for menus, and ActionContainer::Show for menu bars.
+定义此操作容器所表示的菜单的行为，只要它包含禁用的项目和子菜单。
+对于菜单，默认值为ActionContainer :: Disable，对于菜单栏，默认为ActionContainer :: Show。
     \sa ActionContainer::OnAllDisabledBehavior
     \sa ActionContainer::onAllDisabledBehavior()
 */
 
 /*!
     \fn ActionContainer::onAllDisabledBehavior() const
-    Returns the \a behavior of the menu represented by this action container for the case
-    whenever it only contains disabled items and submenus.
-    The default is ActionContainer::Disable for menus, and ActionContainer::Show for menu bars.
+只有当它包含禁用的项和子菜单时，才返回由此操作容器表示的菜单的行为。
+对于菜单，默认值为ActionContainer :: Disable，对于菜单栏，默认为ActionContainer :: Show。
     \sa ActionContainer::OnAllDisabledBehavior
     \sa ActionContainer::setOnAllDisabledBehavior()
 */
@@ -103,43 +68,39 @@
 
 /*!
     \fn QMenu *ActionContainer::menu() const
-    Returns the QMenu instance that is represented by this action container, or
-    0 if this action container represents a menu bar.
+    返回此操作容器表示的QMenu实例，如果此操作容器表示菜单栏，则返回0。
 */
 
 /*!
     \fn QMenuBar *ActionContainer::menuBar() const
-    Returns the QMenuBar instance that is represented by this action container, or
-    0 if this action container represents a menu.
+    返回此操作容器表示的QMenuBar实例，如果此操作容器表示菜单，则返回0。
 */
 
 /*!
     \fn QAction *ActionContainer::insertLocation(Id group) const
-    Returns an action representing the \a group,
-    that could be used with \c{QWidget::insertAction}.
+    返回表示\ a组的动作，该动作可与\ c {QWidget :: insertAction}一起使用。
 */
 
 /*!
     \fn void ActionContainer::appendGroup(Id group)
-    Adds a group with the given \a identifier to the action container. Using groups
-    you can segment your action container into logical parts and add actions and
-    menus directly to these parts.
+将具有给定\标识符的组添加到操作容器。
+使用组，您可以将操作容器分段为逻辑部分，并将操作和菜单直接添加到这些部分。
     \sa addAction()
     \sa addMenu()
 */
 
 /*!
     \fn void ActionContainer::addAction(Command *action, Id group = Id())
-    Add the \a action as a menu item to this action container. The action is added as the
-    last item of the specified \a group.
+将\ a操作作为菜单项添加到此操作容器中。
+该操作将添加为指定\ a组的最后一项。
     \sa appendGroup()
     \sa addMenu()
 */
 
 /*!
     \fn void ActionContainer::addMenu(ActionContainer *menu, Id group = Id())
-    Add the \a menu as a submenu to this action container. The menu is added as the
-    last item of the specified \a group.
+将\ a菜单作为子菜单添加到此操作容器中。
+菜单将添加为指定\ a组的最后一项。
     \sa appendGroup()
     \sa addAction()
 */
@@ -202,7 +163,8 @@ QList<Group>::const_iterator ActionContainerPrivate::findGroup(Id groupId) const
 QAction *ActionContainerPrivate::insertLocation(Id groupId) const
 {
     QList<Group>::const_iterator it = findGroup(groupId);
-    QTC_ASSERT(it != m_groups.constEnd(), return nullptr);
+    if(it == m_groups.constEnd())
+        return nullptr;
     return insertLocation(it);
 }
 
@@ -220,7 +182,8 @@ QAction *ActionContainerPrivate::insertLocation(QList<Group>::const_iterator gro
                 if (container->menu())
                     return container->menu()->menuAction();
             }
-            QTC_ASSERT(false, return nullptr);
+//            QTC_ASSERT(false, return nullptr);
+            return nullptr;
         }
         ++group;
     }
@@ -234,8 +197,13 @@ void ActionContainerPrivate::addAction(Command *command, Id groupId)
 
     const Id actualGroupId = groupId.isValid() ? groupId : Id(Constants::G_DEFAULT_TWO);
     QList<Group>::const_iterator groupIt = findGroup(actualGroupId);
-    QTC_ASSERT(groupIt != m_groups.constEnd(), qDebug() << "Can't find group"
-               << groupId.name() << "in container" << id().name(); return);
+    if(groupIt != m_groups.constEnd())
+        ;
+    else{
+        qDebug() << "Can't find group"
+               << groupId.name() << "in container" << id().name();
+        return;
+    }
     QAction *beforeAction = insertLocation(groupIt);
     m_groups[groupIt-m_groups.constBegin()].items.append(command);
 
@@ -254,7 +222,10 @@ void ActionContainerPrivate::addMenu(ActionContainer *menu, Id groupId)
     auto container = static_cast<MenuActionContainer *>(containerPrivate);
     const Id actualGroupId = groupId.isValid() ? groupId : Id(Constants::G_DEFAULT_TWO);
     QList<Group>::const_iterator groupIt = findGroup(actualGroupId);
-    QTC_ASSERT(groupIt != m_groups.constEnd(), return);
+    if(groupIt != m_groups.constEnd())
+        ;
+    else
+        return;
     QAction *beforeAction = insertLocation(groupIt);
     m_groups[groupIt-m_groups.constBegin()].items.append(menu);
 
@@ -272,7 +243,10 @@ void ActionContainerPrivate::addMenu(ActionContainer *before, ActionContainer *m
     auto container = static_cast<MenuActionContainer *>(containerPrivate);
     const Id actualGroupId = groupId.isValid() ? groupId : Id(Constants::G_DEFAULT_TWO);
     QList<Group>::const_iterator groupIt = findGroup(actualGroupId);
-    QTC_ASSERT(groupIt != m_groups.constEnd(), return);
+    if(groupIt != m_groups.constEnd())
+        ;
+    else
+        return;
     QAction *beforeAction = before->menu()->menuAction();
     m_groups[groupIt-m_groups.constBegin()].items.append(menu);
 
@@ -451,7 +425,8 @@ bool MenuActionContainer::updateInternal()
                     break;
                 }
             } else {
-                QTC_ASSERT(false, continue);
+//                QTC_ASSERT(false, continue);
+                continue;
             }
         }
         if (hasitems)

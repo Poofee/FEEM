@@ -92,11 +92,11 @@ HEADERS += \
     actionmanager/actionmanager_p.h \
     actionmanager/command.h \
     actionmanager/command_p.h \
-    actionmanager/commandbutton.h \
-    actionmanager/commandmappings.h \
-    actionmanager/commandsfile.h \
     util/idocument.h \
-    util/filename.h
+    util/filename.h \
+    util/id.h \
+    util/context.h \
+    actionmanager/proxyaction.h
 
 SOURCES += \    
     ./CAD/pf_centralwidget.cpp \
@@ -144,11 +144,11 @@ SOURCES += \
     actionmanager/actioncontainer.cpp \
     actionmanager/actionmanager.cpp \
     actionmanager/command.cpp \
-    actionmanager/commandbutton.cpp \
-    actionmanager/commandmappings.cpp \
-    actionmanager/commandsfile.cpp \
     util/idocument.cpp \
-    util/filename.cpp
+    util/filename.cpp \
+    util/id.cpp \
+    util/context.cpp \
+    actionmanager/proxyaction.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

@@ -3,3 +3,13 @@
 \subsection{静态链接库}
 \subsection{如何识别lib文件为静态链接库还是导入库？}
 \section{Python脚本与C++程序的结合}
+
+\section{Qt}
+\subsection{Q\_DECLARE\_METATYPE}
+这个宏是为了让QMetaType知道Type这个数据类型，并提供一个默认的拷贝构造函数和析构函数。QVariant需要使用Q\_DECLARE\_METATYPE这个宏来定制类型。
+
+当使用这个宏的时候要求Type是一个完整的数据类型。可以使用Q\_DECLARE\_OPAQUE\_POINTER()来注册一个指针用于转发声明类型。
+
+一般都把这个宏放到结构体或类的末尾【注意：这是官方说的】，如果不放到末尾也是阔以的，就放到头文件中，当你用 QVariant就要包含那个.h，个人觉得这非常不适合面向对象以及模块化编程。
+
+通过添加Q\_DECLARE\_METATYPE()这个宏让QOject及其子类知道这个类型。这里要注意的是如果要在队列信号（关于connect函数队列信号请看这篇博文：https://blog.csdn.net/qq78442761/article/details/81937837）中使用或者用用槽连接，要先调用这个函数qRegisterMetaType()【这里是在运行的时候，对他进行注册】
