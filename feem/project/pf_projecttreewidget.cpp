@@ -174,5 +174,17 @@ private:
  */
 PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
 {
+    m_model = new PF_ProjectModel(this);
+    m_view = new PF_ProjectTreeView;
+    m_view->setModel(m_model);
+    m_view->setItemDelegate(new PF_ProjectTreeItemDelegate(m_view));
+    setFocusProxy(m_view);
+    m_view->installEventFilter(this);
+
+
+}
+
+PF_ProjectTreeWidget::~PF_ProjectTreeWidget()
+{
 
 }

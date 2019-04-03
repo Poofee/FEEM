@@ -85,7 +85,18 @@ HEADERS += \
     ./CAD/pf_graphicwindow.h \
     project/viewitem.h \
     project/navigationtreeview.h \
-    project/treemodel.h
+    project/treemodel.h \
+    actionmanager/actioncontainer.h \
+    actionmanager/actioncontainer_p.h \
+    actionmanager/actionmanager.h \
+    actionmanager/actionmanager_p.h \
+    actionmanager/command.h \
+    actionmanager/command_p.h \
+    actionmanager/commandbutton.h \
+    actionmanager/commandmappings.h \
+    actionmanager/commandsfile.h \
+    util/idocument.h \
+    util/filename.h
 
 SOURCES += \    
     ./CAD/pf_centralwidget.cpp \
@@ -129,7 +140,15 @@ SOURCES += \
     ./CAD/pf_graphicwindow.cpp \
     project/viewitem.cpp \
     project/navigationtreeview.cpp \
-    project/treemodel.cpp
+    project/treemodel.cpp \
+    actionmanager/actioncontainer.cpp \
+    actionmanager/actionmanager.cpp \
+    actionmanager/command.cpp \
+    actionmanager/commandbutton.cpp \
+    actionmanager/commandmappings.cpp \
+    actionmanager/commandsfile.cpp \
+    util/idocument.cpp \
+    util/filename.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

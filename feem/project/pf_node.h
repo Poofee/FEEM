@@ -20,7 +20,10 @@ enum class NodeType : quint16 {
 };
 
 /*!
- \brief 项目树的节点的基类，用来保存节点内的数据
+ \brief 项目树的节点的基类，用来保存节点内的数据。
+
+ 项目树上的每一个节点都是Node，有的Node能够包含更多的Node，
+ 类似于枝干，而有的Node则不再细分，成为树叶。
 
 */
 class Node
