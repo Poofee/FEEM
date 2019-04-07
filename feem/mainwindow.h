@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "context.h"
+#include "icore.h"
+
 #include <QMainWindow>
 #include <QMap>
 #include <QDockWidget>
@@ -19,7 +22,7 @@ class MainWindow : public RibbonWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void openView_N(int n);
@@ -28,6 +31,9 @@ public:
     void createTable(QWidget * w);
     void setupDockWidgets();
     void setupStatusBar();
+
+    void registerDefaultContainers();
+    void registerDefaultActions();
 
     QMap<QString, QAction*> a_map;/**动作列表**/
     PF_ActionGroupManager* ag_manager;
@@ -45,6 +51,7 @@ public slots:
     void slotPrintView();
 
 private:
+    ICore *m_coreImpl = nullptr;
     PF_WidgetFactory* dialogFactory;
     PF_ActionHandler* actionHandler;
 

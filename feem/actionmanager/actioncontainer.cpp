@@ -176,6 +176,7 @@ QAction *ActionContainerPrivate::insertLocation(QList<Group>::const_iterator gro
     while (group != m_groups.constEnd()) {
         if (!group->items.isEmpty()) {
             QObject *item = group->items.first();
+            /**本方法返回object向下的转型T，如果转型不成功则返回0，如果传入的object本身就是0则返回0。**/
             if (auto cmd = qobject_cast<Command *>(item)) {
                 return cmd->action();
             } else if (auto container = qobject_cast<ActionContainer *>(item)) {

@@ -4,7 +4,7 @@
 #include "command_p.h"
 
 #include "id.h"
-//#include <coreplugin/icore.h>
+#include "icore.h"
 //#include <coreplugin/id.h>
 //#include <utils/fadingindicator.h>
 //#include <utils/qtcassert.h>
@@ -262,7 +262,7 @@ QList<Command *> ActionManager::commands()
 */
 void ActionManager::unregisterAction(QAction *action, Id id)
 {
-    Action *a = d->m_idCmdMap.value(id, 0);
+    Action *a = d->m_idCmdMap.value(id, nullptr);
     if (!a) {
         qWarning() << "unregisterAction: id" << id.name()
                    << "is registered with a different command type.";
@@ -394,12 +394,12 @@ void ActionManagerPrivate::showShortcutPopup(const QString &shortcut)
         }
     }
 
-    Utils::FadingIndicator::showText(window, shortcut);
+//    Utils::FadingIndicator::showText(window, shortcut);
 }
 
 Action *ActionManagerPrivate::overridableAction(Id id)
 {
-    Action *a = m_idCmdMap.value(id, 0);
+    Action *a = m_idCmdMap.value(id, nullptr);
     if (!a) {
         a = new Action(id);
         m_idCmdMap.insert(id, a);
@@ -418,11 +418,11 @@ Action *ActionManagerPrivate::overridableAction(Id id)
 
 void ActionManagerPrivate::readUserSettings(Id id, Action *cmd)
 {
-    QSettings *settings = ICore::settings();
-    settings->beginGroup(QLatin1String(kKeyboardSettingsKey));
-    if (settings->contains(id.toString()))
-        cmd->setKeySequence(QKeySequence(settings->value(id.toString()).toString()));
-    settings->endGroup();
+//    QSettings *settings = ICore::settings();
+//    settings->beginGroup(QLatin1String(kKeyboardSettingsKey));
+//    if (settings->contains(id.toString()))
+//        cmd->setKeySequence(QKeySequence(settings->value(id.toString()).toString()));
+//    settings->endGroup();
 }
 
 void ActionManagerPrivate::saveSettings(Action *cmd)
@@ -430,10 +430,10 @@ void ActionManagerPrivate::saveSettings(Action *cmd)
     const QString settingsKey = QLatin1String(kKeyboardSettingsKey) + QLatin1Char('/')
             + cmd->id().toString();
     QKeySequence key = cmd->keySequence();
-    if (key != cmd->defaultKeySequence())
-        ICore::settings()->setValue(settingsKey, key.toString());
-    else
-        ICore::settings()->remove(settingsKey);
+//    if (key != cmd->defaultKeySequence())
+//        ICore::settings()->setValue(settingsKey, key.toString());
+//    else
+//        ICore::settings()->remove(settingsKey);
 }
 
 void ActionManagerPrivate::saveSettings()

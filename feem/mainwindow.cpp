@@ -21,6 +21,12 @@
 #include "pf_centralwidget.h"
 #include "pf_graphicwindow.h"
 
+#include "actionmanager/actioncontainer.h"
+#include "actionmanager/actioncontainer_p.h"
+#include "actionmanager/actionmanager.h"
+#include "actionmanager/actionmanager_p.h"
+#include "actionmanager/command.h"
+
 #include "QtFlexWidget.h"
 #include "QtFlexHelper.h"
 #include "QtDockGuider.h"
@@ -42,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent)
     PF_CentralWidget* central = new PF_CentralWidget(this);
     setCentralWidget(central);
     mdiAreaCAD = central->getMdiArea();
+
+    registerDefaultContainers();
+    registerDefaultActions();
 
     /*创建动作列表*/
     PF_ActionFactory a_factory(this, actionHandler);
@@ -598,4 +607,22 @@ void MainWindow::setupStatusBar()
     status_bar->addPermanentWidget(new QLabel());/**左侧占位**/
     status_bar->addPermanentWidget(statusLabel);
     status_bar->addPermanentWidget(label1);
+}
+
+/**
+ * @brief
+ *
+ */
+void MainWindow::registerDefaultContainers()
+{
+
+}
+
+/**
+ * @brief
+ *
+ */
+void MainWindow::registerDefaultActions()
+{
+
 }

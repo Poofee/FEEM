@@ -96,7 +96,8 @@ HEADERS += \
     util/filename.h \
     util/id.h \
     util/context.h \
-    actionmanager/proxyaction.h
+    actionmanager/proxyaction.h \
+    util/icore.h
 
 SOURCES += \    
     ./CAD/pf_centralwidget.cpp \
@@ -148,7 +149,8 @@ SOURCES += \
     util/filename.cpp \
     util/id.cpp \
     util/context.cpp \
-    actionmanager/proxyaction.cpp
+    actionmanager/proxyaction.cpp \
+    util/icore.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

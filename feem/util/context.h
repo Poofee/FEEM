@@ -62,5 +62,5 @@ protected:
     QString m_contextHelpId;
 };
 
-QDebug operator<<(QDebug debug, const Core::Context &context);
+QDebug operator<<(QDebug debug, const Context &context);
 #endif // CONTEXT_H
