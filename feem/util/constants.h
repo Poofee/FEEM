@@ -15,8 +15,14 @@ const char P_MESH[]                     = "FEEM.Page.Mesh";
 const char P_SOLVER[]                   = "FEEM.Page.Solver";
 const char P_Result[]                   = "FEEM.Page.Result";
 
-// Contexts
+// Contexts menu
 const char C_GLOBAL[]                   = "Global Context";
+
+// Project tree context menu
+const char M_PROJECT_CONTEXT[]          = "Project.Menu.Project";
+const char M_DEFINITION_CONTEXT[]       = "";
+const char M_MATERIAL_CONTEXT[]         = "";
+const char M_GEOMETRY_CONTEXT[]         = "";
 
 /**  actions **/
 

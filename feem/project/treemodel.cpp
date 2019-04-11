@@ -1,5 +1,6 @@
 #include "treemodel.h"
 
+
 TreeItem::TreeItem() = default;
 
 TreeItem::~TreeItem()
@@ -252,7 +253,16 @@ QAbstractItemModel *TreeItem::model() const
 //    return nullptr;
 //}
 
-
+TreeItem *TreeItem::findAnyChild(const std::function<bool(TreeItem *)> &pred) const
+{
+    for (TreeItem *item : *this) {
+        if (pred(item))
+            return item;
+        if (TreeItem *found = item->findAnyChild(pred))
+            return found;
+    }
+    return nullptr;
+}
 //TreeItem *TreeItem::reverseFindAnyChild(const std::function<bool (TreeItem *)> &pred) const
 //{
 //    auto end = m_children.rend();
@@ -367,6 +377,15 @@ QModelIndex BaseTreeModel::parent(const QModelIndex &idx) const
     return createIndex(i, 0, static_cast<void*>(parent));
 }
 
+/*!
+ \brief 返回index处项目的行和列的兄弟节点，如果该位置没有兄弟节点，
+则返回无效的QModelIndex。
+
+ \param row
+ \param column
+ \param idx
+ \return QModelIndex
+*/
 QModelIndex BaseTreeModel::sibling(int row, int column, const QModelIndex &idx) const
 {
     const TreeItem *item = itemForIndex(idx);
@@ -407,6 +426,13 @@ bool BaseTreeModel::setData(const QModelIndex &idx, const QVariant &data, int ro
     return res;
 }
 
+/*!
+ \brief 返回索引引用的项目的给定角色下存储的数据
+
+ \param idx
+ \param role
+ \return QVariant
+*/
 QVariant BaseTreeModel::data(const QModelIndex &idx, int role) const
 {
     TreeItem *item = itemForIndex(idx);
@@ -505,6 +531,21 @@ void BaseTreeModel::setHeaderToolTip(const QStringList &tips)
     m_headerToolTip = tips;
 }
 
+/*!
+ \brief 模型必须实现一个index()函数，以便在访问数据时为视图和委托提供索引。
+当其他组件的行号和列号及其父模型索引引用时，将为其他组件创建索引。如果将无效
+模型索引指定为父级，则由模型决定是否返回与模型中的顶级项对应的索引。
+
+当提供模型索引时，我们首先检查它是否有效。如果不是，我们假设正在引用顶级项目;
+否则，我们使用internalPointer（）函数从模型索引中获取数据指针，并使用它来
+引用一个TreeItem对象。请注意，我们构造的所有模型索引都将包含指向现有的模型
+索引TreeItem，因此我们可以保证我们收到的任何有效模型索引都将包含有效的数据指针。
+
+ \param row
+ \param column
+ \param parent
+ \return QModelIndex
+*/
 QModelIndex BaseTreeModel::index(int row, int column, const QModelIndex &parent) const
 {
 //    CHECK_INDEX(parent);

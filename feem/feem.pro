@@ -97,7 +97,12 @@ HEADERS += \
     util/id.h \
     util/context.h \
     actionmanager/proxyaction.h \
-    util/icore.h
+    util/icore.h \
+    ouptput/outputwindow.h \
+    ouptput/ioutputpane.h \
+    ouptput/messageoutputwindow.h \
+    ouptput/messagemanager.h \
+    material/pf_materiallibrary.h
 
 SOURCES += \    
     ./CAD/pf_centralwidget.cpp \
@@ -150,7 +155,12 @@ SOURCES += \
     util/id.cpp \
     util/context.cpp \
     actionmanager/proxyaction.cpp \
-    util/icore.cpp
+    util/icore.cpp \
+    ouptput/outputwindow.cpp \
+    ouptput/ioutputpane.cpp \
+    ouptput/messageoutputwindow.cpp \
+    ouptput/messagemanager.cpp \
+    material/pf_materiallibrary.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

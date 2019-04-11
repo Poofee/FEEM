@@ -21,7 +21,7 @@ PF_ProjectModel::PF_ProjectModel(QObject *parent)
 }
 
 /*!
- \brief 提供获取数据的方法
+ \brief 提供获取数据的方法，参考 https://doc.qt.io/qt-5/qt.html#ItemDataRole-enum
 
  \param index
  \param role
@@ -37,15 +37,15 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
         const Project *project = containerNode ? containerNode->project() : nullptr;
 
         switch (role) {
-        case Qt::DisplayRole: {
+        case Qt::DisplayRole: {/**要以文本形式呈现的关键数据**/
             result = node->displayName();
             break;
         }
-        case Qt::EditRole: {
+        case Qt::EditRole: {/**适合在编辑器中编辑的形式的数据**/
             result = node->filePath().fileName();
             break;
         }
-        case Qt::ToolTipRole: {
+        case Qt::ToolTipRole: {/**项目工具提示中显示的数据**/
             QString tooltip = node->tooltip();
 
             if (project) {
@@ -61,7 +61,7 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
             result = tooltip;
             break;
         }
-        case Qt::DecorationRole: {
+        case Qt::DecorationRole: {/**要以图标形式呈现为装饰的数据**/
             if (folderNode) {
                 static QIcon warnIcon = Utils::Icons::WARNING.icon();
                 static QIcon emptyIcon = Utils::Icons::EMPTY16.icon();
@@ -82,14 +82,14 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
             }
             break;
         }
-        case Qt::FontRole: {
+        case Qt::FontRole: {/**用于使用默认委托呈现的项目的字体**/
             QFont font;
             if (project == SessionManager::startupProject())
                 font.setBold(true);
             result = font;
             break;
         }
-        case Qt::TextColorRole: {
+        case Qt::TextColorRole: {/**文本颜色**/
             result = node->isEnabled() ? m_enabledTextColor : m_disabledTextColor;
             break;
         }
@@ -107,6 +107,12 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
     return result;
 }
 
+/*!
+ \brief 返回给定索引的项标志。
+
+ \param index
+ \return Qt::ItemFlags
+*/
 Qt::ItemFlags PF_ProjectModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
@@ -347,18 +353,32 @@ bool PF_ProjectModel::setData(const QModelIndex &index, const QVariant &value, i
 //    return data;
 //}
 
+/*!
+ \brief 返回包含node的项。
+
+ \param node
+ \return WrapperNode
+*/
 WrapperNode *PF_ProjectModel::wrapperForNode(const Node *node) const
 {
-    return findNonRootItem([node](WrapperNode *item) {
+    auto pred = [node](WrapperNode *item) {
         return item->m_node == node;
-    });
+    };
+    const auto pred0 = [pred](TreeItem *treeItem) -> bool { return pred(static_cast<WrapperNode *>(treeItem)); };
+    return static_cast<WrapperNode *>(m_root->findAnyChild(pred0));
 }
 
-//QModelIndex PF_ProjectModel::indexForNode(const Node *node) const
-//{
-//    WrapperNode *wrapper = wrapperForNode(node);
-//    return wrapper ? indexForItem(wrapper) : QModelIndex();
-//}
+/*!
+ \brief 返回包含node的项的索引。
+
+ \param node
+ \return QModelIndex
+*/
+QModelIndex PF_ProjectModel::indexForNode(const Node *node) const
+{
+    WrapperNode *wrapper = wrapperForNode(node);
+    return wrapper ? indexForItem(wrapper) : QModelIndex();
+}
 
 //void PF_ProjectModel::setProjectFilterEnabled(bool filter)
 //{
@@ -394,9 +414,15 @@ WrapperNode *PF_ProjectModel::wrapperForNode(const Node *node) const
 //    return m_filterGeneratedFiles;
 //}
 
+/*!
+ \brief 返回索引Index处数据的Node值。
+
+ \param index
+ \return Node
+*/
 Node *PF_ProjectModel::nodeForIndex(const QModelIndex &index) const
 {
-    WrapperNode *flatNode = itemForIndex(index);
+    WrapperNode* flatNode = static_cast<WrapperNode* >(BaseTreeModel::itemForIndex(index));
     return flatNode ? flatNode->m_node : nullptr;
 }
 

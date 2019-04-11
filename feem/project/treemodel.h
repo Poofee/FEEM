@@ -4,6 +4,8 @@
 #include <QAbstractItemModel>
 #include <QVector>
 
+#include <functional>
+
 class BaseTreeModel;
 
 /*!
@@ -57,7 +59,7 @@ public:
 
 //    void forSelectedChildren(const std::function<bool(TreeItem *)> &pred) const;
 //    void forAllChildren(const std::function<void(TreeItem *)> &pred) const;
-//    TreeItem *findAnyChild(const std::function<bool(TreeItem *)> &pred) const;
+    TreeItem *findAnyChild(const std::function<bool(TreeItem *)> &pred) const;
     // like findAnyChild() but processes children in exact reverse order
     // (bottom to top, most inner children first)
 //    TreeItem *reverseFindAnyChild(const std::function<bool(TreeItem *)> &pred) const;
@@ -83,6 +85,7 @@ private:
 
 // A general purpose multi-level model where each item can have its
 // own (TreeItem-derived) type.
+// https://doc.qt.io/qt-5/qabstractitemmodel.html
 class BaseTreeModel : public QAbstractItemModel
 {
     Q_OBJECT

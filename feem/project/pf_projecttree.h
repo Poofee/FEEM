@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+class Node;
+
 class PF_ProjectTreeWidget;
 class PF_Project;
 /*!
@@ -14,6 +16,9 @@ class PF_ProjectTree : public QObject
     Q_OBJECT
 public:
     explicit PF_ProjectTree(QObject *parent = nullptr);
+
+
+    static void showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &globalPos, Node *node);
 
 signals:
 

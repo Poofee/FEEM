@@ -2,6 +2,7 @@
 
 #include "navigationtreeview.h"
 #include "pf_projectmodel.h"
+#include "pf_projecttree.h"
 
 #include <QApplication>
 #include <QSettings>
@@ -181,10 +182,72 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
     setFocusProxy(m_view);
     m_view->installEventFilter(this);
 
+    /** 信号连接 **/
+//    connect(m_model, &PF_ProjectModel::renamed,
+//            this, &PF_ProjectTreeWidget::renamed);
+//    connect(m_model, &PF_ProjectModel::requestExpansion,
+//            m_view, &QTreeView::expand);
+    connect(m_view, &QAbstractItemView::activated,
+            this, &PF_ProjectTreeWidget::openItem);
+    connect(m_view->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &PF_ProjectTreeWidget::handleCurrentItemChange);
+    connect(m_view, &QWidget::customContextMenuRequested,
+            this, &PF_ProjectTreeWidget::showContextMenu);
+    connect(m_view, &QTreeView::expanded,
+            m_model, &PF_ProjectModel::onExpanded);
+    connect(m_view, &QTreeView::collapsed,
+            m_model, &PF_ProjectModel::onCollapsed);
 
 }
 
 PF_ProjectTreeWidget::~PF_ProjectTreeWidget()
 {
 
+}
+
+/*!
+ \brief 当前节点
+
+ \return Node
+*/
+Node *PF_ProjectTreeWidget::currentNode()
+{
+    return m_model->nodeForIndex(m_view->currentIndex());
+}
+
+void PF_ProjectTreeWidget::collapseAll()
+{
+    m_view->collapseAll();
+}
+
+/*!
+ \brief 处理选中的node的变化。
+
+ \param current
+*/
+void PF_ProjectTreeWidget::handleCurrentItemChange(const QModelIndex &current)
+{
+
+}
+
+/*!
+ \brief 根据不同的node，显示不同的右键菜单。
+
+ \param pos
+*/
+void PF_ProjectTreeWidget::showContextMenu(const QPoint &pos)
+{
+    QModelIndex index = m_view->indexAt(pos);
+    Node *node = m_model->nodeForIndex(index);
+    PF_ProjectTree::showContextMenu(this, m_view->mapToGlobal(pos), node);
+}
+
+/*!
+ \brief node选中激活之后的动作。
+
+ \param mainIndex
+*/
+void PF_ProjectTreeWidget::openItem(const QModelIndex &mainIndex)
+{
+    Node *node = m_model->nodeForIndex(mainIndex);
 }
