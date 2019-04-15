@@ -20,27 +20,75 @@ PF_Line::PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vecto
 
 PF_VectorSolutions PF_Line::getRefPoints() const
 {
-
+    return PF_VectorSolutions({data.startpoint, data.endpoint});
 }
 
 PF_Vector PF_Line::getMiddlePoint() const
 {
-
+    return (getStartpoint() + getEndpoint())*0.5;
 }
 
 PF_Vector PF_Line::getNearestEndpoint(const PF_Vector &coord, double *dist) const
 {
+    double dist1((data.startpoint-coord).squared());
+    double dist2((data.endpoint-coord).squared());
 
+    if (dist2<dist1) {
+        if (dist) {
+            *dist = sqrt(dist2);
+        }
+        return data.endpoint;
+    } else {
+        if (dist) {
+            *dist = sqrt(dist1);
+        }
+        return data.startpoint;
+    }
 }
 
 PF_Vector PF_Line::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity, double *dist, PF_Entity **entity) const
 {
+    if (entity) {
+        *entity = const_cast<PF_Line*>(this);
+    }
 
+    PF_Vector direction {data.endpoint - data.startpoint};
+    PF_Vector vpc {coord - data.startpoint};
+    double a {direction.squared()};
+
+    if( a < PF_TOLERANCE2) {
+        //line too short
+        vpc = getMiddlePoint();
+    }
+    else {
+        //find projection on line
+        const double t {PF_Vector::dotP( vpc, direction) / a};
+        if( //!isConstruction()
+                 onEntity
+                && ( t <= -PF_TOLERANCE
+                     || t >= 1. + PF_TOLERANCE ) ) {
+            //projection point not within range, find the nearest endpoint
+            return getNearestEndpoint( coord, dist);
+        }
+
+        vpc = data.startpoint + direction * t;
+    }
+
+    if (dist) {
+        *dist = vpc.distanceTo( coord);
+    }
+
+    return vpc;
 }
 
 PF_Vector PF_Line::getNearestCenter(const PF_Vector &coord, double *dist) const
 {
+    PF_Vector p = (data.startpoint + data.endpoint) * 0.5;
 
+    if(dist)
+        *dist = p.distanceTo(coord);
+
+    return p;
 }
 
 PF_Vector PF_Line::getNearestMiddle(const PF_Vector &coord, double *dist, int middlePoints) const

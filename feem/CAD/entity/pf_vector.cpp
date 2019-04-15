@@ -53,6 +53,11 @@ void PF_Vector::setPolar(double radius, double angle)
     valid = true;
 }
 
+PF_Vector PF_Vector::polar(double rho, double theta)
+{
+    return {rho*cos(theta),rho*sin(theta),0};
+}
+
 double PF_Vector::distanceTo(const PF_Vector &v) const
 {
     if(!valid || !v.valid){
@@ -69,6 +74,13 @@ double PF_Vector::magnitude() const
         ret = hypot(hypot(x, y), z);
     }
     return ret;
+}
+
+double PF_Vector::squared() const
+{
+    if (valid)
+        return x*x + y*y + z*z;
+    return PF_MAXDOUBLE;
 }
 
 PF_Vector PF_Vector::move(const PF_Vector &offset)
@@ -104,6 +116,11 @@ PF_Vector PF_Vector::scale(const PF_Vector &factor)
 PF_Vector PF_Vector::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
 {
     return *this;
+}
+
+double PF_Vector::dotP(const PF_Vector &v1) const
+{
+    return x*v1.x+y*v1.y;
 }
 
 PF_Vector PF_Vector::operator +(const PF_Vector &v) const
@@ -239,6 +256,18 @@ PF_Vector PF_Vector::maximum(const PF_Vector &v1, const PF_Vector &v2)
                 std::max(v1.z, v2.z)
 
     };
+}
+
+PF_Vector PF_Vector::crossP(const PF_Vector &v1, const PF_Vector &v2)
+{
+    return {v1.y*v2.z - v1.z*v2.y,
+                v1.z*v2.x - v1.x*v2.z,
+                v1.x*v2.y - v1.y*v2.x};
+}
+
+double PF_Vector::dotP(const PF_Vector &v1, const PF_Vector &v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 PF_Vector PF_Vector::flipXY() const

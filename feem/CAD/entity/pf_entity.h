@@ -62,59 +62,41 @@ public:
     virtual PF_VectorSolutions getRefPoints() const;
 
     /**
-     * Must be overwritten to get the closest endpoint to the
-     * given coordinate for this entity.
+     * 给定坐标，返回该实体上最近的端点的坐标，子类必须重写。
+     * @param 坐标值
+     * @param 距离的指针变量，用来保存距离。如果指针为空，则
+     * 距离值不会被保存。
      *
-     * @param coord Coordinate (typically a mouse coordinate)
-     * @param dist Pointer to a value which will contain the measured
-     * distance between 'coord' and the closest endpoint. The passed
-     * pointer can also be nullptr in which case the distance will be
-     * lost.
-     *
-     * @return The closest endpoint.
+     * @return 最近的端点坐标
      */
     virtual PF_Vector getNearestEndpoint(const PF_Vector& coord,
                                          double* dist = nullptr)const = 0;
 
     /**
-     * Must be overwritten to get the closest coordinate to the
-    * given coordinate which is on this entity.
+     * 给定坐标，返回距离该坐标最近的该实体上的点的坐标。
+     * @param 坐标值
+     * @param 保存距离值得指针变量。
      *
-     * @param coord Coordinate (typically a mouse coordinate)
-     * @param dist Pointer to a value which will contain the measured
-     * distance between \p coord and the point. The passed pointer can
-     * also be \p nullptr in which case the distance will be lost.
-     *
-     * @return The closest coordinate.
+     * @return 最近的坐标
      */
     virtual PF_Vector getNearestPointOnEntity(const PF_Vector& /*coord*/,
                                               bool onEntity = true, double* dist = nullptr,
                                               PF_Entity** entity = nullptr) const = 0;
 
     /**
-     * Must be overwritten to get the (nearest) center point to the
-     * given coordinate for this entity.
+     * 给定坐标，返回距离实体上最近的中点的点的坐标。
+     * @param 坐标值
+     * @param 保存距离值得指针
      *
-     * @param coord Coordinate (typically a mouse coordinate)
-     * @param dist Pointer to a value which will contain the measured
-     * distance between 'coord' and the closest center point. The passed
-     * pointer can also be nullptr in which case the distance will be
-     * lost.
-     *
-     * @return The closest center point.
+     * @return 最近的中点坐标
      */
     virtual PF_Vector getNearestCenter(const PF_Vector& coord,
                                        double* dist = nullptr) const= 0;
 
     /**
-     * Must be overwritten to get the (nearest) middle point to the
-     * given coordinate for this entity.
-     *
-     * @param coord Coordinate (typically a mouse coordinate)
-     * @param dist Pointer to a value which will contain the measured
-     * distance between 'coord' and the closest middle point. The passed
-     * pointer can also be nullptr in which case the distance will be
-     * lost.
+     * 给定坐标，返回距离实体最近的中心点的坐标
+     * @param 坐标值
+     * @param 保存距离值得指针
      *
      * @return The closest middle point.
      */
@@ -127,9 +109,7 @@ public:
             ) const= 0;
 
     /**
-     * Must be overwritten to get the nearest point with a given
-     * distance to the endpoint to the given coordinate for this entity.
-     *
+     * 给定坐标，返回距离端点一定距离的实体上的所有点中，距离该坐标最近的那个点。
      * @param distance Distance to endpoint.
      * @param coord Coordinate (typically a mouse coordinate)
      * @param dist Pointer to a value which will contain the measured
@@ -158,7 +138,7 @@ public:
     }
 
     /**
-     * Must be overwritten to get the nearest reference point for this entity.
+     * 返回最近的参考点。
      *
      * @param coord Coordinate (typically a mouse coordinate)
      * @param dist Pointer to a value which will contain the measured
@@ -173,8 +153,8 @@ public:
 
     /**
      * Gets the nearest reference point of this entity if it is selected.
-         * Containers re-implement this method to return the nearest reference
-         * point of a selected sub entity.
+     * Containers re-implement this method to return the nearest reference
+     * point of a selected sub entity.
      *
      * @param coord Coordinate (typically a mouse coordinate)
      * @param dist Pointer to a value which will contain the measured

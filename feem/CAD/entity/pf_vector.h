@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iosfwd>
+#include "pf.h"
 
 class PF_Vector
 {
@@ -19,11 +20,14 @@ public:
     void set(double vx, double vy, double vz=0.0);
     void setPolar(double radius, double angle);
 
+    static PF_Vector polar(double rho, double theta);
+
     double distanceTo(const PF_Vector & v) const;
     double angle() const;
     double angleTo(const PF_Vector & v) const;
     double angleBetween(const PF_Vector& v1, const PF_Vector& v2) const;
     double magnitude() const;
+    double squared() const;
 
     bool isInWindow(const PF_Vector& firstCorner, const PF_Vector& secondCorner) const;
 
@@ -36,6 +40,8 @@ public:
     PF_Vector scale(const PF_Vector& factor);
 
     PF_Vector mirror(const PF_Vector& axisPoint1, const PF_Vector& axisPoint2);
+
+    double dotP(const PF_Vector& v1) const;
 
     PF_Vector operator + (const PF_Vector& v) const;
     PF_Vector operator + (double d) const;
@@ -63,6 +69,9 @@ public:
 
     static PF_Vector minimum(const PF_Vector& v1, const PF_Vector& v2);
     static PF_Vector maximum(const PF_Vector& v1, const PF_Vector& v2);
+
+    static PF_Vector crossP(const PF_Vector& v1, const PF_Vector& v2);
+    static double dotP(const PF_Vector& v1, const PF_Vector& v2);
 
     PF_Vector flipXY(void) const;
 public:
