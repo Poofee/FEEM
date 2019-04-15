@@ -74,17 +74,17 @@ double PF_Vector::magnitude() const
 PF_Vector PF_Vector::move(const PF_Vector &offset)
 {
     *this += offset;
-	return *this;
+    return *this;
 }
 
 PF_Vector PF_Vector::rotate(const PF_Vector &angleVector)
 {
-	return *this;
+    return *this;
 }
 
 PF_Vector PF_Vector::rotate(const PF_Vector &center, double angle)
 {
-	return *this;
+    return *this;
 }
 
 PF_Vector PF_Vector::scale(double factor)
@@ -103,7 +103,7 @@ PF_Vector PF_Vector::scale(const PF_Vector &factor)
 
 PF_Vector PF_Vector::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
 {
-	return *this;
+    return *this;
 }
 
 PF_Vector PF_Vector::operator +(const PF_Vector &v) const
@@ -135,12 +135,12 @@ PF_Vector PF_Vector::operator /(const PF_Vector &v) const
 {
     if(fabs(v.x) > 1.0e-10 && fabs(v.y)>1.0e-10)
         return {x/v.x,y/v.y,std::isnormal(v.z)?z/v.z:z};
-    return *this;
-}
+            return *this;
+        }
 
-PF_Vector PF_Vector::operator *(double s) const
-{
-    return {x*s,y*s,z*s};
+        PF_Vector PF_Vector::operator *(double s) const
+        {
+        return {x*s,y*s,z*s};
 }
 
 PF_Vector PF_Vector::operator /(double s) const
@@ -255,3 +255,334 @@ PF_Vector::operator bool() const
 {
     return valid;
 }
+
+//-------------------------------------------
+//
+//
+//            PF_VectorSolutions
+//
+//-------------------------------------------
+/**
+ * Constructor for no solution.
+ */
+PF_VectorSolutions::PF_VectorSolutions()
+    :vector(0)
+    ,tangent(false)
+{
+}
+
+PF_VectorSolutions::PF_VectorSolutions(const std::vector<PF_Vector>& l)
+    : vector( l.begin(), l.end())
+    , tangent(false)
+{
+}
+
+/**
+ * Constructor for num solutions.
+ */
+PF_VectorSolutions::PF_VectorSolutions(int num)
+    : vector(num, PF_Vector(false))
+    , tangent(false)
+{
+}
+
+PF_VectorSolutions::PF_VectorSolutions(std::initializer_list<PF_Vector> const& l)
+    : vector(l)
+    , tangent(false)
+{
+}
+
+
+/*!
+ \brief 调整大小
+
+ \param num
+*/
+void PF_VectorSolutions::alloc(size_t num) {
+    if(num <= vector.size()){
+        vector.resize(num);
+    }else{
+        const std::vector<PF_Vector> v(num - vector.size());
+        vector.insert(vector.end(), v.begin(), v.end());
+    }
+}
+
+PF_Vector PF_VectorSolutions::get(size_t i) const
+{
+    if(i<vector.size())
+        return vector.at(i);
+    return {};
+}
+
+const PF_Vector&  PF_VectorSolutions::operator [] (const size_t i) const
+{
+    return vector[i];
+}
+
+PF_Vector&  PF_VectorSolutions::operator [] (const size_t i)
+{
+    return vector[i];
+}
+
+size_t PF_VectorSolutions::size() const
+{
+    return vector.size();
+}
+/**
+ * Deletes vector array and resets everything.
+ */
+void PF_VectorSolutions::clear() {
+    vector.clear();
+    tangent = false;
+}
+
+/**
+ * @return vector solution number i or an invalid vector if there
+ * are less solutions.
+ */
+const PF_Vector& PF_VectorSolutions::at(size_t i) const {
+    return vector.at(i);
+}
+
+/**
+ * @return Number of solutions available.
+ */
+size_t PF_VectorSolutions::getNumber() const {
+    return vector.size();
+}
+
+/**
+ * @retval true There's at least one valid solution.
+ * @retval false There's no valid solution.
+ */
+bool PF_VectorSolutions::hasValid() const {
+    for(const PF_Vector& v: vector)
+        if (v.valid)  return true;
+
+    return false;
+}
+
+void PF_VectorSolutions::resize(size_t n){
+    vector.resize(n);
+}
+
+const std::vector<PF_Vector>& PF_VectorSolutions::getVector() const {
+    return vector;
+}
+
+std::vector<PF_Vector>::const_iterator PF_VectorSolutions::begin() const
+{
+    return vector.begin();
+}
+
+std::vector<PF_Vector>::const_iterator PF_VectorSolutions::end() const
+{
+    return vector.end();
+}
+
+std::vector<PF_Vector>::iterator PF_VectorSolutions::begin()
+{
+    return vector.begin();
+}
+
+std::vector<PF_Vector>::iterator PF_VectorSolutions::end()
+{
+    return vector.end();
+}
+
+void PF_VectorSolutions::push_back(const PF_Vector& v) {
+    vector.push_back(v);
+}
+
+void PF_VectorSolutions::removeAt(const size_t i){
+    if (vector.size()> i)
+        vector.erase(vector.begin()+i);
+}
+
+PF_VectorSolutions& PF_VectorSolutions::push_back(const PF_VectorSolutions& v) {
+    vector.insert(vector.end(), v.begin(), v.end());
+    return *this;
+}
+
+/**
+ * Sets the solution i to the given vector.
+ * If i is greater than the current number of solutions available,
+ * nothing happens.
+ */
+void PF_VectorSolutions::set(size_t i, const PF_Vector& v) {
+    if (i<vector.size()) {
+        vector[i] = v;
+    }else{
+        //            RS_DEBUG->print(RS_Debug::D_ERROR, "set member in vector in PF_VectorSolutions: out of range, %d to size of %d", i,vector.size());
+        for(size_t j=vector.size();j<=i;++j)
+            vector.push_back(v);
+    }
+}
+
+/**
+ * Sets the tangent flag.
+ */
+void PF_VectorSolutions::setTangent(bool t) {
+    tangent = t;
+}
+
+/**
+ * @return true if at least one of the solutions is a double solution
+ * (tangent).
+ */
+bool PF_VectorSolutions::isTangent() const {
+    return tangent;
+}
+
+/**
+ * Rotates all vectors around (0,0) by the given angle.
+ */
+void PF_VectorSolutions::rotate(double ang) {
+    PF_Vector angleVector(ang);
+    for (auto& vp: vector) {
+        if (vp.valid) {
+            vp.rotate(angleVector);
+        }
+    }
+}
+
+/**
+ * Rotates all vectors around (0,0) by the given angleVector.
+ */
+void PF_VectorSolutions::rotate(const PF_Vector& angleVector) {
+    for (auto& vp: vector) {
+        if (vp.valid) {
+            vp.rotate(angleVector);
+        }
+    }
+}
+
+/**
+ * Rotates all vectors around the given center by the given angle.
+ */
+void PF_VectorSolutions::rotate(const PF_Vector& center, double ang) {
+    const PF_Vector angleVector(ang);
+    for (auto& vp: vector) {
+        if (vp.valid) {
+            vp.rotate(center,angleVector);
+        }
+    }
+}
+
+void PF_VectorSolutions::rotate(const PF_Vector& center, const PF_Vector& angleVector) {
+    for (auto& vp: vector) {
+        if (vp.valid) {
+            vp.rotate(center, angleVector);
+        }
+    }
+}
+
+/**
+ * Move all vectors around the given center by the given vector.
+ */
+void PF_VectorSolutions::move(const PF_Vector& vp) {
+    for (PF_Vector& v: vector) {
+        if (v.valid) {
+            v.move(vp);
+        }
+    }
+}
+
+/**
+ * Scales all vectors by the given factors with the given center.
+ */
+void PF_VectorSolutions::scale(const PF_Vector& center, const PF_Vector& factor) {
+    for (auto& vp: vector) {
+        if (vp.valid) {
+            vp.scale(center, factor);
+        }
+    }
+}
+
+void PF_VectorSolutions::scale( const PF_Vector& factor) {
+    for (auto& vp: vector) {
+        if (vp.valid) {
+            vp.scale(factor);
+        }
+    }
+}
+
+/**
+ * @return vector solution which is the closest to the given coordinate.
+ * dist will contain the distance if it doesn't point to NULL (default).
+ */
+PF_Vector PF_VectorSolutions::getClosest(const PF_Vector& coord,
+                                         double* dist, size_t* index) const {
+
+    double curDist{0.};
+    double minDist = RS_MAXDOUBLE;
+    PF_Vector closestPoint{false};
+    int pos(0);
+
+    for (size_t i=0; i<vector.size(); i++) {
+        if (vector[i].valid) {
+            curDist = (coord - vector[i]).squared();
+
+            if (curDist<minDist) {
+                closestPoint = vector[i];
+                minDist = curDist;
+                pos=i;
+            }
+        }
+    }
+    if (dist) {
+        *dist = sqrt(minDist);
+    }
+    if (index) {
+        *index = pos;
+    }
+    return closestPoint;
+}
+
+/**
+  *@ return the closest distance from the first counts rs_vectors
+  *@coord, distance to this point
+  *@counts, only consider this many points within solution
+  */
+double PF_VectorSolutions::getClosestDistance(const PF_Vector& coord,
+                                              int counts)
+{
+    double ret=RS_MAXDOUBLE*RS_MAXDOUBLE;
+    int i=vector.size();
+    if (counts < i && counts >= 0) i=counts;
+    std::for_each(vector.begin(), vector.begin() + i,
+                  [&ret, &coord](PF_Vector const& vp) {
+        if(vp.valid) {
+            double d=(coord - vp).squared();
+            if(d<ret) ret=d;
+        }
+    }
+    );
+
+    return sqrt(ret);
+}
+
+/** switch x,y for all vectors */
+PF_VectorSolutions PF_VectorSolutions::flipXY(void) const
+{
+    PF_VectorSolutions ret;
+    for(const auto& vp: vector)
+        ret.push_back(vp.flipXY());
+    return ret;
+}
+
+PF_VectorSolutions PF_VectorSolutions::operator = (const PF_VectorSolutions& s) {
+    setTangent(s.isTangent());
+    vector=s.vector;
+
+    return *this;
+}
+
+//std::ostream& operator << (std::ostream& os,
+//                           const PF_VectorSolutions& s) {
+//    for (const PF_Vector& vp: s){
+//        os << "(" << vp << ")\n";
+//    }
+//    os << " tangent: " << (int)s.isTangent() << "\n";
+//    return os;
+//}

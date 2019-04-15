@@ -16,7 +16,7 @@
 
 \section{C++}
 \subsection{左值、左值引用、右值、右值引用}
-1、左值和右值的概念
+\subsubsection{左值和右值的概念}
 
 左值是可以放在赋值号左边可以被赋值的值；
 
@@ -28,7 +28,7 @@
 
 一个对象被用作右值时，使用的是它的内容(值)，被当作左值时，使用的是它的地址。
 
-2、引用
+\subsubsection{引用}
 
 引用是C++语法做的优化，引用的本质还是靠指针来实现的。引用相当于变量的别名。
 
@@ -39,16 +39,51 @@
 声明引用的时候必须初始化，且一旦绑定，不可把引用绑定到其他对象；即引用必须初始化，不能对引用重定义；
 对引用的一切操作，就相当于对原对象的操作。
 
-3、左值引用和右值引用
+\subsubsection{左值引用和右值引用}
 
-3.1 左值引用
+1 左值引用
 
 左值引用的基本语法：type \&引用名 = 左值表达式；
 
-3.2 右值引用
+2 右值引用
 
 右值引用的基本语法type \&\&引用名 = 右值表达式；
 
 右值引用在企业开发人员在代码优化方面会经常用到。
 
 右值引用的“\&\&”中间不可以有空格。
+
+\subsection{虚函数}
+
+虚函数放在一张表里（非标准，只是编译器实现虚函数的一般手段）。表中放类型信息和虚函数地址。带虚函数的类与普通的类不同之处在于多了一个虚表指针，并且由于可以通过虚表指针找到自己的动态类型，所以可以进行dynamic\_cast。
+
+扩展：构造函数是否为虚函数（不知道为什么都喜欢问这种无聊的问题）、析构函数什么时候需要是虚函数、虚继承的类内布局（MSVC有单独的指向虚基类表的指针）、虚基类中有虚函数的类内布局（这样子类如果要有新的虚函数的话，有可能会有两个虚函数表）、多重继承的类内布局（多个虚函数表，指向第二个及以后的基类指针会有隐式指针的转换，析构会转换回来）、Itanium C++ ABI（两个delete函数）、MSVC C++ ABI、使用cl filename /d1 reportSingleClassLayoutClassName查看类内布局。
+
+\subsection{多态}
+
+模板（参数多态）、模板特化和函数重载（特设多态）、模板偏特化和sfinae和concept（限定多态）、继承（子类型多态）、CRTP（静态多态）、动态类型绑定（动态多态）。
+
+\subsection{堆内存}
+
+堆内存由malloc分配，小于128k由brk分配连续的堆内存（第一次会分配33页出来），大于128k由mmap分配离散（按页对齐）的堆内存。malloc(size\_t n)分配的内存会比n大一些，多出来的是一些记录管理需要使用的内存。
+
+扩展：operator new的22种重载格式、placement new（可不可以用作栈空间，std::variant的实现）、std::vector使用1.5倍扩容比使用2倍扩容会有什么优势、mmap为什么离brk指针那么远、glibc管理堆内存的方式。
+
+\subsection{inline和static的语义}
+inline的意思是linker去检查函数或变量的时候只保留一份副本，而不会报重定义的错误。和函数体是否inline展开没有任何关系。
+
+static的意思分为两种。非类内的static是指当前的变量放在数据段而不是栈段，并且拉黑linker，使得linker看不到它。类内的static则是没有this指针的隐含参数，是类拥有这个static变量或函数，而不是对象。
+
+\subsection{lambda}
+lambda就是函数对象的语法糖。没有捕获的lambda可以转化成函数指针（使用取正+操作符隐式转换）、引用捕获和值捕获、lambda可以被内联优化、lambda使用auto参数列表实现泛型。
+
+扩展：C++20中对lambda的改进、使用lambda（或者函数指针）可以把数据包起来放在模板参数中、继承lambda实现std::visit。
+
+\subsection{智能指针}
+std::shared\_ptr的control block（为什么有weak count，delete的类型擦除，引用计数的线程安全）、std::make\_shared的control block和对象连在一起、std::enable\_shared\_from\_this实现原理（CRTP）、std::unique\_ptr对T[]类型的偏特化，std::unique\_ptr的实现（RAII）。
+
+扩展：如何设计std::make\_shared的内存对齐、如何设计std::shared\_ptr使得其支持T[]、std::experimental::observer\_ptr和裸指针的区别。
+
+\subsection{模板实参推导}
+三种模板参数如何推导的（T，T\&，T\&\&）、auto如何推导的（auto，auto\&，auto\&\&）、decltype(auto)如何推导的、引用折叠（为什么const T\& with [T = int\&]会折叠成int\&而不是const int\&）、为什么类模板的参数包必须放在模板参数的最后而函数模板不用。
+\input{./body/binarycompatibilityinqt.tex}

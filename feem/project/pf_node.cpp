@@ -11,3 +11,8 @@ QString Node::displayName() const
 {
     return m_displayName;
 }
+
+QString Node::tooltip() const
+{
+    return QString("");
+}

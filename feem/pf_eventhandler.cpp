@@ -183,6 +183,19 @@ PF_ActionInterface *PF_EventHandler::getDefaultAction()
     return defaultAction;
 }
 
+void PF_EventHandler::setSnapMode(PF_SnapMode sm)
+{
+    for(auto a: currentAction){
+        if( ! a->isFinished()){
+            a->setSnapMode(sm);
+        }
+    }
+
+    if (defaultAction) {
+        defaultAction->setSnapMode(sm);
+    }
+}
+
 bool PF_EventHandler::hasAction()
 {
     for(int i = 0; i < currentAction.size();++i){

@@ -214,6 +214,86 @@ void PF_Polyline::endPolyline()
     }
 }
 
+PF_VectorSolutions PF_Polyline::getRefPoints() const
+{
+
+}
+
+PF_Vector PF_Polyline::getMiddlePoint() const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestEndpoint(const PF_Vector &coord, double *dist) const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity, double *dist, PF_Entity **entity) const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestCenter(const PF_Vector &coord, double *dist) const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestMiddle(const PF_Vector &coord, double *dist, int middlePoints) const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestDist(double distance, const PF_Vector &coord, double *dist) const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestDist(double distance, bool startp) const
+{
+
+}
+
+PF_Vector PF_Polyline::getNearestOrthTan(const PF_Vector &coord, const PF_Line &normal, bool onEntity) const
+{
+
+}
+
+bool PF_Polyline::offset(const PF_Vector &coord, const double &distance)
+{
+
+}
+
+void PF_Polyline::move(const PF_Vector &offset)
+{
+
+}
+
+void PF_Polyline::rotate(const PF_Vector &center, const double &angle)
+{
+
+}
+
+void PF_Polyline::rotate(const PF_Vector &center, const PF_Vector &angleVector)
+{
+
+}
+
+void PF_Polyline::scale(const PF_Vector &center, const PF_Vector &factor)
+{
+
+}
+
+void PF_Polyline::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
+{
+
+}
+
+void PF_Polyline::moveRef(const PF_Vector &ref, const PF_Vector &offset)
+{
+
+}
+
 void PF_Polyline::draw(QCPPainter *p)
 {
     PF_EntityContainer::draw(p);

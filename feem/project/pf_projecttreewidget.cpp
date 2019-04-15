@@ -193,10 +193,10 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
             this, &PF_ProjectTreeWidget::handleCurrentItemChange);
     connect(m_view, &QWidget::customContextMenuRequested,
             this, &PF_ProjectTreeWidget::showContextMenu);
-    connect(m_view, &QTreeView::expanded,
-            m_model, &PF_ProjectModel::onExpanded);
-    connect(m_view, &QTreeView::collapsed,
-            m_model, &PF_ProjectModel::onCollapsed);
+//    connect(m_view, &QTreeView::expanded,
+//            m_model, &PF_ProjectModel::onExpanded);
+//    connect(m_view, &QTreeView::collapsed,
+//            m_model, &PF_ProjectModel::onCollapsed);
 
 }
 

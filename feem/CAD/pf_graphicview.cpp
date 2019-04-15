@@ -2089,6 +2089,29 @@ double PF_GraphicView::toGraphDY(int d) const
 }
 
 /*!
+ \brief 设置默认的捕捉模式
+
+ \param sm
+*/
+void PF_GraphicView::setDefaultSnapMode(PF_SnapMode sm)
+{
+    defaultSnapMode = sm;
+    /** 将捕捉模式应用到当前活跃的action当中 **/
+    if(eventHandler)
+        eventHandler->setSnapMode(sm);
+}
+
+/*!
+ \brief 返回默认的捕捉模式
+
+ \return PF_SnapMode
+*/
+PF_SnapMode PF_GraphicView::getDefaultSnapMode() const
+{
+    return defaultSnapMode;
+}
+
+/*!
   Causes a complete replot into the internal paint buffer(s). Finally, the widget surface is
   refreshed with the new buffer contents. This is the method that must be called to make changes to
   the plot, e.g. on the axis ranges or data points of graphs, visible.

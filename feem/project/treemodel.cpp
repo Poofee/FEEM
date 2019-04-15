@@ -46,15 +46,15 @@ Qt::ItemFlags TreeItem::flags(int column) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-//bool TreeItem::hasChildren() const
-//{
-//    return canFetchMore() || childCount() > 0;
-//}
+bool TreeItem::hasChildren() const
+{
+    return canFetchMore() || childCount() > 0;
+}
 
-//bool TreeItem::canFetchMore() const
-//{
-//    return false;
-//}
+bool TreeItem::canFetchMore() const
+{
+    return false;
+}
 
 void TreeItem::prependChild(TreeItem *item)
 {

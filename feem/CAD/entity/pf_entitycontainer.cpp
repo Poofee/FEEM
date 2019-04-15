@@ -158,3 +158,83 @@ const QList<PF_Entity *> &PF_EntityContainer::getEntityList()
 {
     return entities;
 }
+
+PF_VectorSolutions PF_EntityContainer::getRefPoints() const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getMiddlePoint() const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestEndpoint(const PF_Vector &coord, double *dist) const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity, double *dist, PF_Entity **entity) const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestCenter(const PF_Vector &coord, double *dist) const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestMiddle(const PF_Vector &coord, double *dist, int middlePoints) const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestDist(double distance, const PF_Vector &coord, double *dist) const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestDist(double distance, bool startp) const
+{
+
+}
+
+PF_Vector PF_EntityContainer::getNearestOrthTan(const PF_Vector &coord, const PF_Line &normal, bool onEntity) const
+{
+
+}
+
+bool PF_EntityContainer::offset(const PF_Vector &coord, const double &distance)
+{
+
+}
+
+void PF_EntityContainer::move(const PF_Vector &offset)
+{
+
+}
+
+void PF_EntityContainer::rotate(const PF_Vector &center, const double &angle)
+{
+
+}
+
+void PF_EntityContainer::rotate(const PF_Vector &center, const PF_Vector &angleVector)
+{
+
+}
+
+void PF_EntityContainer::scale(const PF_Vector &center, const PF_Vector &factor)
+{
+
+}
+
+void PF_EntityContainer::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
+{
+
+}
+
+void PF_EntityContainer::moveRef(const PF_Vector &ref, const PF_Vector &offset)
+{
+
+}

@@ -8,7 +8,7 @@
 //namespace Utils { class FileName; }
 
 //namespace Core {
-//class Id;
+class Id;
 //class InfoBar;
 
 class FileName;
@@ -60,8 +60,8 @@ public:
     IDocument(QObject *parent = nullptr);
     ~IDocument() override;
 
-//    void setId(Id id);
-//    Id id() const;
+    void setId(Id id);
+    Id id() const;
 
     // required to be re-implemented for documents of IEditors
     virtual OpenResult open(QString *errorString, const QString &fileName, const QString &realFileName);

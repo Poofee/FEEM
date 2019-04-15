@@ -20,19 +20,19 @@ void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &
     } else {
         switch (node->nodeType()) {
         case NodeType::Project: {
-            if ((node->parentFolderNode() && node->parentFolderNode()->asContainerNode())
-                    || node->asContainerNode())
-                contextMenu = ActionManager::actionContainer(Constants::M_PROJECTCONTEXT)->menu();
-            else
-                contextMenu = ActionManager::actionContainer(Constants::M_SUBPROJECTCONTEXT)->menu();
+//            if ((node->parentFolderNode() && node->parentFolderNode()->asContainerNode())
+//                    || node->asContainerNode())
+//                contextMenu = ActionManager::actionContainer(Constants::M_PROJECTCONTEXT)->menu();
+//            else
+//                contextMenu = ActionManager::actionContainer(Constants::M_SUBPROJECTCONTEXT)->menu();
             break;
         }
-        case NodeType::VirtualFolder:
+//        case NodeType::VirtualFolder:
         case NodeType::Folder:
-            contextMenu = ActionManager::actionContainer(Constants::M_FOLDERCONTEXT)->menu();
+//            contextMenu = ActionManager::actionContainer(Constants::M_FOLDERCONTEXT)->menu();
             break;
         case NodeType::File:
-            contextMenu = ActionManager::actionContainer(Constants::M_FILECONTEXT)->menu();
+//            contextMenu = ActionManager::actionContainer(Constants::M_FILECONTEXT)->menu();
             break;
         default:
             qWarning("ProjectExplorerPlugin::showContextMenu - Missing handler for node type");

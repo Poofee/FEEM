@@ -20,7 +20,7 @@ void MessageManager::write(const QString &text, PrintToOutputPaneFlags flags)
     if (!m_messageOutputWindow)
         return;
     showOutputPane(flags);
-    m_messageOutputWindow->append(text + QLatin1Char('\n'));
+//    m_messageOutputWindow->append(text + QLatin1Char('\n'));
 }
 
 MessageManager::MessageManager()
@@ -40,6 +40,6 @@ MessageManager::~MessageManager()
 
 void MessageManager::init()
 {
-    m_messageOutputWindow = new MessageOutputWindow;
+//    m_messageOutputWindow = new MessageOutputWindow;
 //    ExtensionSystem::PluginManager::addObject(m_messageOutputWindow);
 }

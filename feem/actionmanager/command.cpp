@@ -157,7 +157,7 @@ Command对象表示用户可见操作及其属性。
   \internal
 */
 Action::Action(Id id)
-    : m_attributes({}),
+    : //m_attributes({}),
       m_id(id),
       m_action(new ProxyAction(this))
 {

@@ -32,75 +32,75 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
     QVariant result;
 
     if (const Node *node = nodeForIndex(index)) {
-        const FolderNode *folderNode = node->asFolderNode();
-        const ContainerNode *containerNode = node->asContainerNode();
-        const Project *project = containerNode ? containerNode->project() : nullptr;
+//        const FolderNode *folderNode = node->asFolderNode();
+//        const ContainerNode *containerNode = node->asContainerNode();
+//        const Project *project = containerNode ? containerNode->project() : nullptr;
 
         switch (role) {
         case Qt::DisplayRole: {/**要以文本形式呈现的关键数据**/
-            result = node->displayName();
+//            result = node->displayName();
             break;
         }
         case Qt::EditRole: {/**适合在编辑器中编辑的形式的数据**/
-            result = node->filePath().fileName();
+//            result = node->filePath().fileName();
             break;
         }
         case Qt::ToolTipRole: {/**项目工具提示中显示的数据**/
-            QString tooltip = node->tooltip();
+//            QString tooltip = node->tooltip();
 
-            if (project) {
-                if (project->activeTarget()) {
-                    QString projectIssues = toHtml(project->projectIssues(project->activeTarget()->kit()));
-                    if (!projectIssues.isEmpty())
-                        tooltip += "<p>" + projectIssues;
-                } else {
-                    tooltip += "<p>" + tr("No kits are enabled for this project. "
-                                          "Enable kits in the \"Projects\" mode.");
-                }
-            }
-            result = tooltip;
+//            if (project) {
+//                if (project->activeTarget()) {
+//                    QString projectIssues = toHtml(project->projectIssues(project->activeTarget()->kit()));
+//                    if (!projectIssues.isEmpty())
+//                        tooltip += "<p>" + projectIssues;
+//                } else {
+//                    tooltip += "<p>" + tr("No kits are enabled for this project. "
+//                                          "Enable kits in the \"Projects\" mode.");
+//                }
+//            }
+//            result = tooltip;
             break;
         }
         case Qt::DecorationRole: {/**要以图标形式呈现为装饰的数据**/
-            if (folderNode) {
-                static QIcon warnIcon = Utils::Icons::WARNING.icon();
-                static QIcon emptyIcon = Utils::Icons::EMPTY16.icon();
-                if (project) {
-                    if (project->isParsing())
-                        result = emptyIcon;
-                    else if (!project->activeTarget()
-                             || !project->projectIssues(project->activeTarget()->kit()).isEmpty())
-                        result = warnIcon;
-                    else
-                        result = containerNode->rootProjectNode() ? containerNode->rootProjectNode()->icon() :
-                                                                    folderNode->icon();
-                } else {
-                    result = folderNode->icon();
-                }
-            } else {
-                result = Core::FileIconProvider::icon(node->filePath().toString());
-            }
+//            if (folderNode) {
+//                static QIcon warnIcon = Utils::Icons::WARNING.icon();
+//                static QIcon emptyIcon = Utils::Icons::EMPTY16.icon();
+//                if (project) {
+//                    if (project->isParsing())
+//                        result = emptyIcon;
+//                    else if (!project->activeTarget()
+//                             || !project->projectIssues(project->activeTarget()->kit()).isEmpty())
+//                        result = warnIcon;
+//                    else
+//                        result = containerNode->rootProjectNode() ? containerNode->rootProjectNode()->icon() :
+//                                                                    folderNode->icon();
+//                } else {
+//                    result = folderNode->icon();
+//                }
+//            } else {
+//                result = Core::FileIconProvider::icon(node->filePath().toString());
+//            }
             break;
         }
         case Qt::FontRole: {/**用于使用默认委托呈现的项目的字体**/
             QFont font;
-            if (project == SessionManager::startupProject())
-                font.setBold(true);
-            result = font;
+//            if (project == SessionManager::startupProject())
+//                font.setBold(true);
+//            result = font;
             break;
         }
         case Qt::TextColorRole: {/**文本颜色**/
-            result = node->isEnabled() ? m_enabledTextColor : m_disabledTextColor;
+//            result = node->isEnabled() ? m_enabledTextColor : m_disabledTextColor;
             break;
         }
-        case Project::FilePathRole: {
-            result = node->filePath().toString();
-            break;
-        }
-        case Project::isParsingRole: {
-            result = project ? project->isParsing() : false;
-            break;
-        }
+//        case Project::FilePathRole: {
+//            result = node->filePath().toString();
+//            break;
+//        }
+//        case Project::isParsingRole: {
+//            result = project ? project->isParsing() : false;
+//            break;
+//        }
         }
     }
 
@@ -122,11 +122,11 @@ Qt::ItemFlags PF_ProjectModel::flags(const QModelIndex &index) const
     // We control the only view, and that one does the checks
     Qt::ItemFlags f = Qt::ItemIsSelectable|Qt::ItemIsEnabled|Qt::ItemIsDragEnabled;
     if (Node *node = nodeForIndex(index)) {
-        if (!node->asProjectNode()) {
+//        if (!node->asProjectNode()) {
             // either folder or file node
-            if (node->supportsAction(Rename, node))
-                f = f | Qt::ItemIsEditable;
-        }
+//            if (node->supportsAction(Rename, node))
+//                f = f | Qt::ItemIsEditable;
+//        }
     }
     return f;
 }
@@ -141,11 +141,11 @@ bool PF_ProjectModel::setData(const QModelIndex &index, const QVariant &value, i
     Node *node = nodeForIndex(index);
     if(!node) return false;
 
-    Utils::FileName orgFilePath = node->filePath();
-    Utils::FileName newFilePath = orgFilePath.parentDir().appendPath(value.toString());
+//    Utils::FileName orgFilePath = node->filePath();
+//    Utils::FileName newFilePath = orgFilePath.parentDir().appendPath(value.toString());
 
-    ProjectExplorerPlugin::renameFile(node, newFilePath.toString());
-    emit renamed(orgFilePath, newFilePath);
+//    ProjectExplorerPlugin::renameFile(node, newFilePath.toString());
+//    emit renamed(orgFilePath, newFilePath);
     return true;
 }
 

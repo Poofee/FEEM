@@ -6,6 +6,7 @@
 
 //#include <utils/fileutils.h>
 //#include <utils/qtcassert.h>
+#include "id.h"
 
 #include <QFile>
 #include <QFileInfo>
@@ -47,7 +48,7 @@ public:
     QString uniqueDisplayName;
     QString autoSaveName;
 //    InfoBar *infoBar = nullptr;
-//    Id id;
+    Id id;
     bool temporary = false;
     bool hasWriteWarning = false;
     bool restored = false;
@@ -66,16 +67,16 @@ IDocument::~IDocument()
     delete d;
 }
 
-//void IDocument::setId(Id id)
-//{
-//    d->id = id;
-//}
+void IDocument::setId(Id id)
+{
+    d->id = id;
+}
 
-//Id IDocument::id() const
-//{
+Id IDocument::id() const
+{
 //    QTC_CHECK(d->id.isValid());
-//    return d->id;
-//}
+    return d->id;
+}
 
 /*!
     \enum IDocument::OpenResult

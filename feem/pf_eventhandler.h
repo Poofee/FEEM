@@ -8,6 +8,8 @@ class QMouseEvent;
 class QKeyEvent;
 class PF_ActionInterface;
 
+struct PF_SnapMode;
+
 class PF_EventHandler : public QObject
 {
     Q_OBJECT
@@ -30,6 +32,8 @@ public:
     PF_ActionInterface* getCurrentAction();
     void setDefaultAction(PF_ActionInterface* action);
     PF_ActionInterface* getDefaultAction();
+
+    void setSnapMode(PF_SnapMode sm);
 
     bool hasAction();
     void cleanUp();

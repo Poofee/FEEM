@@ -102,7 +102,10 @@ HEADERS += \
     ouptput/ioutputpane.h \
     ouptput/messageoutputwindow.h \
     ouptput/messagemanager.h \
-    material/pf_materiallibrary.h
+    material/pf_materiallibrary.h \
+    ouptput/outputpanemanager.h \
+    CAD/pf_setting.h \
+    CAD/pf_flag.h
 
 SOURCES += \    
     ./CAD/pf_centralwidget.cpp \
@@ -160,7 +163,9 @@ SOURCES += \
     ouptput/ioutputpane.cpp \
     ouptput/messageoutputwindow.cpp \
     ouptput/messagemanager.cpp \
-    material/pf_materiallibrary.cpp
+    material/pf_materiallibrary.cpp \
+    ouptput/outputpanemanager.cpp \
+    CAD/pf_flag.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

@@ -4,3 +4,8 @@ MessageOutputWindow::MessageOutputWindow()
 {
 
 }
+
+MessageOutputWindow::~MessageOutputWindow()
+{
+
+}

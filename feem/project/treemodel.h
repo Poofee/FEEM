@@ -23,7 +23,7 @@ public:
     virtual Qt::ItemFlags flags(int column) const;
 
     virtual bool hasChildren() const;
-//    virtual bool canFetchMore() const;
+    virtual bool canFetchMore() const;
 //    virtual void fetchMore() {}
 
     TreeItem *parent() const { return m_parent; }

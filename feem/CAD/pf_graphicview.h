@@ -78,7 +78,7 @@ public:
     Q_ENUMS(RefreshPriority)
 
     explicit PF_GraphicView(PF_Document* doc, QWidget *parent = nullptr);
-    ~PF_GraphicView();
+    ~PF_GraphicView() override;
 
     void drawLayer1(QPainter * painter);
 //    void getPixmapForView(QPixmap **pm);
@@ -216,6 +216,9 @@ public:
     double toGraphDX(int d) const;
     double toGraphDY(int d) const;
 
+    void setDefaultSnapMode(PF_SnapMode sm);
+    PF_SnapMode getDefaultSnapMode() const;
+
     bool savePdf(const QString &fileName, int width=0, int height=0, QCP::ExportPen exportPen=QCP::epAllowCosmetic, const QString &pdfCreator=QString(), const QString &pdfTitle=QString());
     bool savePng(const QString &fileName, int width=0, int height=0, double scale=1.0, int quality=-1, int resolution=96, QCP::ResolutionUnit resolutionUnit=QCP::ruDotsPerInch);
     bool saveJpg(const QString &fileName, int width=0, int height=0, double scale=1.0, int quality=-1, int resolution=96, QCP::ResolutionUnit resolutionUnit=QCP::ruDotsPerInch);
@@ -262,6 +265,8 @@ protected:
     PF_EntityContainer* container;/**保存所有实体**/
 
     PF::RedrawMethod redrawMethod;
+
+    PF_SnapMode defaultSnapMode;
 private:
     /**保存绘图过程当中的实体**/
     QMap<int, PF_EntityContainer *> overlayEntities;
@@ -342,8 +347,8 @@ protected:
     bool registerGraph(QCPGraph *graph);
     bool registerItem(QCPAbstractItem* item);
     void updateLayerIndices() const;
-    QCPLayerable *layerableAt(const QPointF &pos, bool onlySelectable, QVariant *selectionDetails=0) const;
-    QList<QCPLayerable*> layerableListAt(const QPointF &pos, bool onlySelectable, QList<QVariant> *selectionDetails=0) const;
+    QCPLayerable *layerableAt(const QPointF &pos, bool onlySelectable, QVariant *selectionDetails=nullptr) const;
+    QList<QCPLayerable*> layerableListAt(const QPointF &pos, bool onlySelectable, QList<QVariant> *selectionDetails=nullptr) const;
     void drawBackground(QCPPainter *painter);
     void setupPaintBuffers();
     QCPAbstractPaintBuffer *createPaintBuffer();
