@@ -30,6 +30,24 @@ public:
     virtual PF_Vector getStartpoint() const;
     virtual PF_Vector getEndpoint() const;
 
+    /** @return The center point (x) of this arc */
+    //get center for entities: arc, circle and ellipse
+    virtual PF_Vector getCenter() const;
+    virtual double getRadius() const;
+
+    void resetBorders();
+    void moveBorders(const PF_Vector& offset);
+    void scaleBorders(const PF_Vector& center, const PF_Vector& factor);
+
+    //find the local direction at end points, derived entities
+    // must implement this if direction is supported by the entity type
+    virtual double getDirection1() const {
+        return 0.;
+    }
+    virtual double getDirection2() const {
+        return 0.;
+    }
+
     void setPen(const QPen& pen) {
         this->pen = pen;
     }
@@ -47,7 +65,33 @@ public:
     virtual bool isVisible() const;
     virtual void setVisible(bool v);
 
+    /**
+     * This method doesn't do any calculations.
+     * @return minimum coordinate of the entity.
+     * @see calculateBorders()
+     */
+    PF_Vector getMin() const {
+        return minV;
+    }
 
+    /**
+     * This method doesn't do any calculations.
+     * @return minimum coordinate of the entity.
+     * @see calculateBorders()
+     */
+    PF_Vector getMax() const {
+        return maxV;
+    }
+
+    /**
+     * This method returns the difference of max and min returned
+     * by the above functions.
+     * @return size of the entity.
+     * @see calculateBorders()
+     * @see getMin()
+     * @see getMax()
+     */
+    PF_Vector getSize() const;
 
     /**继承的非虚函数**/
     virtual QRect clipRect() const override;
@@ -241,9 +285,9 @@ public:
      */
     virtual void mirror(const PF_Vector& axisPoint1, const PF_Vector& axisPoint2) = 0;
 
-    virtual void stretch(const PF_Vector& firstCorner,
-                         const PF_Vector& secondCorner,
-                         const PF_Vector& offset);
+//    virtual void stretch(const PF_Vector& firstCorner,
+//                         const PF_Vector& secondCorner,
+//                         const PF_Vector& offset);
 
     /**
          * Implementations must drag the reference point(s) of all
@@ -262,6 +306,9 @@ public:
                                  const PF_Vector& /*offset*/) {
         return;
     }
+
+    /** Recalculates the borders of this entity. */
+    virtual void calculateBorders() = 0;
 protected:
     PF_EntityContainer* parent = nullptr;
     QPen pen;

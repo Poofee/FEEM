@@ -216,88 +216,99 @@ void PF_Polyline::endPolyline()
 
 PF_VectorSolutions PF_Polyline::getRefPoints() const
 {
+    PF_VectorSolutions ret{{data.startPoint}};
+    for(auto e: *this){
+        if (e->isAtomic()) {
+            ret.push_back(e->getEndpoint());
+        }
+    }
 
+    ret.push_back( data.endPoint);
+
+    return ret;
 }
 
-PF_Vector PF_Polyline::getMiddlePoint() const
+PF_Vector PF_Polyline::getNearestRef(const PF_Vector &coord, double *dist) const
 {
-
+    return PF_Entity::getNearestRef( coord, dist);
 }
 
-PF_Vector PF_Polyline::getNearestEndpoint(const PF_Vector &coord, double *dist) const
+PF_Vector PF_Polyline::getNearestSelectedRef(const PF_Vector &coord, double *dist) const
 {
-
-}
-
-PF_Vector PF_Polyline::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity, double *dist, PF_Entity **entity) const
-{
-
-}
-
-PF_Vector PF_Polyline::getNearestCenter(const PF_Vector &coord, double *dist) const
-{
-
-}
-
-PF_Vector PF_Polyline::getNearestMiddle(const PF_Vector &coord, double *dist, int middlePoints) const
-{
-
-}
-
-PF_Vector PF_Polyline::getNearestDist(double distance, const PF_Vector &coord, double *dist) const
-{
-
-}
-
-PF_Vector PF_Polyline::getNearestDist(double distance, bool startp) const
-{
-
-}
-
-PF_Vector PF_Polyline::getNearestOrthTan(const PF_Vector &coord, const PF_Line &normal, bool onEntity) const
-{
-
+    return PF_Entity::getNearestSelectedRef( coord, dist);
 }
 
 bool PF_Polyline::offset(const PF_Vector &coord, const double &distance)
 {
-
+    return true;
 }
 
 void PF_Polyline::move(const PF_Vector &offset)
 {
-
+    PF_EntityContainer::move(offset);
+    data.startPoint.move(offset);
+    data.endPoint.move(offset);
+    calculateBorders();
 }
 
 void PF_Polyline::rotate(const PF_Vector &center, const double &angle)
 {
-
+    rotate(center, PF_Vector(angle));
 }
 
 void PF_Polyline::rotate(const PF_Vector &center, const PF_Vector &angleVector)
 {
-
+    data.startPoint.rotate(center, angleVector);
+    data.endPoint.rotate(center, angleVector);
+    calculateBorders();
 }
 
 void PF_Polyline::scale(const PF_Vector &center, const PF_Vector &factor)
 {
-
+    data.startPoint.scale(center, factor);
+    data.endPoint.scale(center, factor);
+    calculateBorders();
 }
 
 void PF_Polyline::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
 {
-
+    data.startPoint.mirror(axisPoint1, axisPoint2);
+    data.endPoint.mirror(axisPoint1, axisPoint2);
+    calculateBorders();
 }
+
+//void PF_Polyline::stretch(const PF_Vector &firstCorner, const PF_Vector &secondCorner, const PF_Vector &offset)
+//{
+
+//}
 
 void PF_Polyline::moveRef(const PF_Vector &ref, const PF_Vector &offset)
 {
-
+    if (ref.distanceTo(data.startPoint)<1.0e-4) {
+       data.startPoint.move(offset);
+    }
+    if (ref.distanceTo(data.endPoint)<1.0e-4) {
+       data.endPoint.move(offset);
+    }
+    calculateBorders();
+    //update();
 }
+
+void PF_Polyline::revertDirection()
+{
+    PF_EntityContainer::revertDirection();
+    PF_Vector tmp = data.startPoint;
+    data.startPoint = data.endPoint;
+    data.endPoint = tmp;
+}
+
+
 
 void PF_Polyline::draw(QCPPainter *p)
 {
     PF_EntityContainer::draw(p);
 }
+
 
 PF_Entity *PF_Polyline::createVertex(const PF_Vector &v, double bulge, bool prepend)
 {

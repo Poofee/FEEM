@@ -29,15 +29,18 @@ public:
     double magnitude() const;
     double squared() const;
 
-    bool isInWindow(const PF_Vector& firstCorner, const PF_Vector& secondCorner) const;
+//    bool isInWindow(const PF_Vector& firstCorner, const PF_Vector& secondCorner) const;
 
     PF_Vector move(const PF_Vector& offset);
     PF_Vector rotate(double angle);
     PF_Vector rotate(const PF_Vector& angleVector);
-    PF_Vector rotate(const PF_Vector &center, double angle);
+    PF_Vector rotate(const PF_Vector& center, double ang);
+    PF_Vector rotate(const PF_Vector& center, const PF_Vector& angleVector);
 
     PF_Vector scale(double factor);
     PF_Vector scale(const PF_Vector& factor);
+    PF_Vector scale(const PF_Vector& factor) const;
+    PF_Vector scale(const PF_Vector& center, const PF_Vector& factor);
 
     PF_Vector mirror(const PF_Vector& axisPoint1, const PF_Vector& axisPoint2);
 

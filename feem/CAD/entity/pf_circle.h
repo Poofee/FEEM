@@ -22,8 +22,14 @@ public:
     PF_Circle(PF_EntityContainer* parent, PF_GraphicView* view, const PF_CircleData &d);
     ~PF_Circle()=default;
 
-    PF_Vector getCenter() const;
-    double getRadius() const;
+    /** @return The center point (x) of this arc */
+    PF_Vector getCenter() const override;
+    /** Sets new center. */
+    void setCenter(const PF_Vector& c);
+    /** @return The radius of this arc */
+    double getRadius() const override;
+    /** Sets new radius. */
+    void setRadius(double r);
 
     /** 继承的虚函数 **/
     PF_VectorSolutions getRefPoints() const override;
@@ -58,6 +64,8 @@ public:
     void moveRef(const PF_Vector& ref, const PF_Vector& offset) override;
 
     void draw(QCPPainter* painter) ;
+
+    void calculateBorders() override;
 protected:
     PF_CircleData data;
 };

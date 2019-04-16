@@ -67,6 +67,26 @@ double PF_Vector::distanceTo(const PF_Vector &v) const
     }
 }
 
+double PF_Vector::angle() const
+{
+    return fmod(M_PI + remainder(atan2(y,x) - M_PI, M_PI*2), M_PI*2);
+}
+
+double PF_Vector::angleTo(const PF_Vector &v) const
+{
+    if (!valid || !v.valid) return 0.0;
+    return (v-(*this)).angle();
+}
+
+double PF_Vector::angleBetween(const PF_Vector &v1, const PF_Vector &v2) const
+{
+    if (!valid || !v1.valid || !v2.valid) return 0.0;
+    PF_Vector const vStart(v1 - (*this));
+    PF_Vector const vEnd(v2 - (*this));
+    double a = atan2( vStart.x*vEnd.y-vStart.y*vEnd.x, vStart.x*vEnd.x+vStart.y*vEnd.y);
+    return fmod(M_PI + remainder(a - M_PI, M_PI*2), M_PI*2);
+}
+
 double PF_Vector::magnitude() const
 {
     double ret = 0.;
@@ -89,13 +109,30 @@ PF_Vector PF_Vector::move(const PF_Vector &offset)
     return *this;
 }
 
+PF_Vector PF_Vector::rotate(double angle)
+{
+    rotate(PF_Vector{angle});
+    return *this;
+}
+
 PF_Vector PF_Vector::rotate(const PF_Vector &angleVector)
 {
+    double x0 = x * angleVector.x - y * angleVector.y;
+    y = x * angleVector.y + y * angleVector.x;
+    x = x0;
+
     return *this;
 }
 
 PF_Vector PF_Vector::rotate(const PF_Vector &center, double angle)
 {
+    *this = center + (*this-center).rotate(angle);
+    return *this;
+}
+
+PF_Vector PF_Vector::rotate(const PF_Vector &center, const PF_Vector &angleVector)
+{
+    *this = center + (*this-center).rotate(angleVector);
     return *this;
 }
 
@@ -113,8 +150,27 @@ PF_Vector PF_Vector::scale(const PF_Vector &factor)
     return *this;
 }
 
+PF_Vector PF_Vector::scale(const PF_Vector &factor) const
+{
+    return {x*factor.x, y*factor.y};
+}
+
+PF_Vector PF_Vector::scale(const PF_Vector &center, const PF_Vector &factor)
+{
+    *this = center + (*this-center).scale(factor);
+    return *this;
+}
+
 PF_Vector PF_Vector::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
 {
+    PF_Vector direction(axisPoint2-axisPoint1);
+    double a= direction.squared();
+    PF_Vector ret(false);
+    if(a<PF_TOLERANCE2) {
+        return ret;
+    }
+    ret= axisPoint1 + direction* dotP(*this - axisPoint1,direction)/a; //projection point
+    *this = ret + ret - *this;
     return *this;
 }
 
@@ -544,7 +600,7 @@ PF_Vector PF_VectorSolutions::getClosest(const PF_Vector& coord,
                                          double* dist, size_t* index) const {
 
     double curDist{0.};
-    double minDist = RS_MAXDOUBLE;
+    double minDist = PF_MAXDOUBLE;
     PF_Vector closestPoint{false};
     int pos(0);
 
@@ -576,7 +632,7 @@ PF_Vector PF_VectorSolutions::getClosest(const PF_Vector& coord,
 double PF_VectorSolutions::getClosestDistance(const PF_Vector& coord,
                                               int counts)
 {
-    double ret=RS_MAXDOUBLE*RS_MAXDOUBLE;
+    double ret=PF_MAXDOUBLE*PF_MAXDOUBLE;
     int i=vector.size();
     if (counts < i && counts >= 0) i=counts;
     std::for_each(vector.begin(), vector.begin() + i,

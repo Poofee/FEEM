@@ -39,6 +39,38 @@ PF_Vector PF_Entity::getEndpoint() const
     return {};
 }
 
+PF_Vector PF_Entity::getCenter() const
+{
+    return PF_Vector{};
+}
+
+double PF_Entity::getRadius() const
+{
+    return PF_MAXDOUBLE;
+}
+
+void PF_Entity::resetBorders()
+{
+    // TODO: Check that. windoze XP crashes with MAXDOUBLE
+    double maxd = PF_MAXDOUBLE;
+    double mind = PF_MINDOUBLE;
+
+    minV.set(maxd, maxd);
+    maxV.set(mind, mind);
+}
+
+void PF_Entity::moveBorders(const PF_Vector &offset)
+{
+    minV.move(offset);
+    maxV.move(offset);
+}
+
+void PF_Entity::scaleBorders(const PF_Vector &center, const PF_Vector &factor)
+{
+    minV.scale(center,factor);
+    maxV.scale(center,factor);
+}
+
 QPen PF_Entity::getPen(bool resolve) const
 {
     return pen;
@@ -129,6 +161,10 @@ PF_VectorSolutions PF_Entity::getRefPoints() const
 
 PF_Vector PF_Entity::getNearestRef(const PF_Vector& coord,
                                    double* dist) const{
+    /** 右值引用，由于函数的返回值的存储是不稳定的，立马被释放掉的
+     * 这里如果正常写的话，应该建立一个变量来保存函数的返回值，
+     * 而右值引用可以避免这样的拷贝。
+    **/
     PF_VectorSolutions const&& s = getRefPoints();
 
     return s.getClosest(coord, dist);
@@ -142,4 +178,31 @@ PF_Vector PF_Entity::getNearestSelectedRef(const PF_Vector& coord,
     else {
         return PF_Vector(false);
     }
+}
+
+PF_Vector PF_Entity::getNearestOrthTan(const PF_Vector &, const PF_Line &, bool onEntity) const
+{
+    return PF_Vector{false};
+}
+
+double PF_Entity::getDistanceToPoint(const PF_Vector &coord, PF_Entity **entity, PF::ResolveLevel level, double solidDist) const
+{
+    if (entity) {
+        *entity=const_cast<PF_Entity*>(this);
+    }
+    double dToEntity = PF_MAXDOUBLE;
+    (void) getNearestPointOnEntity(coord, true, &dToEntity, entity);
+
+    // RVT 6 Jan 2011 : Add selection by center point
+    if(getCenter().valid){
+        double dToCenter=getCenter().distanceTo(coord);
+        return std::min(dToEntity,dToCenter);
+    }else
+        return dToEntity;
+}
+
+bool PF_Entity::isPointOnEntity(const PF_Vector &coord, double tolerance) const
+{
+    double dist = getDistanceToPoint(coord, nullptr, PF::ResolveNone);
+    return (dist<=fabs(tolerance));
 }

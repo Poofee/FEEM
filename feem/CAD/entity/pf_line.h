@@ -25,6 +25,33 @@ public:
     PF_Vector getEndpoint() const override{
         return data.endpoint;
     }
+    /**
+     * @return Direction 1. The angle at which the line starts at
+     * the startpoint.
+     */
+    double getDirection1() const override{
+        return getAngle1();
+    }
+    /**
+     * @return Direction 2. The angle at which the line starts at
+     * the endpoint.
+     */
+    double getDirection2() const override{
+        return getAngle2();
+    }
+    /**
+     * @return The angle of the line (from start to endpoint).
+     */
+    double getAngle1() const{
+        return data.startpoint.angleTo(data.endpoint);
+    }
+
+    /**
+     * @return The angle of the line (from end to startpoint).
+     */
+    double getAngle2() const{
+        return data.endpoint.angleTo(data.startpoint);
+    }
     /** 继承的虚函数 **/
     PF_VectorSolutions getRefPoints() const override;
 
@@ -43,9 +70,6 @@ public:
                              double* dist = nullptr)const override;
     PF_Vector getNearestDist(double distance,
                              bool startp)const override;
-    PF_Vector getNearestOrthTan(const PF_Vector& coord,
-                                const PF_Line& normal,
-                                bool onEntity = false) const override;
 
     bool offset(const PF_Vector& coord, const double& distance) override;
     //	PF_VectorSolutions getTangentPoint(const PF_Vector& point) const override;//find the tangential points seeing from given point
@@ -53,11 +77,14 @@ public:
     void move(const PF_Vector& offset) override;
     void rotate(const PF_Vector& center, const double& angle) override;
     void rotate(const PF_Vector& center, const PF_Vector& angleVector) override;
+    void scale(const PF_Vector& factor) override;
     void scale(const PF_Vector& center, const PF_Vector& factor) override;
     void mirror(const PF_Vector& axisPoint1, const PF_Vector& axisPoint2) override;
     void moveRef(const PF_Vector& ref, const PF_Vector& offset) override;
 
     void draw(QCPPainter *painter) ;
+
+    void calculateBorders() override;
 protected:
     PF_LineData data;
 };
