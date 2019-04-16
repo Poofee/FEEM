@@ -65,6 +65,26 @@ void PF_Snapper::finish()
     finished = true;
 }
 
+/**
+ * @brief
+ *
+ * @param coord
+ * @param setSpot
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapPoint(const PF_Vector &coord, bool setSpot)
+{
+    if(coord.valid){
+        pImpData->snapSpot=coord;
+        if(setSpot) pImpData->snapCoord = coord;
+        drawSnapper();
+//		RS_DIALOGFACTORY->updateCoordinateWidget(
+//					pImpData->snapCoord,
+//					pImpData->snapCoord - graphicView->getRelativeZero());
+    }
+    return coord;
+}
+
 
 /*!
  \brief 根据当前的模式捕捉点的坐标
@@ -75,6 +95,209 @@ void PF_Snapper::finish()
 PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
 {
     return view->toGraph(PF_Vector(e->x(),e->y(),0));
+}
+
+/**
+ * @brief
+ *
+ * @param e
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapFree(QMouseEvent *e)
+{
+    if (!e) {
+//                RS_DEBUG->print(RS_Debug::D_WARNING,
+//						"RS_Snapper::snapFree: event is nullptr");
+        return PF_Vector(false);
+    }
+    pImpData->snapSpot = view->toGraph(e->x(), e->y());
+    pImpData->snapCoord = pImpData->snapSpot;
+    snap_indicator->lines_state = true;
+    return pImpData->snapCoord;
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapFree(const PF_Vector &coord)
+{
+    keyEntity = nullptr;
+    return coord;
+}
+
+PF_Vector PF_Snapper::snapGrid(const PF_Vector &coord)
+{
+
+    return PF_Vector{};
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapEndpoint(const PF_Vector &coord)
+{
+    PF_Vector vec(false);
+
+    vec = container->getNearestEndpoint(coord,
+                                        nullptr/*, &keyEntity*/);
+    return vec;
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapOnEntity(const PF_Vector &coord)
+{
+    PF_Vector vec{};
+    vec = container->getNearestPointOnEntity(coord, true, nullptr, &keyEntity);
+    return vec;
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapCenter(const PF_Vector &coord)
+{
+    PF_Vector vec{};
+
+    vec = container->getNearestCenter(coord, nullptr);
+    return vec;
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapMiddle(const PF_Vector &coord)
+{
+    return container->getNearestMiddle(coord,static_cast<double *>(nullptr),middlePoints);
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapDist(const PF_Vector &coord)
+{
+    PF_Vector vec;
+
+//std::cout<<" RS_Snapper::snapDist(RS_Vector coord): distance="<<distance<<std::endl;
+    vec = container->getNearestDist(m_SnapDistance,
+                                    coord,
+                                    nullptr);
+    return vec;
+}
+
+/**
+ * @brief
+ *
+ * @param coord
+ * @return PF_Vector
+ */
+PF_Vector PF_Snapper::snapIntersection(const PF_Vector &coord)
+{
+    PF_Vector vec{};
+
+    vec = container->getNearestIntersection(coord,
+                                            nullptr);
+    return vec;
+}
+
+/**
+ * @brief 捕捉距离pos最近的Entity
+ *
+ * @param pos
+ * @param level
+ * @return PF_Entity
+ */
+PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::ResolveLevel level)
+{
+    // set default distance for points inside solids
+    double dist (0.);
+
+    PF_Entity* entity = container->getNearestEntity(pos, &dist, level);
+
+    int idx = -1;
+//    if (entity && entity->getParent()) {
+//        idx = entity->getParent()->findEntity(entity);
+//    }
+
+    if (entity && dist <= getSnapRange()) {
+        // highlight:
+        return entity;
+    } else {
+        return nullptr;
+    }
+}
+
+/**
+ * @brief
+ *
+ * @param e
+ * @param level
+ * @return PF_Entity
+ */
+PF_Entity *PF_Snapper::catchEntity(QMouseEvent *e, PF::ResolveLevel level)
+{
+    return catchEntity(
+               PF_Vector(view->toGraphX(e->x()),
+                         view->toGraphY(e->y())),
+                         level);
+}
+
+/**
+ * @brief
+ *
+ * @param pos
+ * @param enType
+ * @param level
+ * @return PF_Entity
+ */
+PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::EntityType enType, PF::ResolveLevel level)
+{
+    return nullptr;
+}
+
+/**
+ * @brief
+ *
+ * @param e
+ * @param enType
+ * @param level
+ * @return PF_Entity
+ */
+PF_Entity *PF_Snapper::catchEntity(QMouseEvent *e, PF::EntityType enType, PF::ResolveLevel level)
+{
+    return nullptr;
+}
+
+/**
+ * @brief
+ *
+ * @param e
+ * @param enTypeList
+ * @param level
+ * @return PF_Entity
+ */
+PF_Entity *PF_Snapper::catchEntity(QMouseEvent *e, const std::initializer_list<PF::EntityType> &enTypeList, PF::ResolveLevel level)
+{
+    return nullptr;
 }
 
 void PF_Snapper::setSnapMode(const PF_SnapMode &snapMode)
@@ -110,6 +333,20 @@ void PF_Snapper::hideOptions()
 void PF_Snapper::showOptions()
 {
 
+}
+
+/**
+ * @brief
+ *
+ */
+void PF_Snapper::drawSnapper()
+{
+
+}
+
+double PF_Snapper::getSnapRange() const
+{
+    return snapRange;
 }
 
 const PF_SnapMode& PF_SnapMode::clear()

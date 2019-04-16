@@ -394,8 +394,10 @@ PF_Vector PF_EntityContainer::getNearestDist(double distance,
     return point;
 }
 
-
-
+PF_Vector PF_EntityContainer::getNearestIntersection(const PF_Vector &coord, double *dist)
+{
+    return PF_Vector{};
+}
 
 PF_Vector PF_EntityContainer::getNearestRef(const PF_Vector& coord,
                                             double* dist) const{

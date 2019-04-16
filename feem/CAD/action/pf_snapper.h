@@ -28,11 +28,11 @@ struct PF_SnapMode {
 
     bool snapOnEntity       = false; /** 是否捕捉实体上的点 **/
 
-//    RS2::SnapRestriction restriction= RS2::RestrictNothing; /// The restriction on the free snap.
+    //    RS2::SnapRestriction restriction= RS2::RestrictNothing; /// The restriction on the free snap.
 
     double distance         = 5.; /** 默认捕捉距离 **/
 
-/**
+    /**
   * 取消所有捕捉
   *
   * 进入自由捕捉状态
@@ -56,7 +56,34 @@ public:
     void init();
     void finish();
 
+    PF_Entity* getKeyEntity() const {
+        return keyEntity;
+    }
+
+    PF_Vector snapPoint(const PF_Vector& coord, bool setSpot = false);
     PF_Vector snapPoint(QMouseEvent* e);
+    PF_Vector snapFree(QMouseEvent* e);
+
+    PF_Vector snapFree(const PF_Vector& coord);
+    PF_Vector snapGrid(const PF_Vector& coord);
+    PF_Vector snapEndpoint(const PF_Vector& coord);
+    PF_Vector snapOnEntity(const PF_Vector& coord);
+    PF_Vector snapCenter(const PF_Vector& coord);
+    PF_Vector snapMiddle(const PF_Vector& coord);
+    PF_Vector snapDist(const PF_Vector& coord);
+    PF_Vector snapIntersection(const PF_Vector& coord);
+
+    PF_Entity* catchEntity(const PF_Vector& pos,
+                           PF::ResolveLevel level=PF::ResolveNone);
+    PF_Entity* catchEntity(QMouseEvent* e,
+                           PF::ResolveLevel level=PF::ResolveNone);
+    // catch Entity closest to pos and of the given entity type of enType, only search for a particular entity type
+    PF_Entity* catchEntity(const PF_Vector& pos, PF::EntityType enType,
+                           PF::ResolveLevel level=PF::ResolveNone);
+    PF_Entity* catchEntity(QMouseEvent* e, PF::EntityType enType,
+                           PF::ResolveLevel level=PF::ResolveNone);
+    PF_Entity* catchEntity(QMouseEvent* e, const std::initializer_list<PF::EntityType>& enTypeList,
+                           PF::ResolveLevel level=PF::ResolveNone);
 
     void setSnapRange(int r) {
         snapRange = r;
@@ -71,12 +98,17 @@ public:
     virtual void resume();
     virtual void hideOptions();
     virtual void showOptions();
+
+    void drawSnapper();
+
+    double getSnapRange() const;
 protected:
     PF_GraphicView* view;
     PF_EntityContainer* container;
     PF_Entity* keyEntity;
     PF_SnapMode snapMode;
     bool finished{false};
+
     /**
      * Snap distance for snapping to points with a
      * given distance from endpoints.
