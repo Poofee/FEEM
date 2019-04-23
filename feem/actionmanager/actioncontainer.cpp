@@ -202,7 +202,7 @@ void ActionContainerPrivate::addAction(Command *command, Id groupId)
         ;
     else{
         qDebug() << "Can't find group"
-               << groupId.name() << "in container" << id().name();
+                 << groupId.name() << "in container" << id().name();
         return;
     }
     QAction *beforeAction = insertLocation(groupIt);

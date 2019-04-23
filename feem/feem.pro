@@ -44,7 +44,6 @@ RC_FILE = ./res/icon.rc
 
 HEADERS += \    
     ./util/pf.h \
-    ./CAD/pf_centralwidget.h \
     ./pf_eventhandler.h \
     ./pf_widgetfactory.h \
     ./CAD/action/pf_actiondrawcircle.h \
@@ -82,7 +81,6 @@ HEADERS += \
     util/constants.h \
     ./mainwindow.h \
     ./CAD/pf_graphicview.h \
-    ./CAD/pf_graphicwindow.h \
     project/viewitem.h \
     project/navigationtreeview.h \
     project/treemodel.h \
@@ -105,10 +103,12 @@ HEADERS += \
     material/pf_materiallibrary.h \
     ouptput/outputpanemanager.h \
     CAD/pf_setting.h \
-    CAD/pf_flag.h
+    CAD/pf_flag.h \
+    project/pf_modelwidget.h \
+    CAD/pf_cadwidget.h \
+    ui/pf_icons.h
 
-SOURCES += \    
-    ./CAD/pf_centralwidget.cpp \
+SOURCES += \
     ./pf_eventhandler.cpp \
     ./pf_widgetfactory.cpp \
     ./CAD/action/pf_actiondrawcircle.cpp \
@@ -146,7 +146,6 @@ SOURCES += \
     ./main.cpp \
     ./mainwindow.cpp \
     ./CAD/pf_graphicview.cpp \
-    ./CAD/pf_graphicwindow.cpp \
     project/viewitem.cpp \
     project/navigationtreeview.cpp \
     project/treemodel.cpp \
@@ -165,7 +164,10 @@ SOURCES += \
     ouptput/messagemanager.cpp \
     material/pf_materiallibrary.cpp \
     ouptput/outputpanemanager.cpp \
-    CAD/pf_flag.cpp
+    CAD/pf_flag.cpp \
+    project/pf_modelwidget.cpp \
+    CAD/pf_cadwidget.cpp \
+    ui/pf_icons.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

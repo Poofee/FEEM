@@ -3,11 +3,19 @@
 
 #include <QObject>
 
-class PF_ProjectExplorer : public QObject
+class ProjectExplorerPlugin : public QObject
 {
     Q_OBJECT
 public:
-    explicit PF_ProjectExplorer(QObject *parent = nullptr);
+    explicit ProjectExplorerPlugin(QObject *parent = nullptr);
+
+    static ProjectExplorerPlugin *instance();
+
+    static bool openProject(const QString &fileName);
+    static bool openProjects(const QStringList &fileNames);
+
+    /** 与treemodel之间的接口 **/
+
 
 signals:
 

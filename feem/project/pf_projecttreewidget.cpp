@@ -182,6 +182,11 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
     setFocusProxy(m_view);
     m_view->installEventFilter(this);
 
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->addWidget(m_view);
+    layout->setContentsMargins(0,0,0,0);
+    this->setLayout(layout);
+
     /** 信号连接 **/
 //    connect(m_model, &PF_ProjectModel::renamed,
 //            this, &PF_ProjectTreeWidget::renamed);

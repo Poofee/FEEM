@@ -17,6 +17,8 @@ class PF_WidgetFactory;
 class PF_ActionGroupManager;
 class FlexWidget;
 
+class PF_ModelWidget;
+
 class MainWindow : public RibbonWindow
 {
     Q_OBJECT
@@ -25,10 +27,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void init();
     void openView_N(int n);
-    void fillSolutionExplorer(QWidget * w);
-    void createTree(QWidget * w);
-    void createTable(QWidget * w);
+//    void fillSolutionExplorer(QWidget * w);
+//    void createTree(QWidget * w);
+//    void createTable(QWidget * w);
     void setupDockWidgets();
     void setupStatusBar();
 
@@ -63,6 +66,7 @@ private:
     QDockWidget* dock_modelBuilderTree;
     QDockWidget* dock_messageOutputPane;
     QDockWidget* dock_materialLibraryTree;
+    PF_ModelWidget* m_modelBuilderWidget;
 };
 
 #endif // MAINWINDOW_H
