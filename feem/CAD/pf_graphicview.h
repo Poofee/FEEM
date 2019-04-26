@@ -216,6 +216,17 @@ public:
     double toGraphDX(int d) const;
     double toGraphDY(int d) const;
 
+    virtual void zoomIn(double f=1.5, const PF_Vector& center=PF_Vector(false));
+//	virtual void zoomInX(double f=1.5);
+//	virtual void zoomInY(double f=1.5);
+    virtual void zoomOut(double f=1.5, const PF_Vector& center=PF_Vector(false));
+//	virtual void zoomOutX(double f=1.5);
+//	virtual void zoomOutY(double f=1.5);
+    virtual void zoomAuto(bool axis=true, bool keepAspectRatio=true);
+//	virtual void zoomAutoY(bool axis=true);
+//	virtual void zoomPrevious();
+    virtual void zoomWindow(double f=1.5, const PF_Vector& center=PF_Vector(false));
+
     void setDefaultSnapMode(PF_SnapMode sm);
     PF_SnapMode getDefaultSnapMode() const;
 

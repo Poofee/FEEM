@@ -54,20 +54,22 @@ void PF_CADWidget::init()
     zoomin = new QToolButton(this);
     zoomin->setIcon(QIcon(":/main/zoomin.png"));
     zoomin->setToolTip(tr("Zoom In"));
-    zoomin->setCheckable(true);
+//    zoomin->setCheckable(true);
     connect(zoomin,&QToolButton::clicked,[this]()
     {
         qDebug()<<"Zoom In";
-        this->zoomin->setChecked(zoomin->isChecked());
+        this->view->zoomIn(1.2);
+        //this->zoomin->setChecked(zoomin->isChecked());
     });
     zoomout = new QToolButton(this);
     zoomout->setIcon(QIcon(":/main/zoomout.png"));
     zoomout->setToolTip(tr("Zoom Out"));
-    zoomout->setCheckable(true);
+//    zoomout->setCheckable(true);
     connect(zoomout,&QToolButton::clicked,[this]()
     {
         qDebug()<<"Zoom Out";
-        this->zoomout->setChecked(zoomout->isChecked());
+        this->view->zoomOut(1.2);
+        //this->zoomout->setChecked(zoomout->isChecked());
     });
     zoomselected = new QToolButton(this);
     zoomselected->setIcon(QIcon(":/main/zoomselected.png"));

@@ -106,7 +106,8 @@ HEADERS += \
     CAD/pf_flag.h \
     project/pf_modelwidget.h \
     CAD/pf_cadwidget.h \
-    ui/pf_icons.h
+    ui/pf_icons.h \
+    util/pf_variabledict.h
 
 SOURCES += \
     ./pf_eventhandler.cpp \
@@ -167,7 +168,8 @@ SOURCES += \
     CAD/pf_flag.cpp \
     project/pf_modelwidget.cpp \
     CAD/pf_cadwidget.cpp \
-    ui/pf_icons.cpp
+    ui/pf_icons.cpp \
+    util/pf_variabledict.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

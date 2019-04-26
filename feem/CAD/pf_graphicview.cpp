@@ -233,7 +233,7 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     connect(defaultAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), defaultAxisRect->axis(QCPAxis::atTop), SLOT(setRange(QCPRange)));
     connect(defaultAxisRect->axis(QCPAxis::atTop), SIGNAL(rangeChanged(QCPRange)), defaultAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
     /**设置坐标轴可缩放**/
-    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+    setInteractions( QCP::iRangeZoom);
     /**设置坐标轴上tick的长度长一点**/
     int subTickLength = 7;
     int tickLength = 10;
@@ -2086,6 +2086,53 @@ double PF_GraphicView::toGraphDY(int d) const
 {
     double factor = double(yAxis->range().size()) / double(xAxis->axisRect()->height());
     return d*factor;
+}
+
+/*!
+ \brief 通过控制坐标轴来实现放大
+
+ \param f
+ \param center
+*/
+void PF_GraphicView::zoomIn(double f, const PF_Vector& center)
+{
+    if(f < 1e-6){
+        qDebug()<<Q_FUNC_INFO<<"Invalid zoom factor";
+        return;
+    }
+
+    zoomWindow(1/f,center);
+}
+
+void PF_GraphicView::zoomOut(double f, const PF_Vector& center)
+{
+    if(f < 1e-6) {
+        qDebug()<<Q_FUNC_INFO<<"Invalid zoom factor";
+        return;
+    }
+    zoomWindow(f,center);
+}
+
+void PF_GraphicView::zoomAuto(bool axis, bool keepAspectRatio)
+{
+
+}
+
+void PF_GraphicView::zoomWindow(double f, const PF_Vector& center)
+{
+    /** 如果没有指定中心的话，默认为坐标轴中心 **/
+    PF_Vector c;
+    if(!center.valid){
+        c.x = (xAxis->range().minRange+xAxis->range().maxRange)/2.;
+        c.y = (yAxis->range().minRange+yAxis->range().maxRange)/2.;
+    }
+    if(xAxis){
+        xAxis->scaleRange(f,center.x);
+    }
+    if(yAxis){
+        yAxis->scaleRange(f,center.y);
+    }
+    replot();
 }
 
 /*!
