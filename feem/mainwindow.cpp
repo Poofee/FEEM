@@ -171,7 +171,7 @@ void MainWindow::setupDockWidgets()
         dock_messageOutputPane->setWindowTitle(tr("Log Infor"));
         dock_messageOutputPane->setObjectName("log_dockwidget");
         QWidget * widgetLog = new QWidget(dock_messageOutputPane);
-        QHBoxLayout * hbox = new QHBoxLayout(dock_messageOutputPane);
+        QHBoxLayout * hbox = new QHBoxLayout(widgetLog);
         QTabWidget *tabInfo = new QTabWidget(widgetLog);
         QTextEdit * logEdit = new QTextEdit;
         tabInfo->addTab(logEdit,tr("Run log"));

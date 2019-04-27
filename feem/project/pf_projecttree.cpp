@@ -4,9 +4,31 @@
 #include "actionmanager/actionmanager.h"
 #include <QMenu>
 
+PF_ProjectTree* PF_ProjectTree::s_instance = nullptr;
+
 PF_ProjectTree::PF_ProjectTree(QObject *parent) : QObject(parent)
 {
 
+}
+
+PF_ProjectTree::~PF_ProjectTree()
+{
+
+}
+
+PF_ProjectTree *PF_ProjectTree::instance()
+{
+    return s_instance;
+}
+
+PF_Project *PF_ProjectTree::currentProject()
+{
+    return nullptr;
+}
+
+Node *PF_ProjectTree::findCurrentNode()
+{
+    return nullptr;
 }
 
 void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &globalPos, Node *node)

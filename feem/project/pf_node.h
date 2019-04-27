@@ -31,6 +31,7 @@ class Node
 public:
     virtual ~Node();
     Node(const Node &other) = delete;
+    Node(QString _displayname, NodeType nodetype);
 
     NodeType nodeType() const;
 

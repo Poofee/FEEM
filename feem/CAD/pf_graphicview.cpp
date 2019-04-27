@@ -2123,14 +2123,14 @@ void PF_GraphicView::zoomWindow(double f, const PF_Vector& center)
     /** 如果没有指定中心的话，默认为坐标轴中心 **/
     PF_Vector c;
     if(!center.valid){
-        c.x = (xAxis->range().minRange+xAxis->range().maxRange)/2.;
-        c.y = (yAxis->range().minRange+yAxis->range().maxRange)/2.;
+        c.x = (xAxis->range().upper+xAxis->range().lower)/2.;
+        c.y = (yAxis->range().upper+yAxis->range().lower)/2.;
     }
     if(xAxis){
-        xAxis->scaleRange(f,center.x);
+        xAxis->scaleRange(f,c.x);
     }
     if(yAxis){
-        yAxis->scaleRange(f,center.y);
+        yAxis->scaleRange(f,c.y);
     }
     replot();
 }

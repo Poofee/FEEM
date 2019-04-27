@@ -1,5 +1,7 @@
 #include "pf_projectmodel.h"
 
+#include "pf_node.h"
+
 PF_ProjectModel::PF_ProjectModel(QObject *parent)
     : BaseTreeModel(new WrapperNode(nullptr), parent)
 {
@@ -38,7 +40,7 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
 
         switch (role) {
         case Qt::DisplayRole: {/**要以文本形式呈现的关键数据**/
-//            result = node->displayName();
+            result = node->displayName();
             break;
         }
         case Qt::EditRole: {/**适合在编辑器中编辑的形式的数据**/

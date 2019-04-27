@@ -2,6 +2,13 @@
 
 Node::~Node() = default;
 
+Node::Node(QString _displayname, NodeType nodetype)
+    :m_displayName(_displayname)
+    ,m_nodeType(nodetype)
+{
+
+}
+
 NodeType Node::nodeType() const
 {
     return m_nodeType;
