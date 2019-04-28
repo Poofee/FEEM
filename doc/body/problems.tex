@@ -301,6 +301,207 @@ C++类中谈到static,我们可以在类中定义static成员，static成员函�
 总结一下，二者其实可以达到相同的效果，在不同的需求情景下各有偏爱。
 \subsection{connect函数}
 为了连接信号与槽，应当使用connect函数。使用connect函数的时机应当是在变量构造完成之后，否则，达不到预期的效果，不能建立正确的连接。
+
+软件当中各种信号，应该不是一开始就考虑到的，而是开发过程中，为了解决某个问题，才采用信号槽这种方式来解决的。所以，这种方式主要能解决什么类型的问题？
+
+信号:
+
+当对象改变其状态时，信号就由该对象发射 (emit) 出去，而且对象只负责发送信号，它不知道另一端是谁在接收这个信号。这样就做到了真正的信息封装，
+能确保对象被当作一个真正的软件组件来使用。
+
+槽:
+
+用于接收信号，而且槽只是普通的对象成员函数。
+一个槽并不知道是否有任何信号与自己相连接。而且对象并不了解具体的通信机制。
+
+信号与槽的连接:
+
+所有从 QObject 或其子类 ( 例如 Qwidget ) 继承的类都能够包含信号和槽。
+因为信号与槽的连接是通过 QObject 的 connect() 成员函数来实现的。
+
+connect(sender, SIGNAL(signal), receiver, SLOT(slot));
+
+
+如下例中的:
+
+QObject::connect(button, SIGNAL(clicked()), \&a, SLOT(quit()));
+
+其中，SIGNAL() 与 SLOT() 是转换信号与槽的宏。
+注意:
+
+一个信号可以连接多个槽，
+
+当信号发生，会以不确定的顺序一个接一个的调用各个槽。
+
+多个信号可以连接同一个槽，
+即无论是发生哪个信号，都会调用这个槽。
+
+信号之间可以相互连接，
+第一个信号发生，也会发生第二个信号。
+
+连接可以被移除，
+这种情况用得比较少，因为对象被销毁时，Qt会自动移除与这个对象相关的所有连接。代码如下：
+
+disconnect(sender, SIGNAL(signal), receiver, SLOT(slot));
+如果一个信号与多个槽相联系的话，那么，当这个信号发生时，与之相关的槽被调用的顺序将是随机的。
+宏定义不能用在 signal 和 slot 的参数中。
+
+信号和槽的参数个数与类型必须一致。
+
+凡是定义信号槽的类都必须写Q\_OBJECT宏。
+只有加入了Q\_OBJECT，你才能使用QT中的signal和slot机制。
+
+这篇文章来自于 A Deeper Look at Signals and Slots，Scott Collins 2005.12.19。需要说明的是，我们这里所说的“信号槽”不仅仅是指 Qt 库里面的信号槽，而是站在一个全局的高度，从系统的角度来理解信号槽。所以在这篇文章中，Qt 信号槽仅仅作为一种实现来介绍，我们还将介绍另外一种信号槽的实现——boost::signal。因此，当你在文章中看到一些信号的名字时，或许仅仅是为了描述方便而杜撰的，实际并没有这个信号。
+
+什么是信号槽？
+
+这个问题我们可以从两个角度来回答，一个简短一些，另外一个则长些。
+
+让我们先用最简洁的语言来回答这个问题——什么是信号槽？
+
+信号槽是观察者模式的一种实现，或者说是一种升华；
+一个信号就是一个能够被观察的事件，或者至少是事件已经发生的一种通知；
+一个槽就是一个观察者，通常就是在被观察的对象发生改变的时候——也可以说是信号发出的时候——被调用的函数；
+你可以将信号和槽连接起来，形成一种观察者-被观察者的关系；
+当事件或者状态发生改变的时候，信号就会被发出；同时，信号发出者有义务调用所有注册的对这个事件（信号）感兴趣的函数（槽）。
+信号和槽是多对多的关系。一个信号可以连接多个槽，而一个槽也可以监听多个信号。
+
+信号可以有附加信息。例如，窗口关闭的时候可能发出 windowClosing 信号，而这个信号就可以包含着窗口的句柄，用来表明究竟是哪个窗口发出这个信号；一个滑块在滑动时可能发出一个信号，而这个信号包含滑块的具体位置，或者新的值等等。我们可以把信号槽理解成函数签名。信号只能同具有相同签名的槽连接起来。你可以把信号看成是底层事件的一个形象的名字。比如这个 windowClosing 信号，我们就知道这是窗口关闭事件发生时会发出的。
+
+信号槽实际是与语言无关的，有很多方法都可以实现信号槽，不同的实现机制会导致信号槽差别很大。信号槽这一术语最初来自 Trolltech 公司的 Qt 库（现在已经被 Nokia 收购）。1994年，Qt 的第一个版本发布，为我们带来了信号槽的概念。这一概念立刻引起计算机科学界的注意，提出了多种不同的实现。如今，信号槽依然是 Qt 库的核心之一，其他许多库也提供了类似的实现，甚至出现了一些专门提供这一机制的工具库。
+
+简单了解信号槽之后，我们再来从另外一个角度回答这个问题：什么是信号槽？它们从何而来？
+
+前面我们已经了解了信号槽相关的概念。下面我们将从更细致的角度来探讨，信号槽机制是怎样一步步发展的，以及怎样在你自己的代码中使用它们。
+
+程序设计中很重要的一部分是组件交互：系统的一部分需要告诉另一部分去完成一些操作。让我们从一个简单的例子开始：
+
+\begin{lstlisting}
+// C++
+class Button
+{
+public:
+void clicked(); // something that happens: Buttons may be clicked
+};
+class Page
+{
+public:
+void reload(); // ...which I might want to do when a Button is clicked
+};
+\end{lstlisting}
+换句话说，Page 类知道如何重新载入页面（reload），Button 有一个动作是点击（click）。假设我们有一个函数返回当前页面 currentPage()，那么，当 button 被点击的时候，当前页面应该被重新载入。
+
+\begin{lstlisting}
+// C++ --- making the connection directly
+void Button::clicked()
+{
+currentPage()->reload(); // Buttons know exactly what to do when clicked
+}
+\end{lstlisting}
+这看起来并不很好。因为 Button 这个类名似乎暗示了这是一个可重用的类，但是这个类的点击操作却同 Page 紧紧地耦合在一起了。这使得只要 button 一被点击，必定调用 currentPage() 的 reload() 函数。这根本不能被重用，或许把它改名叫 PageReloadButton 更好一些。
+
+实际上，不得不说，这确实是一种实现方式。如果 Button::click() 这个函数是 virtual 的，那么你完全可以写一个新类去继承这个 Button：
+
+\begin{lstlisting}
+// C++ --- connecting to different actions by specializing
+class Button
+{
+public:
+virtual void clicked() = 0; // Buttons have no idea what to do when clicked
+};
+
+class PageReloadButton : public Button
+{
+public:
+virtual void clicked() {
+currentPage()->reload();    // ...specialize Button to connect it to a specific action
+}
+};
+\end{lstlisting}
+好了，现在 Button 可以被重用了。但是这并不是一个很好的解决方案。
+
+引入回调
+
+让我们停下来，回想一下在只有 C 的时代，我们该如何解决这个问题。如果只有 C，就不存在 virtual 这种东西。重用有很多种方式，但是由于没有了类的帮助，我们采用另外的解决方案：函数指针。
+\begin{lstlisting}
+/* C --- connecting to different actions via function pointers */
+void reloadPage_action( void* ) /* one possible action when a Button is clicked */
+{
+reloadPage(currentPage());
+}
+
+void loadPage_action( void* url ) /* another possible action when a Button is clicked */
+{
+loadPage(currentPage(), (char*)url);
+}
+
+struct Button {
+/* ...now I keep a (changeable) pointer to the function to be called */
+void (*actionFunc_)();
+void* actionFuncData_;
+};
+
+void buttonClicked( Button* button )
+{
+/* call the attached function, whatever it might be */
+if ( button && button->actionFunc_ )
+(*button->actionFunc_)(button->actionFuncData_);
+}
+\end{lstlisting}
+
+这就是通常所说的“回调”。buttonClicked() 函数在编译期并不知道要调用哪一个函数。被调用的函数是在运行期传进来的。这样，我们的 Button 就可以被重用了，因为我们可以在运行时将不同的函数指针传递进来，从而获得不同的点击操作。
+
+增加类型安全
+
+对于 C++ 或者 Java 程序员来说，总是不喜欢这么做。因为这不是类型安全的（注意 url 有一步强制类型转换）。
+
+我们为什么需要类型安全呢？一个对象的类型其实暗示了你将如何使用这个对象。有了明确的对象类型，你就可以让编译器帮助你检查你的代码是不是被正确的使用了，如同你画了一个边界，告诉编译器说，如果有人越界，就要报错。然而，如果没有类型安全，你就丢失了这种优势，编译器也就不能帮助你完成这种维护。这就如同你开车一样。只要你的速度足够，你就可以让你的汽车飞起来，但是，一般来说，这种速度就会提醒你，这太不安全了。同时还会有一些装置，比如雷达之类，也会时时帮你检查这种情况。这就如同编译器帮我们做的那样，是我们出浴一种安全使用的范围内。
+
+回过来再看看我们的代码。使用 C 不是类型安全的，但是使用 C++，我们可以把回调的函数指针和数据放在一个类里面，从而获得类型安全的优势。例如：
+
+
+\begin{lstlisting}
+// re-usable actions, C++ style (callback objects)
+class AbstractAction
+{
+public:
+virtual void execute() = 0; // sub-classes re-implement this to actually do something
+};
+
+class Button
+{
+// ...now I keep a (changeable) pointer to the action to be executed
+AbstractAction* action\_;
+};
+
+void Button::clicked()
+{
+// execute the attached action, whatever it may be
+if ( action_ )
+action_->execute();
+}
+
+class PageReloadAction : public AbstractAction
+// one possible action when a Button is clicked
+{
+public:
+virtual void execute() {
+currentPage()->reload();
+}
+};
+class PageLoadAction : public AbstractAction
+// another possible action when a Button is clicked
+{
+public:
+// ...
+virtual void execute() {
+currentPage()->load(url_);
+}
+private:
+std::string url_;
+};
+\end{lstlisting}
+好了！我们的 Button 已经可以很方便的重用了，并且也是类型安全的，再也没有了强制类型转换。这种实现已经可以解决系统中遇到的绝大部分问题了。似乎现在的解决方案同前面的类似，都是继承了一个类。只不过现在我们对动作进行了抽象，而之前是对 Button 进行的抽象。这很像前面 C 的实现，我们将不同的动作和 Button 关联起来。现在，我们一步步找到一种比较令人满意的方法。
 \subsection{项目树}
 分析分析项目树的设计。
 
@@ -335,4 +536,39 @@ project文件的读取过程：
 
 7.打开文件，对文件进行判断，不存在则返回；
 
-8.调用打开project子函数，项目的打开是一个对文件的语法分析过程，并保存分析的结果；
+8.调用project的构造函数，生成变量，项目的打开是一个对文件的语法分析过程，并保存分析的结果；
+
+project的信息是以node树的方式保存的，然后把它传给treeitem变量，之后就传给了treewidget控件了。初步掌握了一下对node的操作，原版的node写的真的是好绕啊，你要显示一个tree，你要有一个model，一个view，而且还要有你保存数据的模型，model当中不是用来保存你的数据的，而是根据你提供的数据，编写一个给qt的计算接口，这样它就知道如何根据你的数据，得到哪行哪列的具体数据了。
+
+具体的数据是保存在treeitem当中，而WrapperNode类它不是Node类型的，而是treeitem类型的，里面相比多了node变量。treeitem类的主要作用是描述了数据的树状存储关系。node变量如果是container类型的话，它也是嵌套的树结构。所以，treeitem的能力并不只是表示树中的一个节点，那样的话跟node有什么区别，它应该还可以表达tree当中的一段。
+
+如果我想要显示project的树，我就需要把project变量传给
+
+9.做一些其他的后续处理。
+\subsection{读完project怎样更新treewidget？}
+什么是projects？里面应当保存什么东西？projects是一个完整的个体，从存储角度看，projects是硬盘上的一个文件，保存你所需要的所有的信息，是最终的实体。因此，projects类就是对该文件的一些操作接口，将硬盘上的文件信息，保存为内存中的模型数据。需要进一步考虑的问题是，projects是否单一，是否具有多态属性，是否需要建立子类。其实这个只是一个写法的问题，最后都能实现功能。还有一个问题，就是最后效果只是单一的projects，但是在代码的实现上，也可以利用多态虚函数进行实现。
+\subsection{如何管理projects？}
+
+\subsection{类的工作流程图}
+所有类之间的工作流程图是怎样的？
+
+\subsection{状态的改变}
+我们通常会采用emit signal的方式来通知别的对象执行某些操作。但是有一些问题，比如，发射信号的变量是动态创建的，怎么能保证能通知到呢？这个时候可能需要一个静态的管理器，通过发射信号来再次靠管理器发射一个信号，只需要将执行的一方和管理器的信号连接起来就可以了。
+\subsection{为什么会有一个treewidget的list？}
+按照一般的想法，不是应该只有一个projects的树控件吗？那么为什么放了一个list，意味着有多个？那多余的是干嘛的？
+
+\subsection{把一个父类变量转换为子类变量会怎样？}
+我也说不好这种转换是提升还是下降了。这种转换应该是不能吧？
+
+C++支持两种多态性：编译时多态性，运行时多态性。 
+
+a.编译时多态性：通过重载函数和运算符重载实现。 
+
+b.运行时多态性：通过虚函数和继承实现。
+
+也就是说，如果没有明确地声明为虚函数，那么即使重载也不会有多态的效果？
+\subsection{treemodel是如何建立索引的？}
+父索引，也就是root索引这个肯定是有的，有了这个，就可以递归的生成其它的索引了。所以，下一步就是在project当中定义model，然后在treemodel当中添加对project的处理，这样就可以了。可以先在内存当中测试，等到测试没有问题了，再添加对文件的读写。
+
+\subsection{是如何达到效果的？}
+通过反复印证。

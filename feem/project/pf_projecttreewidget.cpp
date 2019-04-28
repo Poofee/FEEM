@@ -3,6 +3,7 @@
 #include "navigationtreeview.h"
 #include "pf_projectmodel.h"
 #include "pf_projecttree.h"
+#include "pf_node.h"
 
 #include <QApplication>
 #include <QSettings>
@@ -176,6 +177,17 @@ private:
 PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
 {
     m_model = new PF_ProjectModel(this);
+//    auto node1 = new Node(QString("node1"),NodeType::File);
+//    auto node2 = new Node(QString("node9"),NodeType::File);
+
+//    WrapperNode* container = new WrapperNode(node1);
+//    container->appendChild(new WrapperNode(new Node(QString("node2"),NodeType::File)));
+//    container->appendChild(new WrapperNode(new Node(QString("node3"),NodeType::File)));
+//    WrapperNode* container1 = new WrapperNode(node2);
+//    container1->appendChild(new WrapperNode(new Node(QString("node6"),NodeType::File)));
+//    container1->appendChild(new WrapperNode(new Node(QString("node7"),NodeType::File)));
+//    container->insertChild(0,container1);
+//    m_model->rootItem()->insertChild(0,container);
     m_view = new PF_ProjectTreeView;
     m_view->setModel(m_model);
     m_view->setItemDelegate(new PF_ProjectTreeItemDelegate(m_view));

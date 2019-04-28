@@ -1,0 +1,554 @@
+\section{Qt 中的二进制兼容策略}
+
+本文翻译自
+\href{https://link.jianshu.com?t=https://community.kde.org/Policies/Binary\_Compatibility\_Issues\_With\_C\%2B\%2B}{Policies/Binary
+Compatibility Issues With C++}
+
+\subsection{二进制兼容的定义}\label{ux4e8cux8fdbux5236ux517cux5bb9ux7684ux5b9aux4e49}
+
+如果程序从一个以前版本的库动态链接到新版本的库之后，能够继续正常运行，而不需要重新编译，那么我们就说这个库是二进制兼容的。
+
+如果一个程序需要重新编译来运行一个新版本的库，但是不需要对程序的源代码进一步的修改，这个库就是源代码兼容的。
+
+二进制兼容性可以节省很多麻烦。这使得为特定平台分发软件变得更加容易。如果不确保版本之间的二进制兼容性，人们将被迫提供静态链接的二进制文件。静态二进制文件不好，因为它们
+
+\begin{itemize}
+
+\item
+  浪费资源（尤其是内存）
+\item
+  不能让程序从库中错误修正或扩展中受益
+\end{itemize}
+
+\subsection{如何确保二进制兼容}\label{ux5982ux4f55ux786eux4fddux4e8cux8fdbux5236ux517cux5bb9}
+
+\subparagraph{在确保二进制兼容的情况下，我们能做的操作：}\label{ux5728ux786eux4fddux4e8cux8fdbux5236ux517cux5bb9ux7684ux60c5ux51b5ux4e0bux6211ux4eecux80fdux505aux7684ux64cdux4f5c}
+
+\begin{itemize}
+
+\item
+  增加非虚函数、signal/slots、构造函数
+\item
+  增加枚举到类中
+\item
+  在已经存在的枚举的最后添加枚举值
+
+  \begin{itemize}
+  
+  \item
+    例外：如果这会导致编译器为枚举选择更大的底层类型，那么更改会导致二进制不兼容。需要注意的是，编译器有选择基础类型的余地，所以从
+    API 设计的角度来看，建议添加一个 Max
+    枚举，其中包含一个明确的最大值（=255 或 =1 \textless{}\textless{} 15
+    等）来创建一个数字枚举数值的区间，使其无论如何能够保证适合所选择的底层类型。
+  \end{itemize}
+\item
+  重新实现在父非虚基类
+  (从当前类回溯第一个非虚基类）里定义的虚函数，但是这个不完全确保二进制兼容，所以尽量不要这么做
+
+  \begin{itemize}
+  
+  \item
+    例外： C++
+    有时候允许重写的虚函数改变返回类型，在这种情况下无法保证二进制兼容。
+  \end{itemize}
+\item
+  修改内联函数，或者把内联函数改成非内联的。这个不完全确保二进制兼容，所以尽量不要这么做
+\item
+  去掉类里一个 private 的非虚函数，并且这个函数没有被任何 inline
+  函数调用过
+\item
+  去掉类里一个 private 的静态变量，并且这个变量没有被任何 inline
+  函数调用过
+\item
+  增加一个静态成员变量
+\item
+  增加新类
+\item
+  导出以前未导出的类
+\item
+  增加或者减少类的友元声明
+\item
+  重命名原有成员变量
+\item
+  原有的成员位宽扩大或缩小，但扩展后不得越过边界（char 和 bool 不能过 8
+  位，short 不能过 16 位，int 不过 32 位，等等）
+\item
+  为原本继承自 QObject 的类添加 Q\_OBJECT 宏
+\item
+  添加 Q\_PROPERTY、Q\_ENUMS 或 Q\_FLAGS 宏，因为它们只是修改由 moc
+  生成的元对象而不是类本身
+\end{itemize}
+
+\subparagraph{在确保二进制兼容的情况下，严格禁止的操作：}\label{ux5728ux786eux4fddux4e8cux8fdbux5236ux517cux5bb9ux7684ux60c5ux51b5ux4e0bux4e25ux683cux7981ux6b62ux7684ux64cdux4f5c}
+
+\begin{itemize}
+\item
+  对已经存在的类进行：
+
+  \begin{itemize}
+ 
+  \item
+    把原本已经导出的类，进行取消或删除导出操作
+  \item
+    以任何方式更改类层次结构（添加，删除或重新排序基类）的操作
+  \end{itemize}
+\item
+  对于类模板进行：
+
+  \begin{itemize}
+  
+  \item
+    以任何方式更改模板参数（添加，删除或重新排序）的操作
+  \end{itemize}
+\item
+  对于已经存在的函数进行：
+
+  \begin{itemize}
+  
+  \item
+    取消对外开放（共有改为私有）的操作
+  \item
+    删除函数的操作
+
+    \begin{itemize}
+    
+    \item
+      删除现有声明函数的实现的操作
+    \end{itemize}
+  \item
+    改成内联的（把代码从类外实现移到头文件的类内实现也算是内联的）操作
+  \item
+    增加重载操作，向已经重载的函数添加重载是可以的
+  \item
+    改变函数特征，这包括：
+
+    \begin{itemize}
+    
+    \item
+      修改参数列表中任何参数的类型，包括改变现有参数的 const 或者
+      volatile
+      限定符。如果必需要这么做，可以通过增加一个新函数的方法来实现
+    \item
+      改变函数的 const 或者 volatile 限定符
+    \item
+      把 private 改成 protected 或者
+      public。如果必需要这么做，可以通过增加一个新函数的方法来实现
+    \item
+      更改成员函数的 CV 限定符：应用于函数本身的 const 和/或 volatile
+    \item
+      用另一个参数扩展一个函数，即使这个参数有一个默认值
+    \item
+      以任何方式改变返回类型
+    \item
+      例外：用 extern``C''
+      声明的非成员函数可以改变参数类型，但是尽量不要这么做
+    \end{itemize}
+  \end{itemize}
+\item
+  对于虚成员函数进行：
+
+  \begin{itemize}
+  
+  \item
+    将虚函数添加到没有任何虚函数或虚基类的类
+  \item
+    将虚函数添加到被别的类继承的类
+  \item
+    在 Windows
+    上，出于任何原因添加新的虚函数，即使是在无任何子类的类中。这样做可能会重新排序现有的虚拟功能并破坏二进制兼容性
+  \item
+    改变类声明中虚函数的顺序
+  \item
+    如果一个函数不是在父非虚基类
+    (从当前类回溯第一个非虚基类）中声明的，覆盖它会造成二进制不兼容
+  \item
+    如果虚函数被覆盖时改变了返回类型，不要修改它
+  \item
+    删除一个虚函数，即使它是从基类重新实现一个虚函数
+  \end{itemize}
+\item
+  对于静态非私有成员或非静态非成员公共数据进行：
+
+  \begin{itemize}
+  
+  \item
+    改成不对外开放的或者删除
+  \item
+    改变其类型
+  \item
+    改变其 const 和/或 volatile 限定符
+  \end{itemize}
+\item
+  对于非静态成员：
+
+  \begin{itemize}
+  
+  \item
+    将新的数据成员添加到现有的类
+  \item
+    改变一个类中的非静态数据成员的顺序
+  \item
+    修改成员的类型，修改符号例外 （例如：signed/unsigned
+    改来改去，不影响字节长度）
+  \item
+    从现有的类中删除现有的非静态数据成员
+  \end{itemize}
+\end{itemize}
+
+如果需要添加扩展/修改现有函数的参数列表，则需要添加新的函数，而不是新的参数。
+在这种情况下，我们可能需要添加一个简短的提示，即在更高版本的库中，这两个函数应与默认参数合并：
+
+\begin{lstlisting}
+void functionname( int a );
+void functionname( int a, int b ); //BCI: merge with int b = 0
+\end{lstlisting}
+
+为了使我们的类在未来能够有序的扩展，我们应该遵循这些规则：
+
+\begin{itemize}
+
+\item
+  为类添加 d 指针
+\item
+  添加非内联虚析构函数，即使在析构函数的实现中我们什么也不做，那就让它为空好了
+\item
+  QObject
+  派生类中的重新实现事件，即使函数的主体只是调用基类的实现，也要将其实现
+\item
+  使所有构造函数非内联
+\item
+  编写拷贝构造函数和赋值运算符的非内联实现，除非该类不能被值拷贝（例如，从
+  QObject 继承的类不能）
+\end{itemize}
+
+\subsection{类库开发技巧}\label{ux7c7bux5e93ux5f00ux53d1ux6280ux5de7}
+
+编写类库时最大的问题是，不能安全地添加数据成员，因为这可能会改变包含该类型对象（包括子类）的每个类、结构或数组的大小和布局。
+
+\subparagraph{位标志}\label{ux4f4dux6807ux5fd7}
+
+一个解决办法就是利用位标志。比如你原来设计了一个类，里面有如下的几个
+enum 或者 bool 类型：
+
+\begin{lstlisting}
+uint m1 : 1;
+uint m2 : 3;
+uint m3 : 1;
+\end{lstlisting}
+
+如下的修改不会破坏二进制兼容：
+
+\begin{lstlisting}
+uint m1 : 1;
+uint m2 : 3;
+uint m3 : 1;
+uint m4 : 2; // new member
+\end{lstlisting}
+
+究其原因，是本来已经占用了足够的位数，增加一个位标志并没有让数据字节长度增加。注意：请舍入到最多
+7 位（如果位域已经大于 8，则为
+15）。使用最后一位可能会导致一些编译器出现问题
+
+\subparagraph{使用 d 指针}\label{ux4f7fux7528-d-ux6307ux9488}
+
+位标志和预定义的保留变量很好，但远远不够。这是 d
+指针技术发挥作用的地方。``d-pointer'' 这个名字源于 Trolltech 公司的 Arnt
+Gulbrandsen，他首先将这项技术引入到 Qt
+中，使其成为第一个在大版本之间保持二进制兼容性的 C ++ GUI 库之一。
+所有看过它的人都很快将这种技术作为 KDE
+库的一般编程模式。这是能够在不破坏二进制兼容性的情况下将新的私有数据成员添加到类中是一个很好的技巧。
+
+备注：在计算机科学的历史中，d
+指针模式已经被通过多种名称被实现了很多次，例如， 作为 pimpl，作为
+handle/body 或者 cheshire cat。 Google
+可以帮助我们找到任何这些内容的介绍，只需将 C++
+一起添加到搜索作为关键词即可。
+
+在类 Foo 的类定义中，定义一个前向声明
+
+\begin{lstlisting}
+class FooPrivate;
+\end{lstlisting}
+
+和私有成员中的 d 指针：
+
+\begin{lstlisting}
+private:
+    FooPrivate* d;
+\end{lstlisting}
+
+FooPrivate 类本身完全是在类实现文件（通常是* .cpp）中定义的，例如：
+
+\begin{lstlisting}
+class FooPrivate {
+public:
+    FooPrivate()
+        : m1(0), m2(0)
+    {}
+    int m1;
+    int m2;
+    QString s;
+};
+\end{lstlisting}
+
+现在我们要做的事情就是在我们的构造函数或 init 函数中创建私有数据
+
+\begin{lstlisting}
+d = new FooPrivate;
+\end{lstlisting}
+
+并在我们的析构函数中删除它
+
+\begin{lstlisting}
+if (d) {
+    delete d;
+    d = 0;
+}
+\end{lstlisting}
+
+在大多数情况下，我们会希望使 d
+指针避免不慎被修改或复制的情况，以免丢失私有对象的所有权并造成内存泄漏：
+
+\begin{lstlisting}
+private:
+    FooPrivate* const d;
+\end{lstlisting}
+
+这允许我们修改 d 指向的对象，但是在初始化之后不能修改指针的值。
+
+不过，我们可能不希望所有成员变量都存在于私有数据对象中。对于经常使用的成员，将它们直接放在类中会更快，因为内联函数不能访问
+d 指针数据。还要注意，在 d 指针本身中声明了 d
+指针所涵盖的所有数据都是``私有的''。
+对于公共或受保护的访问，可以提供一个 set 和一个 get 函数。 例如：
+
+\begin{lstlisting}
+QString Foo::string() const
+{
+    return d->s;
+}
+
+void Foo::setString( const QString& s )
+{
+    if (d->s != s;) {
+        d->s = s;
+    }
+}
+\end{lstlisting}
+
+也可以将 d
+指针的私有类声明为嵌套的私有类。如果使用这种技术，请记住嵌套的私有类将继承包含导出的类的公共符号可见性。
+这将导致私有类的功能在动态库的符号表中被命名。 我们可以使用
+Q\_DECL\_HIDDEN 执行嵌套的私有类来手动重新隐藏符号。这在技术上是一个 ABI
+的变化，但是不会影响到 KDE 开发者所支持的公众
+ABI，所以被误认为是私密的符号可能会被重新隐藏而不会被警告。
+
+\subsection{常见问题处理方法}\label{ux5e38ux89c1ux95eeux9898ux5904ux7406ux65b9ux6cd5}
+
+\subparagraph{如何将新的数据成员添加到没有 d
+指针的类？}\label{ux5982ux4f55ux5c06ux65b0ux7684ux6570ux636eux6210ux5458ux6dfbux52a0ux5230ux6ca1ux6709-d-ux6307ux9488ux7684ux7c7b}
+
+如果你没有空闲的位标志，保留的变量，也没有 d
+指针，但是你必须添加一个新的私有成员变量，还有一些可能性的。如果我们的类继承了
+QObject，那么我们可以将其他数据放在一个特殊的子元素中，并通过遍历子元素来找到它。我们可以使用
+QObject :: children()
+来访问子元素的列表。然而，一个更加奇特而且通常更快的方法是使用散列表来存储对象和额外数据之间的映射。为此，Qt
+提供了一个名为 QHash 的基于指针的字典。
+
+此时在类 Foo 的类实现中的基本技巧是：
+
+\begin{itemize}
+
+\item
+  创建一个私有数据类 FooPrivate
+\item
+  创建静态的哈西表 static QHash\textless{}Foo *, FooPrivate
+  *\textgreater{}
+\item
+  请注意，几乎所有编译器/连接器都不能在共享库中创建静态对象。他们只是忘记调用构造函数。因此，我们应该使用
+  Q\_GLOBAL\_STATIC 宏来创建和访问该对象：
+\end{itemize}
+
+\begin{lstlisting}
+// BCI: Add a real d-pointer
+typedef QHash<Foo *, FooPrivate *> FooPrivateHash;
+Q_GLOBAL_STATIC(FooPrivateHash, d_func)
+static FooPrivate *d(const Foo *foo)
+{
+    FooPrivate *ret = d_func()->value(foo);
+    if ( ! ret ) {
+        ret = new FooPrivate;
+        d_func()->insert(foo, ret);
+    }
+    return ret;
+}
+static void delete_d(const Foo *foo)
+{
+    FooPrivate *ret = d_func()->value(foo);
+    delete ret;
+    d_func()->remove(foo);
+}
+\end{lstlisting}
+
+\begin{itemize}
+
+\item
+  现在，我们可以像在代码中一样简单地使用类中的 d 指针，只需调用 d(this)
+  即可。 例如：
+\end{itemize}
+
+\begin{lstlisting}
+d(this)->m1 = 5;
+\end{lstlisting}
+
+\begin{itemize}
+
+\item
+  添加一行到我们的析构函数：
+\end{itemize}
+
+\begin{lstlisting}
+delete_d(this);
+\end{lstlisting}
+
+\begin{itemize}
+
+\item
+  记得加入二进制兼容 （BCI）的标志，下次大版本发布的时候赶紧修改过来
+\item
+  下次设计类的时候，别再忘记加入 d 指针了
+\end{itemize}
+
+\subparagraph{如何覆盖已实现过的虚函数？}\label{ux5982ux4f55ux8986ux76d6ux5df2ux5b9eux73b0ux8fc7ux7684ux865aux51fdux6570}
+
+如前所述，如果父类已经实现过虚函数，我们的覆盖是安全的：老的程序仍然会调用父类的实现。假如你有如下类函数：
+
+\begin{lstlisting}
+void C::foo()
+{
+    B::foo();
+}
+\end{lstlisting}
+
+B::foo() 被直接调用。如果 B 继承了 A，A 中有 foo() 的实现，B 中却没有
+foo() 的实现，则 C::foo() 会直接调用 A::foo()。如果你加入了一个新的
+B::foo() 实现，只有在重新编译以后，C::foo() 才会转为调用B::foo()
+
+如果你不能保证没有重新编译就可以继续工作，把函数从 A :: foo()
+移到一个新的保护函数 A :: foo2() 并使用下面的代码：
+
+\begin{lstlisting}
+void A::foo()
+{
+    if( B* b = dynamic_cast< B* >( this ))
+        b->B::foo(); // B:: is important
+    else
+        foo2();
+}
+void B::foo()
+{
+    // added functionality
+    A::foo2(); // call base function with real functionality
+}
+\end{lstlisting}
+
+所有调用 B 类型的函数 foo() 都会被转到 B::foo()，只有在明确指出调用
+A::foo() 的时候才会调用 A::foo()。
+
+\subparagraph{如何添加新类？}\label{ux5982ux4f55ux6dfbux52a0ux65b0ux7c7b}
+
+拓展类功能的简单方法是在类上增加新功能的同时保留老功能。但是这样也限制了使用旧版链接库的类进行升级。对于那些小的要求高性能的类来说，要升级的时候，重新写一个类完全代替原来的才是更好的办法。
+
+\subparagraph{如何给非基类增加虚函数？}\label{ux5982ux4f55ux7ed9ux975eux57faux7c7bux589eux52a0ux865aux51fdux6570}
+
+对于那些没有其他类继承的类，在这种情况下，可以添加一个从原始类继承的新类，实现新的功能，使用新功能的应用程序当然必须修改才能使用新类。
+
+\begin{lstlisting}
+class A {
+public:
+    virtual void foo();
+};
+class B : public A { // newly added class
+public:
+    virtual void bar(); // newly added virtual function
+};
+void A::foo()
+{
+    // here it's needed to call a new virtual function
+    if( B* this2 = dynamic_cast< B* >( this ))
+        this2->bar();
+}
+\end{lstlisting}
+
+如果有其他类继承这个类，就不能这么做了。
+
+\subparagraph{如何使用 signal
+代替虚函数？}\label{ux5982ux4f55ux4f7fux7528-signal-ux4ee3ux66ffux865aux51fdux6570}
+
+Qt 的信号和槽使用由 Q\_OBJECT
+宏创建的特殊的虚拟方法来调用，它存在于每个从 QObject
+继承的类中。因此添加新的信号和槽不会影响二进制兼容性，信号/槽机制可以用来模拟虚函数功能。
+
+\begin{lstlisting}
+class A : public QObject {
+Q_OBJECT
+public:
+    A();
+    virtual void foo();
+signals:
+    void bar( int* ); // added new "virtual" function
+protected slots:
+    // implementation of the virtual function in A
+    void barslot( int* );
+};
+
+A::A()
+{
+    connect(this, SIGNAL( bar(int*)), this, SLOT( barslot(int*)));
+}
+
+void A::foo()
+{
+    int ret;
+    emit bar( &ret );
+}
+
+void A::barslot( int* ret )
+{
+    *ret = 10;
+}
+\end{lstlisting}
+
+函数 bar() 将像虚函数一样工作，barslot()
+槽实现它的实际功能。由于信号具有无效返回值，因此必须使用为信号添加参数的方式来返回数据。由于只有一个槽连接到从槽返回数据的信号，这种方式将毫无问题地工作。请注意，在
+Qt4 中，连接类型必须是 Qt :: DirectConnection。
+
+如果一个继承类将要重新实现 bar() 的功能，它将不得不提供它自己的槽：
+
+\begin{lstlisting}
+class B : public A {
+Q\_OBJECT
+public:
+    B();
+protected slots: // necessary to specify as a slot again
+    void barslot( int* ); // reimplemented functionality of bar()
+};
+
+B::B()
+{
+    disconnect(this, SIGNAL(bar(int*)), this, SLOT(barslot(int*)));
+    connect(this, SIGNAL(bar(int*)), this, SLOT(barslot(int*)));
+}
+
+void B::barslot( int* ret )
+{
+    *ret = 20;
+}
+\end{lstlisting}
+
+现在 B::barslot() 将像虚函数重新实现 A::bar() 一样。注意有必要再次指定
+barslot() 作为 B
+中的一个槽，并且在构造函数中需要先断开然后重新连接，这将断开原有的
+A::barslot() 槽并连接新的 B::barslot() 槽。
+
+注意：通过实现一个虚拟槽可以实现相同的功能。
+
