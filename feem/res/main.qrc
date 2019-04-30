@@ -56,5 +56,19 @@
     </qresource>
     <qresource prefix="/">
         <file>translations/feem_zh.qm</file>
+        <file>tree/definitions.png</file>
+        <file>tree/definitions_variables.png</file>
+        <file>tree/definitions_variables_32.png</file>
+        <file>tree/geometry.png</file>
+        <file>tree/geometry_32.png</file>
+        <file>tree/material.png</file>
+        <file>tree/material_32.png</file>
+        <file>tree/mesh.png</file>
+        <file>tree/mesh_32.png</file>
+        <file>tree/model_3d.png</file>
+        <file>tree/model_3d_32.png</file>
+        <file>tree/parameter.png</file>
+        <file>tree/parameter_32.png</file>
+        <file>tree/global_branch.png</file>
     </qresource>
 </RCC>

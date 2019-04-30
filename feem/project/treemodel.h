@@ -90,7 +90,7 @@ class BaseTreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 
-protected:
+public:
     explicit BaseTreeModel(QObject *parent = nullptr);
     explicit BaseTreeModel(TreeItem *root, QObject *parent = nullptr);
     ~BaseTreeModel() override;
