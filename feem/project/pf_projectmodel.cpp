@@ -48,7 +48,7 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
             break;
         }
         case Qt::ToolTipRole: {/**项目工具提示中显示的数据**/
-//            QString tooltip = node->tooltip();
+            QString tooltip = node->tooltip();
 
 //            if (project) {
 //                if (project->activeTarget()) {
@@ -82,6 +82,7 @@ QVariant PF_ProjectModel::data(const QModelIndex &index, int role) const
 //            } else {
 //                result = Core::FileIconProvider::icon(node->filePath().toString());
 //            }
+            result = node->icon();
             break;
         }
         case Qt::FontRole: {/**用于使用默认委托呈现的项目的字体**/

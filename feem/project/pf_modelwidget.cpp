@@ -24,9 +24,9 @@ void PF_ModelWidget::init()
     tb_nextNode = new QToolButton(this);
     tb_moveup = new QToolButton(this);
     tb_movedown = new QToolButton(this);
-    tb_show = new QToolButton(this);
     tb_collapseAll = new QToolButton(this);
     tb_expandAll = new QToolButton(this);
+    tb_show = new QToolButton(this);
     m_modelTreeWidget = new PF_ProjectTreeWidget(this);
 
     QHBoxLayout* toolbarLayout = new QHBoxLayout(this);
@@ -34,25 +34,25 @@ void PF_ModelWidget::init()
     toolbarLayout->setSpacing(1);
 
     /** previous Node QToolbutton **/
-    tb_previousNode->setIcon(QIcon());
+    tb_previousNode->setIcon(QIcon(":/tree/report_previous.png"));
     tb_previousNode->setToolTip(tr("Previous Node"));
 
-    tb_nextNode->setIcon(QIcon());
+    tb_nextNode->setIcon(QIcon(":/tree/report_next.png"));
     tb_nextNode->setToolTip(tr("Next Node"));
 
-    tb_moveup->setIcon(QIcon());
+    tb_moveup->setIcon(QIcon(":/tree/report_up.png"));
     tb_moveup->setToolTip(tr("Move Up"));
 
-    tb_movedown->setIcon(QIcon());
+    tb_movedown->setIcon(QIcon(":/tree/report_down.png"));
     tb_movedown->setToolTip(tr("Move Down"));
 
-    tb_show->setIcon(QIcon());
+    tb_show->setIcon(QIcon(":/tree/node_labels.png"));
     tb_show->setToolTip(tr("Show"));
 
-    tb_collapseAll->setIcon(QIcon());
+    tb_collapseAll->setIcon(QIcon(":/tree/hide_tree.png"));
     tb_collapseAll->setToolTip(tr("Collapse All"));
 
-    tb_expandAll->setIcon(QIcon());
+    tb_expandAll->setIcon(QIcon(":/tree/show_tree.png"));
     tb_expandAll->setToolTip(tr("Expand All"));
 
     toolbarLayout->addWidget(tb_previousNode);

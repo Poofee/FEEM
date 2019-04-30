@@ -56,5 +56,41 @@
     </qresource>
     <qresource prefix="/">
         <file>translations/feem_zh.qm</file>
+        <file>tree/definitions.png</file>
+        <file>tree/definitions_variables.png</file>
+        <file>tree/definitions_variables_32.png</file>
+        <file>tree/geometry.png</file>
+        <file>tree/geometry_32.png</file>
+        <file>tree/material.png</file>
+        <file>tree/material_32.png</file>
+        <file>tree/mesh.png</file>
+        <file>tree/mesh_32.png</file>
+        <file>tree/model_3d.png</file>
+        <file>tree/model_3d_32.png</file>
+        <file>tree/parameter.png</file>
+        <file>tree/parameter_32.png</file>
+        <file>tree/global_branch.png</file>
+        <file>tree/model_0d.png</file>
+        <file>tree/model_0d_32.png</file>
+        <file>tree/model_1d.png</file>
+        <file>tree/model_1d_32.png</file>
+        <file>tree/model_1d_axi.png</file>
+        <file>tree/model_1d_axi_32.png</file>
+        <file>tree/model_2d.png</file>
+        <file>tree/model_2d_32.png</file>
+        <file>tree/model_2d_axi.png</file>
+        <file>tree/model_2d_axi_32.png</file>
+        <file>tree/hide_tree.png</file>
+        <file>tree/hidedontshow.png</file>
+        <file>tree/node_labels.png</file>
+        <file>tree/node_labels_32.png</file>
+        <file>tree/report_next.png</file>
+        <file>tree/report_next_disabled.png</file>
+        <file>tree/report_previous.png</file>
+        <file>tree/report_previous_disabled.png</file>
+        <file>tree/report_up.png</file>
+        <file>tree/report_up_disabled.png</file>
+        <file>tree/show_tree.png</file>
+        <file>tree/report_down.png</file>
     </qresource>
 </RCC>

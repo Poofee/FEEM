@@ -177,17 +177,26 @@ private:
 PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
 {
     m_model = new PF_ProjectModel(this);
-//    auto node1 = new Node(QString("node1"),NodeType::File);
-//    auto node2 = new Node(QString("node9"),NodeType::File);
+    auto noderoot = new Node(QString("root:untitled.mph"),NodeType::File,QIcon(":/tree/model_3d.png"));
+    auto nodedef = new Node(QString("Global Definitions"),NodeType::File,QIcon(":/tree/global_branch.png"));
 
-//    WrapperNode* container = new WrapperNode(node1);
-//    container->appendChild(new WrapperNode(new Node(QString("node2"),NodeType::File)));
-//    container->appendChild(new WrapperNode(new Node(QString("node3"),NodeType::File)));
-//    WrapperNode* container1 = new WrapperNode(node2);
-//    container1->appendChild(new WrapperNode(new Node(QString("node6"),NodeType::File)));
-//    container1->appendChild(new WrapperNode(new Node(QString("node7"),NodeType::File)));
-//    container->insertChild(0,container1);
-//    m_model->rootItem()->insertChild(0,container);
+    auto nodemat = new Node(QString("Materials:Materials"),NodeType::File,QIcon(":/tree/material.png"));
+    auto nodecomp = new Node(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_2d_axi.png"));
+    auto nodedefin = new Node(QString("Definitions"),NodeType::File,QIcon(":/tree/definitions.png"));
+    auto nodegeo = new Node(QString("Geometry1"),NodeType::File,QIcon(":/tree/geometry.png"));
+    auto nodemesh = new Node(QString("Mesh1"),NodeType::File,QIcon(":/tree/mesh.png"));
+
+    auto comp = new WrapperNode(nodecomp);
+    comp->appendChild(new WrapperNode(nodedefin));
+    comp->appendChild((new WrapperNode(nodegeo)));
+    comp->appendChild((new WrapperNode(nodemesh)));
+    auto def = new WrapperNode(nodedef);
+    def->appendChild(new WrapperNode(nodemat));
+    WrapperNode* root = new WrapperNode(noderoot);
+    root->appendChild(def);
+    root->appendChild(comp);
+    m_model->rootItem()->insertChild(0,root);
+
     m_view = new PF_ProjectTreeView;
     m_view->setModel(m_model);
     m_view->setItemDelegate(new PF_ProjectTreeItemDelegate(m_view));

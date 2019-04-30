@@ -35,7 +35,7 @@ void PF_CADWidget::init()
     zoom = new QToolButton(this);
     zoom->setIcon(QIcon(":/main/zoombox.png"));
     zoom->setCheckable(true);
-    zoom->setToolTip(tr("Zoom"));
+    zoom->setToolTip(tr("Zoom box"));
 //    zoom->setStyle(QStyleFactory::create("windows"));
     connect(zoom,&QToolButton::clicked,[this]()
     {
@@ -44,7 +44,7 @@ void PF_CADWidget::init()
     });
     zoomextents = new QToolButton(this);
     zoomextents->setIcon(QIcon(":/main/zoomextents.png"));
-    zoomextents->setToolTip(tr("ZoomExtents"));
+    zoomextents->setToolTip(tr("Zoom Extents"));
     zoomextents->setCheckable(true);
     connect(zoomextents,&QToolButton::clicked,[this]()
     {
@@ -73,7 +73,7 @@ void PF_CADWidget::init()
     });
     zoomselected = new QToolButton(this);
     zoomselected->setIcon(QIcon(":/main/zoomselected.png"));
-    zoomselected->setToolTip(tr("Zoom Selected"));
+    zoomselected->setToolTip(tr("Zoom to Selected"));
     zoomselected->setCheckable(true);
     connect(zoomselected,&QToolButton::clicked,[this]()
     {
@@ -85,9 +85,9 @@ void PF_CADWidget::init()
     toolbarlayout->setSpacing(1);
     toolbarlayout->addWidget(zoomin);
     toolbarlayout->addWidget(zoomout);
-    toolbarlayout->addWidget(zoomselected);
-//    toolbarlayout->addSeparator();
     toolbarlayout->addWidget(zoom);
+//    toolbarlayout->addSeparator();
+    toolbarlayout->addWidget(zoomselected);
     toolbarlayout->addWidget(zoomextents);
     toolbarlayout->addStretch(1);
 

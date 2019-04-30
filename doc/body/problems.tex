@@ -540,9 +540,8 @@ project文件的读取过程：
 
 project的信息是以node树的方式保存的，然后把它传给treeitem变量，之后就传给了treewidget控件了。初步掌握了一下对node的操作，原版的node写的真的是好绕啊，你要显示一个tree，你要有一个model，一个view，而且还要有你保存数据的模型，model当中不是用来保存你的数据的，而是根据你提供的数据，编写一个给qt的计算接口，这样它就知道如何根据你的数据，得到哪行哪列的具体数据了。
 
-具体的数据是保存在treeitem当中，而WrapperNode类它不是Node类型的，而是treeitem类型的，里面相比多了node变量。treeitem类的主要作用是描述了数据的树状存储关系。node变量如果是container类型的话，它也是嵌套的树结构。所以，treeitem的能力并不只是表示树中的一个节点，那样的话跟node有什么区别，它应该还可以表达tree当中的一段。
+具体的数据是保存在treeitem当中，而WrapperNode类它不是Node类型的，而是treeitem类型的，里面相比多了node变量。treeitem类的主要作用是描述了数据的树状存储关系。node变量如果是container类型的话，它也是嵌套的树结构。所以，treeitem的能力并不只是表示树中的一个节点，那样的话跟node有什么区别，它应该还可以表达tree当中的一段。之后，通过研究源代码，发现确实生成了treeitem的树变量，首先传入projectnode变量，里面包含了所需要的东西，然后再进行递归处理，生成tree，最后就可以在控件当中显示了。
 
-如果我想要显示project的树，我就需要把project变量传给
 
 9.做一些其他的后续处理。
 \subsection{读完project怎样更新treewidget？}
@@ -572,3 +571,257 @@ b.运行时多态性：通过虚函数和继承实现。
 
 \subsection{是如何达到效果的？}
 通过反复印证。
+\subsection{属性页如何实现}
+需要点击树控件上的每一行，切换页面，还是qstacklayout？
+\subsection{Node的设计}
+主要针对于树控件当中的Node的设计。树控件是重要的交互界面。先找到问题，然后尝试在各种情景下复现问题，分析问题产生的原因，定位使问题产生的环节，最后尝试修复该环节。
+
+没有子节点的Node可以有两种，一种是在定义实现当中没有子Node，未来也无法扩展该功能，另一种就是有子Node，但是在接口上没有实现，未来根据需要可以进一步地开发。为了避免Nodes随意的插入，是不是可以加入排序功能，将相同的Node排序到统一的节点下，但是，在某些情景下，Node之间的相互顺序是很重要的。
+
+为了避免Node插错位置，我觉得需要在插入的时候进行类型判断，如果类型不对，就不让插入。或者，每一个node设定一个级别属性，级别低的不能插入到级别高的node下。应该是tree的列数吧，根部节点只能插入到第一列，二级节点插入到第二列。
+
+同时，还要考虑数据存储的问题。
+
+基类的Node。感觉这里的node之间没有什么特别明显的继承关系，都挺孤立的。
+\subsection{std::move}
+我记下它，并不代表我打算用它。
+
+使用原因：
+
+C++ 标准库使用比如vector::push\_back 等这类函数时,会对参数的对象进行复制,连数据也会复制.这就会造成对象内存的额外创建, 本来原意是想把参数push\_back进去就行了；
+
+C++11 提供了std::move 函数来把左值转换为xrvalue, 而且新版的push\_back也支持\&\&参数的重载版本,这时候就可以高效率的使用内存了；
+
+对指针类型的标准库对象并不需要这么做。
+
+std::move(t) 用来表明对象t 是可以moved from的,它允许高效的从t资源转换到lvalue上.
+
+注意,标准库对象支持moved from的左值在moved 之后它的对象原值是有效的(可以正常析构),但是是unspecified的,可以理解为空数据,但是这个对象的其他方法返回值不一定是0,比如size().所以,moved from 之后的对象最好还是不要使用吧?(如有不正确理解,请告知)
+
+对本身进行move,并赋值给本身是undefined的行为.
+
+\begin{lstlisting}
+void TestSTLObject()
+{
+std::string str = "Hello";
+std::vector<std::string> v;
+
+// uses the push_back(const T&) overload, which means
+// we'll incur the cost of copying str
+v.push_back(str);
+std::cout << "After copy, str is \"" << str << "\"\n";
+
+// uses the rvalue reference push_back(T&&) overload,
+// which means no strings will be copied; instead, the contents
+// of str will be moved into the vector.  This is less
+// expensive, but also means str might now be empty.
+v.push_back(std::move(str));
+std::cout << "After move, str is \"" << str << "\"\n";
+
+std::cout << "The contents of the vector are \"" << v[0]
+<< "\", \"" << v[1] << "\"\n";
+
+}
+\end{lstlisting}
+
+看到这里感觉很疑惑，如果所有的类型都可以被move的话，那是怎样操作内存的？所以，自定义自己的类对象支持moved from 操作,需要实现 Move Constructors and Move Assignment Operators。
+\begin{lstlisting}
+#include <iostream>
+#include <stdio.h>
+
+#include <utility>
+#include <vector>
+#include <string>
+
+class MemoryBlock
+{
+public:
+
+// Simple constructor that initializes the resource.
+explicit MemoryBlock(size_t length)
+: _length(length)
+, _data(new int[length])
+{
+std::cout << "In MemoryBlock(size_t). length = "
+<< _length << "." << std::endl;
+}
+
+// Destructor.
+~MemoryBlock()
+{
+std::cout << "In ~MemoryBlock(). length = "
+<< _length << ".";
+
+if (_data != nullptr)
+{
+std::cout << " Deleting resource.";
+// Delete the resource.
+delete[] _data;
+}
+
+std::cout << std::endl;
+}
+
+// Copy constructor.
+MemoryBlock(const MemoryBlock& other)
+: _length(other._length)
+, _data(new int[other._length])
+{
+std::cout << "In MemoryBlock(const MemoryBlock&). length = "
+<< other._length << ". Copying resource." << std::endl;
+
+std::copy(other._data, other._data + _length, _data);
+}
+
+// Copy assignment operator.
+MemoryBlock& operator=(const MemoryBlock& other)
+{
+std::cout << "In operator=(const MemoryBlock&). length = "
+<< other._length << ". Copying resource." << std::endl;
+
+if (this != &other)
+{
+// Free the existing resource.
+delete[] _data;
+
+_length = other._length;
+_data = new int[_length];
+std::copy(other._data, other._data + _length, _data);
+}
+return *this;
+}
+
+// Retrieves the length of the data resource.
+size_t Length() const
+{
+return _length;
+}
+
+// Move constructor.
+MemoryBlock(MemoryBlock&& other)
+: _data(nullptr)
+, _length(0)
+{
+std::cout << "In MemoryBlock(MemoryBlock&&). length = "
+<< other._length << ". Moving resource." << std::endl;
+
+// Copy the data pointer and its length from the
+// source object.
+_data = other._data;
+_length = other._length;
+
+// Release the data pointer from the source object so that
+// the destructor does not free the memory multiple times.
+other._data = nullptr;
+other._length = 0;
+}
+
+// Move assignment operator.
+MemoryBlock& operator=(MemoryBlock&& other)
+{
+std::cout << "In operator=(MemoryBlock&&). length = "
+<< other._length << "." << std::endl;
+
+if (this != &other)
+{
+// Free the existing resource.
+delete[] _data;
+
+// Copy the data pointer and its length from the
+// source object.
+_data = other._data;
+_length = other._length;
+
+// Release the data pointer from the source object so that
+// the destructor does not free the memory multiple times.
+other._data = nullptr;
+other._length = 0;
+}
+return *this;
+}
+
+private:
+size_t _length; // The length of the resource.
+int* _data; // The resource.
+};
+
+void TestSTLObject()
+{
+std::string str = "Hello";
+std::vector<std::string> v;
+
+// uses the push_back(const T&) overload, which means
+// we'll incur the cost of copying str
+v.push_back(str);
+std::cout << "After copy, str is \"" << str << "\"\n";
+
+// uses the rvalue reference push_back(T&&) overload,
+// which means no strings will be copied; instead, the contents
+// of str will be moved into the vector.  This is less
+// expensive, but also means str might now be empty.
+v.push_back(std::move(str));
+std::cout << "After move, str is \"" << str << "\"\n";
+
+std::cout << "The contents of the vector are \"" << v[0]
+<< "\", \"" << v[1] << "\"\n";
+
+}
+
+void TestMyObjectWithoutUseMove()
+{
+std::vector<MemoryBlock> v;
+MemoryBlock mb1(25);
+// MemoryBlock mb2(75);
+// MemoryBlock mb3(50);
+
+v.push_back(mb1);
+//v.push_back(mb2);
+//v.insert(v.begin() + 1, mb3);
+}
+
+void TestMyObjectWithUseMove()
+{
+std::vector<MemoryBlock> v;
+
+MemoryBlock mb1(25);
+// MemoryBlock mb2(75);
+// MemoryBlock mb3(50);
+
+v.push_back(std::move(mb1));
+//v.push_back(MemoryBlock(75));
+//v.insert(v.begin() + 1, MemoryBlock(50));
+}
+
+int main(int argc, char const *argv[])
+{
+
+//TestSTLObject();
+TestMyObjectWithoutUseMove();
+std::cout << "......................................." << std::endl;
+TestMyObjectWithUseMove();
+return 0;
+}
+
+\end{lstlisting}
+
+还有一个问题，似乎可以对任意的类型进行move，比如左值、左值引用、右值、右值引用，最后的结果都是转化为右值引用，似乎。
+
+引用折叠出现的情况在于范型编程时。
+
+\begin{lstlisting}
+void f(T\&\& param);
+f(10);
+int x = 10;
+f(x);
+\end{lstlisting}
+这两者都可运行成功。
+
+由于存在T\&\&这种未定的引用类型，当它作为参数时，有可能被一个左值引用或右值引用的参数初始化，这是经过类型推导的T\&\&类型，相比右值引用(\&\&)会发生类型的变化，这种变化就称为引用折叠。（《深入应用C++11-代码优化与工程级应用》 --- 祁宇 P68 ）
+
+引用折叠的规则如下（配合@jun-jun的答案）[和上一段的出处一样]：1.所有右值引用折叠到右值引用上仍然是一个右值引用。（A\&\& \&\& 变成 A\&\&）2.所有的其他引用类型之间的折叠都将变成左值引用。 （\& \& 变成 A\&; A\& \&\& 变成 A\&; A\&\& \& 变成 A\&）
+
+右值引用的本质是给内存当中即将消失的变量一个延时的机会，使它因为有一个名字而不被释放。
+
+当然，光有move是不行的，你还得让你的函数能够接受右值引用的参数。
+\subsection{材料库}
+预先准备好材料库文件，打开对话框之前，读入文件并且显示。不同的物理问题对应的材料库应该不同。因为他们所关注的属性不一样。所以，这就给建模带来了一个问题。每一种材料的属性都要建的非常全面。

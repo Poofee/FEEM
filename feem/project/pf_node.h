@@ -31,16 +31,21 @@ class Node
 public:
     virtual ~Node();
     Node(const Node &other) = delete;
-    Node(QString _displayname, NodeType nodetype);
+    Node(QString _displayname, NodeType nodetype, QIcon icon=QIcon());
 
     NodeType nodeType() const;
 
     virtual QString displayName() const;
     virtual QString tooltip() const;
+    virtual QIcon icon() const;
+
+    virtual void setIcon(const QIcon& icon);
+    virtual void setDisplayName(const QString& displayName);
 
 private:
     QString m_displayName;
     const NodeType m_nodeType;
+    mutable QIcon m_icon;
 };
 
 #endif // PF_NODE_H
