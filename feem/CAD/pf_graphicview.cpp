@@ -156,6 +156,8 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     这个窗口部件才会接收鼠标移动事件。**/
     setMouseTracking(true);
 
+    setDefaultSnapMode(PF_SnapMode());
+
 
     setAttribute(Qt::WA_NoMousePropagation);
     setAttribute(Qt::WA_OpaquePaintEvent);
@@ -2143,6 +2145,14 @@ void PF_GraphicView::zoomWindow(double f, const PF_Vector& center)
 void PF_GraphicView::setDefaultSnapMode(PF_SnapMode sm)
 {
     defaultSnapMode = sm;
+    /** 目前姑且默认设置一个捕捉模式，所有的都开始，以后再添加设置的接口 **/
+    defaultSnapMode.snapCenter = false;
+    defaultSnapMode.snapDistance = false;
+    defaultSnapMode.snapEndpoint = true;
+    defaultSnapMode.snapFree = true;
+    defaultSnapMode.snapGrid = true;
+    defaultSnapMode.snapMiddle = false;
+    defaultSnapMode.snapOnEntity = false;
     /** 将捕捉模式应用到当前活跃的action当中 **/
     if(eventHandler)
         eventHandler->setSnapMode(sm);

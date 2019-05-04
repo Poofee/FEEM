@@ -120,7 +120,7 @@ bool PF_Entity::isVisible() const
     if(!getFlag(PF::FlagVisible))
         return false;
 
-    return false;
+    return true;
 }
 
 void PF_Entity::setVisible(bool v)

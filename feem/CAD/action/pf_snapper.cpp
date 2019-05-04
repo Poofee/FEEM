@@ -36,28 +36,28 @@ PF_Snapper::~PF_Snapper()
 
 void PF_Snapper::init()
 {
-//    snapMode = view->getDefaultSnapMode();
+    snapMode = view->getDefaultSnapMode();
     keyEntity = nullptr;
     pImpData->snapSpot = PF_Vector{false};
     pImpData->snapCoord = PF_Vector{false};
     m_SnapDistance = 1.0;
 
-//    RS_SETTINGS->beginGroup("/Appearance");
+    //    RS_SETTINGS->beginGroup("/Appearance");
     snap_indicator->lines_state = 1;//RS_SETTINGS->readNumEntry("/indicator_lines_state", 1);
     snap_indicator->lines_type = "Crosshair";//RS_SETTINGS->readEntry("/indicator_lines_type", "Crosshair");
     snap_indicator->shape_state = 1;//RS_SETTINGS->readNumEntry("/indicator_shape_state", 1);
     snap_indicator->shape_type = "Circle";//RS_SETTINGS->readEntry("/indicator_shape_type", "Circle");
-//    RS_SETTINGS->endGroup();
+    //    RS_SETTINGS->endGroup();
 
-//    RS_SETTINGS->beginGroup("Colors");
+    //    RS_SETTINGS->beginGroup("Colors");
     QString snap_color = Colors::snap_indicator;//RS_SETTINGS->readEntry("/snap_indicator", Colors::snap_indicator);
-//    RS_SETTINGS->endGroup();
+    //    RS_SETTINGS->endGroup();
 
     snap_indicator->lines_pen = QPen(QColor(snap_color), 1, Qt::DashLine);
     snap_indicator->shape_pen = QPen(QColor(snap_color), 1, Qt::SolidLine);
-//    snap_indicator->shape_pen.setScreenWidth(1);
+    //    snap_indicator->shape_pen.setScreenWidth(1);
 
-//    snapRange = getSnapRange();
+    snapRange = 5;
 }
 
 void PF_Snapper::finish()
@@ -66,7 +66,7 @@ void PF_Snapper::finish()
 }
 
 /**
- * @brief
+ * @brief 手动设置捕捉点
  *
  * @param coord
  * @param setSpot
@@ -78,23 +78,124 @@ PF_Vector PF_Snapper::snapPoint(const PF_Vector &coord, bool setSpot)
         pImpData->snapSpot=coord;
         if(setSpot) pImpData->snapCoord = coord;
         drawSnapper();
-//		RS_DIALOGFACTORY->updateCoordinateWidget(
-//					pImpData->snapCoord,
-//					pImpData->snapCoord - graphicView->getRelativeZero());
+        //		RS_DIALOGFACTORY->updateCoordinateWidget(
+        //					pImpData->snapCoord,
+        //					pImpData->snapCoord - graphicView->getRelativeZero());
     }
     return coord;
 }
 
 
 /*!
- \brief 根据当前的模式捕捉点的坐标
+ \brief 根据当前的模式捕捉点的坐标。对比不同模式下所找到的点的坐标，计算出距离最近的
+ 那一个。
 
  \param e
  \return PF_Vector
 */
 PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
 {
-    return view->toGraph(PF_Vector(e->x(),e->y(),0));
+    pImpData->snapSpot = PF_Vector(false);
+    PF_Vector t(false);
+
+    if (!e) {
+        qDebug()<<Q_FUNC_INFO<<"RS_Snapper::snapPoint: event is nullptr";
+        return pImpData->snapSpot;
+    }
+
+    PF_Vector mouseCoord = view->toGraph(e->x(), e->y());
+    double ds2Min = PF_MAXDOUBLE*PF_MAXDOUBLE;
+
+    if(snapMode.snapEndpoint){
+        t = snapEndpoint(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+
+        if (ds2 < ds2Min){
+            ds2Min = ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapEndpoint"<<ds2<<t.x<<t.y;
+        }
+    }
+    if(snapMode.snapCenter){
+        t = snapCenter(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+        if (ds2 < ds2Min){
+            ds2Min = ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapCenter"<<ds2;
+        }
+    }
+    if(snapMode.snapMiddle){
+        //this is still brutal force
+        //todo: accept value from widget QG_SnapMiddleOptions
+        //RS_DIALOGFACTORY->requestSnapMiddleOptions(middlePoints, snapMode.snapMiddle);
+        t = snapMiddle(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+        if (ds2 < ds2Min){
+            ds2Min = ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapMiddle"<<ds2;
+        }
+    }
+    if(snapMode.snapDistance){
+        //this is still brutal force
+        //todo: accept value from widget QG_SnapDistOptions
+        //RS_DIALOGFACTORY->requestSnapDistOptions(m_SnapDistance, snapMode.snapDistance);
+        t = snapDist(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+        if (ds2 < ds2Min){
+            ds2Min = ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapDistance"<<ds2;
+        }
+    }
+    if(snapMode.snapIntersection){
+        t = snapIntersection(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+        if (ds2 < ds2Min){
+            ds2Min = ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapIntersection"<<ds2;
+        }
+    }
+    if (snapMode.snapOnEntity &&
+        pImpData->snapSpot.distanceTo(mouseCoord) > snapMode.distance) {
+        t = snapOnEntity(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+        if (ds2 < ds2Min){
+            ds2Min = ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapOnEntity";
+        }
+    }
+    if(snapMode.snapGrid){
+        t = snapGrid(mouseCoord);
+        double ds2 = mouseCoord.squaredTo(t);
+        if (ds2 < ds2Min){
+//            ds2Min=ds2;
+            pImpData->snapSpot = t;
+            qDebug()<<"snapGrid"<<ds2;
+        }
+    }
+    if( !pImpData->snapSpot.valid ) {
+        pImpData->snapSpot = mouseCoord; //default to snapFree
+    } else {
+        //retreat to snapFree when distance is more than half grid
+        if(snapMode.snapFree){
+//			PF_Vector const& ds = mouseCoord - pImpData->snapSpot;
+//			PF_Vector const& grid = graphicView->getGrid()->getCellVector()*0.5;
+//			if( fabs(ds.x) > fabs(grid.x) ||  fabs(ds.y) > fabs(grid.y) ) pImpData->snapSpot = mouseCoord;
+        }
+        /** 判断捕捉到的点是否与鼠标点距离在捕捉范围内，应当按照像素来计算 **/
+        if (view->toGuiDX(mouseCoord.distanceTo(pImpData->snapSpot)) > snapRange )
+            pImpData->snapSpot = mouseCoord;
+        qDebug()<<"catched point"<<pImpData->snapSpot.x<<pImpData->snapSpot.y;
+    }
+
+    pImpData->snapCoord = pImpData->snapSpot;
+    snapPoint(pImpData->snapSpot, false);
+
+    return pImpData->snapCoord;
 }
 
 /**
@@ -106,8 +207,8 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
 PF_Vector PF_Snapper::snapFree(QMouseEvent *e)
 {
     if (!e) {
-//                RS_DEBUG->print(RS_Debug::D_WARNING,
-//						"RS_Snapper::snapFree: event is nullptr");
+        //                RS_DEBUG->print(RS_Debug::D_WARNING,
+        //						"RS_Snapper::snapFree: event is nullptr");
         return PF_Vector(false);
     }
     pImpData->snapSpot = view->toGraph(e->x(), e->y());
@@ -135,7 +236,7 @@ PF_Vector PF_Snapper::snapGrid(const PF_Vector &coord)
 }
 
 /**
- * @brief
+ * @brief 捕捉到端点。
  *
  * @param coord
  * @return PF_Vector
@@ -197,7 +298,7 @@ PF_Vector PF_Snapper::snapDist(const PF_Vector &coord)
 {
     PF_Vector vec;
 
-//std::cout<<" RS_Snapper::snapDist(RS_Vector coord): distance="<<distance<<std::endl;
+    //std::cout<<" RS_Snapper::snapDist(RS_Vector coord): distance="<<distance<<std::endl;
     vec = container->getNearestDist(m_SnapDistance,
                                     coord,
                                     nullptr);
@@ -234,9 +335,9 @@ PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::ResolveLevel level)
     PF_Entity* entity = container->getNearestEntity(pos, &dist, level);
 
     int idx = -1;
-//    if (entity && entity->getParent()) {
-//        idx = entity->getParent()->findEntity(entity);
-//    }
+    //    if (entity && entity->getParent()) {
+    //        idx = entity->getParent()->findEntity(entity);
+    //    }
 
     if (entity && dist <= getSnapRange()) {
         // highlight:
@@ -256,9 +357,9 @@ PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::ResolveLevel level)
 PF_Entity *PF_Snapper::catchEntity(QMouseEvent *e, PF::ResolveLevel level)
 {
     return catchEntity(
-               PF_Vector(view->toGraphX(e->x()),
-                         view->toGraphY(e->y())),
-                         level);
+                PF_Vector(view->toGraphX(e->x()),
+                          view->toGraphY(e->y())),
+                level);
 }
 
 /**
@@ -360,7 +461,7 @@ const PF_SnapMode& PF_SnapMode::clear()
     snapOnEntity     = false;
     snapIntersection = false;
 
-//	restriction = RS2::RestrictNothing;
+    //	restriction = RS2::RestrictNothing;
 
     return *this;
 }
@@ -374,6 +475,6 @@ bool PF_SnapMode::operator ==(PF_SnapMode const& rhs) const{
     if ( snapCenter != rhs.snapCenter)             return false;
     if ( snapOnEntity != rhs.snapOnEntity)         return false;
     if ( snapIntersection != rhs.snapIntersection) return false;
-//	if ( restriction != rhs.restriction) return false;
+    //	if ( restriction != rhs.restriction) return false;
     return true;
 }
