@@ -45,11 +45,12 @@ void PF_CADWidget::init()
     zoomextents = new QToolButton(this);
     zoomextents->setIcon(QIcon(":/main/zoomextents.png"));
     zoomextents->setToolTip(tr("Zoom Extents"));
-    zoomextents->setCheckable(true);
+//    zoomextents->setCheckable(true);
     connect(zoomextents,&QToolButton::clicked,[this]()
     {
         qDebug()<<"ZoomExtents";
-        this->zoomextents->setChecked(zoomextents->isChecked());
+        this->view->zoomAuto(true,true);
+        //this->zoomextents->setChecked(zoomextents->isChecked());
     });
     zoomin = new QToolButton(this);
     zoomin->setIcon(QIcon(":/main/zoomin.png"));

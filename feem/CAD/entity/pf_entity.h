@@ -66,6 +66,12 @@ public:
     virtual void setVisible(bool v);
 
     /**
+     * This method must be overwritten in subclasses and return the
+     * number of <b>atomic</b> entities in this entity.
+     */
+    virtual unsigned int count() const= 0;
+
+    /**
      * This method doesn't do any calculations.
      * @return minimum coordinate of the entity.
      * @see calculateBorders()

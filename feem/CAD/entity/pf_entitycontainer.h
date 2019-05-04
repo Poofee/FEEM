@@ -23,6 +23,8 @@ public:
         return true;
     }
 
+    unsigned count() const override;
+
     void setOwner(bool owner) {autoDelete=owner;}
 
     PF_Entity* first() const;
@@ -92,6 +94,7 @@ public:
 
     void draw(QCPPainter *painter);
 
+    virtual void adjustBorders(PF_Entity* entity);
     void calculateBorders() override;
 
     /**

@@ -17,6 +17,8 @@ class PF_WidgetFactory;
 class PF_ActionGroupManager;
 class FlexWidget;
 
+class MessageManager;
+
 class PF_ModelWidget;
 
 class MainWindow : public RibbonWindow
@@ -54,7 +56,11 @@ public slots:
     void slotPrintView();
 
 private:
-    ICore *m_coreImpl = nullptr;
+    /** 插件  **/
+    ICore* m_coreImpl = nullptr;
+    MessageManager* m_messageManager = nullptr;
+
+    /**   **/
     PF_WidgetFactory* dialogFactory;
     PF_ActionHandler* actionHandler;
 

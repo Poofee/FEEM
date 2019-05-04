@@ -131,6 +131,11 @@ void PF_Entity::setVisible(bool v)
         delFlag(PF::FlagVisible);
 }
 
+PF_Vector PF_Entity::getSize() const
+{
+    return maxV-minV;
+}
+
 /*!
  \brief 设定绘图的边界，使得图形都显示在坐标轴内部
 
