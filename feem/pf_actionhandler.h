@@ -44,6 +44,17 @@ public slots:
     void slotDrawCircle();
     void slotDrawRectangle();
 
+    void slotSetSnaps(PF_SnapMode const& s);
+    void slotSnapFree();
+    void slotSnapGrid();
+    void slotSnapEndpoint();
+    void slotSnapOnEntity();
+    void slotSnapCenter();
+    void slotSnapMiddle();
+    void slotSnapDist();
+    void slotSnapIntersection();
+    void slotSnapIntersectionManual();
+
     //View
     void slotZoomIn();
     void slotZoomOut();

@@ -33,7 +33,7 @@ PF_Vector PF_Line::getNearestEndpoint(const PF_Vector &coord, double *dist) cons
     double dist1((data.startpoint-coord).squared());
     double dist2((data.endpoint-coord).squared());
 
-    if (dist2<dist1) {
+    if (dist2 < dist1) {
         if (dist) {
             *dist = sqrt(dist2);
         }

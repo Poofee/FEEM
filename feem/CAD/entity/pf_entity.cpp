@@ -120,7 +120,7 @@ bool PF_Entity::isVisible() const
     if(!getFlag(PF::FlagVisible))
         return false;
 
-    return false;
+    return true;
 }
 
 void PF_Entity::setVisible(bool v)
@@ -129,6 +129,11 @@ void PF_Entity::setVisible(bool v)
         setFlag(PF::FlagVisible);
     else
         delFlag(PF::FlagVisible);
+}
+
+PF_Vector PF_Entity::getSize() const
+{
+    return maxV-minV;
 }
 
 /*!

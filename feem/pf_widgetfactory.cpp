@@ -352,10 +352,13 @@ void PF_WidgetFactory::createGroupView(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupView = page->addGroup(QIcon(":/main/project.png"), tr("View")))
     {
-        groupView->addAction(QIcon(":/main/zoomin32x32.png"), tr("Zoom In"), Qt::ToolButtonTextUnderIcon);
-        groupView->addAction(QIcon(":/main/zoomout32x32.png"), tr("Zoom Out"), Qt::ToolButtonTextUnderIcon);
-        groupView->addAction(QIcon(":/main/zoomauto32x32.png"), tr("Zoom Auto"), Qt::ToolButtonTextUnderIcon);
+        QAction* zoomin = new QAction(QIcon(":/main/zoomin32x32.png"), tr("Zoom In"),groupView);
 
+        groupView->addAction(zoomin, Qt::ToolButtonTextUnderIcon);
+        QAction* zoomout = new QAction(QIcon(":/main/zoomout32x32.png"), tr("Zoom Out"),groupView);
+        groupView->addAction(zoomout, Qt::ToolButtonTextUnderIcon);
+        QAction* zoomauto = new QAction(QIcon(":/main/zoomauto32x32.png"), tr("Zoom Auto"),groupView);
+        groupView->addAction(zoomauto, Qt::ToolButtonTextUnderIcon);
     }
 }
 

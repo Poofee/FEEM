@@ -210,6 +210,58 @@ void PF_ActionHandler::slotDrawRectangle()
     setCurrentAction(PF::ActionDrawRectangle);
 }
 
+void PF_ActionHandler::slotSetSnaps(const PF_SnapMode &s)
+{
+    if(view) {
+        view->setDefaultSnapMode(s);
+    }
+}
+
+void PF_ActionHandler::slotSnapFree()
+{
+
+}
+
+void PF_ActionHandler::slotSnapGrid()
+{
+
+}
+
+void PF_ActionHandler::slotSnapEndpoint()
+{
+
+}
+
+void PF_ActionHandler::slotSnapOnEntity()
+{
+
+}
+
+void PF_ActionHandler::slotSnapCenter()
+{
+
+}
+
+void PF_ActionHandler::slotSnapMiddle()
+{
+
+}
+
+void PF_ActionHandler::slotSnapDist()
+{
+
+}
+
+void PF_ActionHandler::slotSnapIntersection()
+{
+
+}
+
+void PF_ActionHandler::slotSnapIntersectionManual()
+{
+
+}
+
 void PF_ActionHandler::slotZoomIn() {
     setCurrentAction(PF::ActionViewZoomIn);
 }

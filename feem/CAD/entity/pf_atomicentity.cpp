@@ -15,3 +15,8 @@ bool PF_AtomicEntity::isAtomic() const
 {
     return true;
 }
+
+unsigned PF_AtomicEntity::count() const
+{
+    return 1;
+}

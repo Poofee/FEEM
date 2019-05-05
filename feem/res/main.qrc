@@ -70,5 +70,27 @@
         <file>tree/parameter.png</file>
         <file>tree/parameter_32.png</file>
         <file>tree/global_branch.png</file>
+        <file>tree/model_0d.png</file>
+        <file>tree/model_0d_32.png</file>
+        <file>tree/model_1d.png</file>
+        <file>tree/model_1d_32.png</file>
+        <file>tree/model_1d_axi.png</file>
+        <file>tree/model_1d_axi_32.png</file>
+        <file>tree/model_2d.png</file>
+        <file>tree/model_2d_32.png</file>
+        <file>tree/model_2d_axi.png</file>
+        <file>tree/model_2d_axi_32.png</file>
+        <file>tree/hide_tree.png</file>
+        <file>tree/hidedontshow.png</file>
+        <file>tree/node_labels.png</file>
+        <file>tree/node_labels_32.png</file>
+        <file>tree/report_next.png</file>
+        <file>tree/report_next_disabled.png</file>
+        <file>tree/report_previous.png</file>
+        <file>tree/report_previous_disabled.png</file>
+        <file>tree/report_up.png</file>
+        <file>tree/report_up_disabled.png</file>
+        <file>tree/show_tree.png</file>
+        <file>tree/report_down.png</file>
     </qresource>
 </RCC>

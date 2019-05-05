@@ -103,6 +103,20 @@ double PF_Vector::squared() const
     return PF_MAXDOUBLE;
 }
 
+/**
+ * @brief 返回距离的平方。
+ *
+ * @param v1
+ * @return double
+ */
+double PF_Vector::squaredTo(const PF_Vector &v1) const
+{
+    if (valid && v1.valid) {
+        return  (*this - v1).squared();
+    }
+    return PF_MAXDOUBLE;
+}
+
 PF_Vector PF_Vector::move(const PF_Vector &offset)
 {
     *this += offset;

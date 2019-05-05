@@ -28,6 +28,7 @@
 #include "actionmanager/actionmanager.h"
 #include "actionmanager/actionmanager_p.h"
 #include "actionmanager/command.h"
+#include "ouptput/messagemanager.h"
 
 #include "QtFlexWidget.h"
 #include "QtFlexHelper.h"
@@ -84,6 +85,8 @@ MainWindow::MainWindow(QWidget *parent)
     setupDockWidgets();
     setupStatusBar();
 
+    m_messageManager = new MessageManager;
+
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();
     Qtitan::OfficeStyle::Theme theme = Qtitan::OfficeStyle::Office2010Silver;
 
@@ -94,7 +97,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-
+    delete m_messageManager;
+    m_messageManager = nullptr;
 }
 
 void MainWindow::init()

@@ -156,6 +156,8 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     这个窗口部件才会接收鼠标移动事件。**/
     setMouseTracking(true);
 
+    setDefaultSnapMode(PF_SnapMode());
+
 
     setAttribute(Qt::WA_NoMousePropagation);
     setAttribute(Qt::WA_OpaquePaintEvent);
@@ -2113,9 +2115,40 @@ void PF_GraphicView::zoomOut(double f, const PF_Vector& center)
     zoomWindow(f,center);
 }
 
+/**
+ * @brief 根据图形的宽和高，缩放至占满窗口大小。
+ *
+ * @param axis
+ * @param keepAspectRatio
+ */
 void PF_GraphicView::zoomAuto(bool axis, bool keepAspectRatio)
 {
+    if(container){
+        container->calculateBorders();
 
+        double sx,sy;
+        sx = container->getSize().x;
+        sy = container->getSize().y;
+
+        /** 判断在xy哪个方向上进行缩放  **/
+        if(sx > PF_TOLERANCE && sy > PF_TOLERANCE){
+            auto const center = (container->getMax()+container->getMin())*0.5;
+            double factor = xAxis->range().size()/yAxis->range().size();
+            if((sx/xAxis->range().size())>=(sy/yAxis->range().size())){
+                qDebug()<<"zoom in x direction";
+                xAxis->setRange(QCPRange(center.x-sx*0.505,center.x+sx*0.505));
+                yAxis->setRange(QCPRange(center.y-(sx/factor)*0.51,center.y+(sx/factor)*0.51));
+            }else{
+                qDebug()<<"zoom in y direction";
+                yAxis->setRange(QCPRange(center.y-sy*0.505,center.y+sy*0.505));
+                xAxis->setRange(QCPRange(center.x-(sy*factor)*0.51,center.x+(sy*factor)*0.51));
+            }
+        }
+
+        qDebug()<<"sx,"<<sx<<"sy,"<<sy;
+
+    }
+    replot();
 }
 
 void PF_GraphicView::zoomWindow(double f, const PF_Vector& center)
@@ -2143,6 +2176,14 @@ void PF_GraphicView::zoomWindow(double f, const PF_Vector& center)
 void PF_GraphicView::setDefaultSnapMode(PF_SnapMode sm)
 {
     defaultSnapMode = sm;
+    /** 目前姑且默认设置一个捕捉模式，所有的都开始，以后再添加设置的接口 **/
+    defaultSnapMode.snapCenter = false;
+    defaultSnapMode.snapDistance = false;
+    defaultSnapMode.snapEndpoint = true;
+    defaultSnapMode.snapFree = true;
+    defaultSnapMode.snapGrid = true;
+    defaultSnapMode.snapMiddle = false;
+    defaultSnapMode.snapOnEntity = false;
     /** 将捕捉模式应用到当前活跃的action当中 **/
     if(eventHandler)
         eventHandler->setSnapMode(sm);

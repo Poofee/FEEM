@@ -12,6 +12,11 @@ public:
 
     bool isContainer() const override;
     bool isAtomic() const override;
+
+    /**
+     * @return Always 1 for atomic entities.
+     */
+    unsigned count() const override;
 };
 
 #endif // PF_ATOMICENTITY_H

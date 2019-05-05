@@ -28,6 +28,7 @@ public:
     double angleBetween(const PF_Vector& v1, const PF_Vector& v2) const;
     double magnitude() const;
     double squared() const;
+    double squaredTo(const PF_Vector& v1) const; //return square of length
 
 //    bool isInWindow(const PF_Vector& firstCorner, const PF_Vector& secondCorner) const;
 

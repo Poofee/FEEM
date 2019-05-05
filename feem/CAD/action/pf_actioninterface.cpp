@@ -28,6 +28,7 @@ void PF_ActionInterface::init(int status)
 {
     setStatus(status);
     if(status >= 0){
+        PF_Snapper::init();
         updateMouseButtonHints();
         updateMouseCursor();
     }else{

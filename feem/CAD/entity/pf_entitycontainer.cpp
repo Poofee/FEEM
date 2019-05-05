@@ -34,6 +34,11 @@ void PF_EntityContainer::clear()
     //qDebug()<<"PF_EntityContainer::clear: OK.";
 }
 
+unsigned PF_EntityContainer::count() const
+{
+    return entities.size();
+}
+
 
 /**
  * @brief 返回第一个Entity
@@ -181,45 +186,50 @@ void PF_EntityContainer::draw(QCPPainter *painter)
     }
 }
 
+void PF_EntityContainer::adjustBorders(PF_Entity *entity)
+{
+    if (entity) {
+        // make sure a container is not empty (otherwise the border
+        //   would get extended to 0/0):
+        if (!entity->isContainer() || entity->count()>0) {
+            minV = PF_Vector::minimum(entity->getMin(),minV);
+            maxV = PF_Vector::maximum(entity->getMax(),maxV);
+        }
+
+        // Notify parents. The border for the parent might
+        // also change TODO: Check for efficiency
+        //if(parent) {
+        //parent->adjustBorders(this);
+        //}
+    }
+}
+
 
 /**
  * Recalculates the borders of this entity container.
  */
 void PF_EntityContainer::calculateBorders() {
 
-//    resetBorders();
-//    for (PF_Entity* e: entities){
+    resetBorders();
+    for (PF_Entity* e: entities){
+        if (e->isVisible() /*&& !(layer && layer->isFrozen())*/) {
+            e->calculateBorders();
+            adjustBorders(e);
+        }
+    }
 
-//        RS_Layer* layer = e->getLayer();
+    if (minV.x>maxV.x || minV.x>PF_MAXDOUBLE || maxV.x>PF_MAXDOUBLE
+            || minV.x<PF_MINDOUBLE || maxV.x<PF_MINDOUBLE) {
 
-//        //        // RS_DEBUG->print("PF_EntityContainer::calculateBorders: "
-//        //                        "isVisible: %d", (int)e->isVisible());
+        minV.x = 0.0;
+        maxV.x = 0.0;
+    }
+    if (minV.y>maxV.y || minV.y>PF_MAXDOUBLE || maxV.y>PF_MAXDOUBLE
+            || minV.y<PF_MINDOUBLE || maxV.y<PF_MINDOUBLE) {
 
-//        if (e->isVisible() && !(layer && layer->isFrozen())) {
-//            e->calculateBorders();
-//            adjustBorders(e);
-//        }
-//    }
-
-//    // RS_DEBUG->print("PF_EntityContainer::calculateBorders: size 1: %f,%f",
-//                    getSize().x, getSize().y);
-
-//    // needed for correcting corrupt data (PLANS.dxf)
-//    if (minV.x>maxV.x || minV.x>PF_MAXDOUBLE || maxV.x>PF_MAXDOUBLE
-//            || minV.x<RS_MINDOUBLE || maxV.x<RS_MINDOUBLE) {
-
-//        minV.x = 0.0;
-//        maxV.x = 0.0;
-//    }
-//    if (minV.y>maxV.y || minV.y>PF_MAXDOUBLE || maxV.y>PF_MAXDOUBLE
-//            || minV.y<RS_MINDOUBLE || maxV.y<RS_MINDOUBLE) {
-
-//        minV.y = 0.0;
-//        maxV.y = 0.0;
-//    }
-
-//    // RS_DEBUG->print("PF_EntityCotnainer::calculateBorders: size: %f,%f",
-//                    getSize().x, getSize().y);
+        minV.y = 0.0;
+        maxV.y = 0.0;
+    }
 }
 
 
