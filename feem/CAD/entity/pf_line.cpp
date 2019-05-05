@@ -256,8 +256,11 @@ void PF_Line::draw(QCPPainter *painter)
         qDebug()<<Q_FUNC_INFO<<":NULL";
         return;
     }
-    painter->drawLine(QPointF(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y)),
-                      QPointF(mParentPlot->toGuiX(data.endpoint.x),mParentPlot->toGuiY(data.endpoint.y)));
+    QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));
+    QPointF end(mParentPlot->toGuiX(data.endpoint.x),mParentPlot->toGuiY(data.endpoint.y));
+    painter->drawLine(start,end);
+    painter->drawText(start,data.startpoint.toString());
+    painter->drawText(end,data.endpoint.toString());
 }
 
 void PF_Line::calculateBorders()

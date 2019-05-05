@@ -23,8 +23,11 @@ void PF_Preview::draw(QCPPainter *painter)
         qDebug()<<Q_FUNC_INFO;
         return;
     }
+    painter->save();
+    painter->setPen(QColor(Qt::red));
     for(int i=0;i < entities.size();++i){
         entities.at(i)->draw(painter);
     }
+    painter->restore();
     //qDebug()<<"PF_Preview::draw: OK.";
 }

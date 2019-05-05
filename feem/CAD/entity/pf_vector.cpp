@@ -345,6 +345,11 @@ PF_Vector PF_Vector::flipXY() const
     return {y,x};
 }
 
+QString PF_Vector::toString() const
+{
+    return QString("(%1,%2)").arg(x).arg(y);
+}
+
 bool PF_Vector::operator !=(bool valid) const
 {
     return this->valid != valid;

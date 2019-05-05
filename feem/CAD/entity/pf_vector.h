@@ -4,6 +4,7 @@
 #include <vector>
 #include <iosfwd>
 #include "pf.h"
+#include <QString>
 
 class PF_Vector
 {
@@ -78,6 +79,8 @@ public:
     static double dotP(const PF_Vector& v1, const PF_Vector& v2);
 
     PF_Vector flipXY(void) const;
+
+    QString toString() const;
 public:
     double x = 0.;
     double y = 0.;

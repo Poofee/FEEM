@@ -181,7 +181,7 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
     auto nodedef = new Node(QString("Global Definitions"),NodeType::File,QIcon(":/tree/global_branch.png"));
 
     auto nodemat = new Node(QString("Materials:Materials"),NodeType::File,QIcon(":/tree/material.png"));
-    auto nodecomp = new Node(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_3d.png"));
+    auto nodecomp = new Node(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_2d_axi.png"));
     auto nodedefin = new Node(QString("Definitions"),NodeType::File,QIcon(":/tree/definitions.png"));
     auto nodegeo = new Node(QString("Geometry1"),NodeType::File,QIcon(":/tree/geometry.png"));
     auto nodemesh = new Node(QString("Mesh1"),NodeType::File,QIcon(":/tree/mesh.png"));

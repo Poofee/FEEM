@@ -29,6 +29,7 @@
 #include "actionmanager/actionmanager_p.h"
 #include "actionmanager/command.h"
 #include "ouptput/messagemanager.h"
+#include "pf_projectexplorer.h"
 
 #include "QtFlexWidget.h"
 #include "QtFlexHelper.h"
@@ -48,10 +49,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     m_ribbonStyle->setAccentColor(OfficeStyle::AccentColorBlue);
 
-//    PF_CentralWidget* central = new PF_CentralWidget(this);
-//    setCentralWidget(central);
-//    mdiAreaCAD = central->getMdiArea();
-
     registerDefaultContainers();
     registerDefaultActions();
 
@@ -60,33 +57,28 @@ MainWindow::MainWindow(QWidget *parent)
     a_factory.fillActionContainer(a_map,ag_manager);
     /*创建组件*/
     PF_WidgetFactory w_factory(this,a_map,ag_manager);
-    //w_factory.createMenus(menuBar());
-    //w_factory.createStandardToolbars(actionHandler);
     w_factory.createRibbon();
     w_factory.createMenuFile();
     ribbonBar()->setFrameThemeEnabled();//不显示一条白带
     //ribbonBar()->setTitleBackground(QPixmap(":/main/splash.png") );
 
     PF_Document* doc = new PF_Document();
-    //QDockWidget* cadDockwidget = new QDockWidget(this);
-
 
     PF_CADWidget* cad = new PF_CADWidget(doc,this);
-    //PF_GraphicView* view = new PF_GraphicView(doc,this);
     cad->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred);
     setCentralWidget(cad);
-    //cadDockwidget->setWidget(view);
-    //addDockWidget(Qt::TopDockWidgetArea,cadDockwidget);
-    //PF_MdiSubWindow* m = new PF_MdiSubWindow(doc,mdiAreaCAD);
     actionHandler->set_view(cad->getGraphicView());
     actionHandler->set_document(doc);
-//    m->showMaximized();
 
     setupDockWidgets();
     setupStatusBar();
 
     m_messageManager = new MessageManager;
 
+    m_proPlugin = new ProjectExplorerPlugin;
+    m_proPlugin->initialize();
+
+    /** Qribbon更新主题 **/
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();
     Qtitan::OfficeStyle::Theme theme = Qtitan::OfficeStyle::Office2010Silver;
 

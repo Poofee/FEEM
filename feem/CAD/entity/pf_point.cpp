@@ -127,11 +127,20 @@ void PF_Point::draw(QCPPainter *painter)
     }
     double x = mParentPlot->toGuiX(data.pos.x);
     double y = mParentPlot->toGuiY(data.pos.y);
-    painter->drawLine(QPointF(x-1,y),QPointF(x+1,y));
-    painter->drawLine(QPointF(x,y-1),QPointF(x,y+1));
+    int width = 2;
+    for(int i = 0;i <= width*2;i++){
+        painter->drawLine(QPoint(x-width,y-width + i),QPoint(x+width,y-width+i));
+//        qDebug()<<"line "<<i<<QPoint(x-width,y-width + i)<<QPoint(x+width,y-width+i);
+    }
+    painter->drawText(QPoint(x,y),toString());
 }
 
 void PF_Point::calculateBorders()
 {
     minV = maxV = data.pos;
+}
+
+QString PF_Point::toString() const
+{
+    return data.pos.toString();
 }
