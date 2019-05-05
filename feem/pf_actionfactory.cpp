@@ -140,16 +140,19 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	action = new QAction(tr("ZoomIn"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomIn()));
 	action->setObjectName("ZoomIn");
+    action->setIcon(QIcon(":/main/zoomin32x32.png"));
 	a_map["ZoomIn"] = action;
 
 	action = new QAction(tr("ZoomOut"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomOut()));
 	action->setObjectName("ZoomOut");
+    action->setIcon(QIcon(":/main/zoomout32x32.png"));
 	a_map["ZoomOut"] = action;
 
 	action = new QAction(tr("ZoomAuto"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomAuto()));
 	action->setObjectName("ZoomAuto");
+    action->setIcon(QIcon(":/main/zoomauto32x32.png"));
 	a_map["ZoomAuto"] = action;
 
 	//Grid

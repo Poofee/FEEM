@@ -128,13 +128,13 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
 
         break;
     case PF::ACtionViewZoomAuto:
-
+        this->view->zoomAuto(true,true);
         break;
     case PF::ActionViewZoomIn:
-
+        this->view->zoomIn(1.2);
         break;
     case PF::ActionViewZoomOut:
-
+        this->view->zoomOut(1.2);
         break;
     default:
         qDebug()<<Q_FUNC_INFO<<": No such action found!";
