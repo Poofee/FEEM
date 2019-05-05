@@ -231,8 +231,7 @@ PF_Vector PF_Snapper::snapFree(const PF_Vector &coord)
 
 PF_Vector PF_Snapper::snapGrid(const PF_Vector &coord)
 {
-
-    return PF_Vector{};
+    return view->snapGrid(coord);
 }
 
 /**

@@ -2200,6 +2200,66 @@ PF_SnapMode PF_GraphicView::getDefaultSnapMode() const
 }
 
 /*!
+ \brief 给定坐标点mouse，然后返回离该点最近的网格点
+
+ \param mouse
+ \return PF_Vector
+*/
+PF_Vector PF_GraphicView::snapGrid(const PF_Vector& mouse)
+{
+    if(!mouse.valid)
+        return  {};
+    /** 快速检查点在坐标轴内 **/
+    if(!xAxis->grid()->visible() || !yAxis->grid()->visible())
+        return {};
+    if(xAxis->mRange.contains(mouse.x) && yAxis->mRange.contains(mouse.y)){
+        double dsxmin = PF_MAXDOUBLE;
+        double dsymin = PF_MAXDOUBLE;
+        double x,y,ds;
+        for(int i = 0; i < xAxis->mTickVector.count();++i){
+            ds = abs(xAxis->mTickVector.at(i) - mouse.x);
+            if(ds < dsxmin){
+                x = xAxis->mTickVector.at(i);
+                dsxmin = ds;
+            }
+        }
+//        qDebug()<<"Found Grid X:"<<x;
+        if(xAxis->grid()->subGridVisible()){
+            for(int i = 0; i < xAxis->mSubTickVector.count();++i){
+                ds = abs(xAxis->mSubTickVector.at(i) - mouse.x);
+                if(ds < dsxmin){
+                    x = xAxis->mSubTickVector.at(i);
+                    dsxmin = ds;
+                }
+            }
+        }
+//        qDebug()<<"Found subGrid X:"<<x;
+        for(int i = 0; i < yAxis->mTickVector.count();++i){
+            ds = abs(yAxis->mTickVector.at(i) - mouse.y);
+            if(ds < dsymin){
+                y = yAxis->mTickVector.at(i);
+                dsymin = ds;
+            }
+        }
+//        qDebug()<<"Found Grid Y:"<<y;
+        if(yAxis->grid()->subGridVisible()){
+            for(int i = 0; i < yAxis->mSubTickVector.count();++i){
+                ds = abs(yAxis->mSubTickVector.at(i) - mouse.y);
+                if(ds < dsymin){
+                    y = yAxis->mSubTickVector.at(i);
+                    dsymin = ds;
+                }
+            }
+
+        }
+//        qDebug()<<"Found subGrid Y:"<<y;
+        return {x,y};
+    }
+    return {};
+
+}
+
+/*!
   Causes a complete replot into the internal paint buffer(s). Finally, the widget surface is
   refreshed with the new buffer contents. This is the method that must be called to make changes to
   the plot, e.g. on the axis ranges or data points of graphs, visible.
