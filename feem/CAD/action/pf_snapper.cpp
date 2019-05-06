@@ -185,11 +185,12 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
 //			PF_Vector const& ds = mouseCoord - pImpData->snapSpot;
 //			PF_Vector const& grid = graphicView->getGrid()->getCellVector()*0.5;
 //			if( fabs(ds.x) > fabs(grid.x) ||  fabs(ds.y) > fabs(grid.y) ) pImpData->snapSpot = mouseCoord;
+        }else{
+            /** 判断捕捉到的点是否与鼠标点距离在捕捉范围内，应当按照像素来计算 **/
+            if (view->toGuiDX(mouseCoord.distanceTo(pImpData->snapSpot)) < snapRange )
+                pImpData->snapSpot = mouseCoord;
+            qDebug()<<"catched point"<<pImpData->snapSpot.x<<pImpData->snapSpot.y;
         }
-        /** 判断捕捉到的点是否与鼠标点距离在捕捉范围内，应当按照像素来计算 **/
-        if (view->toGuiDX(mouseCoord.distanceTo(pImpData->snapSpot)) > snapRange )
-            pImpData->snapSpot = mouseCoord;
-        qDebug()<<"catched point"<<pImpData->snapSpot.x<<pImpData->snapSpot.y;
     }
 
     pImpData->snapCoord = pImpData->snapSpot;

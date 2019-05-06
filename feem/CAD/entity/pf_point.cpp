@@ -128,11 +128,39 @@ void PF_Point::draw(QCPPainter *painter)
     double x = mParentPlot->toGuiX(data.pos.x);
     double y = mParentPlot->toGuiY(data.pos.y);
     int width = 2;
+    /** set Pen **/
+//    QPen oldpen = painter->pen();
+//    QBrush oldbursh = painter->brush();
+    painter->save();
+    if(isSelected()){
+        pen.setColor(QColor(0,0,255));
+        painter->setPen(pen);
+    }
     for(int i = 0;i <= width*2;i++){
         painter->drawLine(QPoint(x-width,y-width + i),QPoint(x+width,y-width+i));
 //        qDebug()<<"line "<<i<<QPoint(x-width,y-width + i)<<QPoint(x+width,y-width+i);
     }
     painter->drawText(QPoint(x,y),toString());
+    /** 绘制控制点 **/
+    if (isSelected()) {
+//		if (!e->isParentSelected()) {
+            PF_VectorSolutions const& s = this->getRefPoints();
+            int x,y;
+            int size = 4;
+            for (size_t i=0; i<s.getNumber(); ++i) {
+                x = mParentPlot->toGuiX(s.get(i).x);
+                y = mParentPlot->toGuiY(s.get(i).y);
+
+                painter->drawLine(QPointF(x-size,y-size),QPointF(x+size,y-size));
+                painter->drawLine(QPointF(x+size,y-size),QPointF(x+size,y+size));
+                painter->drawLine(QPointF(x+size,y+size),QPointF(x-size,y+size));
+                painter->drawLine(QPointF(x-size,y+size),QPointF(x-size,y-size));
+            }
+//		}
+    }
+//    painter->setPen(oldpen);
+//    painter->setBrush(oldbursh);
+    painter->restore();
 }
 
 void PF_Point::calculateBorders()

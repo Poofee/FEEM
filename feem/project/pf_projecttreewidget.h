@@ -1,6 +1,8 @@
 #ifndef PF_PROJECTTREEWIDGET_H
 #define PF_PROJECTTREEWIDGET_H
 
+#include "inavigationwidgetfactory.h"
+
 #include <QWidget>
 
 class QTreeView;
@@ -33,4 +35,12 @@ signals:
 public slots:
 };
 
+class ProjectTreeWidgetFactory : public INavigationWidgetFactory
+{
+    Q_OBJECT
+public:
+    ProjectTreeWidgetFactory();
+
+    NavigationView createWidget();
+};
 #endif // PF_PROJECTTREEWIDGET_H

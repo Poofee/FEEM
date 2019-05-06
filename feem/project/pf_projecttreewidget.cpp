@@ -277,3 +277,29 @@ void PF_ProjectTreeWidget::openItem(const QModelIndex &mainIndex)
 {
     Node *node = m_model->nodeForIndex(mainIndex);
 }
+
+ProjectTreeWidgetFactory::ProjectTreeWidgetFactory()
+{
+    setDisplayName(tr("Projects"));
+}
+
+NavigationView ProjectTreeWidgetFactory::createWidget()
+{
+    NavigationView n;
+    auto ptw = new PF_ProjectTreeWidget;
+    n.widget = ptw;
+
+//    auto filter = new QToolButton;
+//    filter->setIcon(Icons::FILTER.icon());
+//    filter->setToolTip(tr("Filter Tree"));
+//    filter->setPopupMode(QToolButton::InstantPopup);
+//    filter->setProperty("noArrow", true);
+//    auto filterMenu = new QMenu(filter);
+//    filterMenu->addAction(ptw->m_filterProjectsAction);
+//    filterMenu->addAction(ptw->m_filterGeneratedFilesAction);
+//    filterMenu->addAction(ptw->m_trimEmptyDirectoriesAction);
+//    filter->setMenu(filterMenu);
+
+//    n.dockToolBarWidgets << filter << ptw->toggleSync();
+    return n;
+}

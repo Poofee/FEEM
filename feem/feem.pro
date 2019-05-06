@@ -109,7 +109,9 @@ HEADERS += \
     ui/pf_icons.h \
     util/pf_variabledict.h \
     project/pf_nodetreebuilder.h \
-    project/pf_sessionmanager.h
+    project/pf_sessionmanager.h \
+    CAD/action/pf_actionselectsingle.h \
+    project/inavigationwidgetfactory.h
 
 SOURCES += \
     ./pf_eventhandler.cpp \
@@ -173,7 +175,9 @@ SOURCES += \
     ui/pf_icons.cpp \
     util/pf_variabledict.cpp \
     project/pf_nodetreebuilder.cpp \
-    project/pf_sessionmanager.cpp
+    project/pf_sessionmanager.cpp \
+    CAD/action/pf_actionselectsingle.cpp \
+    project/inavigationwidgetfactory.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

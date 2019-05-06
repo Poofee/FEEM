@@ -254,8 +254,37 @@ void PF_Circle::moveRef(const PF_Vector &ref, const PF_Vector &offset)
 void PF_Circle::draw(QCPPainter *painter)
 {
     //qDebug()<<"PF_Circle::draw";
+    /** set Pen **/
+//    QPen oldpen = painter->pen();
+//    QBrush oldbursh = painter->brush();
+    painter->save();
+    if(isSelected()){
+        pen.setColor(QColor(0,0,255));
+        painter->setPen(pen);
+    }
+
     painter->drawEllipse(QPointF(mParentPlot->toGuiX(getCenter().x),mParentPlot->toGuiY(getCenter().y)),mParentPlot->toGuiDY(getRadius()),mParentPlot->toGuiDY(getRadius()));
     //qDebug()<<"PF_Circle::draw: OK.";
+    /** 绘制控制点 **/
+    if (isSelected()) {
+//		if (!e->isParentSelected()) {
+            PF_VectorSolutions const& s = this->getRefPoints();
+            int x,y;
+            int size = 4;
+            for (size_t i=0; i<s.getNumber(); ++i) {
+                x = mParentPlot->toGuiX(s.get(i).x);
+                y = mParentPlot->toGuiY(s.get(i).y);
+
+                painter->drawLine(QPointF(x-size,y-size),QPointF(x+size,y-size));
+                painter->drawLine(QPointF(x+size,y-size),QPointF(x+size,y+size));
+                painter->drawLine(QPointF(x+size,y+size),QPointF(x-size,y+size));
+                painter->drawLine(QPointF(x-size,y+size),QPointF(x-size,y-size));
+            }
+//		}
+    }
+//    painter->setPen(oldpen);
+//    painter->setBrush(oldbursh);
+    painter->restore();
 }
 
 void PF_Circle::calculateBorders()
