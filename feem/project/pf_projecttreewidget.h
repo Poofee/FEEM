@@ -17,6 +17,7 @@ public:
     ~PF_ProjectTreeWidget() override;
 
     Node *currentNode();
+    void sync(Node *node);
 
     void collapseAll();
 
@@ -25,10 +26,13 @@ private:
     void showContextMenu(const QPoint &pos);
     void openItem(const QModelIndex &mainIndex);
 
+    void setCurrentItem(Node *node);
+
     QTreeView *m_view = nullptr;
     PF_ProjectModel *m_model = nullptr;
 
     QString m_modelId;
+    bool m_autoSync = true;
 
 signals:
 

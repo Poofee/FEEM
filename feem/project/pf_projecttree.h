@@ -25,6 +25,10 @@ public:
     static void unregisterWidget(PF_ProjectTreeWidget *widget);
     static void nodeChanged(PF_ProjectTreeWidget *widget);
 
+    // Node
+    static bool hasNode(const Node *node);
+    static PF_Project *projectForNode(const Node *node);
+
     //
     static PF_Project *currentProject();
     static Node *findCurrentNode();
@@ -65,7 +69,7 @@ private:
     static PF_ProjectTree* s_instance;
     PF_ProjectTreeWidget* m_projecttreewidget = nullptr;
     Node *m_currentNode = nullptr;
-    PF_Project* m_currentproject = nullptr;
+    PF_Project* m_currentProject = nullptr;
 };
 
 #endif // PF_PROJECTTREE_H

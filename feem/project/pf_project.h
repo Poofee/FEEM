@@ -6,6 +6,9 @@
 
 #include "idocument.h"
 
+class FolderNode;
+class Node;
+class ProjectNode;
 class PF_ProjectPrivate;
 
 // Auto-registers with the DocumentManager if a callback is set!
@@ -35,6 +38,10 @@ public:
     ~PF_Project();
 
     QString displayName() const;
+
+    void handleSubTreeChanged(FolderNode *node);
+
+    virtual ProjectNode* rootProjectNode() const;
 
 signals:
     void displayNameChanged();

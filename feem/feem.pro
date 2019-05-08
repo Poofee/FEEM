@@ -13,7 +13,6 @@ QT +=  printsupport gui-private
 TARGET = feem
 TEMPLATE = app
 
-
 include($$PWD/../qtribbon/ribbonsample/qtitanribbon.pri)
 
 #ignore warning C4819

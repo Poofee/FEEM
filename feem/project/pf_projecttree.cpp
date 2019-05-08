@@ -1,4 +1,5 @@
 #include "pf_projecttree.h"
+#include "pf_projecttreewidget.h"
 
 #include "pf_node.h"
 #include "pf_project.h"
@@ -36,11 +37,21 @@ PF_ProjectTree *PF_ProjectTree::instance()
     return s_instance;
 }
 
+/*!
+ \brief 注册控件，也就是在创建treewidget之后，同步给这里
+
+ \param widget
+*/
 void PF_ProjectTree::registerWidget(PF_ProjectTreeWidget* widget)
 {
     s_instance->m_projecttreewidget = widget;
 }
 
+/*!
+ \brief 将绑定的treewidget解绑
+
+ \param widget
+*/
 void PF_ProjectTree::unregisterWidget(PF_ProjectTreeWidget* widget)
 {
     s_instance->m_projecttreewidget = nullptr;
@@ -48,19 +59,86 @@ void PF_ProjectTree::unregisterWidget(PF_ProjectTreeWidget* widget)
 
 void PF_ProjectTree::nodeChanged(PF_ProjectTreeWidget* widget)
 {
-
+    if (hasFocus(widget))
+        s_instance->updateFromProjectTreeWidget(widget);
 }
 
-PF_Project *PF_ProjectTree::currentProject()
+/*!
+ \brief 在所有的项目当中寻找是否有node
+
+ \param node
+ \return bool
+*/
+bool PF_ProjectTree::hasNode(const Node* node)
 {
-    return nullptr;
+//    const QList<PF_Project *> projects = PF_SessionManager::projects();
+//    for (PF_Project *project : projects) {
+//        if (ProjectNode *projectNode = project->rootProjectNode()) {
+//            task(projectNode);
+//            projectNode->forEachGenericNode(task);
+//        }
+//    }
+//    return Utils::contains(SessionManager::projects(), [node](const Project *p) {
+//        return p && p->rootProjectNode() && (
+//                    p->containerNode() == node
+//                    || p->rootProjectNode()->findNode([node](const Node *n) { return n == node; }));
+//    });
+    return false;
 }
 
+/*!
+ \brief 寻找node所在的项目
+
+ \param node
+ \return PF_Project
+*/
+PF_Project* PF_ProjectTree::projectForNode(const Node* node)
+{
+    if (!node)
+        return nullptr;
+
+//    /** 寻找对应的projectnode **/
+//    const FolderNode *folder = node->asFolderNode();
+//    if (!folder)
+//        folder = node->parentFolderNode();
+
+//    while (folder && folder->parentFolderNode())
+//        folder = folder->parentFolderNode();
+
+//    /** 寻找projectnode对应的project **/
+//    return Utils::findOrDefault(SessionManager::projects(), [folder](const Project *pro) {
+//        return pro->containerNode() == folder;
+//    });
+}
+
+/*!
+ \brief 当前项目
+
+ \return PF_Project
+*/
+PF_Project* PF_ProjectTree::currentProject()
+{
+    return s_instance->m_currentProject;
+}
+
+/*!
+ \brief 当前节点
+
+ \return Node
+*/
 Node *PF_ProjectTree::findCurrentNode()
 {
-    return nullptr;
+    s_instance->update();
+    return s_instance->m_currentNode;
 }
 
+/*!
+ \brief 每一个node的右键菜单
+
+ \param focus
+ \param globalPos
+ \param node
+*/
 void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &globalPos, Node *node)
 {
     QMenu *contextMenu = nullptr;
@@ -83,7 +161,7 @@ void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &
         case NodeType::Folder:
 //            contextMenu = ActionManager::actionContainer(Constants::M_FOLDERCONTEXT)->menu();
             break;
-        case NodeType::File:
+        case NodeType::Leaf:
 //            contextMenu = ActionManager::actionContainer(Constants::M_FILECONTEXT)->menu();
             break;
         default:
@@ -105,39 +183,135 @@ void PF_ProjectTree::highlightProject(PF_Project* project, const QString& messag
 
 }
 
+/*!
+ \brief 折叠所有node
+
+*/
 void PF_ProjectTree::collapseAll()
 {
-
+    if(hasFocus(m_projecttreewidget))
+        m_projecttreewidget->collapseAll();
 }
 
+/*!
+ \brief
+
+*/
 void PF_ProjectTree::sessionAndTreeChanged()
 {
-
+    sessionChanged();
+    emit treeChanged();
 }
 
+/*!
+ \brief
+
+*/
 void PF_ProjectTree::sessionChanged()
 {
-
+    /** 当前有没有新文件需要保存 **/
+    if (m_currentProject) {
+//        Core::DocumentManager::setDefaultLocationForNewFiles(m_currentProject->projectDirectory().toString());
+    } else if (PF_Project *project = PF_SessionManager::startupProject()) {
+//        Core::DocumentManager::setDefaultLocationForNewFiles(project->projectDirectory().toString());
+        updateFromNode(nullptr); // Make startup project current if there is no other current
+    } else {
+//        Core::DocumentManager::setDefaultLocationForNewFiles(QString());
+    }
+    update();
 }
 
+/*!
+ \brief 更新，判断是哪一边发生了改变，就从哪一边更新
+
+*/
 void PF_ProjectTree::update()
 {
-
+    if(hasFocus((m_projecttreewidget))){
+        updateFromProjectTreeWidget(m_projecttreewidget);
+    }else{
+        /** 可能是从CAD更新 **/
+    }
 }
 
+/*!
+ \brief 根据treewidget的状态进行更新
+
+ \param widget
+*/
 void PF_ProjectTree::updateFromProjectTreeWidget(PF_ProjectTreeWidget* widget)
 {
+    Node *currentNode = widget->currentNode();
+    PF_Project *project = projectForNode(currentNode);
 
+    if (!project)
+        updateFromNode(nullptr); // Project was removed!
+    else
+        setCurrent(currentNode, project);
 }
 
+/*!
+ \brief 从节点node开始更新，如果为空，则
+
+ \param node
+*/
 void PF_ProjectTree::updateFromNode(Node* node)
 {
+    PF_Project *project;
+    if (node)
+        project = projectForNode(node);
+    else
+        project = PF_SessionManager::startupProject();
 
+    setCurrent(node, project);
+    m_projecttreewidget->sync(node);
 }
 
+/*!
+ \brief 将节点设置为project当中的node
+
+ \param node
+ \param project
+*/
 void PF_ProjectTree::setCurrent(Node* node, PF_Project* project)
 {
+    const bool changedProject = project != m_currentProject;
+    if (changedProject) {
+        if (m_currentProject) {
+//            disconnect(m_currentProject, &PF_Project::projectLanguagesUpdated,
+//                       this, &PF_ProjectTree::updateContext);
+        }
 
+        m_currentProject = project;
+
+        if (m_currentProject) {
+//            connect(m_currentProject, &Project::projectLanguagesUpdated,
+//                    this, &ProjectTree::updateContext);
+        }
+    }
+
+//    if (Core::IDocument *document = Core::EditorManager::currentDocument()) {
+//        if (node) {
+//            disconnect(document, &Core::IDocument::changed,
+//                       this, &ProjectTree::updateExternalFileWarning);
+//            document->infoBar()->removeInfo(EXTERNAL_FILE_WARNING);
+//        } else {
+//            connect(document, &Core::IDocument::changed,
+//                    this, &ProjectTree::updateExternalFileWarning,
+//                    Qt::UniqueConnection);
+//        }
+//    }
+
+    if (node != m_currentNode) {
+        m_currentNode = node;
+        emit currentNodeChanged();
+    }
+
+    if (changedProject) {
+        emit currentProjectChanged(m_currentProject);
+        sessionChanged();
+        updateContext();
+    }
 }
 
 void PF_ProjectTree::updateContext()
@@ -150,9 +324,17 @@ void PF_ProjectTree::updateFromFocus()
 
 }
 
+/*!
+ \brief widget是否获得焦点
+
+ \param widget
+ \return bool
+*/
 bool PF_ProjectTree::hasFocus(PF_ProjectTreeWidget* widget)
 {
-    return false;
+    return widget
+            && ((widget->focusWidget() && widget->focusWidget()->hasFocus()));
+//                || s_instance->m_focusForContextMenu == widget);
 }
 
 void PF_ProjectTree::hideContextMenu()

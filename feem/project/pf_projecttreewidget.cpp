@@ -177,14 +177,14 @@ private:
 PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
 {
     m_model = new PF_ProjectModel(this);
-    auto noderoot = new Node(QString("root:untitled.mph"),NodeType::File,QIcon(":/tree/model_3d.png"));
-    auto nodedef = new Node(QString("Global Definitions"),NodeType::File,QIcon(":/tree/global_branch.png"));
+    auto noderoot = new Node(QString("root:untitled.mph"),NodeType::Leaf,QIcon(":/tree/model_3d.png"));
+    auto nodedef = new Node(QString("Global Definitions"),NodeType::Leaf,QIcon(":/tree/global_branch.png"));
 
-    auto nodemat = new Node(QString("Materials:Materials"),NodeType::File,QIcon(":/tree/material.png"));
+    auto nodemat = new Node(QString("Materials:Materials"),NodeType::Leaf,QIcon(":/tree/material.png"));
     auto nodecomp = new Node(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_2d_axi.png"));
-    auto nodedefin = new Node(QString("Definitions"),NodeType::File,QIcon(":/tree/definitions.png"));
-    auto nodegeo = new Node(QString("Geometry1"),NodeType::File,QIcon(":/tree/geometry.png"));
-    auto nodemesh = new Node(QString("Mesh1"),NodeType::File,QIcon(":/tree/mesh.png"));
+    auto nodedefin = new Node(QString("Definitions"),NodeType::Leaf,QIcon(":/tree/definitions.png"));
+    auto nodegeo = new Node(QString("Geometry1"),NodeType::Leaf,QIcon(":/tree/geometry.png"));
+    auto nodemesh = new Node(QString("Mesh1"),NodeType::Leaf,QIcon(":/tree/mesh.png"));
 
     auto comp = new WrapperNode(nodecomp);
     comp->appendChild(new WrapperNode(nodedefin));
@@ -243,6 +243,12 @@ Node *PF_ProjectTreeWidget::currentNode()
     return m_model->nodeForIndex(m_view->currentIndex());
 }
 
+void PF_ProjectTreeWidget::sync(Node* node)
+{
+    if (m_autoSync)
+        setCurrentItem(node);
+}
+
 void PF_ProjectTreeWidget::collapseAll()
 {
     m_view->collapseAll();
@@ -278,6 +284,31 @@ void PF_ProjectTreeWidget::showContextMenu(const QPoint &pos)
 void PF_ProjectTreeWidget::openItem(const QModelIndex &mainIndex)
 {
     Node *node = m_model->nodeForIndex(mainIndex);
+}
+
+/*!
+ \brief 跳转到node
+
+ \param node
+*/
+void PF_ProjectTreeWidget::setCurrentItem(Node* node)
+{
+    const QModelIndex mainIndex = m_model->indexForNode(node);
+
+    if (mainIndex.isValid()) {
+        if (mainIndex != m_view->selectionModel()->currentIndex()) {
+            // Expand everything between the index and the root index!
+            QModelIndex parent = mainIndex.parent();
+            while (parent.isValid()) {
+                m_view->setExpanded(parent, true);
+                parent = parent.parent();
+            }
+            m_view->setCurrentIndex(mainIndex);
+            m_view->scrollTo(mainIndex);
+        }
+    } else {
+        m_view->clearSelection();
+    }
 }
 
 ProjectTreeWidgetFactory::ProjectTreeWidgetFactory()

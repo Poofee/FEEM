@@ -1,4 +1,5 @@
 #include "pf_project.h"
+#include "pf_node.h"
 
 #include "idocument.h"
 
@@ -53,6 +54,7 @@ public:
 
     /** 保存真实的文件 **/
     std::unique_ptr<IDocument> m_document;
+    std::unique_ptr<ProjectNode> m_rootProjectNode;
 
     QString m_displayName;
 };
@@ -70,4 +72,24 @@ PF_Project::~PF_Project()
 QString PF_Project::displayName() const
 {
     return d->m_displayName;
+}
+
+/*!
+ \brief
+
+ \param node
+*/
+void PF_Project::handleSubTreeChanged(FolderNode* node)
+{
+
+}
+
+/*!
+ \brief 返回根部的节点
+
+ \return ProjectNode
+*/
+ProjectNode* PF_Project::rootProjectNode() const
+{
+    return d->m_rootProjectNode.get();
 }
