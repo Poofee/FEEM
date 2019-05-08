@@ -224,11 +224,13 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
 //    connect(m_view, &QTreeView::collapsed,
 //            m_model, &PF_ProjectModel::onCollapsed);
 
+    /** 将widget连接到projecttree **/
+    PF_ProjectTree::registerWidget(this);
 }
 
 PF_ProjectTreeWidget::~PF_ProjectTreeWidget()
 {
-
+    PF_ProjectTree::unregisterWidget(this);
 }
 
 /*!

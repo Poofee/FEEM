@@ -32,13 +32,18 @@ class PF_Project : public QObject
     Q_OBJECT
 public:
     explicit PF_Project(QObject *parent = nullptr);
+    ~PF_Project();
+
+    QString displayName() const;
 
 signals:
-
+    void displayNameChanged();
 public slots:
 
 private:
     PF_ProjectPrivate* d;
 };
-
+/** 为了使用 **/
+Q_DECLARE_METATYPE(PF_Project*)
 #endif // PF_PROJECT_H
+

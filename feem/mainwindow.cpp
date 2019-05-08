@@ -70,13 +70,16 @@ MainWindow::MainWindow(QWidget *parent)
     actionHandler->set_view(cad->getGraphicView());
     actionHandler->set_document(doc);
 
+    /** 需要在设置dock之前初始化 **/
+    m_proPlugin = new ProjectExplorerPlugin;
+    m_proPlugin->initialize();
+
     setupDockWidgets();
     setupStatusBar();
 
     m_messageManager = new MessageManager;
 
-    m_proPlugin = new ProjectExplorerPlugin;
-    m_proPlugin->initialize();
+
 
     /** Qribbon更新主题 **/
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();

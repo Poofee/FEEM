@@ -33,11 +33,13 @@ ProjectExplorerPlugin::ProjectExplorerPlugin(QObject *parent) : QObject(parent)
 
 ProjectExplorerPlugin::~ProjectExplorerPlugin()
 {
+    if(dd)
+        delete dd;
     dd = nullptr;
     m_instance = nullptr;
 }
 
-ProjectExplorerPlugin*ProjectExplorerPlugin::instance()
+ProjectExplorerPlugin* ProjectExplorerPlugin::instance()
 {
     return m_instance;
 }

@@ -20,21 +20,52 @@ public:
 
     static PF_ProjectTree *instance();
 
+    // Integration with ProjectTreeWidget
+    static void registerWidget(PF_ProjectTreeWidget *widget);
+    static void unregisterWidget(PF_ProjectTreeWidget *widget);
+    static void nodeChanged(PF_ProjectTreeWidget *widget);
+
+    //
     static PF_Project *currentProject();
     static Node *findCurrentNode();
 
     static void showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &globalPos, Node *node);
 
+    static void highlightProject(PF_Project *project, const QString &message);
+
+    void collapseAll();
 signals:
+    void currentProjectChanged(PF_Project *project);
+    void currentNodeChanged();
 
+    // Emitted whenever the model needs to send a update signal.
+    void subtreeChanged(Node *node);
+
+    void aboutToShowContextMenu(PF_Project *project, Node *node);
+
+    // Emitted on any change to the tree
+    void treeChanged();
 public slots:
+private:
+    void sessionAndTreeChanged();
+    void sessionChanged();
+    void update();
+    void updateFromProjectTreeWidget(PF_ProjectTreeWidget *widget);
+//    void updateFromDocumentManager();
+    void updateFromNode(Node *node);
+    void setCurrent(Node *node, PF_Project *project);
+    void updateContext();
 
+    void updateFromFocus();
+
+//    void updateExternalFileWarning();
+    static bool hasFocus(PF_ProjectTreeWidget *widget);
+    void hideContextMenu();
 private:
     static PF_ProjectTree* s_instance;
     PF_ProjectTreeWidget* m_projecttreewidget = nullptr;
     Node *m_currentNode = nullptr;
     PF_Project* m_currentproject = nullptr;
-
 };
 
 #endif // PF_PROJECTTREE_H

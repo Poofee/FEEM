@@ -61,3 +61,13 @@ PF_Project::PF_Project(QObject *parent) : QObject(parent)
 {
 
 }
+
+PF_Project::~PF_Project()
+{
+
+}
+
+QString PF_Project::displayName() const
+{
+    return d->m_displayName;
+}

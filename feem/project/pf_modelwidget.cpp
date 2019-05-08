@@ -27,6 +27,7 @@ void PF_ModelWidget::init()
     tb_collapseAll = new QToolButton(this);
     tb_expandAll = new QToolButton(this);
     tb_show = new QToolButton(this);
+
     m_modelTreeWidget = new PF_ProjectTreeWidget(this);
 
     QHBoxLayout* toolbarLayout = new QHBoxLayout(this);
