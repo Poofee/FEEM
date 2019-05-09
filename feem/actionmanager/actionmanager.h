@@ -59,6 +59,8 @@ private:
     static void saveSettings();
     static void setContext(const Context &context);
 
+    friend class coreApp;
+    friend class MainWindow;
 //    friend class Core::Internal::CorePlugin; // initialization
 //    friend class Core::Internal::MainWindow; // saving settings and setting context
 };

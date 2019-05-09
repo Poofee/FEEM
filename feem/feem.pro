@@ -111,7 +111,8 @@ HEADERS += \
     project/pf_nodetreebuilder.h \
     project/pf_sessionmanager.h \
     CAD/action/pf_actionselectsingle.h \
-    project/inavigationwidgetfactory.h
+    project/inavigationwidgetfactory.h \
+    core/coreapp.h
 
 SOURCES += \
     ./core/pf_eventhandler.cpp \
@@ -177,7 +178,8 @@ SOURCES += \
     project/pf_nodetreebuilder.cpp \
     project/pf_sessionmanager.cpp \
     CAD/action/pf_actionselectsingle.cpp \
-    project/inavigationwidgetfactory.cpp
+    project/inavigationwidgetfactory.cpp \
+    core/coreapp.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
