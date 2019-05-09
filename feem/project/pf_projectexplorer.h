@@ -9,14 +9,14 @@ class Node;
  \brief 主要实现关于project的
 
 */
-class ProjectExplorerPlugin : public QObject
+class PF_ProjectExplorerPlugin : public QObject
 {
     Q_OBJECT
 public:
-    explicit ProjectExplorerPlugin(QObject *parent = nullptr);
-    ~ProjectExplorerPlugin();
+    explicit PF_ProjectExplorerPlugin(QObject *parent = nullptr);
+    ~PF_ProjectExplorerPlugin();
 
-    static ProjectExplorerPlugin *instance();
+    static PF_ProjectExplorerPlugin *instance();
 
     bool initialize();
 

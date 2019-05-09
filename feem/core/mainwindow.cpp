@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
     actionHandler->set_document(doc);
 
     /** 需要在设置dock之前初始化 **/
-    m_proPlugin = new ProjectExplorerPlugin;
+    m_proPlugin = new PF_ProjectExplorerPlugin;
     m_proPlugin->initialize();
 
     setupDockWidgets();

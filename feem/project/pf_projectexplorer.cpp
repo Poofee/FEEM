@@ -6,7 +6,7 @@
  \brief projectexplore实现的私有类，具体的实现都放在这里
 
 */
-class ProjectExplorerPluginPrivate : public QObject
+class PF_ProjectExplorerPluginPrivate : public QObject
 {
 public:
 
@@ -23,15 +23,15 @@ public:
     PF_ProjectTree m_projectTree;
 };
 
-static ProjectExplorerPlugin* m_instance = nullptr;
-static ProjectExplorerPluginPrivate*  dd = nullptr;
+static PF_ProjectExplorerPlugin* m_instance = nullptr;
+static PF_ProjectExplorerPluginPrivate*  dd = nullptr;
 
-ProjectExplorerPlugin::ProjectExplorerPlugin(QObject *parent) : QObject(parent)
+PF_ProjectExplorerPlugin::PF_ProjectExplorerPlugin(QObject *parent) : QObject(parent)
 {
     m_instance = this;
 }
 
-ProjectExplorerPlugin::~ProjectExplorerPlugin()
+PF_ProjectExplorerPlugin::~PF_ProjectExplorerPlugin()
 {
     if(dd)
         delete dd;
@@ -39,14 +39,14 @@ ProjectExplorerPlugin::~ProjectExplorerPlugin()
     m_instance = nullptr;
 }
 
-ProjectExplorerPlugin* ProjectExplorerPlugin::instance()
+PF_ProjectExplorerPlugin* PF_ProjectExplorerPlugin::instance()
 {
     return m_instance;
 }
 
-bool ProjectExplorerPlugin::initialize()
+bool PF_ProjectExplorerPlugin::initialize()
 {
-    dd = new ProjectExplorerPluginPrivate;
+    dd = new PF_ProjectExplorerPluginPrivate;
 
     return true;
 }

@@ -32,6 +32,8 @@ private:
 
 class PF_Project : public QObject
 {
+    friend class PF_SessionManager; // for setActiveTarget
+    friend class PF_ProjectExplorerPlugin; // for projectLoaded
     Q_OBJECT
 public:
     explicit PF_Project(QObject *parent = nullptr);

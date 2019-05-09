@@ -18,7 +18,7 @@ class PF_ActionGroupManager;
 class FlexWidget;
 
 class MessageManager;
-class ProjectExplorerPlugin;
+class PF_ProjectExplorerPlugin;
 
 class PF_ModelWidget;
 
@@ -60,7 +60,7 @@ private:
     /** 插件  **/
     ICore* m_coreImpl = nullptr;
     MessageManager* m_messageManager = nullptr;
-    ProjectExplorerPlugin* m_proPlugin = nullptr;
+    PF_ProjectExplorerPlugin* m_proPlugin = nullptr;
 
     /**   **/
     PF_WidgetFactory* dialogFactory;

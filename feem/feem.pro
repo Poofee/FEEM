@@ -35,6 +35,7 @@ INCLUDEPATH += \
     ./material \
     ./project \
     ./fem \
+    ./core \
 
 RESOURCES += \
     ./res/main.qrc
@@ -43,16 +44,16 @@ RC_FILE = ./res/icon.rc
 
 HEADERS += \    
     ./util/pf.h \
-    ./pf_eventhandler.h \
-    ./pf_widgetfactory.h \
+    ./core/pf_eventhandler.h \
+    ./core/pf_widgetfactory.h \
     ./CAD/action/pf_actiondrawcircle.h \
     ./CAD/action/pf_actiondrawpoint.h \
     ./CAD/action/pf_actiondrawline.h \
     ./CAD/action/pf_actiondrawrectangle.h \
     ./CAD/entity/pf_polyline.h \
-    ./pf_actionfactory.h \
-    ./pf_actiongroupmanager.h \
-    ./pf_actionhandler.h \
+    ./core/pf_actionfactory.h \
+    ./core/pf_actiongroupmanager.h \
+    ./core/pf_actionhandler.h \
     ./CAD/action/pf_actioninterface.h \
     ./CAD/action/pf_actionpreviewinterface.h \
     ./CAD/entity/pf_atomicentity.h \
@@ -78,7 +79,7 @@ HEADERS += \
     material/pf_materialmanager.h \
     project/pf_projectmodel.h \
     util/constants.h \
-    ./mainwindow.h \
+    ./core/mainwindow.h \
     ./CAD/pf_graphicview.h \
     project/viewitem.h \
     project/navigationtreeview.h \
@@ -113,16 +114,16 @@ HEADERS += \
     project/inavigationwidgetfactory.h
 
 SOURCES += \
-    ./pf_eventhandler.cpp \
-    ./pf_widgetfactory.cpp \
+    ./core/pf_eventhandler.cpp \
+    ./core/pf_widgetfactory.cpp \
     ./CAD/action/pf_actiondrawcircle.cpp \
     ./CAD/action/pf_actiondrawpoint.cpp \
     ./CAD/action/pf_actiondrawline.cpp \
     ./CAD/action/pf_actiondrawrectangle.cpp \
     ./CAD/entity/pf_polyline.cpp \
-    ./pf_actionfactory.cpp \
-    ./pf_actiongroupmanager.cpp \
-    ./pf_actionhandler.cpp \
+    ./core/pf_actionfactory.cpp \
+    ./core/pf_actiongroupmanager.cpp \
+    ./core/pf_actionhandler.cpp \
     ./CAD/action/pf_actioninterface.cpp \
     ./CAD/action/pf_actionpreviewinterface.cpp \
     ./CAD/entity/pf_atomicentity.cpp \
@@ -148,7 +149,7 @@ SOURCES += \
     material/pf_materialmanager.cpp \
     project/pf_projectmodel.cpp \
     ./main.cpp \
-    ./mainwindow.cpp \
+    ./core/mainwindow.cpp \
     ./CAD/pf_graphicview.cpp \
     project/viewitem.cpp \
     project/navigationtreeview.cpp \
