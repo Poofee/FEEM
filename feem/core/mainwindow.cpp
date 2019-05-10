@@ -47,6 +47,19 @@ MainWindow::MainWindow(QWidget *parent)
     , dock_messageOutputPane(nullptr)
     , dock_materialLibraryTree(nullptr)
 {
+    init();
+}
+
+MainWindow::~MainWindow()
+{
+    delete m_messageManager;
+    m_messageManager = nullptr;
+    delete m_proPlugin;
+    m_proPlugin = nullptr;
+}
+
+void MainWindow::init()
+{
     m_ribbonStyle->setAccentColor(OfficeStyle::AccentColorBlue);
 
     registerDefaultContainers();
@@ -79,8 +92,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_messageManager = new MessageManager;
 
-
-
     /** Qribbon更新主题 **/
     Qtitan::OfficeStyle* st = (Qtitan::OfficeStyle*)qApp->style();
     Qtitan::OfficeStyle::Theme theme = Qtitan::OfficeStyle::Office2010Silver;
@@ -89,19 +100,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     updateActionsTheme();
 }
-
-MainWindow::~MainWindow()
-{
-    delete m_messageManager;
-    m_messageManager = nullptr;
-}
-
-void MainWindow::init()
-{
-
-}
-
-
 
 void MainWindow::slotFileNew() {
 
