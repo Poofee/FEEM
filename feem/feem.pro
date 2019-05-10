@@ -44,7 +44,7 @@ RC_FILE = ./res/icon.rc
 
 HEADERS += \    
     ./util/pf.h \
-    ./core/pf_eventhandler.h \
+    ./CAD/action/pf_eventhandler.h \
     ./core/pf_widgetfactory.h \
     ./CAD/action/pf_actiondrawcircle.h \
     ./CAD/action/pf_actiondrawpoint.h \
@@ -115,7 +115,7 @@ HEADERS += \
     core/coreapp.h
 
 SOURCES += \
-    ./core/pf_eventhandler.cpp \
+    ./CAD/action/pf_eventhandler.cpp \
     ./core/pf_widgetfactory.cpp \
     ./CAD/action/pf_actiondrawcircle.cpp \
     ./CAD/action/pf_actiondrawpoint.cpp \
