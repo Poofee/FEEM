@@ -20,6 +20,7 @@ public:
     void sync(Node *node);
 
     void collapseAll();
+    void expandAll();
 
 private:
     void handleCurrentItemChange(const QModelIndex &current);

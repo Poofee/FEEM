@@ -48,7 +48,7 @@ void PF_CADWidget::init()
 //    zoomextents->setCheckable(true);
     connect(zoomextents,&QToolButton::clicked,[this]()
     {
-        qDebug()<<"ZoomExtents";
+//        qDebug()<<"ZoomExtents";
         this->view->zoomAuto(true,true);
         //this->zoomextents->setChecked(zoomextents->isChecked());
     });
@@ -58,7 +58,7 @@ void PF_CADWidget::init()
 //    zoomin->setCheckable(true);
     connect(zoomin,&QToolButton::clicked,[this]()
     {
-        qDebug()<<"Zoom In";
+//        qDebug()<<"Zoom In";
         this->view->zoomIn(1.2);
         //this->zoomin->setChecked(zoomin->isChecked());
     });
@@ -68,7 +68,7 @@ void PF_CADWidget::init()
 //    zoomout->setCheckable(true);
     connect(zoomout,&QToolButton::clicked,[this]()
     {
-        qDebug()<<"Zoom Out";
+//        qDebug()<<"Zoom Out";
         this->view->zoomOut(1.2);
         //this->zoomout->setChecked(zoomout->isChecked());
     });

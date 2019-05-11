@@ -105,10 +105,10 @@ public:
 
         //        ICore::addContextObject(m_context);
 
-        connect(this, &PF_ProjectTreeView::expanded,
-                this, &PF_ProjectTreeView::invalidateSize);
-        connect(this, &PF_ProjectTreeView::collapsed,
-                this, &PF_ProjectTreeView::invalidateSize);
+//        connect(this, &PF_ProjectTreeView::expanded,
+//                this, &PF_ProjectTreeView::invalidateSize);
+//        connect(this, &PF_ProjectTreeView::collapsed,
+//                this, &PF_ProjectTreeView::invalidateSize);
     }
 
     void invalidateSize()
@@ -219,10 +219,10 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
             this, &PF_ProjectTreeWidget::handleCurrentItemChange);
     connect(m_view, &QWidget::customContextMenuRequested,
             this, &PF_ProjectTreeWidget::showContextMenu);
-//    connect(m_view, &QTreeView::expanded,
-//            m_model, &PF_ProjectModel::onExpanded);
-//    connect(m_view, &QTreeView::collapsed,
-//            m_model, &PF_ProjectModel::onCollapsed);
+    connect(m_view, &QTreeView::expanded,
+            m_model, &PF_ProjectModel::onExpanded);
+    connect(m_view, &QTreeView::collapsed,
+            m_model, &PF_ProjectModel::onCollapsed);
 
     /** 将widget连接到projecttree **/
     PF_ProjectTree::registerWidget(this);
@@ -252,6 +252,11 @@ void PF_ProjectTreeWidget::sync(Node* node)
 void PF_ProjectTreeWidget::collapseAll()
 {
     m_view->collapseAll();
+}
+
+void PF_ProjectTreeWidget::expandAll()
+{
+    m_view->expandAll();
 }
 
 /*!

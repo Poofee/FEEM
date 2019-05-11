@@ -389,14 +389,36 @@ QModelIndex PF_ProjectModel::indexForNode(const Node *node) const
     return wrapper ? indexForItem(wrapper) : QModelIndex();
 }
 
-void PF_ProjectModel::updateSubtree(FolderNode *node)
+void PF_ProjectModel::onExpanded(const QModelIndex &idx)
 {
-
+//    qDebug()<<Q_FUNC_INFO;
+//    qDebug()<<"onExpanded:"<<idx.column()<<idx.row();
 }
 
+void PF_ProjectModel::onCollapsed(const QModelIndex &idx)
+{
+//    qDebug()<<Q_FUNC_INFO;
+//    qDebug()<<"onCollapsed:"<<idx.column()<<idx.row();
+}
+
+void PF_ProjectModel::updateSubtree(FolderNode *node)
+{
+    // FIXME: This is still excessive, should be limited to the affected subtree.
+    while (FolderNode *parent = node->parentFolderNode())
+        node = parent;
+    if (ProjectNode *container = node->asProjectNode())
+        addOrRebuildProjectModel(container->project());
+}
+
+/**
+ * @brief
+ *
+ */
 void PF_ProjectModel::rebuildModel()
 {
-
+    const QList<PF_Project *> projects = PF_SessionManager::projects();
+    for (PF_Project *project : projects)
+        addOrRebuildProjectModel(project);
 }
 
 /**

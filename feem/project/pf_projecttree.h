@@ -39,6 +39,7 @@ public:
     static void highlightProject(PF_Project *project, const QString &message);
 
     void collapseAll();
+    void expandAll();
 signals:
     void currentProjectChanged(PF_Project *project);
     void currentNodeChanged();

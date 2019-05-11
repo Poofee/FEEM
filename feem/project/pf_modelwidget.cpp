@@ -1,10 +1,12 @@
 #include "pf_modelwidget.h"
 
 #include "pf_projecttreewidget.h"
+#include "pf_projecttree.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QToolButton>
+#include <QDebug>
 
 PF_ModelWidget::PF_ModelWidget(QWidget* parent)
     : QWidget (parent)
@@ -52,9 +54,19 @@ void PF_ModelWidget::init()
 
     tb_collapseAll->setIcon(QIcon(":/tree/hide_tree.png"));
     tb_collapseAll->setToolTip(tr("Collapse All"));
+    connect(tb_collapseAll,&QToolButton::clicked,[]()
+    {
+//        qDebug()<<"Collapse All";
+        PF_ProjectTree::instance()->collapseAll();
+    });
 
     tb_expandAll->setIcon(QIcon(":/tree/show_tree.png"));
     tb_expandAll->setToolTip(tr("Expand All"));
+    connect(tb_expandAll,&QToolButton::clicked,[]()
+    {
+//        qDebug()<<"Expand All";
+        PF_ProjectTree::instance()->expandAll();
+    });
 
     toolbarLayout->addWidget(tb_previousNode);
     toolbarLayout->addWidget(tb_nextNode);

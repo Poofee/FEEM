@@ -1,11 +1,15 @@
-#ifndef PF_NODETREEBUILDER_H
-#define PF_NODETREEBUILDER_H
+//#ifndef PF_NODETREEBUILDER_H
+//#define PF_NODETREEBUILDER_H
 
+//#include <memory>
 
-class PF_NodeTreeBuilder
-{
-public:
-    PF_NodeTreeBuilder();
-};
+//class ProjectNode;
+//class PF_Project;
 
-#endif // PF_NODETREEBUILDER_H
+//class PF_NodeTreeBuilder
+//{
+//public:
+//    static std::unique_ptr<ProjectNode> buildTree(PF_Project *project);
+//};
+
+//#endif // PF_NODETREEBUILDER_H

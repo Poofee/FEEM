@@ -954,7 +954,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../../mainwindow.cpp" line="72"/>
         <source>Project tree</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">项目列表</translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="80"/>

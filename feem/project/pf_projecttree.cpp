@@ -190,8 +190,14 @@ void PF_ProjectTree::highlightProject(PF_Project* project, const QString& messag
 */
 void PF_ProjectTree::collapseAll()
 {
-    if(hasFocus(m_projecttreewidget))
+//    if(hasFocus(m_projecttreewidget))
         m_projecttreewidget->collapseAll();
+}
+
+void PF_ProjectTree::expandAll()
+{
+//    if(hasFocus(m_projecttreewidget))
+        m_projecttreewidget->expandAll();
 }
 
 /*!

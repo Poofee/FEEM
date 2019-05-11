@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "pf_sessionmanager.h"
 #include "pf_project.h"
+#include "pf_projecttree.h"
 
 #include <QSplashScreen>
 #include <QMessageBox>
@@ -61,6 +62,9 @@ bool coreApp::initialize()
     delete splash;
 
     PF_Project* pro = new PF_Project(this);
+//    PF_Project* pro1 = new PF_Project(this);
     PF_SessionManager::instance()->addProject(pro);
+//    PF_SessionManager::instance()->addProject(pro1);
+    PF_ProjectTree::instance()->expandAll();
     return true;
 }

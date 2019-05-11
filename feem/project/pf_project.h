@@ -40,6 +40,7 @@ public:
     ~PF_Project();
 
     QString displayName() const;
+    void setDisplayName(const QString& displayName);
 
     void creatTree();
     void setRootProjectNode(std::unique_ptr<ProjectNode> &&root); // takes ownership!

@@ -113,8 +113,8 @@ void ProjectNode::removeAllChildren()
 
 
 
-ProjectNode::ProjectNode(const QString &displayName, NodeType nodeType, QIcon icon)
-    :FolderNode (displayName,nodeType,icon)
+ProjectNode::ProjectNode(PF_Project *project)
+    :FolderNode (project->displayName(),NodeType::Project,QIcon(":/tree/model_3d.png"))
 {
 
 }

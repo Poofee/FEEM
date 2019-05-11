@@ -75,12 +75,25 @@ PF_Project::~PF_Project()
 
 QString PF_Project::displayName() const
 {
+    if(d->m_displayName.isEmpty()){
+        d->m_displayName = "untitled.mph";
+    }
+
     return d->m_displayName;
 }
 
+void PF_Project::setDisplayName(const QString &displayName)
+{
+    d->m_displayName = displayName;
+}
+
+/**
+ * @brief 简单的测试tree
+ *
+ */
 void PF_Project::creatTree()
 {
-    std::unique_ptr<ProjectNode> root = std::make_unique<ProjectNode>(QString("root:untitled.mph"),NodeType::Project,QIcon(":/tree/model_3d.png"));
+    std::unique_ptr<ProjectNode> root = std::make_unique<ProjectNode>(this);
     std::vector<std::unique_ptr<FolderNode>> nodes;
     nodes.emplace_back(std::make_unique<FolderNode>(QString("Global Definitions"),NodeType::Folder,QIcon(":/tree/global_branch.png")));
     nodes.emplace_back(std::make_unique<FolderNode>(QString("Materials:Materials"),NodeType::Leaf,QIcon(":/tree/material.png")));

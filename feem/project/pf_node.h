@@ -200,8 +200,7 @@ protected:
 class ProjectNode : public FolderNode
 {
 public:
-    explicit ProjectNode(const QString &displayName,
-                         NodeType nodeType = NodeType::Project, QIcon icon=QIcon());
+    explicit ProjectNode(PF_Project* project);
 
     bool supportsAction(ProjectAction action, const Node *node) const override;
 
