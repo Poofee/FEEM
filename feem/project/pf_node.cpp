@@ -113,8 +113,8 @@ void ProjectNode::removeAllChildren()
 
 
 
-ProjectNode::ProjectNode(const QString &displayName, NodeType nodeType)
-    :FolderNode (displayName,nodeType)
+ProjectNode::ProjectNode(const QString &displayName, NodeType nodeType, QIcon icon)
+    :FolderNode (displayName,nodeType,icon)
 {
 
 }
@@ -146,9 +146,14 @@ void ProjectNode::handleSubTreeChanged(FolderNode* node)
     m_project->handleSubTreeChanged(node);
 }
 
-LeafNode::LeafNode(const QString &_displayname, const LeafType leafType, NodeType nodeType)
-    :Node (_displayname,NodeType::Leaf)
+LeafNode::LeafNode(const QString &_displayname, const LeafType leafType, NodeType nodeType, QIcon icon)
+    :Node (_displayname,NodeType::Leaf,icon)
     ,m_leafType(leafType)
+{
+
+}
+
+LeafNode::~LeafNode()
 {
 
 }
@@ -169,17 +174,18 @@ bool LeafNode::supportsAction(ProjectAction action, const Node *node) const
     return false;
 }
 
-FolderNode::FolderNode(const QString &displayName, NodeType nodeType)
-    :Node (displayName,nodeType)
-{
-
-}
 /*!
  \brief
 
  \param filter
  \return Node
 */
+FolderNode::FolderNode(const QString &displayName, NodeType nodeType, QIcon icon)
+    :Node(displayName,nodeType,icon)
+{
+
+}
+
 Node *FolderNode::findNode(const std::function<bool(Node *)> &filter)
 {
     if (filter(this))
@@ -262,7 +268,11 @@ void FolderNode::forEachGenericNode(const std::function<void(Node *)> &genericTa
 const QList<Node *> FolderNode::nodes() const
 {
 //    return Utils::toRawPointer<QList>(m_nodes);
-    return QList<Node *>();
+    QList<Node *> nodes;
+    for(const std::unique_ptr<Node> & node : m_nodes){
+        nodes.push_back(node.get());
+    }
+    return nodes;
 }
 /*!
  \brief 返回节点下的所有LeafNode类型的Node

@@ -65,8 +65,8 @@ public:
 //    TreeItem *reverseFindAnyChild(const std::function<bool(TreeItem *)> &pred) const;
 
     // Levels are 1-based: Child at Level 1 is an immediate child.
-//    void forChildrenAtLevel(int level, const std::function<void(TreeItem *)> &pred) const;
-//    TreeItem *findChildAtLevel(int level, const std::function<bool(TreeItem *)> &pred) const;
+    void forChildrenAtLevel(int level, const std::function<void(TreeItem *)> &pred) const;
+    TreeItem *findChildAtLevel(int level, const std::function<bool(TreeItem *)> &pred) const;
 
 private:
     TreeItem(const TreeItem &) = delete;

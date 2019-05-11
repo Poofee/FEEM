@@ -263,6 +263,36 @@ TreeItem *TreeItem::findAnyChild(const std::function<bool(TreeItem *)> &pred) co
     }
     return nullptr;
 }
+
+void TreeItem::forChildrenAtLevel(int level, const std::function<void (TreeItem *)> &pred) const
+{
+    if(level <= 0)
+        return;
+    if (level == 1) {
+        for (TreeItem *item : *this)
+            pred(item);
+    } else {
+        for (TreeItem *item : *this)
+            item->forChildrenAtLevel(level - 1, pred);
+    }
+}
+
+TreeItem *TreeItem::findChildAtLevel(int level, const std::function<bool (TreeItem *)> &pred) const
+{
+    if(level <= 0)
+        return nullptr;
+    if (level == 1) {
+        for (TreeItem *item : *this)
+            if (pred(item))
+                return item;
+    } else {
+        for (TreeItem *item : *this) {
+            if (auto found = item->findChildAtLevel(level - 1, pred))
+                return found;
+        }
+    }
+    return nullptr;
+}
 //TreeItem *TreeItem::reverseFindAnyChild(const std::function<bool (TreeItem *)> &pred) const
 //{
 //    auto end = m_children.rend();

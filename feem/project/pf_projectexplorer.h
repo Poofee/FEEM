@@ -22,8 +22,47 @@ public:
 
     bool initialize();
 
-    static bool openProject(const QString &fileName);
-    static bool openProjects(const QStringList &fileNames);
+    class OpenProjectResult
+    {
+    public:
+        OpenProjectResult(const QList<PF_Project *> &projects, const QList<PF_Project *> &alreadyOpen,
+                          const QString &errorMessage)
+            : m_projects(projects), m_alreadyOpen(alreadyOpen),
+              m_errorMessage(errorMessage)
+        { }
+
+        explicit operator bool() const
+        {
+            return m_errorMessage.isEmpty() && m_alreadyOpen.isEmpty();
+        }
+
+        PF_Project *project() const
+        {
+            return m_projects.isEmpty() ? nullptr : m_projects.first();
+        }
+
+        QList<PF_Project *> projects() const
+        {
+            return m_projects;
+        }
+
+        QString errorMessage() const
+        {
+            return m_errorMessage;
+        }
+
+        QList<PF_Project *> alreadyOpen() const
+        {
+            return m_alreadyOpen;
+        }
+    private:
+        QList<PF_Project *> m_projects;
+        QList<PF_Project *> m_alreadyOpen;
+        QString m_errorMessage;
+    };
+
+    static OpenProjectResult openProject(const QString &fileName);
+    static OpenProjectResult openProjects(const QStringList &fileNames);
 
     static void showContextMenu(QWidget *view, const QPoint &globalPos, Node *node);
 

@@ -8,6 +8,75 @@
 
 #include <QAction>
 #include <QMenu>
+#include <QDir>
+#include <QFileInfo>
+#include <QDebug>
+
+namespace Constants {
+const int  P_MODE_SESSION         = 85;
+
+// Actions
+const char NEWPROJECT[]           = "ProjectExplorer.NewProject";
+const char LOAD[]                 = "ProjectExplorer.Load";
+const char UNLOAD[]               = "ProjectExplorer.Unload";
+const char UNLOADCM[]             = "ProjectExplorer.UnloadCM";
+const char CLEARSESSION[]         = "ProjectExplorer.ClearSession";
+const char BUILDPROJECTONLY[]     = "ProjectExplorer.BuildProjectOnly";
+const char BUILDCM[]              = "ProjectExplorer.BuildCM";
+const char BUILDDEPENDCM[]        = "ProjectExplorer.BuildDependenciesCM";
+const char BUILDSESSION[]         = "ProjectExplorer.BuildSession";
+const char REBUILDPROJECTONLY[]   = "ProjectExplorer.RebuildProjectOnly";
+const char REBUILD[]              = "ProjectExplorer.Rebuild";
+const char REBUILDCM[]            = "ProjectExplorer.RebuildCM";
+const char REBUILDDEPENDCM[]      = "ProjectExplorer.RebuildDependenciesCM";
+const char REBUILDSESSION[]       = "ProjectExplorer.RebuildSession";
+const char DEPLOYPROJECTONLY[]    = "ProjectExplorer.DeployProjectOnly";
+const char DEPLOY[]               = "ProjectExplorer.Deploy";
+const char DEPLOYCM[]             = "ProjectExplorer.DeployCM";
+const char DEPLOYSESSION[]        = "ProjectExplorer.DeploySession";
+const char CLEANPROJECTONLY[]     = "ProjectExplorer.CleanProjectOnly";
+const char CLEAN[]                = "ProjectExplorer.Clean";
+const char CLEANCM[]              = "ProjectExplorer.CleanCM";
+const char CLEANDEPENDCM[]        = "ProjectExplorer.CleanDependenciesCM";
+const char CLEANSESSION[]         = "ProjectExplorer.CleanSession";
+const char CANCELBUILD[]          = "ProjectExplorer.CancelBuild";
+const char RUN[]                  = "ProjectExplorer.Run";
+const char RUNWITHOUTDEPLOY[]     = "ProjectExplorer.RunWithoutDeploy";
+const char RUNCONTEXTMENU[]       = "ProjectExplorer.RunContextMenu";
+const char ADDEXISTINGFILES[]     = "ProjectExplorer.AddExistingFiles";
+const char ADDEXISTINGDIRECTORY[] = "ProjectExplorer.AddExistingDirectory";
+const char ADDNEWSUBPROJECT[]     = "ProjectExplorer.AddNewSubproject";
+const char REMOVEPROJECT[]        = "ProjectExplorer.RemoveProject";
+const char OPENFILE[]             = "ProjectExplorer.OpenFile";
+const char SEARCHONFILESYSTEM[]   = "ProjectExplorer.SearchOnFileSystem";
+const char SHOWINGRAPHICALSHELL[] = "ProjectExplorer.ShowInGraphicalShell";
+const char OPENTERMINALHERE[]     = "ProjectExplorer.OpenTerminalHere";
+const char DUPLICATEFILE[]        = "ProjectExplorer.DuplicateFile";
+const char DELETEFILE[]           = "ProjectExplorer.DeleteFile";
+const char DIFFFILE[]             = "ProjectExplorer.DiffFile";
+const char SETSTARTUP[]           = "ProjectExplorer.SetStartup";
+const char PROJECTTREE_COLLAPSE_ALL[] = "ProjectExplorer.CollapseAll";
+
+const char SELECTTARGET[]         = "ProjectExplorer.SelectTarget";
+const char SELECTTARGETQUICK[]    = "ProjectExplorer.SelectTargetQuick";
+
+// Action priorities
+const int  P_ACTION_RUN            = 100;
+const int  P_ACTION_BUILDPROJECT   = 80;
+
+// Context
+const char C_PROJECTEXPLORER[]    = "Project Explorer";
+
+// Menus
+const char M_RECENTPROJECTS[]     = "ProjectExplorer.Menu.Recent";
+const char M_UNLOADPROJECTS[]     = "ProjectExplorer.Menu.Unload";
+const char M_SESSION[]            = "ProjectExplorer.Menu.Session";
+
+const char RUNMENUCONTEXTMENU[]   = "Project.RunMenu";
+const char FOLDER_OPEN_LOCATIONS_CONTEXT_MENU[]  = "Project.F.OpenLocation.CtxMenu";
+const char PROJECT_OPEN_LOCATIONS_CONTEXT_MENU[]  = "Project.P.OpenLocation.CtxMenu";
+
+} // namespace Constants
 
 /*!
  \brief projectexplore实现的私有类，具体的实现都放在这里
@@ -256,6 +325,7 @@ PF_ProjectExplorerPlugin* PF_ProjectExplorerPlugin::instance()
 
 bool PF_ProjectExplorerPlugin::initialize()
 {
+    qDebug()<<Q_FUNC_INFO;
     dd = new PF_ProjectExplorerPluginPrivate;
 
     PF_SessionManager *sessionManager = &dd->m_sessionManager;
@@ -297,14 +367,126 @@ bool PF_ProjectExplorerPlugin::initialize()
     return true;
 }
 
+PF_ProjectExplorerPlugin::OpenProjectResult PF_ProjectExplorerPlugin::openProject(const QString &fileName)
+{
+    OpenProjectResult result = openProjects(QStringList(fileName));
+    PF_Project *project = result.project();
+    if (!project)
+        return result;
+    dd->addToRecentProjects(fileName, project->displayName());
+    PF_SessionManager::setStartupProject(project);
+//    project->projectLoaded();
+    return result;
+}
+
+PF_ProjectExplorerPlugin::OpenProjectResult PF_ProjectExplorerPlugin::openProjects(const QStringList &fileNames)
+{
+    QList<PF_Project*> openedPro;
+    QList<PF_Project *> alreadyOpen;
+    QString errorString;
+//    foreach (const QString &fileName, fileNames) {
+//        if(fileName.isEmpty()) continue;
+
+//        const QFileInfo fi(fileName);
+////        const auto filePath = Utils::FileName::fromString(fi.absoluteFilePath());
+////        PF_Project *found = Utils::findOrDefault(SessionManager::projects(),
+////                                              Utils::equal(&Project::projectFilePath, filePath));
+//        if (found) {
+//            alreadyOpen.append(found);
+//            SessionManager::reportProjectLoadingProgress();
+//            continue;
+//        }
+
+//        Utils::MimeType mt = Utils::mimeTypeForFile(fileName);
+//        if (ProjectManager::canOpenProjectForMimeType(mt)) {
+//            if (!filePath.toFileInfo().isFile()) {
+//                appendError(errorString,
+//                            tr("Failed opening project \"%1\": Project is not a file.").arg(fileName));
+//            } else if (Project *pro = ProjectManager::openProject(mt, filePath)) {
+//                QObject::connect(pro, &Project::parsingFinished, [pro]() {
+//                    emit SessionManager::instance()->projectFinishedParsing(pro);
+//                });
+//                QString restoreError;
+//                Project::RestoreResult restoreResult = pro->restoreSettings(&restoreError);
+//                if (restoreResult == Project::RestoreResult::Ok) {
+//                    connect(pro, &Project::fileListChanged,
+//                            m_instance, &ProjectExplorerPlugin::fileListChanged);
+//                    SessionManager::addProject(pro);
+//                    openedPro += pro;
+//                } else {
+//                    if (restoreResult == Project::RestoreResult::Error)
+//                        appendError(errorString, restoreError);
+//                    delete pro;
+//                }
+//            }
+//        } else {
+//            appendError(errorString, tr("Failed opening project \"%1\": No plugin can open project type \"%2\".")
+//                        .arg(QDir::toNativeSeparators(fileName))
+//                        .arg(mt.name()));
+//        }
+//        if (fileNames.size() > 1)
+//            SessionManager::reportProjectLoadingProgress();
+//    }
+//    dd->updateActions();
+
+//    bool switchToProjectsMode = Utils::anyOf(openedPro, &Project::needsConfiguration);
+
+//    if (!openedPro.isEmpty()) {
+//        if (switchToProjectsMode)
+//            ModeManager::activateMode(Constants::MODE_SESSION);
+//        else
+//            ModeManager::activateMode(Core::Constants::MODE_EDIT);
+//        ModeManager::setFocusToCurrentMode();
+//    }
+
+    return OpenProjectResult(openedPro, alreadyOpen, errorString);
+}
+
+void PF_ProjectExplorerPlugin::updateContextMenuActions()
+{
+
+}
+
+void PF_ProjectExplorerPlugin::openNewProjectDialog()
+{
+
+}
+
+void PF_ProjectExplorerPlugin::openOpenProjectDialog()
+{
+
+}
+
 void PF_ProjectExplorerPluginPrivate::updateContextMenuActions()
 {
 
 }
 
+/**
+ * @brief 将项目文件添加到最近的项目列表当中
+ *
+ * @param fileName
+ * @param displayName
+ */
 void PF_ProjectExplorerPluginPrivate::addToRecentProjects(const QString &fileName, const QString &displayName)
 {
+    if (fileName.isEmpty())
+        return;
+    QString prettyFileName(QDir::toNativeSeparators(fileName));
 
+    QList<QPair<QString, QString> >::iterator it;
+    for (it = m_recentProjects.begin(); it != m_recentProjects.end();)
+        if ((*it).first == prettyFileName)
+            it = m_recentProjects.erase(it);
+        else
+            ++it;
+
+    if (m_recentProjects.count() > m_maxRecentProjects)
+        m_recentProjects.removeLast();
+    m_recentProjects.prepend(qMakePair(prettyFileName, displayName));
+    QFileInfo fi(prettyFileName);
+    m_lastOpenDirectory = fi.absolutePath();
+    emit m_instance->recentProjectsChanged();
 }
 
 void PF_ProjectExplorerPluginPrivate::updateActions()
@@ -409,7 +591,7 @@ void PF_ProjectExplorerPluginPrivate::invalidateProject(PF_Project *project)
 
 void PF_ProjectExplorerPluginPrivate::projectAdded(PF_Project *pro)
 {
-
+    qDebug()<<Q_FUNC_INFO;
 }
 
 void PF_ProjectExplorerPluginPrivate::projectRemoved(PF_Project *pro)

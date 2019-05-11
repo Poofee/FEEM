@@ -119,7 +119,8 @@ private:
 class LeafNode : public Node
 {
 public:
-    LeafNode(const QString &_displayname, const LeafType leafType,NodeType nodeType = NodeType::Leaf);
+    LeafNode(const QString &_displayname, const LeafType leafType,NodeType nodeType = NodeType::Leaf, QIcon icon=QIcon());
+    ~LeafNode();
 
     virtual LeafNode* clone() const;
 
@@ -141,7 +142,7 @@ private:
 class FolderNode : public Node
 {
 public:
-    explicit FolderNode(const QString &displayName, NodeType nodeType = NodeType::Folder);
+    explicit FolderNode(const QString &displayName, NodeType nodeType = NodeType::Folder, QIcon icon=QIcon());
 
 //    QString displayName() const override;
 //    QIcon icon() const override;
@@ -200,7 +201,7 @@ class ProjectNode : public FolderNode
 {
 public:
     explicit ProjectNode(const QString &displayName,
-                         NodeType nodeType = NodeType::Project);
+                         NodeType nodeType = NodeType::Project, QIcon icon=QIcon());
 
     bool supportsAction(ProjectAction action, const Node *node) const override;
 

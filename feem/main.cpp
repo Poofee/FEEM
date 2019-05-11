@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("FEEM");
     QCoreApplication::setApplicationVersion("0.0.1");
 
+    a.processEvents();
+
     QTranslator translator;
     if (translator.load("feem_zh.qm",":/translations")) {
         qApp->installTranslator(&translator);

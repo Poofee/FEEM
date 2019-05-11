@@ -4,6 +4,7 @@
 #include <QObject>
 
 class Node;
+class FolderNode;
 
 class PF_ProjectTreeWidget;
 class PF_Project;
@@ -43,7 +44,7 @@ signals:
     void currentNodeChanged();
 
     // Emitted whenever the model needs to send a update signal.
-    void subtreeChanged(Node *node);
+    void subtreeChanged(FolderNode *node);
 
     void aboutToShowContextMenu(PF_Project *project, Node *node);
 

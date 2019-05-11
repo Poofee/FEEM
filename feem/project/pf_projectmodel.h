@@ -9,6 +9,8 @@
 #include <QTreeView>
 
 class Node;
+class PF_Project;
+class FolderNode;
 
 
 /*!
@@ -62,18 +64,18 @@ private:
 
 //    static const QLoggingCategory &logger();
 
-//    void updateSubtree(FolderNode *node);
-//    void rebuildModel();
-//    void addFolderNode(WrapperNode *parent, FolderNode *folderNode, QSet<Node *> *seen);
+    void updateSubtree(FolderNode *node);
+    void rebuildModel();
+    void addFolderNode(WrapperNode *parent, FolderNode *folderNode, QSet<Node *> *seen);
 //    bool trimEmptyDirectories(WrapperNode *parent);
 
 //    ExpandData expandDataForNode(const Node *node) const;
 //    void loadExpandData();
 //    void saveExpandData();
-//    void handleProjectAdded(Project *project);
-//    void handleProjectRemoved(Project *project);
-//    WrapperNode *nodeForProject(const Project *project) const;
-//    void addOrRebuildProjectModel(Project *project);
+    void handleProjectAdded(PF_Project *project);
+    void handleProjectRemoved(PF_Project *project);
+    WrapperNode *nodeForProject(const PF_Project *project) const;
+    void addOrRebuildProjectModel(PF_Project *project);
 
 //    void parsingStateChanged(Project *project);
 

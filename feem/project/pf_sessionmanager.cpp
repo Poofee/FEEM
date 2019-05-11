@@ -8,6 +8,7 @@
 #include <QVariant>
 #include <QSet>
 #include <QMessageBox>
+#include <QDebug>
 
 /*!
  \brief 用来管理以打开的项目，最近的项目，等等。
@@ -189,13 +190,14 @@ void PF_SessionManager::closeAllProjects()
 
 void PF_SessionManager::addProject(PF_Project* pro)
 {
+    qDebug()<<Q_FUNC_INFO;
     if(pro == nullptr)
         return;
 //    QTC_CHECK(!pro->displayName().isEmpty());
 //    QTC_CHECK(pro->id().isValid());
 
     d->m_virginSession = false;
-    if(!d->m_projects.contains(pro))
+    if(d->m_projects.contains(pro))
         return;
 
     d->m_projects.append(pro);

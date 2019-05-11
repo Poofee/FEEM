@@ -1,19 +1,25 @@
 #include "pf_projectmodel.h"
 
+#include "pf_project.h"
+#include "pf_projecttree.h"
+#include "pf_sessionmanager.h"
+
 #include "pf_node.h"
+
+#include <QDebug>
 
 PF_ProjectModel::PF_ProjectModel(QObject *parent)
     : BaseTreeModel(new WrapperNode(nullptr), parent)
 {
-//    ProjectTree *tree = ProjectTree::instance();
-//    connect(tree, &ProjectTree::subtreeChanged, this, &PF_ProjectModel::updateSubtree);
+    PF_ProjectTree *tree = PF_ProjectTree::instance();
+    connect(tree, &PF_ProjectTree::subtreeChanged, this, &PF_ProjectModel::updateSubtree);
 
-//    SessionManager *sm = SessionManager::instance();
-//    connect(sm, &SessionManager::projectRemoved, this, &PF_ProjectModel::handleProjectRemoved);
-//    connect(sm, &SessionManager::aboutToLoadSession, this, &PF_ProjectModel::loadExpandData);
-//    connect(sm, &SessionManager::aboutToSaveSession, this, &PF_ProjectModel::saveExpandData);
-//    connect(sm, &SessionManager::projectAdded, this, &PF_ProjectModel::handleProjectAdded);
-//    connect(sm, &SessionManager::startupProjectChanged, this, [this] { layoutChanged(); });
+    PF_SessionManager *sm = PF_SessionManager::instance();
+    connect(sm, &PF_SessionManager::projectRemoved, this, &PF_ProjectModel::handleProjectRemoved);
+//    connect(sm, &PF_SessionManager::aboutToLoadSession, this, &PF_ProjectModel::loadExpandData);
+//    connect(sm, &PF_SessionManager::aboutToSaveSession, this, &PF_ProjectModel::saveExpandData);
+    connect(sm, &PF_SessionManager::projectAdded, this, &PF_ProjectModel::handleProjectAdded);
+//    connect(sm, &PF_SessionManager::startupProjectChanged, this, [this] { layoutChanged(); });
 
 //    for (Project *project : SessionManager::projects())
 //        handleProjectAdded(project);
@@ -381,6 +387,158 @@ QModelIndex PF_ProjectModel::indexForNode(const Node *node) const
 {
     WrapperNode *wrapper = wrapperForNode(node);
     return wrapper ? indexForItem(wrapper) : QModelIndex();
+}
+
+void PF_ProjectModel::updateSubtree(FolderNode *node)
+{
+
+}
+
+void PF_ProjectModel::rebuildModel()
+{
+
+}
+
+/**
+ * @brief 递归式的将foldernode转化为treeitem
+ *
+ * @param parent
+ * @param folderNode
+ * @param seen
+ */
+void PF_ProjectModel::addFolderNode(WrapperNode *parent, FolderNode *folderNode, QSet<Node *> *seen)
+{
+    for (Node *node : folderNode->nodes()) {
+        if (FolderNode *subFolderNode = node->asFolderNode()) {
+//            const bool isHidden = m_filterProjects && !subFolderNode->showInSimpleTree();
+//            if (!isHidden && !seen->contains(subFolderNode)) {
+//                seen->insert(subFolderNode);
+                auto node = new WrapperNode(subFolderNode);
+                parent->appendChild(node);
+                addFolderNode(node, subFolderNode, seen);
+//                node->sortChildren(&sortWrapperNodes);
+//            } else {
+//                addFolderNode(parent, subFolderNode, seen);
+//            }
+        } else if (LeafNode *leafNode = node->asLeafNode()) {
+//            const bool isHidden = m_filterGeneratedFiles && fileNode->isGenerated();
+//            if (!isHidden && !seen->contains(leafNode)) {
+//                seen->insert(leafNode);
+                parent->appendChild(new WrapperNode(leafNode));
+//            }
+        }
+    }
+}
+
+/**
+ * @brief 通常是要处理从session传过来的project
+ *
+ * @param project
+ */
+void PF_ProjectModel::handleProjectAdded(PF_Project *project)
+{
+    qDebug()<<Q_FUNC_INFO;
+    if(!project)
+        return;
+//    connect(project, &Project::parsingStarted,
+//            this, [this, project]() {
+//        if (nodeForProject(project))
+//            parsingStateChanged(project);
+//    });
+//    connect(project, &Project::parsingFinished,
+//            this, [this, project]() {
+//        if (nodeForProject(project))
+//            parsingStateChanged(project);
+//    });
+    addOrRebuildProjectModel(project);
+}
+
+void PF_ProjectModel::handleProjectRemoved(PF_Project *project)
+{
+    destroyItem(nodeForProject(project));
+}
+
+/**
+ * @brief 返回project对应树节点上的位置
+ *
+ * @param project
+ * @return WrapperNode
+ */
+WrapperNode *PF_ProjectModel::nodeForProject(const PF_Project *project) const
+{
+    qDebug()<<Q_FUNC_INFO;
+    if(!project)
+        return nullptr;
+    /** 计算project的rootnode **/
+    ProjectNode *containerNode = project->rootProjectNode();
+    if(!containerNode)
+        return nullptr;
+    /** 在tree当中查找containerNode，项目节点肯定在第一层 **/
+    auto pre0 = [containerNode](TreeItem *node) {
+        return static_cast<WrapperNode *>(node)->m_node == containerNode;
+    };
+
+    return static_cast<WrapperNode *>(rootItem()->findChildAtLevel(1,pre0));
+}
+
+/**
+ * @brief 重新生成project模型，如有有就重新生成，如果没有就添加
+ *
+ * @param project
+ */
+void PF_ProjectModel::addOrRebuildProjectModel(PF_Project *project)
+{
+    qDebug()<<Q_FUNC_INFO;
+    /** 查找模型当中有没有project **/
+    WrapperNode *container = nodeForProject(project);
+    if (container) {
+        container->removeChildren();
+        project->rootProjectNode()->removeAllChildren();
+    } else {
+        /** project的rootnode应该在构造的时候生成好 **/
+        container = new WrapperNode(project->rootProjectNode());
+        rootItem()->appendChild(container);
+//        rootItem()->insertOrderedChild(container, &compareProjectNames);
+    }
+
+    QSet<Node *> seen;
+
+    if (ProjectNode *projectNode = project->rootProjectNode()) {
+        addFolderNode(container, projectNode, &seen);
+//        if (m_trimEmptyDirectories)
+//            trimEmptyDirectories(container);
+    }
+
+//    if (project->needsInitialExpansion())
+//        m_toExpand.insert(expandDataForNode(container->m_node));
+
+//    if (container->childCount() == 0) {
+//        auto projectFileNode = std::make_unique<FileNode>(project->projectFilePath(),
+//                                                          FileType::Project, false);
+//        seen.insert(projectFileNode.get());
+//        container->appendChild(new WrapperNode(projectFileNode.get()));
+//        project->containerNode()->addNestedNode(std::move(projectFileNode));
+//    }
+
+//    container->sortChildren(&sortWrapperNodes);
+
+//    container->forAllChildren([this](WrapperNode *node) {
+//        if (node->m_node) {
+//            const QString path = node->m_node->filePath().toString();
+//            const QString displayName = node->m_node->displayName();
+//            ExpandData ed(path, displayName);
+//            if (m_toExpand.contains(ed))
+//                emit requestExpansion(node->index());
+//        } else {
+//            emit requestExpansion(node->index());
+//        }
+//    });
+
+//    const QString path = container->m_node->filePath().toString();
+//    const QString displayName = container->m_node->displayName();
+//    ExpandData ed(path, displayName);
+//    if (m_toExpand.contains(ed))
+//        emit requestExpansion(container->index());
 }
 
 //void PF_ProjectModel::setProjectFilterEnabled(bool filter)

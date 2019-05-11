@@ -177,25 +177,25 @@ private:
 PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
 {
     m_model = new PF_ProjectModel(this);
-    auto noderoot = new Node(QString("root:untitled.mph"),NodeType::Leaf,QIcon(":/tree/model_3d.png"));
-    auto nodedef = new Node(QString("Global Definitions"),NodeType::Leaf,QIcon(":/tree/global_branch.png"));
+//    auto noderoot = new Node(QString("root:untitled.mph"),NodeType::Leaf,QIcon(":/tree/model_3d.png"));
+//    auto nodedef = new Node(QString("Global Definitions"),NodeType::Leaf,QIcon(":/tree/global_branch.png"));
 
-    auto nodemat = new Node(QString("Materials:Materials"),NodeType::Leaf,QIcon(":/tree/material.png"));
-    auto nodecomp = new Node(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_2d_axi.png"));
-    auto nodedefin = new Node(QString("Definitions"),NodeType::Leaf,QIcon(":/tree/definitions.png"));
-    auto nodegeo = new Node(QString("Geometry1"),NodeType::Leaf,QIcon(":/tree/geometry.png"));
-    auto nodemesh = new Node(QString("Mesh1"),NodeType::Leaf,QIcon(":/tree/mesh.png"));
+//    auto nodemat = new Node(QString("Materials:Materials"),NodeType::Leaf,QIcon(":/tree/material.png"));
+//    auto nodecomp = new Node(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_2d_axi.png"));
+//    auto nodedefin = new Node(QString("Definitions"),NodeType::Leaf,QIcon(":/tree/definitions.png"));
+//    auto nodegeo = new Node(QString("Geometry1"),NodeType::Leaf,QIcon(":/tree/geometry.png"));
+//    auto nodemesh = new Node(QString("Mesh1"),NodeType::Leaf,QIcon(":/tree/mesh.png"));
 
-    auto comp = new WrapperNode(nodecomp);
-    comp->appendChild(new WrapperNode(nodedefin));
-    comp->appendChild((new WrapperNode(nodegeo)));
-    comp->appendChild((new WrapperNode(nodemesh)));
-    auto def = new WrapperNode(nodedef);
-    def->appendChild(new WrapperNode(nodemat));
-    WrapperNode* root = new WrapperNode(noderoot);
-    root->appendChild(def);
-    root->appendChild(comp);
-    m_model->rootItem()->insertChild(0,root);
+//    auto comp = new WrapperNode(nodecomp);
+//    comp->appendChild(new WrapperNode(nodedefin));
+//    comp->appendChild((new WrapperNode(nodegeo)));
+//    comp->appendChild((new WrapperNode(nodemesh)));
+//    auto def = new WrapperNode(nodedef);
+//    def->appendChild(new WrapperNode(nodemat));
+//    WrapperNode* root = new WrapperNode(noderoot);
+//    root->appendChild(def);
+//    root->appendChild(comp);
+//    m_model->rootItem()->insertChild(0,root);
 
     m_view = new PF_ProjectTreeView;
     m_view->setModel(m_model);

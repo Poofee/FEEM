@@ -2,6 +2,8 @@
 
 #include "actionmanager/actionmanager.h"
 #include "mainwindow.h"
+#include "pf_sessionmanager.h"
+#include "pf_project.h"
 
 #include <QSplashScreen>
 #include <QMessageBox>
@@ -58,5 +60,7 @@ bool coreApp::initialize()
     splash->finish(m_mainWindow);
     delete splash;
 
+    PF_Project* pro = new PF_Project(this);
+    PF_SessionManager::instance()->addProject(pro);
     return true;
 }

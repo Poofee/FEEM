@@ -8,6 +8,7 @@
 #include <QMenu>
 
 #include <QApplication>
+#include <QDebug>
 
 PF_ProjectTree* PF_ProjectTree::s_instance = nullptr;
 
@@ -199,6 +200,7 @@ void PF_ProjectTree::collapseAll()
 */
 void PF_ProjectTree::sessionAndTreeChanged()
 {
+    qDebug()<<Q_FUNC_INFO;
     sessionChanged();
     emit treeChanged();
 }

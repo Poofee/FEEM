@@ -41,6 +41,9 @@ public:
 
     QString displayName() const;
 
+    void creatTree();
+    void setRootProjectNode(std::unique_ptr<ProjectNode> &&root); // takes ownership!
+
     void handleSubTreeChanged(FolderNode *node);
 
     virtual ProjectNode* rootProjectNode() const;
