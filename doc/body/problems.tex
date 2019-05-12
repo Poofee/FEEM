@@ -952,7 +952,7 @@ you can call lupdate with the argument -noobsolete.
 \subsection{创建tree的右键菜单}
 1.先在actionmanager当中创建一个菜单的ActionContainer*，这个manager已经在主窗口当中进行了初始化了；
 
-2.然后在菜单当中创建所需要的group，每一个group都代表了一类功能；
+2.然后在菜单当中创建所需要的group，每一个group都代表了一类功能，group是一个特定字符串代表的值，不同的container可以含有相同的字符串，就像每栋楼都有101房间一样，默认的，为了防止将action加入到一个空的container，container自带三个group，会将没有id的action添加到这三个的其中一个；
 
 3.接下来就是给各个group当中添加actions，在添加第一个action之前，需要添加一个分隔符，然后就是不断的添加action到对应的group了。同一个action可以添加到不同的group当中。小技巧就是，在h文件当中定义一些group的常量名称。
 

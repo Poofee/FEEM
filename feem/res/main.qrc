@@ -102,5 +102,13 @@
         <file>add_study.png</file>
         <file>add_study_32.png</file>
         <file>materialdata/matlib.dat</file>
+        <file>tree/magnetic_fields.png</file>
+        <file>tree/magnetic_fields_32.png</file>
+        <file>tree/modlib_heat.png</file>
+        <file>tree/modlib_heat_32.png</file>
+        <file>tree/phys_magnetic_fields_no_currents.png</file>
+        <file>tree/phys_magnetic_fields_no_currents_32.png</file>
+        <file>tree/help_16.png</file>
+        <file>tree/help_32.png</file>
     </qresource>
 </RCC>

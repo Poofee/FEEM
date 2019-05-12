@@ -58,6 +58,8 @@ const char G_FILE_OPEN[]          = "ProjectFile.Group.Open";
 const char G_FILE_OTHER[]         = "ProjectFile.Group.Other";
 const char G_FILE_CONFIG[]        = "ProjectFile.Group.Config";
 
+const char G_HELP[] = "Project.Help";
+
 } // namespace Constants
 
 #endif // PROJECTEXPLORERCONSTANTS_H
