@@ -31,15 +31,19 @@ const char G_BUILD_RUN[]          = "ProjectExplorer.Group.Run";
 const char G_BUILD_CANCEL[]       = "ProjectExplorer.Group.BuildCancel";
 
 /** 不同的上下文菜单以及子菜单 **/
-const char M_PROJECTCONTEXT[]     = "Project.Menu.Project";
+const char M_PROJECTCONTEXT[]     = "Project.Menu.Project";/** 项目节点 **/
 const char M_ADDMODELCONTEXT[] = "Project.Menu.Project.AddModel";
 const char M_ADDSTUDYCONTEXT[] = "Project.Menu.Project.AddStudy";
 
-const char M_GLOBALDEFSCONTEXT[]  = "Project.Menu.GlobalDefs";
+const char M_GLOBALDEFSCONTEXT[]  = "Project.Menu.GlobalDefs";/** 全局定义节点 **/
 
-const char M_COMPONENTCONTEXT[]      = "Project.Menu.Component";
+const char M_COMPONENTCONTEXT[]      = "Project.Menu.Component";/** 模型节点 **/
 
-const char M_MATERIALCONTEXT[] = "";
+const char M_MATERIALCONTEXT[] = "Project.Menu.Material";/** 材料节点 **/
+
+const char M_GEOMETRYCONTEXT[] = "Project.Menu.Geometry";/** 几何节点 **/
+
+const char M_MESHCONTEXT[] = "Project.Menu.Mesh";/** 分网节点 **/
 
 /** 每个上下文菜单当中的所有group **/
 const char G_PROJECT_ADD[]      = "Project.Group.Add";

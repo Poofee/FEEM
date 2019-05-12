@@ -23,6 +23,8 @@ enum class NodeType : quint16 {
     Leaf = 1,
     Folder,
     Geometry,
+    Mesh,
+    Definition,
     Component,
     Material,
     Variable,

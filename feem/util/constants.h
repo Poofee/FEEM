@@ -19,10 +19,10 @@ const char P_Result[]                   = "FEEM.Page.Result";
 const char C_GLOBAL[]                   = "Global Context";
 
 // Project tree context menu
-const char M_PROJECT_CONTEXT[]          = "Project.Menu.Project";
-const char M_DEFINITION_CONTEXT[]       = "";
-const char M_MATERIAL_CONTEXT[]         = "";
-const char M_GEOMETRY_CONTEXT[]         = "";
+//const char M_PROJECT_CONTEXT[]          = "Project.Menu.Project";
+//const char M_DEFINITION_CONTEXT[]       = "";
+//const char M_MATERIAL_CONTEXT[]         = "";
+//const char M_GEOMETRY_CONTEXT[]         = "";
 
 /**  actions **/
 

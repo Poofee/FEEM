@@ -25,6 +25,8 @@ const char ADDSTATICMAG[] = "ProjectExplorer.AddStaticMagnetic";
 const char ADDTRANSIENTMAG[] = "ProjectExplorer.AddTransientMagnetic";
 const char ADDHEAT[] = "ProjectExplorer.AddHeat";
 
+const char ADDMATERIAL[] = "ProjectExplorer.AddMaterial";
+const char ADDBLANKMATERIAL[] = "ProjectExplorer.AddBlankMaterial";
 
 // Action priorities
 const int  P_ACTION_RUN            = 100;
@@ -138,6 +140,9 @@ public:
     QAction* m_addStaticMag;
     QAction* m_addTransientMag;
     QAction* m_addHeat;
+
+    QAction* addMaterial;
+    QAction* addBlankMaterial;
 
     QAction* m_solve;
 
@@ -285,25 +290,45 @@ bool PF_ProjectExplorerPlugin::initialize()
     Context projecTreeContext(Constants::C_PROJECT_TREE);
     //   actions
 
+    /** 项目 节点 **/
     ActionContainer *mprojectContextMenu =
         ActionManager::createMenu(Constants::M_PROJECTCONTEXT);
     mprojectContextMenu->appendGroup(Constants::G_PROJECT_ADD);
     mprojectContextMenu->appendGroup(Constants::G_PROJECT_SOLVE);
 
+    /** 全局定义 节点 **/
     ActionContainer *mglobaldefsContextMenu =
         ActionManager::createMenu(Constants::M_GLOBALDEFSCONTEXT);
+
+    /** 材料 节点 **/
+    ActionContainer *mmaterialContextMenu =
+        ActionManager::createMenu(Constants::M_MATERIALCONTEXT);
+
+    /** 分网 节点 **/
+    ActionContainer *mmeshContextMenu =
+        ActionManager::createMenu(Constants::M_MESHCONTEXT);
+
+    /** 几何 节点 **/
+    ActionContainer *mgeometryContextMenu =
+        ActionManager::createMenu(Constants::M_GEOMETRYCONTEXT);
+
+    /** 模型 节点 **/
+    ActionContainer *mcomponentContextMenu =
+        ActionManager::createMenu(Constants::M_COMPONENTCONTEXT);
 
     ActionContainer * const addModel =
             ActionManager::createMenu(Constants::M_ADDMODELCONTEXT);
     addModel->setOnAllDisabledBehavior(ActionContainer::Show);
     dd->m_addmodel = addModel->menu();
     dd->m_addmodel->setTitle(tr("Add Model"));
+    dd->m_addmodel->setIcon(QIcon(":/tree/model_3d.png"));
 
     ActionContainer * const addStudy =
             ActionManager::createMenu(Constants::M_ADDSTUDYCONTEXT);
     addStudy->setOnAllDisabledBehavior(ActionContainer::Show);
-    dd->m_addmodel = addStudy->menu();
-    dd->m_addmodel->setTitle(tr("Add Study"));
+    dd->m_addstudy = addStudy->menu();
+    dd->m_addstudy->setTitle(tr("Add Study"));
+    dd->m_addstudy->setIcon(QIcon(":/add_study.png"));
 
     Command* cmd;
 
@@ -311,17 +336,17 @@ bool PF_ProjectExplorerPlugin::initialize()
     dd->m_add3Dmodel = new QAction(tr("3D"), this);
     cmd = ActionManager::registerAction(dd->m_add3Dmodel, Constants::ADD3DMODEL);
 //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-    addModel->addAction(cmd);
+    addModel->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     dd->m_add2DAxismodel = new QAction(tr("2D Axisymmetric"), this);
     cmd = ActionManager::registerAction(dd->m_add2DAxismodel, Constants::ADD2DAXIS);
 //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-    addModel->addAction(cmd);
+    addModel->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     dd->m_add2Dmodel = new QAction(tr("2D"), this);
     cmd = ActionManager::registerAction(dd->m_add2Dmodel, Constants::ADD2DMODEL);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-    addModel->addAction(cmd);
+    addModel->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     mprojectContextMenu->addMenu(addModel,Constants::G_PROJECT_ADD);
 
@@ -329,19 +354,30 @@ bool PF_ProjectExplorerPlugin::initialize()
     dd->m_addStaticMag = new QAction(tr("Static Magnetic Field"), this);
     cmd = ActionManager::registerAction(dd->m_addStaticMag, Constants::ADDSTATICMAG);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-    addStudy->addAction(cmd);
+    addStudy->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     dd->m_addTransientMag = new QAction(tr("Transient Magnetic Field"), this);
     cmd = ActionManager::registerAction(dd->m_addTransientMag, Constants::ADDTRANSIENTMAG);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-    addStudy->addAction(cmd);
+    addStudy->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     dd->m_addHeat = new QAction(tr("Heat Field"), this);
     cmd = ActionManager::registerAction(dd->m_addHeat, Constants::ADDHEAT);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-    addStudy->addAction(cmd);
+    addStudy->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     mprojectContextMenu->addMenu(addStudy,Constants::G_PROJECT_ADD);
+
+    /************material******************/
+    dd->addMaterial = new QAction(QIcon(":/material_picker.png"),tr("add Material"), this);
+    cmd = ActionManager::registerAction(dd->addMaterial, Constants::ADDMATERIAL);
+    //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    mmaterialContextMenu->addAction(cmd,Constants::G_DEFAULT_ONE);
+
+    dd->addBlankMaterial = new QAction(QIcon(":/more_materials.png"),tr("add Blank Material"), this);
+    cmd = ActionManager::registerAction(dd->addBlankMaterial, Constants::ADDBLANKMATERIAL);
+    //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    mmaterialContextMenu->addAction(cmd,Constants::G_DEFAULT_ONE);
 
     return true;
 }

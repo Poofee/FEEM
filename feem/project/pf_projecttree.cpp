@@ -161,6 +161,10 @@ void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &
             break;
         }
 //        case NodeType::VirtualFolder:
+        case NodeType::Material:{
+            contextMenu = ActionManager::actionContainer(Constants::M_MATERIALCONTEXT)->menu();
+            break;
+        }
         case NodeType::Folder:
 //            contextMenu = ActionManager::actionContainer(Constants::M_FOLDERCONTEXT)->menu();
             break;

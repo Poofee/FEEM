@@ -92,5 +92,14 @@
         <file>tree/report_up_disabled.png</file>
         <file>tree/show_tree.png</file>
         <file>tree/report_down.png</file>
+        <file>material_picker.png</file>
+        <file>material_picker_32.png</file>
+        <file>materials_tab.png</file>
+        <file>more_materials.png</file>
+        <file>more_materials_32.png</file>
+        <file>new_material_library.png</file>
+        <file>new_material_library_32.png</file>
+        <file>add_study.png</file>
+        <file>add_study_32.png</file>
     </qresource>
 </RCC>
