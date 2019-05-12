@@ -267,8 +267,9 @@ void PF_Line::draw(QCPPainter *painter)
     }
     QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));
     QPointF end(mParentPlot->toGuiX(data.endpoint.x),mParentPlot->toGuiY(data.endpoint.y));
+
     painter->drawLine(start,end);
-    qDebug()<<start<<end;
+
     painter->drawText(start,data.startpoint.toString());
     painter->drawText(end,data.endpoint.toString());
 
@@ -276,7 +277,7 @@ void PF_Line::draw(QCPPainter *painter)
     if (isSelected() || isHighlighted()) {
 //		if (!e->isParentSelected()) {
             PF_VectorSolutions const& s = this->getRefPoints();
-            int x,y;
+            double x,y;
             int size = 4;
             for (size_t i=0; i<s.getNumber(); ++i) {
                 x = mParentPlot->toGuiX(s.get(i).x);

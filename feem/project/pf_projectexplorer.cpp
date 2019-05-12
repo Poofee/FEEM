@@ -24,49 +24,7 @@ const char ADD2DMODEL[] = "ProjectExplorer.Add2DModel";
 const char ADDSTATICMAG[] = "ProjectExplorer.AddStaticMagnetic";
 const char ADDTRANSIENTMAG[] = "ProjectExplorer.AddTransientMagnetic";
 const char ADDHEAT[] = "ProjectExplorer.AddHeat";
-const char NEWPROJECT[]           = "ProjectExplorer.NewProject";
-const char LOAD[]                 = "ProjectExplorer.Load";
-const char UNLOAD[]               = "ProjectExplorer.Unload";
-const char UNLOADCM[]             = "ProjectExplorer.UnloadCM";
-const char CLEARSESSION[]         = "ProjectExplorer.ClearSession";
-const char BUILDPROJECTONLY[]     = "ProjectExplorer.BuildProjectOnly";
-//const char BUILDCM[]              = "ProjectExplorer.BuildCM";
-//const char BUILDDEPENDCM[]        = "ProjectExplorer.BuildDependenciesCM";
-//const char BUILDSESSION[]         = "ProjectExplorer.BuildSession";
-const char REBUILDPROJECTONLY[]   = "ProjectExplorer.RebuildProjectOnly";
-const char REBUILD[]              = "ProjectExplorer.Rebuild";
-//const char REBUILDCM[]            = "ProjectExplorer.RebuildCM";
-//const char REBUILDDEPENDCM[]      = "ProjectExplorer.RebuildDependenciesCM";
-//const char REBUILDSESSION[]       = "ProjectExplorer.RebuildSession";
-//const char DEPLOYPROJECTONLY[]    = "ProjectExplorer.DeployProjectOnly";
-//const char DEPLOY[]               = "ProjectExplorer.Deploy";
-//const char DEPLOYCM[]             = "ProjectExplorer.DeployCM";
-//const char DEPLOYSESSION[]        = "ProjectExplorer.DeploySession";
-//const char CLEANPROJECTONLY[]     = "ProjectExplorer.CleanProjectOnly";
-//const char CLEAN[]                = "ProjectExplorer.Clean";
-//const char CLEANCM[]              = "ProjectExplorer.CleanCM";
-//const char CLEANDEPENDCM[]        = "ProjectExplorer.CleanDependenciesCM";
-//const char CLEANSESSION[]         = "ProjectExplorer.CleanSession";
-const char CANCELBUILD[]          = "ProjectExplorer.CancelBuild";
-const char RUN[]                  = "ProjectExplorer.Run";
-//const char RUNWITHOUTDEPLOY[]     = "ProjectExplorer.RunWithoutDeploy";
-const char RUNCONTEXTMENU[]       = "ProjectExplorer.RunContextMenu";
-const char ADDEXISTINGFILES[]     = "ProjectExplorer.AddExistingFiles";
-const char ADDEXISTINGDIRECTORY[] = "ProjectExplorer.AddExistingDirectory";
-//const char ADDNEWSUBPROJECT[]     = "ProjectExplorer.AddNewSubproject";
-//const char REMOVEPROJECT[]        = "ProjectExplorer.RemoveProject";
-const char OPENFILE[]             = "ProjectExplorer.OpenFile";
-const char SEARCHONFILESYSTEM[]   = "ProjectExplorer.SearchOnFileSystem";
-//const char SHOWINGRAPHICALSHELL[] = "ProjectExplorer.ShowInGraphicalShell";
-const char OPENTERMINALHERE[]     = "ProjectExplorer.OpenTerminalHere";
-const char DUPLICATEFILE[]        = "ProjectExplorer.DuplicateFile";
-const char DELETEFILE[]           = "ProjectExplorer.DeleteFile";
-const char DIFFFILE[]             = "ProjectExplorer.DiffFile";
-//const char SETSTARTUP[]           = "ProjectExplorer.SetStartup";
-const char PROJECTTREE_COLLAPSE_ALL[] = "ProjectExplorer.CollapseAll";
 
-//const char SELECTTARGET[]         = "ProjectExplorer.SelectTarget";
-//const char SELECTTARGETQUICK[]    = "ProjectExplorer.SelectTargetQuick";
 
 // Action priorities
 const int  P_ACTION_RUN            = 100;
@@ -331,6 +289,9 @@ bool PF_ProjectExplorerPlugin::initialize()
         ActionManager::createMenu(Constants::M_PROJECTCONTEXT);
     mprojectContextMenu->appendGroup(Constants::G_PROJECT_ADD);
     mprojectContextMenu->appendGroup(Constants::G_PROJECT_SOLVE);
+
+    ActionContainer *mglobaldefsContextMenu =
+        ActionManager::createMenu(Constants::M_GLOBALDEFSCONTEXT);
 
     ActionContainer * const addModel =
             ActionManager::createMenu(Constants::M_ADDMODELCONTEXT);

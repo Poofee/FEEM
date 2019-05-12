@@ -332,10 +332,14 @@ void QCPPainter::setPen(Qt::PenStyle penStyle)
 */
 void QCPPainter::drawLine(const QLineF &line)
 {
-    if (mIsAntialiasing || mModes.testFlag(pmVectorized))
-        QPainter::drawLine(line);
-    else
+//    if (mIsAntialiasing || mModes.testFlag(pmVectorized))
+//    {
+//        QPainter::drawLine(line);
+//    }
+//    else
+//    {
         QPainter::drawLine(line.toLine());
+//    }
 }
 
 /*!
@@ -1543,11 +1547,16 @@ bool QCPLayerable::moveToLayer(QCPLayer *layer, bool prepend)
 void QCPLayerable::applyAntialiasingHint(QCPPainter *painter, bool localAntialiased, QCP::AntialiasedElement overrideElement) const
 {
     if (mParentPlot && mParentPlot->notAntialiasedElements().testFlag(overrideElement))
-        painter->setAntialiasing(false);
-    else if (mParentPlot && mParentPlot->antialiasedElements().testFlag(overrideElement))
-        painter->setAntialiasing(true);
+    {
+        painter->setAntialiasing(false);//qDebug()<<"notAntialiasedElements";
+    }else if (mParentPlot && mParentPlot->antialiasedElements().testFlag(overrideElement))
+    {
+        painter->setAntialiasing(true);//qDebug()<<"antialiasedElements";
+    }
     else
-        painter->setAntialiasing(localAntialiased);
+    {
+        painter->setAntialiasing(true);//qDebug()<<"else";
+    }
 }
 
 /*! \internal

@@ -14,3 +14,7 @@
 *.sln
 /bin
 *.pro.user.*
+comsol
+Debug
+Release
+GeneratedFiles
