@@ -916,8 +916,7 @@ qmodelindex这个变量它所指向的东西可能会变，因为它的含义是
 大型软件怎么调试？光是编译有时候可能都得十几分钟，有的甚至有几小时，几天的，这种情况还整个跑起来调试不太现实吧，应该都是单个模块调试吧。
 \subsection{更新}
 以谁为更新依据原理应该是谁先获得焦点。
-\subsection{Type argument of Q_DECLARE_METATYPE(T*) must be fully defined}
-报错是由于没有include文件。
+
 \subsection{menu}
 之前在顾虑ribbon的page上的每一个group都是一个控件，没办法插入菜单。但是，似乎理解不够，抽象不够彻底。group上面的动作，可以通过添加action来实现，menu本质上也是一种widget，所以group也是可以插入menu的。
 \subsection{tree与node}
@@ -929,3 +928,29 @@ explore是怎样新建项目，打开项目的？具体做了啥？项目内容�
 
 \subsection{signal没有响应}
 qt当中，已经设置了信号并且进行了连接，为什么没有响应？没有执行任何函数，在信号发出之后。肯定是哪里跳出了。。。
+\subsection{error: C2039: 'unique\_ptr' : is not a member of 'std'}
+vs2013 好像不支持这个。完犊子。用vs2017写的。
+
+\begin{lstlisting}
+	#include <memory>
+\end{lstlisting}
+
+加上这句即可。
+\subsection{绘制方形的时候，直线不黑，严重虚化}
+感觉是在坐标强制转换的时候出了错误，有的时候会差一个像素点，导致参考点绘制的时候不在中心上。而且有的时候，一条黑色的直线会画成两条，一条灰色的，一条黑色的。有的时候就没有。如图\ref{fig:linemohu}所示。
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{figures/linemohu}
+	\caption{绘制的直线不黑，模糊}
+	\label{fig:linemohu}
+\end{figure}
+\subsection{qt 翻译文件，清楚不存在的条目}
+you can call lupdate with the argument -noobsolete. 
+\subsection{创建tree的右键菜单}
+1.先在actionmanager当中创建一个菜单的ActionContainer*，这个manager已经在主窗口当中进行了初始化了；
+
+2.然后在菜单当中创建所需要的group，每一个group都代表了一类功能；
+
+3.接下来就是给各个group当中添加actions，在添加第一个action之前，需要添加一个分隔符，然后就是不断的添加action到对应的group了。同一个action可以添加到不同的group当中。小技巧就是，在h文件当中定义一些group的常量名称。
+
+4.在treeview的showContextMenu函数当中，根据不同的节点类型，调用显示不同的菜单。

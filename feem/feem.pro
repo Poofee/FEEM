@@ -112,7 +112,8 @@ HEADERS += \
     project/pf_sessionmanager.h \
     CAD/action/pf_actionselectsingle.h \
     project/inavigationwidgetfactory.h \
-    core/coreapp.h
+    core/coreapp.h \
+    project/projectexplorerconstants.h
 
 SOURCES += \
     ./CAD/action/pf_eventhandler.cpp \

@@ -113,7 +113,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
             ds2Min = ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapEndpoint"<<ds2<<t.x<<t.y;
+//            qDebug()<<"snapEndpoint"<<ds2<<t.x<<t.y;
         }
     }
     if(snapMode.snapCenter){
@@ -122,7 +122,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
             ds2Min = ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapCenter"<<ds2;
+//            qDebug()<<"snapCenter"<<ds2;
         }
     }
     if(snapMode.snapMiddle){
@@ -134,7 +134,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
             ds2Min = ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapMiddle"<<ds2;
+//            qDebug()<<"snapMiddle"<<ds2;
         }
     }
     if(snapMode.snapDistance){
@@ -146,7 +146,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
             ds2Min = ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapDistance"<<ds2;
+//            qDebug()<<"snapDistance"<<ds2;
         }
     }
     if(snapMode.snapIntersection){
@@ -155,7 +155,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
             ds2Min = ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapIntersection"<<ds2;
+//            qDebug()<<"snapIntersection"<<ds2;
         }
     }
     if (snapMode.snapOnEntity &&
@@ -165,7 +165,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
             ds2Min = ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapOnEntity";
+//            qDebug()<<"snapOnEntity";
         }
     }
     if(snapMode.snapGrid){
@@ -174,7 +174,7 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
 //            ds2Min=ds2;
             pImpData->snapSpot = t;
-            qDebug()<<"snapGrid"<<ds2;
+//            qDebug()<<"snapGrid"<<ds2;
         }
     }
     if( !pImpData->snapSpot.valid ) {
@@ -189,10 +189,13 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
             /** 判断捕捉到的点是否与鼠标点距离在捕捉范围内，应当按照像素来计算 **/
             if (view->toGuiDX(mouseCoord.distanceTo(pImpData->snapSpot)) < snapRange )
                 pImpData->snapSpot = mouseCoord;
-            qDebug()<<"catched point"<<pImpData->snapSpot.x<<pImpData->snapSpot.y;
+//            qDebug()<<"catched point"<<pImpData->snapSpot.x<<pImpData->snapSpot.y;
         }
     }
 
+    if(pImpData->snapSpot.x < 0){
+        pImpData->snapSpot.x = 0;
+    }
     pImpData->snapCoord = pImpData->snapSpot;
     snapPoint(pImpData->snapSpot, false);
 

@@ -1,9 +1,11 @@
 #include "pf_projecttree.h"
 #include "pf_projecttreewidget.h"
+#include "projectexplorerconstants.h"
 
 #include "pf_node.h"
 #include "pf_project.h"
 #include "actionmanager/actionmanager.h"
+#include "actionmanager/actioncontainer.h"
 #include "pf_sessionmanager.h"
 #include <QMenu>
 
@@ -143,8 +145,8 @@ Node *PF_ProjectTree::findCurrentNode()
 void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &globalPos, Node *node)
 {
     QMenu *contextMenu = nullptr;
-//    Project *project = projectForNode(node);
-//    emit s_instance->aboutToShowContextMenu(project, node);
+    PF_Project *project = projectForNode(node);
+    emit s_instance->aboutToShowContextMenu(project, node);
 
     if (!node) {
 //        contextMenu = Core::ActionManager::actionContainer(Constants::M_SESSIONCONTEXT)->menu();
@@ -153,7 +155,7 @@ void PF_ProjectTree::showContextMenu(PF_ProjectTreeWidget *focus, const QPoint &
         case NodeType::Project: {
 //            if ((node->parentFolderNode() && node->parentFolderNode()->asContainerNode())
 //                    || node->asContainerNode())
-//                contextMenu = ActionManager::actionContainer(Constants::M_PROJECTCONTEXT)->menu();
+                contextMenu = ActionManager::actionContainer(Constants::M_PROJECTCONTEXT)->menu();
 //            else
 //                contextMenu = ActionManager::actionContainer(Constants::M_SUBPROJECTCONTEXT)->menu();
             break;

@@ -115,6 +115,31 @@ bool PF_Entity::isParentSelected() const
     return false;
 }
 
+bool PF_Entity::setHighlighted(bool Highlighted)
+{
+    if(Highlighted)
+        setFlag(PF::FlagHighlighted);
+    else
+        delFlag(PF::FlagHighlighted);
+
+    return  true;
+}
+
+bool PF_Entity::toggleHighlighted()
+{
+    return setHighlighted(!isHighlighted());
+}
+
+bool PF_Entity::isHighlighted() const
+{
+    return getFlag(PF::FlagHighlighted);
+}
+
+bool PF_Entity::isParentHighlighted() const
+{
+    return false;
+}
+
 bool PF_Entity::isVisible() const
 {
     if(!getFlag(PF::FlagVisible))

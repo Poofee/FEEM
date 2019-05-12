@@ -62,6 +62,11 @@ public:
     virtual bool isSelected() const;
     bool isParentSelected() const;
 
+    virtual bool setHighlighted(bool Highlighted);
+    virtual bool toggleHighlighted();
+    virtual bool isHighlighted() const;
+    bool isParentHighlighted() const;
+
     virtual bool isVisible() const;
     virtual void setVisible(bool v);
 

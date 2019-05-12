@@ -5,6 +5,7 @@
 #include "actionmanager/actionmanager.h"
 #include "actionmanager/actioncontainer.h"
 #include "actionmanager/command.h"
+#include "projectexplorerconstants.h"
 
 #include <QAction>
 #include <QMenu>
@@ -16,49 +17,56 @@ namespace Constants {
 const int  P_MODE_SESSION         = 85;
 
 // Actions
+const char ADD3DMODEL[] = "ProjectExplorer.Add3DModel";
+const char ADD2DAXIS[] = "ProjectExplorer.Add2DAxisymmetric";
+const char ADD2DMODEL[] = "ProjectExplorer.Add2DModel";
+
+const char ADDSTATICMAG[] = "ProjectExplorer.AddStaticMagnetic";
+const char ADDTRANSIENTMAG[] = "ProjectExplorer.AddTransientMagnetic";
+const char ADDHEAT[] = "ProjectExplorer.AddHeat";
 const char NEWPROJECT[]           = "ProjectExplorer.NewProject";
 const char LOAD[]                 = "ProjectExplorer.Load";
 const char UNLOAD[]               = "ProjectExplorer.Unload";
 const char UNLOADCM[]             = "ProjectExplorer.UnloadCM";
 const char CLEARSESSION[]         = "ProjectExplorer.ClearSession";
 const char BUILDPROJECTONLY[]     = "ProjectExplorer.BuildProjectOnly";
-const char BUILDCM[]              = "ProjectExplorer.BuildCM";
-const char BUILDDEPENDCM[]        = "ProjectExplorer.BuildDependenciesCM";
-const char BUILDSESSION[]         = "ProjectExplorer.BuildSession";
+//const char BUILDCM[]              = "ProjectExplorer.BuildCM";
+//const char BUILDDEPENDCM[]        = "ProjectExplorer.BuildDependenciesCM";
+//const char BUILDSESSION[]         = "ProjectExplorer.BuildSession";
 const char REBUILDPROJECTONLY[]   = "ProjectExplorer.RebuildProjectOnly";
 const char REBUILD[]              = "ProjectExplorer.Rebuild";
-const char REBUILDCM[]            = "ProjectExplorer.RebuildCM";
-const char REBUILDDEPENDCM[]      = "ProjectExplorer.RebuildDependenciesCM";
-const char REBUILDSESSION[]       = "ProjectExplorer.RebuildSession";
-const char DEPLOYPROJECTONLY[]    = "ProjectExplorer.DeployProjectOnly";
-const char DEPLOY[]               = "ProjectExplorer.Deploy";
-const char DEPLOYCM[]             = "ProjectExplorer.DeployCM";
-const char DEPLOYSESSION[]        = "ProjectExplorer.DeploySession";
-const char CLEANPROJECTONLY[]     = "ProjectExplorer.CleanProjectOnly";
-const char CLEAN[]                = "ProjectExplorer.Clean";
-const char CLEANCM[]              = "ProjectExplorer.CleanCM";
-const char CLEANDEPENDCM[]        = "ProjectExplorer.CleanDependenciesCM";
-const char CLEANSESSION[]         = "ProjectExplorer.CleanSession";
+//const char REBUILDCM[]            = "ProjectExplorer.RebuildCM";
+//const char REBUILDDEPENDCM[]      = "ProjectExplorer.RebuildDependenciesCM";
+//const char REBUILDSESSION[]       = "ProjectExplorer.RebuildSession";
+//const char DEPLOYPROJECTONLY[]    = "ProjectExplorer.DeployProjectOnly";
+//const char DEPLOY[]               = "ProjectExplorer.Deploy";
+//const char DEPLOYCM[]             = "ProjectExplorer.DeployCM";
+//const char DEPLOYSESSION[]        = "ProjectExplorer.DeploySession";
+//const char CLEANPROJECTONLY[]     = "ProjectExplorer.CleanProjectOnly";
+//const char CLEAN[]                = "ProjectExplorer.Clean";
+//const char CLEANCM[]              = "ProjectExplorer.CleanCM";
+//const char CLEANDEPENDCM[]        = "ProjectExplorer.CleanDependenciesCM";
+//const char CLEANSESSION[]         = "ProjectExplorer.CleanSession";
 const char CANCELBUILD[]          = "ProjectExplorer.CancelBuild";
 const char RUN[]                  = "ProjectExplorer.Run";
-const char RUNWITHOUTDEPLOY[]     = "ProjectExplorer.RunWithoutDeploy";
+//const char RUNWITHOUTDEPLOY[]     = "ProjectExplorer.RunWithoutDeploy";
 const char RUNCONTEXTMENU[]       = "ProjectExplorer.RunContextMenu";
 const char ADDEXISTINGFILES[]     = "ProjectExplorer.AddExistingFiles";
 const char ADDEXISTINGDIRECTORY[] = "ProjectExplorer.AddExistingDirectory";
-const char ADDNEWSUBPROJECT[]     = "ProjectExplorer.AddNewSubproject";
-const char REMOVEPROJECT[]        = "ProjectExplorer.RemoveProject";
+//const char ADDNEWSUBPROJECT[]     = "ProjectExplorer.AddNewSubproject";
+//const char REMOVEPROJECT[]        = "ProjectExplorer.RemoveProject";
 const char OPENFILE[]             = "ProjectExplorer.OpenFile";
 const char SEARCHONFILESYSTEM[]   = "ProjectExplorer.SearchOnFileSystem";
-const char SHOWINGRAPHICALSHELL[] = "ProjectExplorer.ShowInGraphicalShell";
+//const char SHOWINGRAPHICALSHELL[] = "ProjectExplorer.ShowInGraphicalShell";
 const char OPENTERMINALHERE[]     = "ProjectExplorer.OpenTerminalHere";
 const char DUPLICATEFILE[]        = "ProjectExplorer.DuplicateFile";
 const char DELETEFILE[]           = "ProjectExplorer.DeleteFile";
 const char DIFFFILE[]             = "ProjectExplorer.DiffFile";
-const char SETSTARTUP[]           = "ProjectExplorer.SetStartup";
+//const char SETSTARTUP[]           = "ProjectExplorer.SetStartup";
 const char PROJECTTREE_COLLAPSE_ALL[] = "ProjectExplorer.CollapseAll";
 
-const char SELECTTARGET[]         = "ProjectExplorer.SelectTarget";
-const char SELECTTARGETQUICK[]    = "ProjectExplorer.SelectTargetQuick";
+//const char SELECTTARGET[]         = "ProjectExplorer.SelectTarget";
+//const char SELECTTARGETQUICK[]    = "ProjectExplorer.SelectTargetQuick";
 
 // Action priorities
 const int  P_ACTION_RUN            = 100;
@@ -162,64 +170,18 @@ public:
 
     QList<QPair<QString, QString> > recentProjects() const;
 public:
-    QMenu *m_sessionMenu;
-    QMenu *m_openWithMenu;
-    QMenu *m_openTerminalMenu;
+    QMenu* m_addmodel;
+    QMenu* m_addstudy;
 
     QMultiMap<int, QObject*> m_actionMap;
-    QAction *m_sessionManagerAction;
-    QAction *m_newAction;
-    QAction *m_loadAction;
-//    Utils::ParameterAction *m_unloadAction;
-//    Utils::ParameterAction *m_unloadActionContextMenu;
-    QAction *m_closeAllProjects;
-    QAction *m_buildProjectOnlyAction;
-//    Utils::ParameterAction *m_buildAction;
-//    Utils::ProxyAction *m_modeBarBuildAction;
-    QAction *m_buildActionContextMenu;
-//    QAction *m_buildDependenciesActionContextMenu;
-    QAction *m_buildSessionAction;
-    QAction *m_rebuildProjectOnlyAction;
-//    Utils::ParameterAction *m_rebuildAction;
-//    QAction *m_rebuildActionContextMenu;
-//    QAction *m_rebuildDependenciesActionContextMenu;
-//    QAction *m_rebuildSessionAction;
-//    QAction *m_cleanProjectOnlyAction;
-//    QAction *m_deployProjectOnlyAction;
-//    Utils::ParameterAction *m_deployAction;
-//    QAction *m_deployActionContextMenu;
-//    QAction *m_deploySessionAction;
-//    Utils::ParameterAction *m_cleanAction;
-//    QAction *m_cleanActionContextMenu;
-//    QAction *m_cleanDependenciesActionContextMenu;
-    QAction *m_cleanSessionAction;
-    QAction *m_runAction;
-    QAction *m_runActionContextMenu;
-//    QAction *m_runWithoutDeployAction;
-    QAction *m_cancelBuildAction;
-//    QAction *m_addNewFileAction;
-//    QAction *m_addExistingFilesAction;
-//    QAction *m_addExistingDirectoryAction;
-//    QAction *m_addNewSubprojectAction;
-//    QAction *m_removeFileAction;
-//    QAction *m_duplicateFileAction;
-    QAction *m_removeProjectAction;
-//    QAction *m_deleteFileAction;
-//    QAction *m_renameFileAction;
-//    QAction *m_filePropertiesAction = nullptr;
-//    QAction *m_diffFileAction;
-//    QAction *m_openFileAction;
-//    QAction *m_projectTreeCollapseAllAction;
-//    QAction *m_searchOnFileSystem;
-//    QAction *m_showInGraphicalShell;
-//    QAction *m_openTerminalHere;
-//    QAction *m_openTerminalHereBuildEnv;
-//    QAction *m_openTerminalHereRunEnv;
-//    Utils::ParameterAction *m_setStartupProjectAction;
-//    QAction *m_projectSelectorAction;
-//    QAction *m_projectSelectorActionMenu;
-//    QAction *m_projectSelectorActionQuick;
-//    QAction *m_runSubProject;
+    QAction* m_add3Dmodel;
+    QAction* m_add2DAxismodel;
+    QAction* m_add2Dmodel;
+    QAction* m_addStaticMag;
+    QAction* m_addTransientMag;
+    QAction* m_addHeat;
+
+    QAction* m_solve;
 
 //    ProjectWindow *m_proWindow = nullptr;
 //    QString m_sessionToRestoreAtStartup;
@@ -362,7 +324,63 @@ bool PF_ProjectExplorerPlugin::initialize()
 //                                                                      : Utils::FileName());
 //    });
 
+    Context projecTreeContext(Constants::C_PROJECT_TREE);
     //   actions
+
+    ActionContainer *mprojectContextMenu =
+        ActionManager::createMenu(Constants::M_PROJECTCONTEXT);
+    mprojectContextMenu->appendGroup(Constants::G_PROJECT_ADD);
+    mprojectContextMenu->appendGroup(Constants::G_PROJECT_SOLVE);
+
+    ActionContainer * const addModel =
+            ActionManager::createMenu(Constants::M_ADDMODELCONTEXT);
+    addModel->setOnAllDisabledBehavior(ActionContainer::Show);
+    dd->m_addmodel = addModel->menu();
+    dd->m_addmodel->setTitle(tr("Add Model"));
+
+    ActionContainer * const addStudy =
+            ActionManager::createMenu(Constants::M_ADDSTUDYCONTEXT);
+    addStudy->setOnAllDisabledBehavior(ActionContainer::Show);
+    dd->m_addmodel = addStudy->menu();
+    dd->m_addmodel->setTitle(tr("Add Study"));
+
+    Command* cmd;
+
+    /************add model******************/
+    dd->m_add3Dmodel = new QAction(tr("3D"), this);
+    cmd = ActionManager::registerAction(dd->m_add3Dmodel, Constants::ADD3DMODEL);
+//    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    addModel->addAction(cmd);
+
+    dd->m_add2DAxismodel = new QAction(tr("2D Axisymmetric"), this);
+    cmd = ActionManager::registerAction(dd->m_add2DAxismodel, Constants::ADD2DAXIS);
+//    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    addModel->addAction(cmd);
+
+    dd->m_add2Dmodel = new QAction(tr("2D"), this);
+    cmd = ActionManager::registerAction(dd->m_add2Dmodel, Constants::ADD2DMODEL);
+    //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    addModel->addAction(cmd);
+
+    mprojectContextMenu->addMenu(addModel,Constants::G_PROJECT_ADD);
+
+    /************add study******************/
+    dd->m_addStaticMag = new QAction(tr("Static Magnetic Field"), this);
+    cmd = ActionManager::registerAction(dd->m_addStaticMag, Constants::ADDSTATICMAG);
+    //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    addStudy->addAction(cmd);
+
+    dd->m_addTransientMag = new QAction(tr("Transient Magnetic Field"), this);
+    cmd = ActionManager::registerAction(dd->m_addTransientMag, Constants::ADDTRANSIENTMAG);
+    //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    addStudy->addAction(cmd);
+
+    dd->m_addHeat = new QAction(tr("Heat Field"), this);
+    cmd = ActionManager::registerAction(dd->m_addHeat, Constants::ADDHEAT);
+    //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+    addStudy->addAction(cmd);
+
+    mprojectContextMenu->addMenu(addStudy,Constants::G_PROJECT_ADD);
 
     return true;
 }

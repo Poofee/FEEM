@@ -16,6 +16,7 @@
 #include <QAction>
 #include <QLineEdit>
 #include <QMenu>
+#include <QDebug>
 
 
 
@@ -276,6 +277,7 @@ void PF_ProjectTreeWidget::handleCurrentItemChange(const QModelIndex &current)
 */
 void PF_ProjectTreeWidget::showContextMenu(const QPoint &pos)
 {
+    qDebug()<<Q_FUNC_INFO;
     QModelIndex index = m_view->indexAt(pos);
     Node *node = m_model->nodeForIndex(index);
     PF_ProjectTree::showContextMenu(this, m_view->mapToGlobal(pos), node);

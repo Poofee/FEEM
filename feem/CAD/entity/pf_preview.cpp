@@ -26,6 +26,7 @@ void PF_Preview::draw(QCPPainter *painter)
     painter->save();
     painter->setPen(QColor(Qt::red));
     for(int i=0;i < entities.size();++i){
+        entities.at(i)->toggleHighlighted();
         entities.at(i)->draw(painter);
     }
     painter->restore();

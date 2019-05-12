@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <functional>
+#include <memory>
 
 #include "idocument.h"
 

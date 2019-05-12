@@ -42,6 +42,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : RibbonWindow(parent)
     , ag_manager(new PF_ActionGroupManager(this))
+    , m_coreImpl(new ICore(this))
     , actionHandler(new PF_ActionHandler(this))
     , dock_modelBuilderTree(nullptr)
     , dock_messageOutputPane(nullptr)

@@ -252,6 +252,7 @@ void PF_Line::moveRef(const PF_Vector &ref, const PF_Vector &offset)
 
 void PF_Line::draw(QCPPainter *painter)
 {
+//    qDebug()<<Q_FUNC_INFO;
     if(!(painter && mParentPlot)){
         qDebug()<<Q_FUNC_INFO<<":NULL";
         return;
@@ -267,11 +268,12 @@ void PF_Line::draw(QCPPainter *painter)
     QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));
     QPointF end(mParentPlot->toGuiX(data.endpoint.x),mParentPlot->toGuiY(data.endpoint.y));
     painter->drawLine(start,end);
+    qDebug()<<start<<end;
     painter->drawText(start,data.startpoint.toString());
     painter->drawText(end,data.endpoint.toString());
 
     /** 绘制控制点 **/
-    if (isSelected()) {
+    if (isSelected() || isHighlighted()) {
 //		if (!e->isParentSelected()) {
             PF_VectorSolutions const& s = this->getRefPoints();
             int x,y;
