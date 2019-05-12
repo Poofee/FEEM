@@ -76,7 +76,7 @@ PF_Project::~PF_Project()
 QString PF_Project::displayName() const
 {
     if(d->m_displayName.isEmpty()){
-        d->m_displayName = "untitled.mph";
+        d->m_displayName = QString(tr("untitled"))+QString(".mph");
     }
 
     return d->m_displayName;
@@ -95,12 +95,12 @@ void PF_Project::creatTree()
 {
     std::unique_ptr<ProjectNode> root = std::make_unique<ProjectNode>(this);
     std::vector<std::unique_ptr<FolderNode>> nodes;
-    nodes.emplace_back(std::make_unique<FolderNode>(QString("Global Definitions"),NodeType::Folder,QIcon(":/tree/global_branch.png")));
-    nodes.emplace_back(std::make_unique<FolderNode>(QString("Materials:Materials"),NodeType::Leaf,QIcon(":/tree/material.png")));
-    nodes.emplace_back(std::make_unique<FolderNode>(QString("Component:Component1"),NodeType::Folder,QIcon(":/tree/model_2d_axi.png")));
-    nodes.emplace_back(std::make_unique<FolderNode>(QString("Definitions"),NodeType::Leaf,QIcon(":/tree/definitions.png")));
-    nodes.emplace_back(std::make_unique<FolderNode>(QString("Geometry1"),NodeType::Leaf,QIcon(":/tree/geometry.png")));
-    nodes.emplace_back(std::make_unique<FolderNode>(QString("Mesh1"),NodeType::Leaf,QIcon(":/tree/mesh.png")));
+    nodes.emplace_back(std::make_unique<FolderNode>(QString(tr("Global Definitions")),NodeType::Folder,QIcon(":/tree/global_branch.png")));
+    nodes.emplace_back(std::make_unique<FolderNode>(QString(tr("Materials: Materials")),NodeType::Leaf,QIcon(":/tree/material.png")));
+    nodes.emplace_back(std::make_unique<FolderNode>(QString(tr("Component: Component1")),NodeType::Folder,QIcon(":/tree/model_2d_axi.png")));
+    nodes.emplace_back(std::make_unique<FolderNode>(QString(tr("Definitions")),NodeType::Leaf,QIcon(":/tree/definitions.png")));
+    nodes.emplace_back(std::make_unique<FolderNode>(QString(tr("Geometry1")),NodeType::Leaf,QIcon(":/tree/geometry.png")));
+    nodes.emplace_back(std::make_unique<FolderNode>(QString(tr("Mesh1")),NodeType::Leaf,QIcon(":/tree/mesh.png")));
 
     nodes.at(0)->addNode(std::move(nodes.at(3)));
     nodes.at(0)->addNode(std::move(nodes.at(1)));

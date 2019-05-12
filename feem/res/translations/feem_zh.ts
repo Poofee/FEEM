@@ -1212,6 +1212,44 @@ Do you want to save your changes?</source>
     </message>
 </context>
 <context>
+    <name>PF_Project</name>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="79"/>
+        <source>untitled</source>
+        <translation type="unfinished">未命名</translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="98"/>
+        <source>Global Definitions</source>
+        <translation type="unfinished">全局定义</translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="99"/>
+        <source>Materials: Materials</source>
+        <translation type="unfinished">材料</translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="100"/>
+        <source>Component: Component1</source>
+        <translation type="unfinished">模型：模型1</translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="101"/>
+        <source>Definitions</source>
+        <translation type="unfinished">定义</translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="102"/>
+        <source>Geometry1</source>
+        <translation type="unfinished">几何1</translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_project.cpp" line="103"/>
+        <source>Mesh1</source>
+        <translation type="unfinished">分网1</translation>
+    </message>
+</context>
+<context>
     <name>PF_ProjectExplorerPlugin</name>
     <message>
         <location filename="../../project/pf_projectexplorer.cpp" line="339"/>
