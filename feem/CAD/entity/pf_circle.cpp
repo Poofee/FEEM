@@ -263,13 +263,16 @@ void PF_Circle::draw(QCPPainter *painter)
         painter->setPen(pen);
     }
 
-    painter->drawEllipse(QPointF(mParentPlot->toGuiX(getCenter().x),mParentPlot->toGuiY(getCenter().y)),mParentPlot->toGuiDY(getRadius()),mParentPlot->toGuiDY(getRadius()));
+    painter->drawEllipse(QPointF(mParentPlot->toGuiX(getCenter().x),
+                                mParentPlot->toGuiY(getCenter().y)),
+                                mParentPlot->toGuiDY(getRadius()),
+                                mParentPlot->toGuiDY(getRadius()));
     //qDebug()<<"PF_Circle::draw: OK.";
     /** 绘制控制点 **/
-    if (isSelected()) {
+    if (isSelected() || isHighlighted()) {
 //		if (!e->isParentSelected()) {
             PF_VectorSolutions const& s = this->getRefPoints();
-            int x,y;
+            double x,y;
             int size = 4;
             for (size_t i=0; i<s.getNumber(); ++i) {
                 x = mParentPlot->toGuiX(s.get(i).x);

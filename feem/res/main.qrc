@@ -110,5 +110,7 @@
         <file>tree/phys_magnetic_fields_no_currents_32.png</file>
         <file>tree/help_16.png</file>
         <file>tree/help_32.png</file>
+        <file>tree/material_library.png</file>
+        <file>tree/material_library_32.png</file>
     </qresource>
 </RCC>

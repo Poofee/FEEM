@@ -22,6 +22,7 @@
 #include "pf_cadwidget.h"
 #include "pf_projecttreewidget.h"
 #include "pf_modelwidget.h"
+#include "pf_materiallibrary.h"
 
 #include "actionmanager/actioncontainer.h"
 #include "actionmanager/actioncontainer_p.h"
@@ -180,11 +181,16 @@ void MainWindow::setupDockWidgets()
         hbox->addWidget(tabInfo);
         widgetLog->setLayout(hbox);
         dock_messageOutputPane->setWidget(widgetLog);
-        addDockWidget(Qt::RightDockWidgetArea,dock_messageOutputPane);
+        addDockWidget(Qt::BottomDockWidgetArea,dock_messageOutputPane);
     }
 
     if(!dock_materialLibraryTree){
-
+        dock_materialLibraryTree = new QDockWidget(this);
+        dock_materialLibraryTree->setWindowTitle(tr("Material Library"));
+        dock_materialLibraryTree->setObjectName("dock_materialLibraryTree");
+        QWidget* materialLibraryTree = new PF_MaterialLibraryWidget(dock_materialLibraryTree);
+        dock_materialLibraryTree->setWidget(materialLibraryTree);
+        addDockWidget(Qt::RightDockWidgetArea,dock_materialLibraryTree);
     }
 }
 

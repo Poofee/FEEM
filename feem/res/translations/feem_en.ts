@@ -952,23 +952,28 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/mainwindow.cpp" line="158"/>
+        <location filename="../../core/mainwindow.cpp" line="159"/>
         <source>Project tree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/mainwindow.cpp" line="169"/>
+        <location filename="../../core/mainwindow.cpp" line="170"/>
         <source>Log Infor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/mainwindow.cpp" line="175"/>
+        <location filename="../../core/mainwindow.cpp" line="176"/>
         <source>Run log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../core/mainwindow.cpp" line="177"/>
+        <location filename="../../core/mainwindow.cpp" line="178"/>
         <source>pythonconsole</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../core/mainwindow.cpp" line="189"/>
+        <source>Material Library</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1252,43 +1257,58 @@ Do you want to save your changes?</source>
 <context>
     <name>PF_ProjectExplorerPlugin</name>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="339"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="329"/>
         <source>Add Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="345"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="336"/>
         <source>Add Study</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="350"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="342"/>
         <source>3D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="355"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="347"/>
         <source>2D Axisymmetric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="360"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="352"/>
         <source>2D</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="368"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="360"/>
         <source>Static Magnetic Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="373"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="365"/>
         <source>Transient Magnetic Field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="378"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="370"/>
         <source>Heat Field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_projectexplorer.cpp" line="378"/>
+        <source>add Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_projectexplorer.cpp" line="383"/>
+        <source>add Blank Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../project/pf_projectexplorer.cpp" line="390"/>
+        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

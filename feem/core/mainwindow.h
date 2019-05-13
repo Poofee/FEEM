@@ -21,6 +21,7 @@ class MessageManager;
 class PF_ProjectExplorerPlugin;
 
 class PF_ModelWidget;
+class PF_MaterialLibraryWidget;
 
 class MainWindow : public RibbonWindow
 {
@@ -67,14 +68,10 @@ private:
     PF_ActionHandler* actionHandler;
 
     // GUI
-    QMdiArea* mdiAreaCAD{nullptr};
-    QMdiSubWindow* activeMdiSubWindow;
-    QMdiSubWindow* currentSubWindow;
 
     QDockWidget* dock_modelBuilderTree;
     QDockWidget* dock_messageOutputPane;
     QDockWidget* dock_materialLibraryTree;
-    PF_ModelWidget* m_modelBuilderWidget;
 };
 
 #endif // MAINWINDOW_H

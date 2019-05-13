@@ -113,7 +113,8 @@ HEADERS += \
     CAD/action/pf_actionselectsingle.h \
     project/inavigationwidgetfactory.h \
     core/coreapp.h \
-    project/projectexplorerconstants.h
+    project/projectexplorerconstants.h \
+    material/pf_materialtreemodel.h
 
 SOURCES += \
     ./CAD/action/pf_eventhandler.cpp \
@@ -180,7 +181,8 @@ SOURCES += \
     project/pf_sessionmanager.cpp \
     CAD/action/pf_actionselectsingle.cpp \
     project/inavigationwidgetfactory.cpp \
-    core/coreapp.cpp
+    core/coreapp.cpp \
+    material/pf_materialtreemodel.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
