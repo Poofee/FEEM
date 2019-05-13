@@ -41,7 +41,8 @@ enum class LeafType : quint16 {
     Resource,
     QML,
     Project,
-    FileTypeSize
+    FileTypeSize,
+    CMaterialProp
 };
 enum ProjectAction {
     // Special value to indicate that the actions are handled by the parent
@@ -81,7 +82,7 @@ class Node
 {
 public:
     virtual ~Node();
-    Node(const Node &other) = delete;
+//    Node(const Node &other) = delete;
     Node(QString _displayname, NodeType nodetype, QIcon icon=QIcon());
 
     ProjectNode* parentProjectNode() const; // parent project, will be nullptr for the top-level project

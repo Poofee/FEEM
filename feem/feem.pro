@@ -18,6 +18,8 @@ include($$PWD/../qtribbon/ribbonsample/qtitanribbon.pri)
 #ignore warning C4819
 QMAKE_CXXFLAGS += /wd"4819"
 
+DEFINES += _CRT_SECURE_NO_WARNINGS
+
 DESTDIR = $$PWD/../bin
 
 !debug_and_release|build_pass {

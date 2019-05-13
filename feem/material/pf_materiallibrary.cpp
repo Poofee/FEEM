@@ -179,6 +179,7 @@ PF_MaterialLibraryWidget::PF_MaterialLibraryWidget(QWidget *parent)
 
     m_view = new PF_MaterialTreeView;
     m_view->setModel(m_model);
+    m_model->loadBuiltinMaterials();
     m_view->setItemDelegate(new PF_MaterialTreeItemDelegate(m_view));
     setFocusProxy(m_view);
     m_view->installEventFilter(this);

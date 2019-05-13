@@ -1,8 +1,17 @@
 #ifndef PF_MATERIALTREEMODEL_H
 #define PF_MATERIALTREEMODEL_H
 
+#include "pf_node.h"
 #include "pf_projectmodel.h"
+#include "pf_material.h"
 
+class CMaterialPropNode : public LeafNode{
+public:
+    CMaterialPropNode(CMaterialProp* material);
+    ~CMaterialPropNode();
+
+    CMaterialProp* m_material;
+};
 
 class PF_MaterialTreeModel : public BaseTreeModel
 {
@@ -32,6 +41,8 @@ public:
 
     void onExpanded(const QModelIndex &idx);
     void onCollapsed(const QModelIndex &idx);
+
+    bool loadBuiltinMaterials();
 
 signals:
 //    void renamed(const Utils::FileName &oldName, const Utils::FileName &newName);

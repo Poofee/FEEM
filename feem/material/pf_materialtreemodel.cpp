@@ -1,6 +1,264 @@
 #include "pf_materialtreemodel.h"
+#include "pf_material.h"
 
-#include "pf_node.h"
+//#include <memory>
+//#include <stdio.h>
+
+char* StripKey(char *c)
+{
+    char *d;
+    int i,k;
+
+    k=strlen(c);
+
+    for(i=0;i<k;i++){
+        if (c[i] == '='){
+            d=c+i+1;
+            return d;
+        }
+    }
+
+    return c+k;
+}
+enum LABELTAGS{
+    BEGINFOLDER = 1,
+    ENDFOLDER,
+    BEGINBLOCK,
+    ENDBLOCK,
+    NOTHING
+};
+
+int ParseLine(char *s, FILE *fp, CMaterialProp* MProp,std::vector<std::unique_ptr<FolderNode>> &nodes)
+{
+    char q[1024];
+    char *v;
+    int i,j,k;
+
+    if (sscanf(s,"%s",q)==EOF) return false;
+
+    // Library Hierarchy
+    if( _strnicmp(q,"<beginfolder>",13)==0){
+        q[0]=NULL;
+        return BEGINFOLDER;
+    }
+
+    if( _strnicmp(q,"<foldername>",11)==0){
+        v=StripKey(s);
+        k=strlen(v);
+        for(i=0;i<k;i++)
+            if(v[i]=='\"'){
+                v=v+i+1;
+                i=k;
+            }
+        k=strlen(v);
+        if(k>0) for(i=k-1;i>=0;i--){
+            if(v[i]=='\"'){
+                v[i]=0;
+                i=-1;
+            }
+        }
+        nodes.emplace_back(std::make_unique<FolderNode>(QString(v)));
+
+//        FoldProps[FoldProps.GetUpperBound()].FolderName=v;
+//        m_mytree.SetItemText(Parent,v);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<folderurl>",10)==0){
+        v=StripKey(s);
+        k=strlen(v);
+        for(i=0;i<k;i++)
+            if(v[i]=='\"'){
+                v=v+i+1;
+                i=k;
+            }
+        k=strlen(v);
+        if(k>0) for(i=k-1;i>=0;i--){
+            if(v[i]=='\"'){
+                v[i]=0;
+                i=-1;
+            }
+        }
+//        FoldProps[FoldProps.GetUpperBound()].FolderURL=v;
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<foldervendor>",14)==0){
+        v=StripKey(s);
+        k=strlen(v);
+        for(i=0;i<k;i++)
+            if(v[i]=='\"'){
+                v=v+i+1;
+                i=k;
+            }
+        k=strlen(v);
+        if(k>0) for(i=k-1;i>=0;i--){
+            if(v[i]=='\"'){
+                v[i]=0;
+                i=-1;
+            }
+        }
+//        FoldProps[FoldProps.GetUpperBound()].FolderVendor=v;
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    // Block Properties;
+    if( _strnicmp(q,"<beginblock>",12)==0){
+
+        q[0]=NULL;
+        return BEGINBLOCK;
+    }
+
+    // Library Hierarchy
+    if( _strnicmp(q,"<endfolder>",11)==0){
+
+        q[0]=NULL;
+        return ENDFOLDER;
+    }
+
+    if( _strnicmp(q,"<blockname>",10)==0){
+        v=StripKey(s);
+        k=strlen(v);
+        for(i=0;i<k;i++)
+            if(v[i]=='\"'){
+                v=v+i+1;
+                i=k;
+            }
+        k=strlen(v);
+        if(k>0) for(i=k-1;i>=0;i--){
+            if(v[i]=='\"'){
+                v[i]=0;
+                i=-1;
+            }
+        }
+        MProp->BlockName=v;
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<mu_x>",6)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->mu_x);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<mu_y>",6)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->mu_y);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<H_c>",5)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->H_c);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<J_re>",6)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Jsrc.re);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<J_im>",6)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Jsrc.im);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<sigma>",7)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Cduct);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<phi_h>",7)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Theta_hn);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<phi_hx>",8)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Theta_hx);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<phi_hy>",8)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Theta_hy);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<d_lam>",7)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->Lam_d);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<LamFill>",8)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->LamFill);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<LamType>",9)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%i",&MProp->LamType);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<NStrands>",10)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%i",&MProp->NStrands);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<WireD>",7)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%lf",&MProp->WireD);
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<BHPoints>",10)==0){
+        v=StripKey(s);
+        sscanf_s(v,"%i",&MProp->BHpoints);
+        if (MProp->BHpoints>0)
+        {
+            MProp->BHdata=(CComplex *)calloc(MProp->BHpoints,sizeof(CComplex));
+            for(j=0;j<MProp->BHpoints;j++){
+                fgets(s,1024,fp);
+                sscanf_s(s,"%lf	%lf",&MProp->BHdata[j].re,&MProp->BHdata[j].im);
+            }
+        }
+        q[0]=NULL;
+        return NOTHING;
+    }
+
+    if( _strnicmp(q,"<endblock>",9)==0){
+        q[0]=NULL;
+        return ENDBLOCK;
+    }
+
+    return NOTHING;
+}
 
 PF_MaterialTreeModel::PF_MaterialTreeModel(QObject *parent)
     : BaseTreeModel(new WrapperNode(nullptr), parent)
@@ -13,55 +271,23 @@ QVariant PF_MaterialTreeModel::data(const QModelIndex &index, int role) const
     QVariant result;
 
     if (const Node *node = nodeForIndex(index)) {
-        //        const FolderNode *folderNode = node->asFolderNode();
-        //        const ContainerNode *containerNode = node->asContainerNode();
-        //        const Project *project = containerNode ? containerNode->project() : nullptr;
-
         switch (role) {
         case Qt::DisplayRole: {/**要以文本形式呈现的关键数据**/
-            result = node->displayName();
+//            result = node->displayName();
             break;
         }
         case Qt::EditRole: {/**适合在编辑器中编辑的形式的数据**/
-            //            result = node->filePath().fileName();
             break;
         }
         case Qt::ToolTipRole: {/**项目工具提示中显示的数据**/
             QString tooltip = node->tooltip();
-
-            //            if (project) {
-            //                if (project->activeTarget()) {
-            //                    QString projectIssues = toHtml(project->projectIssues(project->activeTarget()->kit()));
-            //                    if (!projectIssues.isEmpty())
-            //                        tooltip += "<p>" + projectIssues;
-            //                } else {
-            //                    tooltip += "<p>" + tr("No kits are enabled for this project. "
-            //                                          "Enable kits in the \"Projects\" mode.");
-            //                }
-            //            }
-            //            result = tooltip;
             break;
         }
         case Qt::DecorationRole: {/**要以图标形式呈现为装饰的数据**/
-            //            if (folderNode) {
-            //                static QIcon warnIcon = Utils::Icons::WARNING.icon();
-            //                static QIcon emptyIcon = Utils::Icons::EMPTY16.icon();
-            //                if (project) {
-            //                    if (project->isParsing())
-            //                        result = emptyIcon;
-            //                    else if (!project->activeTarget()
-            //                             || !project->projectIssues(project->activeTarget()->kit()).isEmpty())
-            //                        result = warnIcon;
-            //                    else
-            //                        result = containerNode->rootProjectNode() ? containerNode->rootProjectNode()->icon() :
-            //                                                                    folderNode->icon();
-            //                } else {
-            //                    result = folderNode->icon();
-            //                }
-            //            } else {
-            //                result = Core::FileIconProvider::icon(node->filePath().toString());
-            //            }
-            result = node->icon();
+            if(node->asFolderNode())
+                result = QIcon(":/tree/material_library.png");
+            if(node->asLeafNode())
+                result = QIcon(":/tree/material.png");
             break;
         }
         case Qt::FontRole: {/**用于使用默认委托呈现的项目的字体**/
@@ -72,17 +298,8 @@ QVariant PF_MaterialTreeModel::data(const QModelIndex &index, int role) const
             break;
         }
         case Qt::TextColorRole: {/**文本颜色**/
-            //            result = node->isEnabled() ? m_enabledTextColor : m_disabledTextColor;
             break;
         }
-            //        case Project::FilePathRole: {
-            //            result = node->filePath().toString();
-            //            break;
-            //        }
-            //        case Project::isParsingRole: {
-            //            result = project ? project->isParsing() : false;
-            //            break;
-            //        }
         }
     }
 
@@ -151,26 +368,82 @@ void PF_MaterialTreeModel::onCollapsed(const QModelIndex &idx)
 
 }
 
+/*!
+ \brief 读入自带的材料库文件
+
+ \return bool
+*/
+bool PF_MaterialTreeModel::loadBuiltinMaterials()
+{
+    char LibName[] = "matlib.dat";
+    FILE *fp;
+    CMaterialProp* MProp = nullptr;
+//    QVector<FolderNode* > folderNodes;
+//    CFolderProp FProp;
+    char s[1024];
+//    int i,k;
+
+//    std::unique_ptr<FolderNode> root = std::make_unique<FolderNode>(QString(tr("Global Definitions")),NodeType::Definition,QIcon(":/tree/global_branch.png"));
+    std::vector<std::unique_ptr<FolderNode>> nodes;
+    nodes.emplace_back(std::make_unique<FolderNode>(QString("root")));
+
+    // read in materials library;
+    if ((fp=fopen(LibName,"rt")) == NULL)
+        return true;
+
+
+    while (fgets(s,1024,fp) != NULL)
+    {
+        int result = ParseLine(s,fp,MProp,nodes);
+        if(result == BEGINBLOCK){/**  **/
+            MProp = new CMaterialProp();
+        }else if(result == ENDBLOCK){/**  **/
+            std::unique_ptr<CMaterialPropNode> node = std::make_unique<CMaterialPropNode>(MProp);
+            nodes.back()->addNode(std::move(node));
+        }else if(result == BEGINFOLDER){/**  **/
+
+        }else if(result == ENDFOLDER){
+            int size = nodes.size();
+            nodes.at(size-2)->addNode(std::move(nodes.at(size-1)));
+            nodes.pop_back();
+        }
+    }
+    fclose(fp);
+    QSet<Node *> seen;
+//    WrapperNode *container = new WrapperNode(nodes.at(0).get());
+//    rootItem()->appendChild(container);
+//    addFolderNode(container,nodes.at(0).get(),&seen);
+    for(Node* n : nodes.at(0).get()->nodes()){
+        WrapperNode *container = new WrapperNode(n);
+        rootItem()->appendChild(container);
+        if(FolderNode* f = n->asFolderNode())
+            addFolderNode(container,f,&seen);
+    }
+
+    return true;
+}
+
 void PF_MaterialTreeModel::addFolderNode(WrapperNode *parent, FolderNode *folderNode, QSet<Node *> *seen)
 {
     for (Node *node : folderNode->nodes()) {
         if (FolderNode *subFolderNode = node->asFolderNode()) {
-            //            const bool isHidden = m_filterProjects && !subFolderNode->showInSimpleTree();
-            //            if (!isHidden && !seen->contains(subFolderNode)) {
-            //                seen->insert(subFolderNode);
             auto node = new WrapperNode(subFolderNode);
             parent->appendChild(node);
             addFolderNode(node, subFolderNode, seen);
-            //                node->sortChildren(&sortWrapperNodes);
-            //            } else {
-            //                addFolderNode(parent, subFolderNode, seen);
-            //            }
         } else if (LeafNode *leafNode = node->asLeafNode()) {
-            //            const bool isHidden = m_filterGeneratedFiles && fileNode->isGenerated();
-            //            if (!isHidden && !seen->contains(leafNode)) {
-            //                seen->insert(leafNode);
             parent->appendChild(new WrapperNode(leafNode));
-            //            }
         }
     }
+}
+
+CMaterialPropNode::CMaterialPropNode(CMaterialProp *material)
+    :LeafNode (material->BlockName,LeafType::CMaterialProp)
+    ,m_material(material)
+{
+//    setIcon(QIcon(":/tree/material.png"));
+}
+
+CMaterialPropNode::~CMaterialPropNode()
+{
+
 }

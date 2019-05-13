@@ -290,6 +290,7 @@ void PF_SessionManager::removeProjects(const QList<PF_Project*>& remove)
 */
 void PF_SessionManager::setStartupProject(PF_Project* startupProject)
 {
+    qDebug()<<Q_FUNC_INFO;
     if((!startupProject && d->m_projects.isEmpty())
             || (startupProject && d->m_projects.contains(startupProject))){
 
