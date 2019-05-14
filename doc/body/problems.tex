@@ -963,3 +963,6 @@ you can call lupdate with the argument -noobsolete.
 	b*[^:b#/]+.*
 \end{lstlisting}
 \subsection{armadillo中的稀疏矩阵装配过程}
+
+\subsection{pop_back}
+pop_back函数会调用成员的析构函数。具体调试的方法是，在对应成员的析构函数当中设置断点或者打印输出。另外qtcreator在调试的时候，似乎无法显示private类型的变量值。

@@ -1,6 +1,7 @@
 #include "pf_material.h"
 
 #include <stdio.h>
+#include <QDebug>
 
 PF_Material::PF_Material()
 {
@@ -31,6 +32,7 @@ CMaterialProp::CMaterialProp()
 
 CMaterialProp::~CMaterialProp()
 {
+    qDebug()<<Q_FUNC_INFO;
     if(BHpoints>0) free(BHdata);
 }
 

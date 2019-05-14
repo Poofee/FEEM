@@ -3,6 +3,7 @@
 
 //#include <memory>
 //#include <stdio.h>
+#include <QDebug>
 
 char* StripKey(char *c)
 {
@@ -266,6 +267,11 @@ PF_MaterialTreeModel::PF_MaterialTreeModel(QObject *parent)
 
 }
 
+PF_MaterialTreeModel::~PF_MaterialTreeModel()
+{
+    nodes.clear();
+}
+
 QVariant PF_MaterialTreeModel::data(const QModelIndex &index, int role) const
 {
     QVariant result;
@@ -273,7 +279,7 @@ QVariant PF_MaterialTreeModel::data(const QModelIndex &index, int role) const
     if (const Node *node = nodeForIndex(index)) {
         switch (role) {
         case Qt::DisplayRole: {/**要以文本形式呈现的关键数据**/
-//            result = node->displayName();
+            result = node->displayName();
             break;
         }
         case Qt::EditRole: {/**适合在编辑器中编辑的形式的数据**/
@@ -384,7 +390,7 @@ bool PF_MaterialTreeModel::loadBuiltinMaterials()
 //    int i,k;
 
 //    std::unique_ptr<FolderNode> root = std::make_unique<FolderNode>(QString(tr("Global Definitions")),NodeType::Definition,QIcon(":/tree/global_branch.png"));
-    std::vector<std::unique_ptr<FolderNode>> nodes;
+
     nodes.emplace_back(std::make_unique<FolderNode>(QString("root")));
 
     // read in materials library;
@@ -403,6 +409,8 @@ bool PF_MaterialTreeModel::loadBuiltinMaterials()
         }else if(result == BEGINFOLDER){/**  **/
 
         }else if(result == ENDFOLDER){
+            /** 将该节点的添加到上一个节点当中，由于用了moveto，所以该节点的
+                指针指向会被清空**/
             int size = nodes.size();
             nodes.at(size-2)->addNode(std::move(nodes.at(size-1)));
             nodes.pop_back();
@@ -419,6 +427,7 @@ bool PF_MaterialTreeModel::loadBuiltinMaterials()
         if(FolderNode* f = n->asFolderNode())
             addFolderNode(container,f,&seen);
     }
+//    nodes.pop_back();
 
     return true;
 }
@@ -445,5 +454,5 @@ CMaterialPropNode::CMaterialPropNode(CMaterialProp *material)
 
 CMaterialPropNode::~CMaterialPropNode()
 {
-
+    qDebug()<<Q_FUNC_INFO;
 }

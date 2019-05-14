@@ -82,7 +82,7 @@ class Node
 {
 public:
     virtual ~Node();
-//    Node(const Node &other) = delete;
+    Node(const Node &other) = delete;
     Node(QString _displayname, NodeType nodetype, QIcon icon=QIcon());
 
     ProjectNode* parentProjectNode() const; // parent project, will be nullptr for the top-level project
@@ -146,7 +146,7 @@ class FolderNode : public Node
 {
 public:
     explicit FolderNode(const QString &displayName, NodeType nodeType = NodeType::Folder, QIcon icon=QIcon());
-
+    ~FolderNode();
 //    QString displayName() const override;
 //    QIcon icon() const override;
 

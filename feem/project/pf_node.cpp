@@ -187,6 +187,11 @@ FolderNode::FolderNode(const QString &displayName, NodeType nodeType, QIcon icon
 
 }
 
+FolderNode::~FolderNode()
+{
+    qDebug()<<Q_FUNC_INFO;
+}
+
 Node *FolderNode::findNode(const std::function<bool(Node *)> &filter)
 {
     if (filter(this))
