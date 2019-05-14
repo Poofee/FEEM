@@ -113,5 +113,6 @@ void CMaterialProp::BHDataToCString(QString &b, QString &h)
 //    }
 
 //    b.AnsiToOem();
-//    h.AnsiToOem();
+    //    h.AnsiToOem();
 }
+

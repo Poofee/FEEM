@@ -964,5 +964,191 @@ you can call lupdate with the argument -noobsolete.
 \end{lstlisting}
 \subsection{armadillo中的稀疏矩阵装配过程}
 
-\subsection{pop_back}
-pop_back函数会调用成员的析构函数。具体调试的方法是，在对应成员的析构函数当中设置断点或者打印输出。另外qtcreator在调试的时候，似乎无法显示private类型的变量值。
+\subsection{pop\_back}
+pop\_back函数会调用成员的析构函数。具体调试的方法是，在对应成员的析构函数当中设置断点或者打印输出。另外qtcreator在调试的时候，似乎无法显示private类型的变量值。
+\subsection{qt如何动态的翻译？}
+现在知道的翻译方法都是固定的在字符串前面加tr函数，但是如果我从文件当中读入一个字符串，想要翻译怎么办？
+
+另一种方法：
+
+直接提供翻译的json，然后以一种格式命名，例如：data\_zhCN.json，data\_enUS.json，data\_hkCN.json
+
+然后在tr里面提供一个字符串，例如：QString suffix=tr("enUS"); 并且在ts中将其翻译为zhCN、hkCN等
+
+以这个后缀拼接文件名：QString("data\_\%1.json").arg(suffix)来调用对应翻译好的json，也可以解决这个问题。
+
+说一下思路吧：
+
+1、json中读取的应该是固定的字符串，不论是key还是value。那么这些字符串应该是有个全集的。
+
+2、在Qt中建立QHash，对应的是：QHash<QString, QString> translationMap;
+
+translationMap.append("原始文字", tr("原始文字"));
+
+生成对应的翻译Hash Map
+
+3、对于每个读取到的东西，直接去Hash中查，然后输出Hash Map的结果就好。
+
+\subsection{对话框的创建}
+在软件的运行过程当中，肯定会有很多的对话框出现，应当以ui的方式建立窗体还是以代码的方式建立窗体？还有，如何批量的建立窗体。
+
+从功能上讲，ui和代码设计都能达到相同的效果，当然，代码的能力可能会更强大一些。
+\subsection{堆内存，栈内存}
+move函数能够利用已经分配好但是很快就要被释放的空间，如果是临时变量的话，肯定会建立在栈当中，那如果该部分空间不释放，岂不是会一直占用栈空间。或者说，变量应该保存在栈内存中，而new动态分配的内存应当保存在堆内存中。这样的话，使用std::move（）右值引用来将变量“移动”到动态内存中应当没有意义。
+
+可以写一个测试函数验证一下移动前后指针地址是不是一致。栈内存的东西应当是被移动了。这个确实是这样的，move有它特有的功能，也就代表着这样测试会实现一样的效果。
+
+作为\texttt{C++11}的新特性，\texttt{move语义}（\texttt{move\ semantics}）和\texttt{右值引用}(\texttt{rvalue\ reference})经常被放在一起讨论，在网络上也能看见不少的分析文章。但是使用\texttt{右值引用}这种全新的概念去解释\texttt{move语义}，其实会让人觉得门槛很高，似懂非懂，至少对于我来说是这样的。\\
+因此本文尽量避免使用\texttt{右值引用}来解释\texttt{move语义}，并说明它在实际编程中的用法。本文只用\texttt{C++}标准库中的函数作为例子讲解，如何自己编写一个适用于\texttt{move语义}的类库不是考虑范围之内（因为这涉及到\texttt{右值引用}）。因为我相信如果一个连轮子都不会用的人是不可能造出好轮子的。
+
+\subsection[move语义再思考]{\texorpdfstring{\protect\hypertarget{1move_8}{}{}move语义再思考}{move语义再思考}}\label{moveux8bedux4e49ux518dux601dux8003}
+
+首先我们先把这个词根据语法拆分成\texttt{move}和\texttt{语义}来考虑，先来说明\texttt{语义}，再来说明\texttt{move}。
+
+\subsubsection[语义 vs.
+语法]{\texorpdfstring{\protect\hypertarget{11_vs__11}{}{}语义 vs.
+语法}{1.1.语义 vs. 语法}}\label{ux8bedux4e49-vs.-ux8bedux6cd5}
+
+更加简单直白地说。
+
+\begin{itemize}
+
+\item
+  语法 = 某个源代码怎么写
+\item
+  语义 = 这个源代码怎么执行
+\end{itemize}
+
+\begin{lstlisting}
+b = a[4];
+// 同
+b = *(a + 4);
+\end{lstlisting}
+
+这里对于同一个语义，有两种不一样的语法可以用。一般我们会选择前一种来编写程序，但这不过是一种``语法糖''。本来使用后一种写法就足够了，但从阅读和编写的角度来说后一种的写法增加了理解的难度，因此增加了前一种写法（应该叫语法）。这里举这个例子只是为了说明语法和语义的关系并不是1:1的关系。
+
+\subsubsection[复制 vs.
+移动]{\texorpdfstring{\protect\hypertarget{12_vs__24}{}{}复制 vs.
+移动}{1.2.复制 vs. 移动}}\label{ux590dux5236-vs.-ux79fbux52a8}
+
+与\texttt{move}相对的就是\texttt{copy}。众所周知，\texttt{C++}的变量都是\texttt{值语义}的。所谓的\texttt{值语义}的变量，就是它的行为跟\texttt{int}类型是一样的，典型表现就是作为参数传入函数中需要再复制一个作为形式参数，它的变化不会影响到原来的变量。\\
+这里，我们再回到刚才谈到的语法/语义的关系，对于\texttt{u=t}这样的语法，实际上的语义是把\texttt{变量t}的内容复制到\texttt{变量u}当中。
+
+\subsubsection[move的两个含义]{\texorpdfstring{\protect\hypertarget{13move_28}{}{}move的两个含义}{1.3.move的两个含义}}\label{moveux7684ux4e24ux4e2aux542bux4e49}
+
+刚才提到的\texttt{值语义}的实现，本质上是依赖于复制的。但如果只用值语义来实现这样一个函数------将数组内的元素都乘以\texttt{2}，结果将会是下面这样的。
+
+\begin{lstlisting}
+std::vector<int> twice_vector(std::vector<int>);  // 将数组内所用元素都乘以2然后再返回
+
+std::vector<int> v = { /*很多元素*/ };
+std::vector<int> w = twice_vector( v ); 
+// v变量将在以后都不会被用到
+\end{lstlisting}
+
+上面这段代码发生了多次没有意义的\texttt{copy}，及损失了时间又损失了内存。当然，这里当然会有读者直截了当地提出------``那就使用引用类型啊，像\texttt{std::vector\textless{}int\textgreater{}\&}，不就行了吗？''。如果你了解\texttt{move语义}，这里同样可以使用它。\\
+\texttt{move语义}也用另外一个用武之地，例如智能指针\texttt{unique\_ptr}，如果只有\texttt{值语义}，那必然报错，因为这会造成重复释放对象。但通过\texttt{move语义}可以实现所有权的移动，参考下面的代码。
+
+\begin{lstlisting}
+boost::unique_ptr<int> p( new int(42) );
+boost::unique_ptr<int> q = p;  // 禁止复制！（编译会报错）
+
+boost::unique_ptr<int> q ← p;  // 允许move（这里只是用'←'暂时表示move而已，实际语法并非这样）
+assert(*q==42 && p.get()==NULL);
+\end{lstlisting}
+
+综上所述\texttt{move}有两个含义------①以极低的性能消耗实现复制；②所有权的转移
+
+\subsubsection[C++11中的move语义]{\texorpdfstring{\protect\hypertarget{14C11move_48}{}{}C++11中的move语义}{1.4.C++11中的move语义}}\label{c11ux4e2dux7684moveux8bedux4e49}
+
+这里所说的\texttt{move语义}就是上面所说\texttt{move}两个含义的后者，翻译成代码就是：
+
+\begin{lstlisting}
+int *p = new int(42);  // 指针p拥有值42的所有权
+int *q;
+
+// 值42的所有权从p转移到q
+q = p;
+p = NULL;
+assert(*q==42 && p==NULL);
+\end{lstlisting}
+
+因此这里的\texttt{move语义}就是把\texttt{旧指针}的值复制到\texttt{新指针}，并把\texttt{旧指针}的值赋为\texttt{NULL}。既然是这么简单的事情，为什么\texttt{C++11}还要把它作为一个新特性呢？原因有很多，①避免程序员所有权转移不彻底（忘了写后面的\texttt{p=NULL}）；②让\texttt{move}这个语义更清晰；③增加语法支持（也就是常说的右值引用）让编译器在编译时就能做优化处理\ldots{}\ldots{}
+
+\subsubsection[move语义的使用]{\texorpdfstring{\protect\hypertarget{2move_61}{}{}move语义的使用}{2.move语义的使用}}\label{moveux8bedux4e49ux7684ux4f7fux7528}
+
+这里举\texttt{C++11}的标准库作为例子说明。
+
+\subsubsection[C++11标准库和move]{\texorpdfstring{\protect\hypertarget{21C11move_64}{}{}C++11标准库和move}{2.1.C++11标准库和move}}\label{c11ux6807ux51c6ux5e93ux548cmove}
+
+现在的\texttt{C++11}标准库基本上都增加了\texttt{move语义}的支持，不光是上面提到的\texttt{std::unique\_ptr}，\texttt{C++03}其实的\texttt{std::string}和\texttt{std::vector}这两个我们最熟悉的类库同样支持。
+
+\begin{lstlisting}
+std::string s1 = "apple";
+std::string s2 = "banana";
+
+s1 = std::move(s2);  //从s2转移到s1，关于s2的转移后的状态放在后面讨论
+// s1=="banana"
+
+std::vector<int> v1;
+std::vector<int> v2 = {1, 2, 3, 4};
+
+v1 = std::move(v2);  //从v2转移到v1
+// v1=={1, 2, 3, 4}
+\end{lstlisting}
+
+\begin{lstlisting}
+std::string s1 = "apple";
+std::string s2 = "banana";
+
+std::vector<std::string> dict;
+
+dict.push_back( s1 );             // 通过复制s1的值来添加元素
+// s1 == "apple"
+dict.push_back( std::move(s2) );  // 通过移动s2来添加元素
+// (关于s2的转移后的状态放在后面讨论)
+
+std::vector<std::string> v;
+v = std::move(dict);  // 整个容器移动实现复制
+// v[0]=="apple" && v[1]=="banana"
+\end{lstlisting}
+
+\subsubsection[移动之后的状态？]{\texorpdfstring{\protect\hypertarget{22_96}{}{}移动之后的状态？}{2.2.移动之后的状态？}}\label{ux79fbux52a8ux4e4bux540eux7684ux72b6ux6001}
+
+如果要找出十分准确的答案，其实是挺麻烦的。\texttt{C++11}的标准类库的说法就是------``仍然有效，但状态不明''，实际上一般情况下为空，但并不能保证。以\texttt{string}为例说明。
+
+\begin{lstlisting}
+std::string t = "xmas", u;
+u = std::move(t);
+
+// OK: t = "X";  再赋值是没有问题的，因为仍然有效
+// OK: t.size() ; 求大小也没问题，但不能保证得到是什么
+// NG: t[2];     有可能报错，因为有可能是空的
+\end{lstlisting}
+
+但是如果对于某个类库，\texttt{move语义}表示的是所有权的移动这个含义，而不是以极低的性能消耗实现复制（参考\texttt{1.3}中两个含义），则这个类库必须保证转移后的状态必须为空，还是举\texttt{unique\_ptr}为例子。
+
+\begin{lstlisting}
+std::unique_ptr<int> p1( int new(42) );
+std::unique_ptr<int> p2;
+
+p2 = std::move(p1); 
+// p1不再拥有所有权，保证 p1.get()==NULL必然成立
+\end{lstlisting}
+
+\subsubsection[利用move语义编写高效函数]{\texorpdfstring{\protect\hypertarget{23move_115}{}{}利用move语义编写高效函数}{2.3利用move语义编写高效函数}}\label{ux5229ux7528moveux8bedux4e49ux7f16ux5199ux9ad8ux6548ux51fdux6570}
+
+回到\texttt{1.3}一开始提到的那个问题，编写一个函数实现将数组内的元素都乘以\texttt{2}。接下来就可以通过\texttt{move语义}来高效实现了。
+
+\begin{lstlisting}
+typedef std::vector<int> IntVec;
+IntVec twice_vector(IntVec a)
+{
+  for (auto& e : a)
+    e *= 2;
+  return std::move(a); 
+}
+
+IntVec v = { /*...*/ };
+IntVec w = twice_vector( std::move(v) );
+\end{lstlisting}
