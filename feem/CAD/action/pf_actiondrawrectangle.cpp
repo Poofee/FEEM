@@ -2,6 +2,7 @@
 #include "pf_polyline.h"
 
 #include "pf_graphicview.h"
+#include "pf_line.h"
 
 struct PF_ActionDrawRectangle::Points {
     /**
@@ -37,11 +38,16 @@ void PF_ActionDrawRectangle::trigger()
     polyline->addVertex(pPoints->corner1);
     //polyline->setLayerToActive();
     //polyline->setPenToActive();
+
     polyline->addVertex({pPoints->corner2.x, pPoints->corner1.y});
+    PF_Line::line_index++;
     polyline->addVertex(pPoints->corner2);
+    PF_Line::line_index++;
     polyline->addVertex({pPoints->corner1.x, pPoints->corner2.y});
+    PF_Line::line_index++;
     polyline->setClosed(true);
     polyline->endPolyline();
+    PF_Line::line_index++;
     container->addEntity(polyline);
 
     view->replot();

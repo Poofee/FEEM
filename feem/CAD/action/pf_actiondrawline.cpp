@@ -43,6 +43,8 @@ void PF_ActionDrawLine::trigger()
     setStatus(SetStartpoint);
     reset();
 
+    PF_Line::line_index++;
+
     //view->redraw(PF::RedrawDrawing);
     view->replot();
 }

@@ -56,9 +56,11 @@ public:
     void calculateBorders() override;
 
     QString toString() const;
-
+public:
+    static int point_index;
 protected:
     PF_PointData data;
+    int m_index;
 };
 
 #endif // PF_POINT_H

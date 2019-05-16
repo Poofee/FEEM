@@ -2,11 +2,12 @@
 #include "pf_graphicview.h"
 #include <QPainter>
 
+int PF_Point::point_index = 0;
 PF_Point::PF_Point(PF_EntityContainer *parent, PF_GraphicView *view, const PF_PointData &d)
     :PF_AtomicEntity(parent,view)
     ,data(d)
 {
-
+    m_index = point_index;
 }
 
 PF_Vector PF_Point::getCenter() const
@@ -170,5 +171,5 @@ void PF_Point::calculateBorders()
 
 QString PF_Point::toString() const
 {
-    return data.pos.toString();
+    return data.pos.toString()+QString(" %1").arg(m_index);
 }

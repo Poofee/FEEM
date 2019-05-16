@@ -3,6 +3,8 @@
 
 #include "pf_actionpreviewinterface.h"
 
+class QLineEdit;
+
 class PF_ActionDrawPoint : public PF_ActionPreviewInterface
 {
     Q_OBJECT
@@ -20,6 +22,9 @@ public:
 
 private:
     PF_Vector* pt;
+
+    QLineEdit* textx;
+    QLineEdit* texty;
 };
 
 #endif // PF_ACTIONDRAWPOINT_H

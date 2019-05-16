@@ -85,8 +85,12 @@ public:
     void draw(QCPPainter *painter) ;
 
     void calculateBorders() override;
+public:
+    static int line_index;
 protected:
     PF_LineData data;
+    int m_index;
+
 };
 
 #endif // PF_LINE_H

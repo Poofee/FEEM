@@ -2,12 +2,13 @@
 #include "pf_graphicview.h"
 #include <QPainter>
 
-
+int PF_Line::line_index = 0;
 PF_Line::PF_Line(PF_EntityContainer *parent, PF_GraphicView *view, const PF_LineData &d)
     :PF_AtomicEntity(parent,view)
     ,data(d)
 {
-
+    m_index = line_index;
+//    line_index++;
 }
 
 
@@ -16,6 +17,8 @@ PF_Line::PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vecto
 {
     data.startpoint = pStart;
     data.endpoint = pEnd;
+    m_index = line_index;
+//    line_index++;
 }
 
 PF_VectorSolutions PF_Line::getRefPoints() const
@@ -272,6 +275,7 @@ void PF_Line::draw(QCPPainter *painter)
 
     painter->drawText(start,data.startpoint.toString());
     painter->drawText(end,data.endpoint.toString());
+    painter->drawText((start+end)/2,QString("line:%1").arg(m_index));
 
     /** 绘制控制点 **/
     if (isSelected() || isHighlighted()) {
