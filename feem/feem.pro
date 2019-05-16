@@ -116,7 +116,8 @@ HEADERS += \
     project/inavigationwidgetfactory.h \
     core/coreapp.h \
     project/projectexplorerconstants.h \
-    material/pf_materialtreemodel.h
+    material/pf_materialtreemodel.h \
+    material/pf_magmaterialdialog.h
 
 SOURCES += \
     ./CAD/action/pf_eventhandler.cpp \
@@ -184,7 +185,8 @@ SOURCES += \
     CAD/action/pf_actionselectsingle.cpp \
     project/inavigationwidgetfactory.cpp \
     core/coreapp.cpp \
-    material/pf_materialtreemodel.cpp
+    material/pf_materialtreemodel.cpp \
+    material/pf_magmaterialdialog.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

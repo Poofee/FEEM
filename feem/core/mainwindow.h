@@ -42,6 +42,12 @@ public:
     void registerDefaultContainers();
     void registerDefaultActions();
 
+//    void addContextObject(IContext *context);
+//    void removeContextObject(IContext *context);
+
+//    void updateContextObject(const QList<IContext *> &context);
+//    void updateContext();
+
     QMap<QString, QAction*> a_map;/**动作列表**/
     PF_ActionGroupManager* ag_manager;
     FlexWidget* content;
@@ -62,6 +68,10 @@ private:
     ICore* m_coreImpl = nullptr;
     MessageManager* m_messageManager = nullptr;
     PF_ProjectExplorerPlugin* m_proPlugin = nullptr;
+
+    QList<IContext *> m_activeContext;
+
+    QMap<QWidget *, IContext *> m_contextWidgets;
 
     /**   **/
     PF_WidgetFactory* dialogFactory;

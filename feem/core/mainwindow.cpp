@@ -233,3 +233,49 @@ void MainWindow::registerDefaultActions()
 {
 
 }
+
+//void MainWindow::addContextObject(IContext *context)
+//{
+//    if (!context)
+//        return;
+//    QWidget *widget = context->widget();
+//    if (m_contextWidgets.contains(widget))
+//        return;
+
+//    m_contextWidgets.insert(widget, context);
+//}
+
+//void MainWindow::removeContextObject(IContext *context)
+//{
+//    if (!context)
+//        return;
+
+//    QWidget *widget = context->widget();
+//    if (!m_contextWidgets.contains(widget))
+//        return;
+
+//    m_contextWidgets.remove(widget);
+//    if (m_activeContext.removeAll(context) > 0)
+//        updateContextObject(m_activeContext);
+//}
+
+
+
+//void MainWindow::updateContext()
+//{
+//    Context contexts = m_highPrioAdditionalContexts;
+
+//    foreach (IContext *context, m_activeContext)
+//        contexts.add(context->context());
+
+//    contexts.add(m_lowPrioAdditionalContexts);
+
+//    Context uniquecontexts;
+//    for (const Id &id : qAsConst(contexts)) {
+//        if (!uniquecontexts.contains(id))
+//            uniquecontexts.add(id);
+//    }
+
+//    ActionManager::setContext(uniquecontexts);
+//    emit m_coreImpl->contextChanged(uniquecontexts);
+//}

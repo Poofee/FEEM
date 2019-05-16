@@ -6,6 +6,7 @@
 #include "actionmanager/actioncontainer.h"
 #include "actionmanager/command.h"
 #include "projectexplorerconstants.h"
+#include "pf_magmaterialdialog.h"
 
 #include <QAction>
 #include <QMenu>
@@ -383,6 +384,7 @@ bool PF_ProjectExplorerPlugin::initialize()
     dd->addBlankMaterial = new QAction(QIcon(":/more_materials.png"),tr("add Blank Material"), this);
     cmd = ActionManager::registerAction(dd->addBlankMaterial, Constants::ADDBLANKMATERIAL);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
+//    dd->addBlankMaterial->setEnabled()
     mmaterialContextMenu->addAction(cmd,Constants::G_DEFAULT_ONE);
 
 
@@ -394,6 +396,12 @@ bool PF_ProjectExplorerPlugin::initialize()
     mmaterialContextMenu->addAction(cmd,Constants::G_HELP);
     mprojectContextMenu->addSeparator(Constants::G_HELP);
     mprojectContextMenu->addAction(cmd,Constants::G_HELP);
+
+    connect(dd->addBlankMaterial,&QAction::triggered,dd,[](){
+        qDebug()<<"CONNN";
+        PF_MagMaterialDialog* dialog = new PF_MagMaterialDialog();
+        dialog->exec();
+    });
     return true;
 }
 
