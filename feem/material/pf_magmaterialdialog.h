@@ -13,7 +13,9 @@ class PF_MagMaterialDialog : public QDialog
 public:
     PF_MagMaterialDialog();
 
+    QWidget* createBasicPage();
     QWidget* createMagneticPage();
+    QWidget* createHeatPage();
 };
 
 #endif // PF_MAGMATERIALDIALOG_H

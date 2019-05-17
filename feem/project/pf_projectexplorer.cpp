@@ -384,7 +384,7 @@ bool PF_ProjectExplorerPlugin::initialize()
     dd->addBlankMaterial = new QAction(QIcon(":/more_materials.png"),tr("add Blank Material"), this);
     cmd = ActionManager::registerAction(dd->addBlankMaterial, Constants::ADDBLANKMATERIAL);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
-//    dd->addBlankMaterial->setEnabled()
+
     mmaterialContextMenu->addAction(cmd,Constants::G_DEFAULT_ONE);
 
 
@@ -398,7 +398,6 @@ bool PF_ProjectExplorerPlugin::initialize()
     mprojectContextMenu->addAction(cmd,Constants::G_HELP);
 
     connect(dd->addBlankMaterial,&QAction::triggered,dd,[](){
-        qDebug()<<"CONNN";
         PF_MagMaterialDialog* dialog = new PF_MagMaterialDialog();
         dialog->exec();
     });

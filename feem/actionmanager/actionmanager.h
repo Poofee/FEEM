@@ -53,7 +53,7 @@ signals:
     void commandListChanged();
     void commandAdded(Id id);
 
-private:
+public:
     ActionManager(QObject *parent = nullptr);
     ~ActionManager() override;
     static void saveSettings();

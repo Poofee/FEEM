@@ -16,9 +16,9 @@ PF_MagMaterialDialog::PF_MagMaterialDialog()
     QTabWidget* tab_material = new QTabWidget(this);
     QVBoxLayout* vbox = new QVBoxLayout;
     vbox->addWidget(tab_material);
-    tab_material->addTab(new QWidget(this),QString(tr("Basic Material")));
+    tab_material->addTab(createBasicPage(),QString(tr("Basic Material")));
     tab_material->addTab(createMagneticPage(),QString(tr("Magnetic Material")));
-    tab_material->addTab(new QWidget(this),QString(tr("Heat Material")));
+    tab_material->addTab(createHeatPage(),QString(tr("Heat Material")));
     QHBoxLayout* hbox = new QHBoxLayout;
     QPushButton* pb_OK = new QPushButton();
     pb_OK->setText(tr("OK"));
@@ -37,6 +37,18 @@ PF_MagMaterialDialog::PF_MagMaterialDialog()
     });
 
     setLayout(vbox);
+
+    /** 作用对话框关闭时，自动销毁对话框 **/
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
+    this->setWindowTitle(tr("Add Blank Material"));
+}
+
+QWidget *PF_MagMaterialDialog::createBasicPage()
+{
+    QWidget* w = new QWidget(this);
+
+    return w;
 }
 
 QWidget *PF_MagMaterialDialog::createMagneticPage()
@@ -82,18 +94,21 @@ QWidget *PF_MagMaterialDialog::createMagneticPage()
     QGroupBox* gbox_nonl = new QGroupBox(w);
     gbox_nonl->setTitle(tr("Nonlinear Material Properties"));
     hbox_linear = new QHBoxLayout;
-    QToolButton* bt_bhcurve = new QToolButton(w);
+    QPushButton* bt_bhcurve = new QPushButton(w);
     bt_bhcurve->setText(tr("B-H Curve"));
     QHBoxLayout* hbox1 = new QHBoxLayout;
     hbox1->addWidget(bt_bhcurve);
     formlayout_linear1 = new QFormLayout;
     edit_hx = new QLineEdit(w);
     formlayout_linear1->addRow(tr("hmax"),edit_hx);
-    hbox_linear->addStretch();
-    hbox_linear->addLayout(hbox1);
-    hbox_linear->addStretch();
-    hbox_linear->addLayout(formlayout_linear1);
-    hbox_linear->addStretch();
+    formlayout_linear1->setFormAlignment(Qt::AlignCenter);
+//    hbox_linear->addStretch();
+    hbox_linear->addLayout(hbox1,1);
+
+//    hbox_linear->addStretch();
+    hbox_linear->addLayout(formlayout_linear1,1);
+//    hbox_linear->addStretch();
+    hbox_linear->setSpacing(0);
     gbox_nonl->setLayout(hbox_linear);
 
     mainlayout->addWidget(gbox_nonl);
@@ -141,6 +156,15 @@ QWidget *PF_MagMaterialDialog::createMagneticPage()
     });
     combo_bhtype->setCurrentIndex(1);
     combo_bhtype->setCurrentIndex(0);
+
+    mainlayout->addStretch();
+    return w;
+}
+
+QWidget *PF_MagMaterialDialog::createHeatPage()
+{
+    QWidget* w = new QWidget(this);
+
 
     return w;
 }

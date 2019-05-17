@@ -61,6 +61,8 @@ bool coreApp::initialize()
     splash->finish(m_mainWindow);
     delete splash;
 
+    ActionManager::instance()->setContext(Context(Constants::C_GLOBAL));
+
     PF_Project* pro = new PF_Project(this);
     PF_Project* pro1 = new PF_Project(this);
     PF_SessionManager::instance()->addProject(pro);
