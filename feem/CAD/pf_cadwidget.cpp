@@ -3,7 +3,7 @@
 #include "pf_graphicview.h"
 
 #include <QToolBar>
-#include <QToolButton>
+#include <QPushButton>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -32,7 +32,8 @@ void PF_CADWidget::init()
 //    toolBar->setIconSize(QSize(24,24));
     toolBar->setObjectName("ToolBar");
 
-    zoom = new QToolButton(this);
+    QString str;
+    zoom = new QPushButton(this);
     zoom->setIcon(QIcon(":/main/zoombox.png"));
     zoom->setCheckable(true);
     zoom->setToolTip(tr("Zoom box"));
@@ -42,7 +43,10 @@ void PF_CADWidget::init()
         qDebug()<<"Zoom";
         this->zoom->setChecked(zoom->isChecked());
     });
-    zoomextents = new QToolButton(this);
+    str.append("QPushButton{background-color:rgba(0,0,0,0);}");
+    zoom->setStyleSheet(str);
+
+    zoomextents = new QPushButton(this);
     zoomextents->setIcon(QIcon(":/main/zoomextents.png"));
     zoomextents->setToolTip(tr("Zoom Extents"));
 //    zoomextents->setCheckable(true);
@@ -52,7 +56,7 @@ void PF_CADWidget::init()
         this->view->zoomAuto(true,true);
         //this->zoomextents->setChecked(zoomextents->isChecked());
     });
-    zoomin = new QToolButton(this);
+    zoomin = new QPushButton(this);
     zoomin->setIcon(QIcon(":/main/zoomin.png"));
     zoomin->setToolTip(tr("Zoom In"));
 //    zoomin->setCheckable(true);
@@ -62,7 +66,7 @@ void PF_CADWidget::init()
         this->view->zoomIn(1.2);
         //this->zoomin->setChecked(zoomin->isChecked());
     });
-    zoomout = new QToolButton(this);
+    zoomout = new QPushButton(this);
     zoomout->setIcon(QIcon(":/main/zoomout.png"));
     zoomout->setToolTip(tr("Zoom Out"));
 //    zoomout->setCheckable(true);
@@ -72,7 +76,7 @@ void PF_CADWidget::init()
         this->view->zoomOut(1.2);
         //this->zoomout->setChecked(zoomout->isChecked());
     });
-    zoomselected = new QToolButton(this);
+    zoomselected = new QPushButton(this);
     zoomselected->setIcon(QIcon(":/main/zoomselected.png"));
     zoomselected->setToolTip(tr("Zoom to Selected"));
     zoomselected->setCheckable(true);
