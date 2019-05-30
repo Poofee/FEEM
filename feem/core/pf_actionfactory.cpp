@@ -94,7 +94,8 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	//Operation
 	action = new QAction(tr("SelectSingle"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSelectSingle()));
-	action->setObjectName("SelectSingle");
+    action->setObjectName("SelectSingle");
+    action->setIcon(QIcon(":/main/select16x16.png"));
 	a_map["SelectSingle"] = action;
 
 	action = new QAction(tr("SelectAll"), agm->file);

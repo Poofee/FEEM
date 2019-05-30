@@ -17,7 +17,7 @@ PF_ActionHandler::PF_ActionHandler(QObject *parent) : QObject(parent)
 PF_ActionInterface *PF_ActionHandler::getCurrentAction()
 {
     if(view){
-
+        return view->getCurrentAction();
     }
     return nullptr;
 }
@@ -109,7 +109,11 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
         a = new PF_ActionSelectAll(document, view, true);
         break;
     case PF::ActionSelectSingle:
-
+//        if(getCurrentAction()->rtti() != PF::ActionSelectSingle) {
+            a = new PF_ActionSelectSingle(document, view);
+//        }else{
+//            a = nullptr;
+//        }
         break;
     case PF::ActionDeSelectAll:
         a = new PF_ActionSelectAll(document, view, false);

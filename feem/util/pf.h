@@ -72,6 +72,7 @@ public:
         ActionEditPaste,
         ActionEditDelete,
 
+        ActionSelect,
         ActionSelectSingle,
         ActionSelectAll,
         ActionDeSelectAll,

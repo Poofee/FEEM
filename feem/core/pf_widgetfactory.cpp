@@ -338,8 +338,9 @@ void PF_WidgetFactory::createGroupDrawOperation(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupDrawOperation = page->addGroup(QIcon(":/main/project.png"), tr("DrawOperation")))
     {
-        groupDrawOperation->addAction(QIcon(":/main/select16x16.png"), tr("Select"), Qt::ToolButtonTextBesideIcon);
+//        groupDrawOperation->addAction(QIcon(":/main/select16x16.png"), tr("Select"), Qt::ToolButtonTextBesideIcon);
 //        groupDrawOperation->addAction(QIcon(":/main/snapgeometry.png"), tr("Select All"), Qt::ToolButtonTextBesideIcon);
+        groupDrawOperation->addAction(a_map["SelectSingle"],Qt::ToolButtonTextBesideIcon);
         groupDrawOperation->addAction(a_map["SelectAll"],Qt::ToolButtonTextBesideIcon);
         groupDrawOperation->addAction(a_map["DeSelectAll"],Qt::ToolButtonTextBesideIcon);
 //        groupDrawOperation->addAction(QIcon(":/main/solid.png"), tr("Unselect All"), Qt::ToolButtonTextBesideIcon);
