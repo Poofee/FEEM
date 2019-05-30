@@ -6,6 +6,8 @@
 #include "pf_line.h"
 #include "pf_preview.h"
 
+#include "pf_cadwidget.h"
+
 
 PF_ActionDrawLine::PF_ActionDrawLine(PF_EntityContainer *container, PF_GraphicView *graphicView)
     :PF_ActionPreviewInterface("Draw Line",container,graphicView)
@@ -52,6 +54,19 @@ void PF_ActionDrawLine::trigger()
 void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
 {
     PF_Vector mouse = snapPoint(e);
+
+//    PF_CADWidget::statusbar->clearMessage();
+    switch(getStatus()){
+    case SetStartpoint:
+        PF_CADWidget::statusbar->showMessage(QString(tr("Set start point: "))+mouse.toString());
+        break;
+    case SetEndpoint:
+        PF_CADWidget::statusbar->showMessage(QString(tr("Set end point: "))+mouse.toString());
+        break;
+    default:
+        PF_CADWidget::statusbar->showMessage(QString(tr("Status error."))+mouse.toString());
+        break;
+    }
     /**只有起始点设置好之后才有预览**/
     if(getStatus() == SetEndpoint && data->startpoint.valid){
         deletePreview();
@@ -87,6 +102,8 @@ void PF_ActionDrawLine::mouseReleaseEvent(QMouseEvent *e)
         deletePreview();
         drawPreview();
         init(getStatus()-1);
+
+        PF_CADWidget::statusbar->clearMessage();
     }
 }
 

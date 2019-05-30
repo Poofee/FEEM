@@ -4,6 +4,8 @@
 #include "pf_point.h"
 #include "pf_graphicview.h"
 
+#include "pf_cadwidget.h"
+
 #include <QDialog>
 #include <QFormLayout>
 #include <QLineEdit>
@@ -73,6 +75,10 @@ void PF_ActionDrawPoint::mouseMoveEvent(QMouseEvent *e)
     PF_Vector mouse = snapPoint(e);
     textx->setText(QString("%1").arg(mouse.x));
     texty->setText(QString("%1").arg(mouse.y));
+
+//    PF_CADWidget::statusbar->clearMessage();
+
+    PF_CADWidget::statusbar->showMessage(QString(tr("Single click to set point. "))+mouse.toString());
 }
 
 void PF_ActionDrawPoint::mouseReleaseEvent(QMouseEvent *e)
@@ -83,6 +89,8 @@ void PF_ActionDrawPoint::mouseReleaseEvent(QMouseEvent *e)
         trigger();
     }else if(e->button() == Qt::RightButton){
         init(getStatus()-1);
+
+        PF_CADWidget::statusbar->clearMessage();
     }
 }
 

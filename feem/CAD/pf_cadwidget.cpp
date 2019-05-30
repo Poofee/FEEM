@@ -8,6 +8,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QAction>
+#include <QStatusBar>
+
+QStatusBar* PF_CADWidget::statusbar = nullptr;
 
 PF_CADWidget::PF_CADWidget(PF_Document* doc, QWidget *parent)
     : QWidget(parent)
@@ -112,15 +115,27 @@ void PF_CADWidget::init()
     cadlayout->addWidget(toolBar,0);
     cadlayout->addWidget(view,1);
 
+    statusbar = new QStatusBar(this);
+    statusbar->setStyleSheet("QStatusBar::item{border: 20 px}");
+    cadlayout->addWidget(statusbar,0);
+
     setLayout(cadlayout);
 }
 
-PF_GraphicView*PF_CADWidget::getGraphicView()
+PF_GraphicView* PF_CADWidget::getGraphicView()
 {
     return view ? view : nullptr;
 }
 
-PF_Document*PF_CADWidget::getDocument()
+PF_Document* PF_CADWidget::getDocument()
 {
     return document;
+}
+
+void PF_CADWidget::paintEvent(QPaintEvent *e)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

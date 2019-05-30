@@ -10,7 +10,7 @@ PF_Material::PF_Material()
 
 CMaterialProp::CMaterialProp()
 {
-    BlockName="New Material";
+    BlockName=QObject::tr("New Material");
     mu_x=1.;
     mu_y=1.;			// permeabilities, relative
     H_c=0.;				// magnetization, A/m

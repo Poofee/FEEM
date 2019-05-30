@@ -8,6 +8,8 @@ class PF_GraphicView;
 class QToolBar;
 class QAction;
 
+class QStatusBar;
+
 class PF_Document;
 /*!
  \brief 包含坐标轴和上方的按钮。
@@ -23,6 +25,10 @@ public:
     void init();
     PF_GraphicView* getGraphicView();
     PF_Document* getDocument();
+
+    void paintEvent(QPaintEvent *e);
+
+    static QStatusBar* statusbar;
 
 private:
     QWidget* toolBar;

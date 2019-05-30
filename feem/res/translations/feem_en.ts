@@ -978,30 +978,53 @@ Do you want to save your changes?</source>
     </message>
 </context>
 <context>
+    <name>PF_ActionDrawLine</name>
+    <message>
+        <location filename="../../CAD/action/pf_actiondrawline.cpp" line="61"/>
+        <source>Set start point: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CAD/action/pf_actiondrawline.cpp" line="64"/>
+        <source>Set end point: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CAD/action/pf_actiondrawline.cpp" line="67"/>
+        <source>Status error.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PF_ActionDrawPoint</name>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="24"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="26"/>
         <source>Add point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="30"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="32"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="35"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="37"/>
         <source>position x:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="36"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="38"/>
         <source>position y:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="47"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="49"/>
         <source>Set point&apos;s coordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="81"/>
+        <source>Single click to set point. </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1181,27 +1204,27 @@ Do you want to save your changes?</source>
 <context>
     <name>PF_CADWidget</name>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="38"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="42"/>
         <source>Zoom box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="47"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="54"/>
         <source>Zoom Extents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="57"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="64"/>
         <source>Zoom In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="67"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="74"/>
         <source>Zoom Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="77"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="84"/>
         <source>Zoom to Selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1234,84 +1257,89 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="52"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="44"/>
+        <source>Add Blank Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="64"/>
         <source>Linear B-H relationship</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="53"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="65"/>
         <source>Nonlinear B-H curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="55"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="67"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="56"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="68"/>
         <source>B-H curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="69"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="81"/>
         <source>Relative ux:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="70"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="82"/>
         <source>Relative hx:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="72"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="84"/>
         <source>Relative uy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="73"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="85"/>
         <source>Relative hy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="77"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="89"/>
         <source>Linear Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="83"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="95"/>
         <source>Nonlinear Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="86"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="98"/>
         <source>B-H Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="91"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="103"/>
         <source>hmax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="102"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="117"/>
         <source>Coercivity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="105"/>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="112"/>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="125"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="120"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="127"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="140"/>
         <source>J,MA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="109"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="124"/>
         <source>Electrical Conductivity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="122"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="137"/>
         <source>Source Current Density</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1445,7 +1473,7 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../project/pf_projectexplorer.cpp" line="391"/>
+        <location filename="../../project/pf_projectexplorer.cpp" line="392"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2116,6 +2144,11 @@ Do you want to save your changes?</source>
     <message>
         <location filename="../../../qtribbon/ribbonsample/mainwindow.cpp" line="1245"/>
         <source>%1%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../material/pf_material.cpp" line="13"/>
+        <source>New Material</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
