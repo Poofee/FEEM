@@ -146,7 +146,7 @@ void PF_Point::draw(QCPPainter *painter)
     if (isSelected()) {
 //		if (!e->isParentSelected()) {
             PF_VectorSolutions const& s = this->getRefPoints();
-            int x,y;
+            double x,y;
             int size = 4;
             for (size_t i=0; i<s.getNumber(); ++i) {
                 x = mParentPlot->toGuiX(s.get(i).x);
