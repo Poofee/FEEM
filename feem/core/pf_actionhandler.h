@@ -38,6 +38,7 @@ public slots:
     //Operation
     void slotSelectSingle();
     void slotSelectAll();
+    void slotDeSelectAll();
     void slotDrawPoint();
     void slotDrawLine();
     void slotDrawArc();

@@ -26,6 +26,8 @@ public:
     PF_GraphicView* getGraphicView();
     PF_Document* getDocument();
 
+    void exportGmshGeo();
+
     void paintEvent(QPaintEvent *e);
 
     static QStatusBar* statusbar;

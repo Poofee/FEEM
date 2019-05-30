@@ -52,7 +52,7 @@ private:
 protected:
     QString name;
     bool finished;
-    PF_Document*document;
+    PF_Document* document;
     PF_ActionInterface* predecessor;
     PF::ActionType actionType;
 };

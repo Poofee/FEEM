@@ -119,7 +119,9 @@ HEADERS += \
     material/pf_materialtreemodel.h \
     material/pf_magmaterialdialog.h \
     fem/solver/magnetodynamics2d.h \
-    fem/solver/types.h
+    fem/solver/types.h \
+    CAD/action/pf_actionselectall.h \
+    CAD/action/pf_selection.h
 
 SOURCES += \
     ./CAD/action/pf_eventhandler.cpp \
@@ -190,7 +192,9 @@ SOURCES += \
     material/pf_materialtreemodel.cpp \
     material/pf_magmaterialdialog.cpp \
     fem/solver/magnetodynamics2d.cpp \
-    fem/solver/types.cpp
+    fem/solver/types.cpp \
+    CAD/action/pf_actionselectall.cpp \
+    CAD/action/pf_selection.cpp
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock

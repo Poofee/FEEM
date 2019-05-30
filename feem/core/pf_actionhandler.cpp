@@ -4,6 +4,8 @@
 #include "pf_actiondrawpoint.h"
 #include "pf_actiondrawline.h"
 #include "pf_actiondrawrectangle.h"
+#include "pf_actionselectall.h"
+#include "pf_actionselectsingle.h"
 #include "pf_document.h"
 #include "pf_graphicview.h"
 
@@ -104,10 +106,13 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
 
         break;
     case PF::ActionSelectAll:
-
+        a = new PF_ActionSelectAll(document, view, true);
         break;
     case PF::ActionSelectSingle:
 
+        break;
+    case PF::ActionDeSelectAll:
+        a = new PF_ActionSelectAll(document, view, false);
         break;
     case PF::ActionShowResult:
 
@@ -186,6 +191,11 @@ void PF_ActionHandler::slotSelectSingle() {
 
 void PF_ActionHandler::slotSelectAll() {
     setCurrentAction(PF::ActionSelectAll);
+}
+
+void PF_ActionHandler::slotDeSelectAll()
+{
+    setCurrentAction(PF::ActionDeSelectAll);
 }
 
 void PF_ActionHandler::slotDrawPoint() {

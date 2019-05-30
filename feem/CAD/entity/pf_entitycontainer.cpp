@@ -461,6 +461,15 @@ PF_Vector PF_EntityContainer::getNearestSelectedRef(const PF_Vector& coord,
 }
 
 
+/*!
+ \brief 计算距离输入点最近的entity以及对应的距离
+
+ \param coord
+ \param entity
+ \param level
+ \param solidDist
+ \return double
+*/
 double PF_EntityContainer::getDistanceToPoint(const PF_Vector& coord,
                                               PF_Entity** entity,
                                               PF::ResolveLevel level,

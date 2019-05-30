@@ -98,9 +98,16 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	a_map["SelectSingle"] = action;
 
 	action = new QAction(tr("SelectAll"), agm->file);
+    action->setIcon(QIcon(":/main/snapgeometry.png"));
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotSelectAll()));
 	action->setObjectName("SelectAll");
 	a_map["SelectAll"] = action;
+
+    action = new QAction(tr("DeSelectAll"), agm->file);
+    action->setIcon(QIcon(":/main/solid.png"));
+    connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDeSelectAll()));
+    action->setObjectName("DeSelectAll");
+    a_map["DeSelectAll"] = action;
 
     /**画点**/
 	action = new QAction(tr("DrawPoint"), agm->file);

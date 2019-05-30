@@ -2,6 +2,8 @@
 
 #include "pf_graphicview.h"
 
+#include <stdio.h>
+
 #include <QToolBar>
 #include <QPushButton>
 #include <QDebug>
@@ -130,6 +132,16 @@ PF_GraphicView* PF_CADWidget::getGraphicView()
 PF_Document* PF_CADWidget::getDocument()
 {
     return document;
+}
+
+/*!
+ \brief 将当前的绘图导出为gmsh的geo文件
+
+*/
+void PF_CADWidget::exportGmshGeo()
+{
+    FILE* fp = NULL;
+
 }
 
 void PF_CADWidget::paintEvent(QPaintEvent *e)

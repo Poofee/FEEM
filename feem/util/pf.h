@@ -74,6 +74,7 @@ public:
 
         ActionSelectSingle,
         ActionSelectAll,
+        ActionDeSelectAll,
         ActionDrawPoint,
         ActionDrawCircle,
         ActionDrawRectangle,
