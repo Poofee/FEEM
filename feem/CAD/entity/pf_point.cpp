@@ -138,7 +138,7 @@ void PF_Point::draw(QCPPainter *painter)
         painter->setPen(pen);
     }
     for(int i = 0;i <= width*2;i++){
-        painter->drawLine(QPoint(x-width,y-width + i),QPoint(x+width,y-width+i));
+        painter->drawLine(QPointF(x-width,y-width + i),QPointF(x+width,y-width+i));
 //        qDebug()<<"line "<<i<<QPoint(x-width,y-width + i)<<QPoint(x+width,y-width+i);
     }
     painter->drawText(QPoint(x,y),toString());
