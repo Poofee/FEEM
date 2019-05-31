@@ -30,7 +30,9 @@ PF_ActionDrawPoint::PF_ActionDrawPoint(PF_EntityContainer *parent, PF_GraphicVie
     });
     QToolButton* bt_Cancel = new QToolButton();
     bt_Cancel->setText(tr("Cancel"));
-    connect(bt_Cancel,&QToolButton::clicked,[dialog](){
+    connect(bt_Cancel,&QToolButton::clicked,[dialog,this](){
+        this->init(getStatus()-1);
+        PF_CADWidget::statusbar->clearMessage();
         dialog->reject();
     });
 
@@ -78,7 +80,7 @@ void PF_ActionDrawPoint::mouseMoveEvent(QMouseEvent *e)
 
 //    PF_CADWidget::statusbar->clearMessage();
 
-    PF_CADWidget::statusbar->showMessage(QString(tr("Single click to set point. "))+mouse.toString());
+    PF_CADWidget::statusbar->showMessage(mouse.toString()+QString(tr("Single click to set point.(Press right click to abort)")));
 }
 
 void PF_ActionDrawPoint::mouseReleaseEvent(QMouseEvent *e)

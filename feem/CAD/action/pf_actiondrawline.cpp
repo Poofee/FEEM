@@ -58,13 +58,13 @@ void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
 //    PF_CADWidget::statusbar->clearMessage();
     switch(getStatus()){
     case SetStartpoint:
-        PF_CADWidget::statusbar->showMessage(QString(tr("Set start point: "))+mouse.toString());
+        PF_CADWidget::statusbar->showMessage(mouse.toString()+QString(tr("Set start point.(Press right click to abort)")));
         break;
     case SetEndpoint:
-        PF_CADWidget::statusbar->showMessage(QString(tr("Set end point: "))+mouse.toString());
+        PF_CADWidget::statusbar->showMessage(mouse.toString()+QString(tr("Set end point.(Press right click to abort)")));
         break;
     default:
-        PF_CADWidget::statusbar->showMessage(QString(tr("Status error."))+mouse.toString());
+        PF_CADWidget::statusbar->showMessage(mouse.toString()+QString(tr("Status error.")));
         break;
     }
     /**只有起始点设置好之后才有预览**/
