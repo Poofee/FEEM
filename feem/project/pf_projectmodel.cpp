@@ -162,6 +162,7 @@ void PF_ProjectModel::onCollapsed(const QModelIndex &idx)
 */
 void PF_ProjectModel::updateSubtree(FolderNode *node)
 {
+    qDebug()<<Q_FUNC_INFO;
     // FIXME: This is still excessive, should be limited to the affected subtree.
     while (FolderNode *parent = node->parentFolderNode())
         node = parent;

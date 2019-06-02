@@ -2,6 +2,8 @@
 #include "pf_node.h"
 
 #include "idocument.h"
+#include "pf_nodetreebuilder.h"
+#include "pf_projecttree.h"
 
 #include <memory>
 #include <QDebug>
@@ -65,7 +67,7 @@ PF_Project::PF_Project(QObject *parent)
     : QObject(parent)
     , d(new PF_ProjectPrivate())
 {
-    creatTree();
+    setRootProjectNode(PF_NodeTreeBuilder::buildTree(this));
 }
 
 PF_Project::~PF_Project()
@@ -146,6 +148,9 @@ void PF_Project::setRootProjectNode(std::unique_ptr<ProjectNode> &&root)
 void PF_Project::handleSubTreeChanged(FolderNode* node)
 {
     qDebug()<<Q_FUNC_INFO;
+
+    PF_ProjectTree::emitSubtreeChanged(node);
+//    emit fileListChanged();
 }
 
 /*!

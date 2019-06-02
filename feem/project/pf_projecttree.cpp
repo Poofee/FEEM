@@ -74,13 +74,13 @@ void PF_ProjectTree::nodeChanged(PF_ProjectTreeWidget* widget)
 */
 bool PF_ProjectTree::hasNode(const Node* node)
 {
-//    const QList<PF_Project *> projects = PF_SessionManager::projects();
-//    for (PF_Project *project : projects) {
-//        if (ProjectNode *projectNode = project->rootProjectNode()) {
-//            task(projectNode);
-//            projectNode->forEachGenericNode(task);
-//        }
-//    }
+    const QList<PF_Project *> projects = PF_SessionManager::projects();
+    for (PF_Project *project : projects) {
+        if (ProjectNode *projectNode = project->rootProjectNode()) {
+            if(project->rootProjectNode()->findNode([node](const Node *n) { return n == node; }))
+                return true;
+        }
+    }
 //    return Utils::contains(SessionManager::projects(), [node](const Project *p) {
 //        return p && p->rootProjectNode() && (
 //                    p->containerNode() == node
@@ -203,7 +203,13 @@ void PF_ProjectTree::collapseAll()
 void PF_ProjectTree::expandAll()
 {
 //    if(hasFocus(m_projecttreewidget))
-        m_projecttreewidget->expandAll();
+    m_projecttreewidget->expandAll();
+}
+
+void PF_ProjectTree::emitSubtreeChanged(FolderNode *node)
+{
+    if (hasNode(node))
+        emit s_instance->subtreeChanged(node);
 }
 
 /*!
