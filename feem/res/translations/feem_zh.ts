@@ -980,14 +980,22 @@ Do you want to save your changes?</source>
 <context>
     <name>PF_ActionDrawLine</name>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawline.cpp" line="61"/>
         <source>Set start point: </source>
-        <translation type="unfinished">设置起点坐标：</translation>
+        <translation type="obsolete">设置起点坐标：</translation>
+    </message>
+    <message>
+        <source>Set end point: </source>
+        <translation type="obsolete">设置终点坐标：</translation>
+    </message>
+    <message>
+        <location filename="../../CAD/action/pf_actiondrawline.cpp" line="61"/>
+        <source>Set start point.(Press right click to abort)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../CAD/action/pf_actiondrawline.cpp" line="64"/>
-        <source>Set end point: </source>
-        <translation type="unfinished">设置终点坐标：</translation>
+        <source>Set end point.(Press right click to abort)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../CAD/action/pf_actiondrawline.cpp" line="67"/>
@@ -1008,24 +1016,28 @@ Do you want to save your changes?</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="37"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="39"/>
         <source>position x:</source>
         <translation type="unfinished">位置x：</translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="38"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="40"/>
         <source>position y:</source>
         <translation type="unfinished">位置y：</translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="49"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="51"/>
         <source>Set point&apos;s coordinate</source>
         <translation type="unfinished">设置点坐标</translation>
     </message>
     <message>
-        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="81"/>
+        <location filename="../../CAD/action/pf_actiondrawpoint.cpp" line="83"/>
+        <source>Single click to set point.(Press right click to abort)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Single click to set point. </source>
-        <translation type="unfinished">单击确定点的坐标 </translation>
+        <translation type="obsolete">单击确定点的坐标 </translation>
     </message>
 </context>
 <context>
@@ -1111,92 +1123,97 @@ Do you want to save your changes?</source>
         <translation type="unfinished">单个选择</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="100"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="101"/>
         <source>SelectAll</source>
         <translation type="unfinished">全选</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="106"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="107"/>
+        <source>DeSelectAll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../core/pf_actionfactory.cpp" line="114"/>
         <source>DrawPoint</source>
         <translation type="unfinished">画点</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="113"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="121"/>
         <source>DrawLine</source>
         <translation type="unfinished">线</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="120"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="128"/>
         <source>DrawArc</source>
         <translation type="unfinished">圆弧</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="126"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="134"/>
         <source>DrawCircle</source>
         <translation type="unfinished">圆</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="133"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="141"/>
         <source>DrawRectangle</source>
         <translation type="unfinished">方形</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="140"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="148"/>
         <source>ZoomIn</source>
         <translation type="unfinished">放大</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="146"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="154"/>
         <source>ZoomOut</source>
         <translation type="unfinished">缩小</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="152"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="160"/>
         <source>ZoomAuto</source>
         <translation type="unfinished">自动缩放</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="159"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="167"/>
         <source>ShowGrid</source>
         <translation type="unfinished">显示网格</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="164"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="172"/>
         <source>SetGrid</source>
         <translation type="unfinished">设置网格</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="170"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="178"/>
         <source>DoMesh</source>
         <translation type="unfinished">分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="175"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="183"/>
         <source>ShowMesh</source>
         <translation type="unfinished">显示分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="180"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="188"/>
         <source>DelMesh</source>
         <translation type="unfinished">删除分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="186"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="194"/>
         <source>Solve</source>
         <translation type="unfinished">求解</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="191"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="199"/>
         <source>ShowResult</source>
         <translation type="unfinished">显示结果</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="196"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="204"/>
         <source>SolveSetting</source>
         <translation type="unfinished">求解设置</translation>
     </message>
     <message>
-        <location filename="../../core/pf_actionfactory.cpp" line="202"/>
+        <location filename="../../core/pf_actionfactory.cpp" line="210"/>
         <source>ShowAbout</source>
         <translation type="unfinished">关于</translation>
     </message>
@@ -1204,27 +1221,27 @@ Do you want to save your changes?</source>
 <context>
     <name>PF_CADWidget</name>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="42"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="44"/>
         <source>Zoom box</source>
         <translation type="unfinished">框选放大</translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="54"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="56"/>
         <source>Zoom Extents</source>
         <translation type="unfinished">自适应缩放</translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="64"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="66"/>
         <source>Zoom In</source>
         <translation type="unfinished">缩小</translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="74"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="76"/>
         <source>Zoom Out</source>
         <translation type="unfinished">放大</translation>
     </message>
     <message>
-        <location filename="../../CAD/pf_cadwidget.cpp" line="84"/>
+        <location filename="../../CAD/pf_cadwidget.cpp" line="86"/>
         <source>Zoom to Selected</source>
         <translation type="unfinished">将所选放大</translation>
     </message>
@@ -1232,114 +1249,119 @@ Do you want to save your changes?</source>
 <context>
     <name>PF_MagMaterialDialog</name>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="19"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="26"/>
         <source>Basic Material</source>
         <translation type="unfinished">基本材料属性</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="20"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="27"/>
         <source>Magnetic Material</source>
         <translation type="unfinished">电磁材料属性</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="21"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="28"/>
         <source>Heat Material</source>
         <translation type="unfinished">热材料属性</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="24"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="31"/>
         <source>OK</source>
         <translation type="unfinished">确定</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="26"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="33"/>
         <source>Cancle</source>
         <translation type="unfinished">取消</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="44"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="51"/>
         <source>Add Blank Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="64"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="71"/>
         <source>Linear B-H relationship</source>
         <translation type="unfinished">线性B-H关系</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="65"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="72"/>
         <source>Nonlinear B-H curve</source>
         <translation type="unfinished">非线性B-H曲线</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="67"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="19"/>
         <source>Name</source>
         <translation type="unfinished">名称</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="68"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="20"/>
+        <source>Comment</source>
+        <translation type="unfinished">备注</translation>
+    </message>
+    <message>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="75"/>
         <source>B-H curve</source>
         <translation type="unfinished">B-H曲线</translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="81"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="88"/>
         <source>Relative ux:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="82"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="89"/>
         <source>Relative hx:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="84"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="91"/>
         <source>Relative uy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="85"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="92"/>
         <source>Relative hy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="89"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="96"/>
         <source>Linear Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="95"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="102"/>
         <source>Nonlinear Material Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="98"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="105"/>
         <source>B-H Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="103"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="110"/>
         <source>hmax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="117"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="124"/>
         <source>Coercivity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="120"/>
         <location filename="../../material/pf_magmaterialdialog.cpp" line="127"/>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="140"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="134"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="147"/>
         <source>J,MA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="124"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="131"/>
         <source>Electrical Conductivity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../material/pf_magmaterialdialog.cpp" line="137"/>
+        <location filename="../../material/pf_magmaterialdialog.cpp" line="144"/>
         <source>Source Current Density</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1761,135 +1783,132 @@ Do you want to save your changes?</source>
         <translation type="unfinished">绘制操作</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="341"/>
         <source>Select</source>
-        <translation type="unfinished">选择</translation>
+        <translation type="obsolete">选择</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="342"/>
         <source>Select All</source>
-        <translation type="unfinished">全选</translation>
+        <translation type="obsolete">全选</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="343"/>
         <source>Unselect All</source>
-        <translation type="unfinished">取消选择</translation>
+        <translation type="obsolete">取消选择</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="344"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="347"/>
         <source>Cut</source>
         <translation type="unfinished">剪切</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="345"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="348"/>
         <source>Copy</source>
         <translation type="unfinished">复制</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="346"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="349"/>
         <source>Paste</source>
         <translation type="unfinished">粘贴</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="347"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="350"/>
         <source>Delete</source>
         <translation type="unfinished">删除</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="353"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="356"/>
         <source>View</source>
         <translation type="unfinished">视图</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="366"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="369"/>
         <source>Material</source>
         <translation type="unfinished">材料</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="368"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="371"/>
         <source>Add material</source>
         <translation type="unfinished">新建材料</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="369"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="372"/>
         <source>Material library</source>
         <translation type="unfinished">材料库</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="375"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="378"/>
         <source>BuildMesh</source>
         <translation type="unfinished">构建分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="377"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="380"/>
         <source>Build mesh</source>
         <translation type="unfinished">生成分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="383"/>
-        <location filename="../../core/pf_widgetfactory.cpp" line="385"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="386"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="388"/>
         <source>Mesh Generator</source>
         <translation type="unfinished">分网器</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="391"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="394"/>
         <source>Im/ExportMesh</source>
         <translation type="unfinished">导入/导出分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="393"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="396"/>
         <source>Import mesh</source>
         <translation type="unfinished">导入分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="394"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="397"/>
         <source>Export mesh</source>
         <translation type="unfinished">导出分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="400"/>
-        <location filename="../../core/pf_widgetfactory.cpp" line="402"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="403"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="405"/>
         <source>Statics</source>
         <translation type="unfinished">统计</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="408"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="411"/>
         <source>ClearMesh</source>
         <translation type="unfinished">删除分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="410"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="413"/>
         <source>Clear mesh</source>
         <translation type="unfinished">删除分网</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="416"/>
-        <location filename="../../core/pf_widgetfactory.cpp" line="418"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="419"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="421"/>
         <source>Solve</source>
         <translation type="unfinished">求解</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="424"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="427"/>
         <source>SolverSetting</source>
         <translation type="unfinished">求解设置</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="426"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="429"/>
         <source>Solve setting</source>
         <translation type="unfinished">求解设置</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="432"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="435"/>
         <source>ClearSolution</source>
         <translation type="unfinished">删除结果</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="434"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="437"/>
         <source>Clear solutions</source>
         <translation type="unfinished">删除结果</translation>
     </message>
     <message>
-        <location filename="../../core/pf_widgetfactory.cpp" line="440"/>
+        <location filename="../../core/pf_widgetfactory.cpp" line="443"/>
         <source>Plot</source>
         <translation type="unfinished">绘图</translation>
     </message>

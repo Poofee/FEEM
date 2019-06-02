@@ -1,15 +1,17 @@
-//#include "pf_nodetreebuilder.h"
+#include "pf_nodetreebuilder.h"
 
-//#include "pf_node.h"
-//#include "pf_project.h"
+#include "pf_node.h"
+#include "pf_project.h"
 
-//static void createTree(const QmakePriFile *pri, QmakePriFileNode *node, const FileNameList &toExclude)
-//{
-//    QTC_ASSERT(pri, return);
-//    QTC_ASSERT(node, return);
+static void createTree(const PF_Project *pro, ProjectNode *node)
+{
+    if(!pro)
+        return;
+    if(!node)
+        return;
 
-//    node->setDisplayName(pri->displayName());
-//    node->setIcon(qmakeStaticData()->projectIcon);
+    node->setDisplayName(pro->displayName());
+//    node->setIcon(pro->);
 
 //    // .pro/.pri-file itself:
 //    node->addNode(std::make_unique<FileNode>(pri->filePath(), FileType::Project, false));
@@ -69,19 +71,19 @@
 //        createTree(c, newNode.get(), toExclude);
 //        node->addNode(std::move(newNode));
 //    }
-//}
+}
 
-///**
-// * @brief 根据project的内容生成treenode
-// *
-// * @param project
-// * @return std::unique_ptr<ProjectNode>
-// */
-//std::unique_ptr<ProjectNode> PF_NodeTreeBuilder::buildTree(PF_Project *project)
-//{
-//    auto root = std::make_unique<ProjectNode>(project);
+/**
+ * @brief 根据project的内容生成treenode
+ *
+ * @param project
+ * @return std::unique_ptr<ProjectNode>
+ */
+std::unique_ptr<ProjectNode> PF_NodeTreeBuilder::buildTree(PF_Project *project)
+{
+    auto root = std::make_unique<ProjectNode>(project);
 
-//    createTree(project->rootProFile(), root.get());
+    createTree(project, root.get());
 
-//    return root;
-//}
+    return root;
+}

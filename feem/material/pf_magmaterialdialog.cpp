@@ -13,8 +13,15 @@
 
 PF_MagMaterialDialog::PF_MagMaterialDialog()
 {
-    QTabWidget* tab_material = new QTabWidget(this);
+    QFormLayout* formlayout = new QFormLayout;
+    edit_name = new QLineEdit(this);
+    QLineEdit* edit_comment = new QLineEdit(this);
+    formlayout->addRow(tr("Name"),edit_name);
+    formlayout->addRow(tr("Comment"),edit_comment);
+
+    tab_material = new QTabWidget(this);
     QVBoxLayout* vbox = new QVBoxLayout;
+    vbox->addLayout(formlayout);
     vbox->addWidget(tab_material);
     tab_material->addTab(createBasicPage(),QString(tr("Basic Material")));
     tab_material->addTab(createMagneticPage(),QString(tr("Magnetic Material")));
@@ -59,12 +66,12 @@ QWidget *PF_MagMaterialDialog::createMagneticPage()
 
     /** Name & B-H curve **/
     QFormLayout* formlayout = new QFormLayout;
-    QLineEdit* edit_name = new QLineEdit(w);
+//    QLineEdit* edit_name = new QLineEdit(w);
     QComboBox* combo_bhtype = new QComboBox(w);
     combo_bhtype->addItem(tr("Linear B-H relationship"));
     combo_bhtype->addItem(tr("Nonlinear B-H curve"));
 
-    formlayout->addRow(tr("Name"),edit_name);
+//    formlayout->addRow(tr("Name"),edit_name);
     formlayout->addRow(tr("B-H curve"),combo_bhtype);
     formlayout->setLabelAlignment(Qt::AlignLeft);
 
@@ -73,10 +80,10 @@ QWidget *PF_MagMaterialDialog::createMagneticPage()
     /** Linear Material Properties **/
     QGroupBox* gbox_linear = new QGroupBox(w);
     QHBoxLayout* hbox_linear = new QHBoxLayout;
-    QLineEdit* edit_ux = new QLineEdit(w);
-    QLineEdit* edit_uy = new QLineEdit(w);
-    QLineEdit* edit_hx = new QLineEdit(w);
-    QLineEdit* edit_hy = new QLineEdit(w);
+    edit_ux = new QLineEdit(w);
+    edit_uy = new QLineEdit(w);
+    edit_hx = new QLineEdit(w);
+    edit_hy = new QLineEdit(w);
     QFormLayout* formlayout_linear1 = new QFormLayout;
     formlayout_linear1->addRow(tr("Relative ux:"),edit_ux);
     formlayout_linear1->addRow(tr("Relative hx:"),edit_hx);
@@ -116,14 +123,14 @@ QWidget *PF_MagMaterialDialog::createMagneticPage()
     QGroupBox* gbox_corer = new QGroupBox(w);
     gbox_corer->setTitle(tr("Coercivity"));
     QFormLayout* form_coer = new QFormLayout;
-    QLineEdit* edit_coer = new QLineEdit(w);
+    edit_coer = new QLineEdit(w);
     form_coer->addRow(tr("J,MA"),edit_coer);
     gbox_corer->setLayout(form_coer);
 
     QGroupBox* gbox_conduct = new QGroupBox(w);
     gbox_conduct->setTitle(tr("Electrical Conductivity"));
     QFormLayout* form_conduct = new QFormLayout;
-    QLineEdit* edit_conduct = new QLineEdit(w);
+    edit_conduct = new QLineEdit(w);
     form_conduct->addRow(tr("J,MA"),edit_conduct);
     gbox_conduct->setLayout(form_conduct);
 
@@ -136,7 +143,7 @@ QWidget *PF_MagMaterialDialog::createMagneticPage()
     QGroupBox* gbox_source = new QGroupBox(w);
     gbox_source->setTitle(tr("Source Current Density"));
     QFormLayout* form_current = new QFormLayout;
-    QLineEdit* edit_current = new QLineEdit(w);
+    edit_current = new QLineEdit(w);
     form_current->addRow(tr("J,MA"),edit_current);
     gbox_source->setLayout(form_current);
 

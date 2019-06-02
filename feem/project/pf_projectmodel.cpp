@@ -155,6 +155,11 @@ void PF_ProjectModel::onCollapsed(const QModelIndex &idx)
 //    qDebug()<<"onCollapsed:"<<idx.column()<<idx.row();
 }
 
+/*!
+ \brief 更新tree，代码确实有一点暴力，全部都更新了。找出node所属的pro。
+
+ \param node
+*/
 void PF_ProjectModel::updateSubtree(FolderNode *node)
 {
     // FIXME: This is still excessive, should be limited to the affected subtree.

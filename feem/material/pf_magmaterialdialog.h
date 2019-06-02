@@ -3,6 +3,9 @@
 
 #include <QDialog>
 
+class QLineEdit;
+class QTabWidget;
+
 /*!
  \brief 创建一个电磁材料的材料设置窗口
 
@@ -16,6 +19,17 @@ public:
     QWidget* createBasicPage();
     QWidget* createMagneticPage();
     QWidget* createHeatPage();
+private:
+    QLineEdit* edit_name;
+    QLineEdit* edit_comment;
+    QTabWidget* tab_material;
+    QLineEdit* edit_ux;
+    QLineEdit* edit_uy;
+    QLineEdit* edit_hx;
+    QLineEdit* edit_hy;
+    QLineEdit* edit_conduct;
+    QLineEdit* edit_coer;
+    QLineEdit* edit_current;
 };
 
 #endif // PF_MAGMATERIALDIALOG_H

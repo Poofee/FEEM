@@ -8,6 +8,8 @@ public:
     PF_Document(PF_EntityContainer* parent=nullptr);
     ~PF_Document()=default;
 
+    void exportGmshGeo(const QString& filename);
+
     virtual bool isDocument() const{
         return true;
     }

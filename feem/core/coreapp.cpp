@@ -64,9 +64,9 @@ bool coreApp::initialize()
     ActionManager::instance()->setContext(Context(Constants::C_GLOBAL));
 
     PF_Project* pro = new PF_Project(this);
-    PF_Project* pro1 = new PF_Project(this);
+//    PF_Project* pro1 = new PF_Project(this);
     PF_SessionManager::instance()->addProject(pro);
-    PF_SessionManager::instance()->addProject(pro1);
+//    PF_SessionManager::instance()->addProject(pro1);
     PF_ProjectTree::instance()->expandAll();
     return true;
 }
