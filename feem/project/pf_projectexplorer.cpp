@@ -7,6 +7,7 @@
 #include "actionmanager/command.h"
 #include "projectexplorerconstants.h"
 #include "pf_magmaterialdialog.h"
+#include "pf_node.h"
 
 #include <QAction>
 #include <QMenu>
@@ -88,6 +89,7 @@ public:
     void runProjectContextMenu();
 //    void savePersistentSettings();
 
+    void addBlankMaterial();
 //    void addNewFile();
 //    void handleAddExistingFiles();
 //    void addExistingDirectory();
@@ -144,8 +146,8 @@ public:
     QAction* m_addTransientMag;
     QAction* m_addHeat;
 
-    QAction* addMaterial;
-    QAction* addBlankMaterial;
+    QAction* m_addMaterial;
+    QAction* m_addBlankMaterial;
 
     QAction* m_solve;
 
@@ -376,13 +378,13 @@ bool PF_ProjectExplorerPlugin::initialize()
     mprojectContextMenu->addMenu(addStudy,Constants::G_PROJECT_ADD);
 
     /************material******************/
-    dd->addMaterial = new QAction(QIcon(":/material_picker.png"),tr("add Material"), this);
-    cmd = ActionManager::registerAction(dd->addMaterial, Constants::ADDMATERIAL);
+    dd->m_addMaterial = new QAction(QIcon(":/material_picker.png"),tr("add Material"), this);
+    cmd = ActionManager::registerAction(dd->m_addMaterial, Constants::ADDMATERIAL);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
     mmaterialContextMenu->addAction(cmd,Constants::G_DEFAULT_ONE);
 
-    dd->addBlankMaterial = new QAction(QIcon(":/more_materials.png"),tr("add Blank Material"), this);
-    cmd = ActionManager::registerAction(dd->addBlankMaterial, Constants::ADDBLANKMATERIAL);
+    dd->m_addBlankMaterial = new QAction(QIcon(":/more_materials.png"),tr("add Blank Material"), this);
+    cmd = ActionManager::registerAction(dd->m_addBlankMaterial, Constants::ADDBLANKMATERIAL);
     //    cmd->setDefaultKeySequence(QKeySequence(tr("Ctrl+Shift+N")));
 
     mmaterialContextMenu->addAction(cmd,Constants::G_DEFAULT_ONE);
@@ -397,10 +399,7 @@ bool PF_ProjectExplorerPlugin::initialize()
     mprojectContextMenu->addSeparator(Constants::G_HELP);
     mprojectContextMenu->addAction(cmd,Constants::G_HELP);
 
-    connect(dd->addBlankMaterial,&QAction::triggered,dd,[](){
-        PF_MagMaterialDialog* dialog = new PF_MagMaterialDialog();
-        dialog->exec();
-    });
+    connect(dd->m_addBlankMaterial,&QAction::triggered,dd,&PF_ProjectExplorerPluginPrivate::addBlankMaterial);
     return true;
 }
 
@@ -584,6 +583,26 @@ void PF_ProjectExplorerPluginPrivate::restoreSession()
 void PF_ProjectExplorerPluginPrivate::runProjectContextMenu()
 {
 
+}
+
+void PF_ProjectExplorerPluginPrivate::addBlankMaterial()
+{
+    /** 这里有问题，如果不是从tree操作进来的，那么node就不对了 **/
+    Node *node = PF_ProjectTree::findCurrentNode();
+    FolderNode *folderNode = node ? node->asFolderNode() : nullptr;
+    /** 需要判断为文件夹，不清楚需不需要判断是材料类型
+        感觉不需要，因为右键菜单就是根据材料进来的   **/
+    if(!folderNode) return;
+
+    PF_MagMaterialDialog* dialog = new PF_MagMaterialDialog();
+    int result = dialog->exec();
+    if(result == QDialog::Accepted){
+        qDebug()<<"addBlankMaterial OK";
+        folderNode->addNode(std::make_unique<LeafNode>(QString(QObject::tr("Material")),LeafType::Header));
+        PF_ProjectTree::emitSubtreeChanged(folderNode);
+    }else{
+        qDebug()<<"addBlankMaterial Cancle";
+    }
 }
 
 void PF_ProjectExplorerPluginPrivate::removeProject()

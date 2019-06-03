@@ -13,6 +13,11 @@
 
 PF_MagMaterialDialog::PF_MagMaterialDialog()
 {
+    initialization();
+}
+
+void PF_MagMaterialDialog::initialization()
+{
     QFormLayout* formlayout = new QFormLayout;
     edit_name = new QLineEdit(this);
     QLineEdit* edit_comment = new QLineEdit(this);

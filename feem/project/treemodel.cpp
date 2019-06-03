@@ -209,13 +209,13 @@ QAbstractItemModel *TreeItem::model() const
     return m_model;
 }
 
-//void TreeItem::forAllChildren(const std::function<void (TreeItem *)> &pred) const
-//{
-//    for (TreeItem *item : *this) {
-//        pred(item);
-//        item->forAllChildren(pred);
-//    }
-//}
+void TreeItem::forAllChildren(const std::function<void (TreeItem *)> &pred) const
+{
+    for (TreeItem *item : *this) {
+        pred(item);
+        item->forAllChildren(pred);
+    }
+}
 
 //void TreeItem::forSelectedChildren(const std::function<bool (TreeItem *)> &pred) const
 //{

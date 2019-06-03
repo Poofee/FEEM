@@ -212,8 +212,8 @@ PF_ProjectTreeWidget::PF_ProjectTreeWidget(QWidget *parent) : QWidget(parent)
     /** 信号连接 **/
 //    connect(m_model, &PF_ProjectModel::renamed,
 //            this, &PF_ProjectTreeWidget::renamed);
-//    connect(m_model, &PF_ProjectModel::requestExpansion,
-//            m_view, &QTreeView::expand);
+    connect(m_model, &PF_ProjectModel::requestExpansion,
+            m_view, &QTreeView::expand);
     connect(m_view, &QAbstractItemView::activated,
             this, &PF_ProjectTreeWidget::openItem);
     connect(m_view->selectionModel(), &QItemSelectionModel::currentChanged,

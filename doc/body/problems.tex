@@ -1189,9 +1189,17 @@ IntVec w = twice_vector( std::move(v) );
 为了实现实体形状的选择，就要依靠鼠标指针的位置来判断是否在形状的范围内。看上去似乎很不错，但是有一个问题，有些形状是最基本的，不可以分割的，而有一些形状就是由其他形状拼接过来的，比如矩形就是四条直线拼成的。那为什么不让矩形不可拆分呢？
 \subsection{filelistchanged}
 采用信号槽的方法来动态的更新列表。主要是要对那几个顶部的node进行操作。
-\subsection{建立face}
-可以简单的建立face，保存数据并不困难，难的是怎样把face绘制出来。一般的face的话，采用填充就可以了，但是对于有嵌套的face，填充就不好使了，可以想到的办法就是使用qt当中的path来绘制，它的绘制原理是按照奇偶填充绘制的，能够实现所想要的效果。
 
 Project::handleSubTreeChanged -> ProjectTree::emitSubtreeChanged -> ProjectTree::subtreeChanged -> FlatModel::updateSubtree -> FlatModel::addOrRebuildProjectModel
 
 对于树的更新，有两个方面，一个是刚开始的时候创建了一个project，这个时候需要添加一个项目添加的处理，就要build一下project，这个是一个信号，就是添加项目，然后我自己修改tree的话，就不再是添加了，而是tree的改变了。tree的改变也是一个信号，也需要调用rebuild的操作，那是如何保证不改变原来的部分呢？就是每一个项目的根节点，它对应的都是一个项目，在改变tree的时候，先要找到project对应的根节点，然后把它的所有的children给清空，然后在这之前你需要更新一下projectnode，然后就可以把projectnode添加为到treeitem。所以，问题就在于，如果更新了node，之后，就需要重新生成projectnode。
+
+现在终于看懂了，主要有两条线，一条是node，另外一条是treeitem。其实之前主要忧虑的地方在于移动之后，node还在不在了，移动之后，指针的指向还是正确的，只不过不再属于原来的变量了。由于node的保存是树状的，最后都会跑到顶部节点下面，还是只能能够检索到子节点，还是能够正常访问的，内存并没有被释放，数据也没有丢失。这是project的node列表。为了能够在控件上显示树列表，就要把node转化为model当中的treeitem数据，这个也是按照树结构保存的，所以只要调用递归函数进行生成就可以了。model就可以自动的根据调用函数来读取所有的items。然后其他的编辑访问操作，都是最后读取到对应的node。为了添加或者删除node，先是要通过tree获得当前选中的节点，然后对该节点进行操作就可以了，然后发射树改变的信号，就能实现tree的改变。
+
+我成功地按照这种方法添加了子节点，但是，需要弹出对话框来设置材料，要是能够获得dialog的执行结果就好了。这样就能进行判断。每一个对话框会返回accept结果或者reject结果。
+
+我可以寻找各个标志所在的node，
+\subsection{建立face}
+可以简单的建立face，保存数据并不困难，难的是怎样把face绘制出来。一般的face的话，采用填充就可以了，但是对于有嵌套的face，填充就不好使了，可以想到的办法就是使用qt当中的path来绘制，它的绘制原理是按照奇偶填充绘制的，能够实现所想要的效果。
+\subsection{如何保存tree的展开状态？}
+应该是要保存哪些节点需要展开，哪些节点需要折叠。

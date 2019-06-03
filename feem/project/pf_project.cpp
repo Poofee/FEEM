@@ -115,6 +115,12 @@ void PF_Project::creatTree()
     setRootProjectNode(std::move(root));
 }
 
+/*!
+ \brief 将root设置为项目的节点，在此之前，应该已经对project进行了处理，
+ 并得到projectnode。
+
+ \param root
+*/
 void PF_Project::setRootProjectNode(std::unique_ptr<ProjectNode> &&root)
 {
     qDebug()<<Q_FUNC_INFO;
@@ -141,7 +147,8 @@ void PF_Project::setRootProjectNode(std::unique_ptr<ProjectNode> &&root)
 }
 
 /*!
- \brief
+ \brief 应该是让tree控件生效，让model重新生成一下tree数据，应该有
+ 两层的关系，一层是node，一层是treeitem，
 
  \param node
 */

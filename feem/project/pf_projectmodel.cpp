@@ -7,6 +7,7 @@
 #include "pf_node.h"
 
 #include <QDebug>
+#include <functional>
 
 PF_ProjectModel::PF_ProjectModel(QObject *parent)
     : BaseTreeModel(new WrapperNode(nullptr), parent)
@@ -271,11 +272,11 @@ WrapperNode *PF_ProjectModel::nodeForProject(const PF_Project *project) const
 void PF_ProjectModel::addOrRebuildProjectModel(PF_Project *project)
 {
     qDebug()<<Q_FUNC_INFO;
-    /** 查找模型当中有没有project **/
+    /** 查找模型当中有没有project，注意，如果存在的话，会先清空 **/
     WrapperNode *container = nodeForProject(project);
     if (container) {
         container->removeChildren();
-        project->rootProjectNode()->removeAllChildren();
+//        project->rootProjectNode()->removeAllChildren();
     } else {
         /** project的rootnode应该在构造的时候生成好 **/
         container = new WrapperNode(project->rootProjectNode());
@@ -287,34 +288,23 @@ void PF_ProjectModel::addOrRebuildProjectModel(PF_Project *project)
 
     if (ProjectNode *projectNode = project->rootProjectNode()) {
         addFolderNode(container, projectNode, &seen);
-//        if (m_trimEmptyDirectories)
-//            trimEmptyDirectories(container);
     }
-
-//    if (project->needsInitialExpansion())
-//        m_toExpand.insert(expandDataForNode(container->m_node));
-
-//    if (container->childCount() == 0) {
-//        auto projectFileNode = std::make_unique<FileNode>(project->projectFilePath(),
-//                                                          FileType::Project, false);
-//        seen.insert(projectFileNode.get());
-//        container->appendChild(new WrapperNode(projectFileNode.get()));
-//        project->containerNode()->addNestedNode(std::move(projectFileNode));
-//    }
 
 //    container->sortChildren(&sortWrapperNodes);
 
-//    container->forAllChildren([this](WrapperNode *node) {
-//        if (node->m_node) {
+    container->forAllChildren([this](TreeItem *node) {
+        /** 不知道为什么这里不能使用WrapperNode作为参数，可能是编译器的问题，
+            所以就写成了TreeItem  **/
+        if (dynamic_cast<WrapperNode*>(node)->m_node) {
 //            const QString path = node->m_node->filePath().toString();
 //            const QString displayName = node->m_node->displayName();
 //            ExpandData ed(path, displayName);
 //            if (m_toExpand.contains(ed))
-//                emit requestExpansion(node->index());
-//        } else {
-//            emit requestExpansion(node->index());
-//        }
-//    });
+                emit requestExpansion(node->index());
+        } else {
+            emit requestExpansion(node->index());
+        }
+    });
 
 //    const QString path = container->m_node->filePath().toString();
 //    const QString displayName = container->m_node->displayName();
