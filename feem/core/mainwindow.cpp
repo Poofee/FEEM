@@ -32,12 +32,6 @@
 #include "ouptput/messagemanager.h"
 #include "pf_projectexplorer.h"
 
-#include "QtFlexWidget.h"
-#include "QtFlexHelper.h"
-#include "QtDockGuider.h"
-#include "QtDockWidget.h"
-#include "QtFlexManager.h"
-
 #include "pf_document.h"
 
 MainWindow::MainWindow(QWidget *parent)

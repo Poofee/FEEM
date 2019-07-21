@@ -197,12 +197,6 @@ SOURCES += \
     CAD/action/pf_selection.cpp
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdock
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lqtdockd
-
-INCLUDEPATH += $$PWD/../qtdock
-DEPENDPATH += $$PWD/../qtdock
-
 include($$PWD/../qtribbon/ribbonsample/shared/aboutdialog.pri)
 include($$PWD/../qtribbon/ribbonsample/shared/ribbonwindow.pri)
 
