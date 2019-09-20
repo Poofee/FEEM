@@ -276,6 +276,15 @@ void PF_ActionHandler::slotSnapIntersectionManual()
 
 }
 
+/*!
+ \brief 导出Geo格式的几何文件
+
+*/
+void PF_ActionHandler::slotExportGeoFile()
+{
+    document->exportGeofile();
+}
+
 void PF_ActionHandler::slotZoomIn() {
     setCurrentAction(PF::ActionViewZoomIn);
 }

@@ -6,7 +6,7 @@
 
 #include "pf_cadwidget.h"
 
-#include <QDialog>
+
 #include <QFormLayout>
 #include <QLineEdit>
 #include <QToolButton>
@@ -17,7 +17,7 @@ PF_ActionDrawPoint::PF_ActionDrawPoint(PF_EntityContainer *parent, PF_GraphicVie
 {
     actionType = PF::ActionDrawPoint;
 
-    QDialog* dialog = new QDialog(view);
+    dialog = new QDialog(view);
     QFormLayout* layout = new QFormLayout();
     textx = new QLineEdit();
     texty = new QLineEdit();
@@ -30,10 +30,10 @@ PF_ActionDrawPoint::PF_ActionDrawPoint(PF_EntityContainer *parent, PF_GraphicVie
     });
     QToolButton* bt_Cancel = new QToolButton();
     bt_Cancel->setText(tr("Cancel"));
-    connect(bt_Cancel,&QToolButton::clicked,[dialog,this](){
+    connect(bt_Cancel,&QToolButton::clicked,[this](){
         this->init(getStatus()-1);
         PF_CADWidget::statusbar->clearMessage();
-        dialog->reject();
+        this->dialog->reject();
     });
 
     layout->addRow(tr("position x:"),textx);
@@ -52,11 +52,15 @@ PF_ActionDrawPoint::PF_ActionDrawPoint(PF_EntityContainer *parent, PF_GraphicVie
     dialog->move(QPoint(5,220));
 //    qDebug()<<dialog->mapToParent(view->pos());
     dialog->show();
+    /** 设置捕捉模式 **/
+//    this->snapMode.snapEndpoint = true;
+    this->snapMode.snapGrid = true;
+    this->snapMode.snapFree = false;
 }
 
 PF_ActionDrawPoint::~PF_ActionDrawPoint()
 {
-
+    delete dialog;
 }
 
 void PF_ActionDrawPoint::trigger()
@@ -69,6 +73,7 @@ void PF_ActionDrawPoint::trigger()
 
         //view->redraw((PF::RedrawMethod) (PF::RedrawDrawing | PF::RedrawOverlay));
         view->replot();
+        qDebug()<<point->toGeoString();
     }
 }
 

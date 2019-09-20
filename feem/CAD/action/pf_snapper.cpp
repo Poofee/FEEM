@@ -36,7 +36,7 @@ PF_Snapper::~PF_Snapper()
 
 void PF_Snapper::init()
 {
-    snapMode = view->getDefaultSnapMode();
+//    snapMode = view->getDefaultSnapMode();
     keyEntity = nullptr;
     pImpData->snapSpot = PF_Vector{false};
     pImpData->snapCoord = PF_Vector{false};
@@ -108,12 +108,14 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
 
     if(snapMode.snapEndpoint){
         t = snapEndpoint(mouseCoord);
-        double ds2 = mouseCoord.squaredTo(t);
+        if(t.valid){
+            double ds2 = mouseCoord.squaredTo(t);
 
-        if (ds2 < ds2Min){
-            ds2Min = ds2;
-            pImpData->snapSpot = t;
-//            qDebug()<<"snapEndpoint"<<ds2<<t.x<<t.y;
+            if (ds2 < ds2Min){
+                ds2Min = ds2;
+                pImpData->snapSpot = t;
+//                qDebug()<<"snapEndpoint"<<ds2<<t.x<<t.y;
+            }
         }
     }
     if(snapMode.snapCenter){
@@ -161,11 +163,13 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
     if (snapMode.snapOnEntity &&
         pImpData->snapSpot.distanceTo(mouseCoord) > snapMode.distance) {
         t = snapOnEntity(mouseCoord);
-        double ds2 = mouseCoord.squaredTo(t);
-        if (ds2 < ds2Min){
-            ds2Min = ds2;
-            pImpData->snapSpot = t;
-//            qDebug()<<"snapOnEntity";
+        if(t.valid){
+            double ds2 = mouseCoord.squaredTo(t);
+            if (ds2 < ds2Min){
+                ds2Min = ds2;
+                pImpData->snapSpot = t;
+//                qDebug()<<"snapOnEntity";
+            }
         }
     }
     if(snapMode.snapGrid){
@@ -174,30 +178,32 @@ PF_Vector PF_Snapper::snapPoint(QMouseEvent *e)
         if (ds2 < ds2Min){
 //            ds2Min=ds2;
             pImpData->snapSpot = t;
-//            qDebug()<<"snapGrid"<<ds2;
+//            qDebug()<<"snapGrid"<<ds2<<t.x<<t.y;
         }
     }
-    if( !pImpData->snapSpot.valid ) {
+    if( snapMode.snapFree/*!pImpData->snapSpot.valid*/ ) {
         pImpData->snapSpot = mouseCoord; //default to snapFree
-    } else {
+//        qDebug()<<"snapFree";
+    } //else {
         //retreat to snapFree when distance is more than half grid
-        if(snapMode.snapFree){
+//        if(snapMode.snapFree){
 //			PF_Vector const& ds = mouseCoord - pImpData->snapSpot;
 //			PF_Vector const& grid = graphicView->getGrid()->getCellVector()*0.5;
 //			if( fabs(ds.x) > fabs(grid.x) ||  fabs(ds.y) > fabs(grid.y) ) pImpData->snapSpot = mouseCoord;
-        }else{
+//        }else{
             /** 判断捕捉到的点是否与鼠标点距离在捕捉范围内，应当按照像素来计算 **/
-            if (view->toGuiDX(mouseCoord.distanceTo(pImpData->snapSpot)) < snapRange )
-                pImpData->snapSpot = mouseCoord;
+//            if (view->toGuiDX(mouseCoord.distanceTo(pImpData->snapSpot)) < snapRange )
+//                pImpData->snapSpot = mouseCoord;
 //            qDebug()<<"catched point"<<pImpData->snapSpot.x<<pImpData->snapSpot.y;
-        }
-    }
+//        }
+//    }
 
+    /** 强制设置轴对称 **/
     if(pImpData->snapSpot.x < 0){
         pImpData->snapSpot.x = 0;
     }
     pImpData->snapCoord = pImpData->snapSpot;
-    snapPoint(pImpData->snapSpot, false);
+//    snapPoint(pImpData->snapSpot, false);
 
     return pImpData->snapCoord;
 }
@@ -375,7 +381,29 @@ PF_Entity *PF_Snapper::catchEntity(QMouseEvent *e, PF::ResolveLevel level)
  */
 PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::EntityType enType, PF::ResolveLevel level)
 {
-    return nullptr;
+    qDebug()<<"RS_Snapper::catchEntity";
+    // set default distance for points inside solids
+    double dist(0.);
+    PF_Entity* entity = nullptr;
+    double ds2Min = PF_MAXDOUBLE*PF_MAXDOUBLE;
+    for (PF_Entity* e: container->getEntityList()){
+        if (e->rtti() == enType && e->isVisible()) {
+            dist = e->getDistanceToPoint(pos);
+            if(dist < ds2Min){
+                ds2Min = dist;
+                entity = e;
+            }
+        }
+    }
+
+    if (entity /*&& dist<=getSnapRange()*/) {
+        // highlight:
+        qDebug()<<"PF_Snapper::catchEntity: found:"<<entity->index();
+        return entity;
+    } else {
+        qDebug()<<"PF_Snapper::catchEntity: not found";
+        return nullptr;
+    }
 }
 
 /**

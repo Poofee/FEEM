@@ -10,6 +10,12 @@ public:
 
     virtual void addEntity(PF_Entity *entity) override;
     void draw(QCPPainter *painter) override;
+
+    virtual PF::EntityType rtti() const override{
+        return PF::EntityPreview;
+    }
+    QString toGeoString() override;
+    int index() override;
 };
 
 #endif // PF_PREVIEW_H

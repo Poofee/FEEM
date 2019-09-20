@@ -16,7 +16,8 @@ class PF_Point : public PF_AtomicEntity
 public:
     PF_Point(PF_EntityContainer* parent, PF_GraphicView* view, const PF_PointData & d);
 
-
+    /**	@return PF_ENTITY_POINT */
+    PF::EntityType rtti() const override;
     PF_Vector getCenter() const override;
     double getRadius() const override;
     /** 继承的虚函数 **/
@@ -56,6 +57,8 @@ public:
     void calculateBorders() override;
 
     QString toString() const;
+    QString toGeoString() override;
+    int index() override;
 public:
     static int point_index;
 protected:

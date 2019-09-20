@@ -27,6 +27,14 @@ public:
     virtual bool isContainer() const = 0;/**纯虚函数**/
     virtual bool isAtomic() const = 0;
 
+    /**
+     * Must be overwritten to return the rtti of this entity
+     * (e.g. RS2::EntityArc).
+     */
+    virtual PF::EntityType rtti() const{
+        return PF::EntityUnknown;
+    }
+
     virtual PF_Vector getStartpoint() const;
     virtual PF_Vector getEndpoint() const;
 
@@ -320,6 +328,9 @@ public:
 
     /** Recalculates the borders of this entity. */
     virtual void calculateBorders() = 0;
+
+    virtual QString toGeoString() = 0;
+    virtual int index() = 0;
 protected:
     PF_EntityContainer* parent = nullptr;
     QPen pen;

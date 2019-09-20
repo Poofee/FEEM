@@ -297,6 +297,16 @@ void PF_Circle::calculateBorders()
     maxV = data.center + r;
 }
 
+QString PF_Circle::toGeoString()
+{
+    return QString("");
+}
+
+int PF_Circle::index()
+{
+    return 0;
+}
+
 PF_CircleData::PF_CircleData(PF_Vector *center, double radius)
     :center(center)
     ,radius(radius)

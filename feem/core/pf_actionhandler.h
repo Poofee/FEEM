@@ -56,6 +56,9 @@ public slots:
     void slotSnapIntersection();
     void slotSnapIntersectionManual();
 
+    //Geometry
+    void slotExportGeoFile();
+
     //View
     void slotZoomIn();
     void slotZoomOut();

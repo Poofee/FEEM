@@ -305,6 +305,17 @@ void PF_Line::calculateBorders()
     maxV = PF_Vector::maximum(data.startpoint, data.endpoint);
 }
 
+QString PF_Line::toGeoString()
+{
+    //Line (1) = {1, 2} ;
+    return QString("Line (%1) = {%2, %3} ;").arg(m_index).arg(data.startIndex).arg(data.endIndex);
+}
+
+int PF_Line::index()
+{
+    return m_index;
+}
+
 PF_LineData::PF_LineData(PF_Vector &startpoint, PF_Vector &endpoint)
     :startpoint(startpoint)
     ,endpoint(endpoint)

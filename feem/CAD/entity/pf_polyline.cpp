@@ -309,6 +309,16 @@ void PF_Polyline::draw(QCPPainter *p)
     PF_EntityContainer::draw(p);
 }
 
+QString PF_Polyline::toGeoString()
+{
+    return "";
+}
+
+int PF_Polyline::index()
+{
+    return 0;
+}
+
 
 PF_Entity *PF_Polyline::createVertex(const PF_Vector &v, double bulge, bool prepend)
 {

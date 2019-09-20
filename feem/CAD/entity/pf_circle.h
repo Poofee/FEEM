@@ -22,6 +22,10 @@ public:
     PF_Circle(PF_EntityContainer* parent, PF_GraphicView* view, const PF_CircleData &d);
     ~PF_Circle()=default;
 
+    /**	@return PF::EntityCircle */
+    PF::EntityType rtti() const override{
+        return PF::EntityCircle;
+    }
     /** @return The center point (x) of this arc */
     PF_Vector getCenter() const override;
     /** Sets new center. */
@@ -66,6 +70,9 @@ public:
     void draw(QCPPainter* painter) ;
 
     void calculateBorders() override;
+
+    QString toGeoString() override;
+    int index() override;
 protected:
     PF_CircleData data;
 };

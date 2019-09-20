@@ -7,7 +7,9 @@ struct PF_LineData{
     PF_LineData()=default;
     PF_LineData(PF_Vector& startpoint,PF_Vector& endpoint);
     PF_Vector startpoint;
+    int startIndex;
     PF_Vector endpoint;
+    int endIndex;
 };
 
 class PF_Line : public PF_AtomicEntity
@@ -17,6 +19,10 @@ public:
     PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_LineData& d);
     PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vector& pStart, const PF_Vector& pEnd);
 
+    /**	@return PF::EntityLine */
+    PF::EntityType rtti() const override{
+        return PF::EntityLine;
+    }
     /** @return Start point of the entity */
     PF_Vector getStartpoint() const override{
         return data.startpoint;
@@ -85,6 +91,10 @@ public:
     void draw(QCPPainter *painter) ;
 
     void calculateBorders() override;
+
+    QString toGeoString() override;
+
+    int index() override;
 public:
     static int line_index;
 protected:

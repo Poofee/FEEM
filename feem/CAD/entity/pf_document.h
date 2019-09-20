@@ -13,6 +13,8 @@ public:
     virtual bool isDocument() const{
         return true;
     }
+    QString toGeoString() override;
+    int index() override;
 protected:
     bool modified;
     QString fileName;

@@ -15,3 +15,13 @@ void PF_Document::exportGmshGeo(const QString &filename)
 {
 
 }
+
+QString PF_Document::toGeoString()
+{
+    return "";
+}
+
+int PF_Document::index()
+{
+    return 0;
+}

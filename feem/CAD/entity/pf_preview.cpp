@@ -32,3 +32,13 @@ void PF_Preview::draw(QCPPainter *painter)
     painter->restore();
     //qDebug()<<"PF_Preview::draw: OK.";
 }
+
+QString PF_Preview::toGeoString()
+{
+    return "";
+}
+
+int PF_Preview::index()
+{
+    return 0;
+}

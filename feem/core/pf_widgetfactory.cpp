@@ -280,7 +280,8 @@ void PF_WidgetFactory::createGroupImExportGeometry(RibbonPage *page)
     if(Qtitan::RibbonGroup* groupImExport = page->addGroup(QIcon(":/main/project.png"), tr("Import/Export")))
     {
         groupImExport->addAction(QIcon(":/main/import.png"), tr("Import Geometry"), Qt::ToolButtonTextUnderIcon);
-        groupImExport->addAction(QIcon(":/main/export.png"), tr("Export Geometry"), Qt::ToolButtonTextUnderIcon);
+//        groupImExport->addAction(QIcon(":/main/export.png"), tr("Export Geometry"), Qt::ToolButtonTextUnderIcon);
+        groupImExport->addAction(a_map["ExportGeometry"],Qt::ToolButtonTextUnderIcon);
     }
 }
 

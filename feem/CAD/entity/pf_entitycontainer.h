@@ -23,6 +23,11 @@ public:
         return true;
     }
 
+    /** @return PF::EntityContainer */
+    PF::EntityType rtti() const override{
+        return PF::EntityContainer;
+    }
+
     unsigned count() const override;
 
     void setOwner(bool owner) {autoDelete=owner;}
@@ -107,6 +112,10 @@ public:
     QList<PF_Entity *>::iterator end() ;
 
     const QList<PF_Entity*>& getEntityList();
+
+    QString toGeoString() override;
+    bool exportGeofile();
+    int index() override;
 protected:
     QList<PF_Entity*> entities;/**保存所有实体**/
 private:

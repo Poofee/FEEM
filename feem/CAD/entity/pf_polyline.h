@@ -35,6 +35,10 @@ public:
     PF_PolylineData getData() const {
         return data;
     }
+    /**	@return PF::EntityPolyline */
+    PF::EntityType rtti() const  override{
+        return PF::EntityPolyline;
+    }
 
     /** sets a new start point of the polyline */
     void setStartpoint(PF_Vector const& v);
@@ -96,6 +100,9 @@ public:
     void revertDirection() override;
 
     void draw(QCPPainter * p) override;
+
+    QString toGeoString() override;
+    int index() override;
 protected:
     PF_Entity* createVertex(const PF_Vector& v,
                 double bulge=0.0, bool prepend=false);

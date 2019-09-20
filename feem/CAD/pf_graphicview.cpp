@@ -156,7 +156,7 @@ PF_GraphicView::PF_GraphicView(PF_Document *doc, QWidget *parent)
     这个窗口部件才会接收鼠标移动事件。**/
     setMouseTracking(true);
 
-    setDefaultSnapMode(PF_SnapMode());
+    //setDefaultSnapMode(PF_SnapMode());
 
 
     setAttribute(Qt::WA_NoMousePropagation);

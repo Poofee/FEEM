@@ -702,3 +702,44 @@ const QList<PF_Entity*>& PF_EntityContainer::getEntityList()
 {
     return entities;
 }
+
+QString PF_EntityContainer::toGeoString()
+{
+    return "";
+}
+
+/*!
+ \brief 将实体导出为geo格式
+
+ \return bool
+*/
+bool PF_EntityContainer::exportGeofile()
+{
+    QStringList qstrList;
+    QFile file("D:/model.geo");
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    /** 导出所有的点 **/
+    for(auto e:entities){
+        if(e->rtti() == PF::EntityPoint && e->isVisible()){
+            out<<e->toGeoString()<<"\n";
+        }
+    }
+    /** 导出所有的线段 **/
+    for(auto e:entities){
+        if(e->rtti() == PF::EntityLine && e->isVisible()){
+            out<<e->toGeoString()<<"\n";
+        }
+    }
+    /** 导出所有的面 **/
+
+
+    file.flush();
+    file.close();
+    return true;
+}
+
+int PF_EntityContainer::index()
+{
+    return 0;
+}

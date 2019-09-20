@@ -2,6 +2,8 @@
 #define PF_ATOMICENTITY_H
 
 #include "pf_entity.h"
+
+#include <QString>
 //2018-02-11
 //by Poofee
 /**基本实体类，包括线段，圆弧，椭圆等**/
@@ -17,6 +19,8 @@ public:
      * @return Always 1 for atomic entities.
      */
     unsigned count() const override;
+
+    virtual QString toGeoString() = 0;
 };
 
 #endif // PF_ATOMICENTITY_H

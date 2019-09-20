@@ -15,6 +15,10 @@ PF_ActionDrawLine::PF_ActionDrawLine(PF_EntityContainer *container, PF_GraphicVi
 {
     actionType = PF::ActionDrawLine;
     reset();
+    /** 设置捕捉模式 **/
+    this->snapMode.snapGrid = false;
+    this->snapMode.snapFree = false;
+    this->snapMode.snapEndpoint = true;
 }
 
 PF_ActionDrawLine::~PF_ActionDrawLine()
@@ -49,11 +53,14 @@ void PF_ActionDrawLine::trigger()
 
     //view->redraw(PF::RedrawDrawing);
     view->replot();
+    qDebug()<<line->toGeoString();
 }
 
 void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
 {
     PF_Vector mouse = snapPoint(e);
+    if(!mouse.valid)
+        return;
 
 //    PF_CADWidget::statusbar->clearMessage();
     switch(getStatus()){
@@ -82,10 +89,15 @@ void PF_ActionDrawLine::mouseReleaseEvent(QMouseEvent *e)
 {
     if(e->button() == Qt::LeftButton){
         PF_Vector mouse = snapPoint(e);
-
+        if(!mouse.valid)
+            return;
+        PF_Entity* entity = catchEntity(mouse,PF::EntityPoint);
+        if(!entity)
+            return;
         switch(getStatus()){
         case SetStartpoint:
             data->startpoint = mouse;
+            data->startIndex = entity->index();
             //qDebug()<<"setstartpoint"<<mouse.x<<","<<mouse.y;
 
             setStatus(SetEndpoint);
@@ -93,6 +105,7 @@ void PF_ActionDrawLine::mouseReleaseEvent(QMouseEvent *e)
             break;
         case SetEndpoint:
             data->endpoint = mouse;
+            data->endIndex = entity->index();
             trigger();
             break;
         default:

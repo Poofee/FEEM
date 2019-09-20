@@ -3,6 +3,8 @@
 
 #include "pf_actionpreviewinterface.h"
 
+#include <QDialog>
+
 class QLineEdit;
 
 class PF_ActionDrawPoint : public PF_ActionPreviewInterface
@@ -20,11 +22,14 @@ public:
     void updateMouseButtonHints() override;
     void updateMouseCursor() override;
 
+    QDialog* dialog;
 private:
     PF_Vector* pt;
 
     QLineEdit* textx;
     QLineEdit* texty;
+
+
 };
 
 #endif // PF_ACTIONDRAWPOINT_H
