@@ -12,6 +12,15 @@ PF_Face::PF_Face(PF_EntityContainer *parent, PF_GraphicView *view, const PF_Face
     m_index = face_index;
 }
 
+PF_Face::PF_Face(PF_EntityContainer *parent, PF_GraphicView *view, const PF_FaceData &d, PF_Point *mouse)
+    :PF_AtomicEntity(parent,view)
+    ,data(d)
+{
+    if(!data.faceData.isEmpty())
+        data.faceData.last()->points.append(mouse);/**有问题**/
+    m_index = face_index;
+}
+
 PF_VectorSolutions PF_Face::getRefPoints() const
 {
     return {};
@@ -121,11 +130,11 @@ void PF_Face::draw(QCPPainter *painter)
 
         path.addPolygon(e->loop);
     }
-    qDebug()<<path;
+//    qDebug()<<path;
 
     path.setFillRule(Qt::OddEvenFill);
-    painter->setBrush(QColor(180,180,242));
-    painter->setPen(Qt::black);
+    painter->setBrush(QColor(180,180,242,50));
+    painter->setPen(Qt::NoPen);
     painter->drawPath(path);
     //QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));
 
@@ -170,4 +179,38 @@ QString PF_Face::toGeoString()
 int PF_Face::index()
 {
     return m_index;
+}
+
+/*!
+ \brief 拷贝构造函数
+
+ \param data
+*/
+PF_FaceData::PF_FaceData(const PF_FaceData &data)
+{
+    faceData.clear();
+    for(auto d : data.faceData){
+        PF_LineLoop* l = new PF_LineLoop();
+        l->points = d->points;
+        l->loop = d->loop;
+        faceData.push_back(l);
+    }
+}
+
+/*!
+ \brief 赋值构造函数
+
+ \param data
+ \return PF_FaceData &PF_FaceData::operator
+*/
+PF_FaceData &PF_FaceData::operator=(const PF_FaceData &data)
+{
+    faceData.clear();
+    for(auto d : data.faceData){
+        PF_LineLoop* l = new PF_LineLoop();
+        l->points = d->points;
+        l->loop = d->loop;
+        faceData.push_back(l);
+    }
+    return *this;
 }

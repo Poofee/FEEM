@@ -75,6 +75,9 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
     PF_Vector mouse = snapPoint(e);
     if(!mouse.valid)
         return;
+    PF_Entity* entity = catchEntity(mouse,PF::EntityPoint);
+    if(!entity)
+        return;
 
     //    PF_CADWidget::statusbar->clearMessage();
     switch(getStatus()){
@@ -88,15 +91,17 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
         PF_CADWidget::statusbar->showMessage(mouse.toString()+QString(tr("Status error.")));
         break;
     }
-    /**只有起始点设置好之后才有预览**/
-//    if(getStatus() == SetEndpoint && data->startpoint.valid){
-//        deletePreview();
-//        view->setCurrentLayer(QLatin1String("overlay"));
-//        PF_Line* line = new PF_Line(container,view,data->startpoint,mouse);
-//        view->setCurrentLayer(QLatin1String("main"));
-//        preview->addEntity(line);
-//        drawPreview();
-//    }
+    if(getStatus() == SetOtherLoop){
+        deletePreview();
+        view->setCurrentLayer(QLatin1String("overlay"));
+        PF_FaceData tmpdata = *data;
+
+        PF_Face* face = new PF_Face(container,view, tmpdata,dynamic_cast<PF_Point*>(entity));
+
+        view->setCurrentLayer(QLatin1String("main"));
+        preview->addEntity(face);
+        drawPreview();
+    }
 }
 
 /*!
@@ -113,6 +118,9 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
         PF_Entity* entity = catchEntity(mouse,PF::EntityPoint);
         if(!entity)
             return;
+        /** 标记为选中 **/
+        entity->setSelected(true);
+        view->replot();
         switch(getStatus()){
         /** 应当是设置loop中的点，直到闭合 **/
         case SetFirstLoop:
@@ -137,8 +145,14 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
             break;
         }
     }else if(e->button() == Qt::RightButton){
-//        deletePreview();
-//        drawPreview();
+        deletePreview();
+        drawPreview();
+        /** 取消选择 **/
+        for(auto e : data->faceData){
+            for(auto l : e->points){
+                l->setSelected(false);
+            }
+        }
         trigger();
         init(getStatus()-1);
 

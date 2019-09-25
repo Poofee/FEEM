@@ -24,8 +24,13 @@ struct PF_LineLoop{
 多边形来表示。
 
 */
-struct PF_FaceData{
+class PF_FaceData{
+public:
     PF_FaceData()=default;
+
+    PF_FaceData(const PF_FaceData& data);
+
+    PF_FaceData& operator=(const PF_FaceData& data);
 
     QList<PF_LineLoop* > faceData;
 };
@@ -39,6 +44,7 @@ class PF_Face : public PF_AtomicEntity
 public:
     PF_Face()=default;
     PF_Face(PF_EntityContainer* parent, PF_GraphicView* view, const PF_FaceData &d);
+    PF_Face(PF_EntityContainer* parent, PF_GraphicView* view, const PF_FaceData &d,PF_Point* mouse);
     ~PF_Face()=default;
 
     /**	@return PF::EntityFace */

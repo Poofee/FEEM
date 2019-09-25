@@ -181,8 +181,15 @@ void PF_EntityContainer::draw(QCPPainter *painter)
         return;
     }
 
+    /** 有些东西适合绘制在顶层，有些适合绘制在底层，先画面，
+        再画线，最后画点**/
     for(int i=0;i < entities.size();++i){
-        mParentPlot->drawEntity(painter,entities.at(i));
+
+            mParentPlot->drawEntity(painter,entities.at(i));
+    }
+    for(int i=0;i < entities.size();++i){
+        if(entities.at(i)->rtti() != PF::EntityFace)
+            mParentPlot->drawEntity(painter,entities.at(i));
     }
 }
 
