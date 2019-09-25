@@ -330,7 +330,7 @@ public:
     virtual void calculateBorders() = 0;
 
     virtual QString toGeoString() = 0;
-    virtual int index() = 0;
+    virtual int index() const = 0;
 protected:
     PF_EntityContainer* parent = nullptr;
     QPen pen;

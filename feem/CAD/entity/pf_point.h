@@ -58,7 +58,7 @@ public:
 
     QString toString() const;
     QString toGeoString() override;
-    int index() override;
+    int index() const override;
 public:
     static int point_index;
 protected:

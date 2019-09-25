@@ -21,7 +21,7 @@ QString PF_Document::toGeoString()
     return "";
 }
 
-int PF_Document::index()
+int PF_Document::index() const
 {
     return 0;
 }

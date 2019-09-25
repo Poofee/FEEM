@@ -53,13 +53,15 @@ void PF_ActionDrawLine::trigger()
 
     //view->redraw(PF::RedrawDrawing);
     view->replot();
-    qDebug()<<line->toGeoString();
 }
 
 void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
 {
     PF_Vector mouse = snapPoint(e);
     if(!mouse.valid)
+        return;
+    PF_Entity* entity = catchEntity(mouse,PF::EntityPoint);
+    if(!entity)
         return;
 
 //    PF_CADWidget::statusbar->clearMessage();
@@ -75,10 +77,10 @@ void PF_ActionDrawLine::mouseMoveEvent(QMouseEvent *e)
         break;
     }
     /**只有起始点设置好之后才有预览**/
-    if(getStatus() == SetEndpoint && data->startpoint.valid){
+    if(getStatus() == SetEndpoint && data->startpoint->getCenter().valid){
         deletePreview();
         view->setCurrentLayer(QLatin1String("overlay"));
-        PF_Line* line = new PF_Line(container,view,data->startpoint,mouse);
+        PF_Line* line = new PF_Line(container,view,data->startpoint,dynamic_cast<PF_Point*>(entity));
         view->setCurrentLayer(QLatin1String("main"));
         preview->addEntity(line);
         drawPreview();
@@ -96,16 +98,14 @@ void PF_ActionDrawLine::mouseReleaseEvent(QMouseEvent *e)
             return;
         switch(getStatus()){
         case SetStartpoint:
-            data->startpoint = mouse;
-            data->startIndex = entity->index();
+            data->startpoint = dynamic_cast<PF_Point*>(entity);
             //qDebug()<<"setstartpoint"<<mouse.x<<","<<mouse.y;
 
             setStatus(SetEndpoint);
             updateMouseButtonHints();
             break;
         case SetEndpoint:
-            data->endpoint = mouse;
-            data->endIndex = entity->index();
+            data->endpoint = dynamic_cast<PF_Point*>(entity);
             trigger();
             break;
         default:

@@ -302,7 +302,7 @@ QString PF_Circle::toGeoString()
     return QString("");
 }
 
-int PF_Circle::index()
+int PF_Circle::index() const
 {
     return 0;
 }

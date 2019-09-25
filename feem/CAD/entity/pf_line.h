@@ -3,13 +3,14 @@
 
 #include "pf_atomicentity.h"
 
+#include "pf_point.h"
+
 struct PF_LineData{
     PF_LineData()=default;
-    PF_LineData(PF_Vector& startpoint,PF_Vector& endpoint);
-    PF_Vector startpoint;
-    int startIndex;
-    PF_Vector endpoint;
-    int endIndex;
+    PF_LineData(PF_Point* startpoint,PF_Point *endpoint);
+    PF_LineData(const PF_LineData& data);
+    PF_Point* startpoint;
+    PF_Point* endpoint;
 };
 
 class PF_Line : public PF_AtomicEntity
@@ -17,7 +18,7 @@ class PF_Line : public PF_AtomicEntity
 public:
     PF_Line()=default;
     PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_LineData& d);
-    PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vector& pStart, const PF_Vector& pEnd);
+    PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, PF_Point* pStart, PF_Point* pEnd);
 
     /**	@return PF::EntityLine */
     PF::EntityType rtti() const override{
@@ -25,11 +26,11 @@ public:
     }
     /** @return Start point of the entity */
     PF_Vector getStartpoint() const override{
-        return data.startpoint;
+        return data.startpoint->getCenter();
     }
     /** @return End point of the entity */
     PF_Vector getEndpoint() const override{
-        return data.endpoint;
+        return data.endpoint->getCenter();
     }
     /**
      * @return Direction 1. The angle at which the line starts at
@@ -49,14 +50,14 @@ public:
      * @return The angle of the line (from start to endpoint).
      */
     double getAngle1() const{
-        return data.startpoint.angleTo(data.endpoint);
+        return data.startpoint->getCenter().angleTo(data.endpoint->getCenter());
     }
 
     /**
      * @return The angle of the line (from end to startpoint).
      */
     double getAngle2() const{
-        return data.endpoint.angleTo(data.startpoint);
+        return data.endpoint->getCenter().angleTo(data.startpoint->getCenter());
     }
     /** 继承的虚函数 **/
     PF_VectorSolutions getRefPoints() const override;
@@ -88,16 +89,16 @@ public:
     void mirror(const PF_Vector& axisPoint1, const PF_Vector& axisPoint2) override;
     void moveRef(const PF_Vector& ref, const PF_Vector& offset) override;
 
-    void draw(QCPPainter *painter) ;
+    void draw(QCPPainter *painter) override;
 
     void calculateBorders() override;
 
     QString toGeoString() override;
 
-    int index() override;
+    int index() const override;
 public:
     static int line_index;
-protected:
+public:
     PF_LineData data;
     int m_index;
 

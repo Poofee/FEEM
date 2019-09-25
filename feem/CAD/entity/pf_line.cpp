@@ -12,7 +12,7 @@ PF_Line::PF_Line(PF_EntityContainer *parent, PF_GraphicView *view, const PF_Line
 }
 
 
-PF_Line::PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vector &pStart, const PF_Vector &pEnd)
+PF_Line::PF_Line(PF_EntityContainer* parent, PF_GraphicView *view, PF_Point *pStart, PF_Point *pEnd)
     :PF_AtomicEntity(parent,view)
 {
     data.startpoint = pStart;
@@ -23,7 +23,9 @@ PF_Line::PF_Line(PF_EntityContainer* parent,PF_GraphicView *view, const PF_Vecto
 
 PF_VectorSolutions PF_Line::getRefPoints() const
 {
-    return PF_VectorSolutions({data.startpoint,(data.startpoint+data.endpoint)/2, data.endpoint});
+    return PF_VectorSolutions({data.startpoint->getCenter(),
+                               (data.startpoint->getCenter()+data.endpoint->getCenter())/2,
+                               data.endpoint->getCenter()});
 }
 
 PF_Vector PF_Line::getMiddlePoint() const
@@ -33,19 +35,19 @@ PF_Vector PF_Line::getMiddlePoint() const
 
 PF_Vector PF_Line::getNearestEndpoint(const PF_Vector &coord, double *dist) const
 {
-    double dist1((data.startpoint-coord).squared());
-    double dist2((data.endpoint-coord).squared());
+    double dist1((data.startpoint->getCenter()-coord).squared());
+    double dist2((data.endpoint->getCenter()-coord).squared());
 
     if (dist2 < dist1) {
         if (dist) {
             *dist = sqrt(dist2);
         }
-        return data.endpoint;
+        return data.endpoint->getCenter();
     } else {
         if (dist) {
             *dist = sqrt(dist1);
         }
-        return data.startpoint;
+        return data.startpoint->getCenter();
     }
 }
 
@@ -55,8 +57,8 @@ PF_Vector PF_Line::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity
         *entity = const_cast<PF_Line*>(this);
     }
 
-    PF_Vector direction {data.endpoint - data.startpoint};
-    PF_Vector vpc {coord - data.startpoint};
+    PF_Vector direction {data.endpoint->getCenter() - data.startpoint->getCenter()};
+    PF_Vector vpc {coord - data.startpoint->getCenter()};
     double a {direction.squared()};
 
     if( a < PF_TOLERANCE2) {
@@ -65,7 +67,7 @@ PF_Vector PF_Line::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity
     }
     else {
         //find projection on line
-        const double t {PF_Vector::dotP( vpc, direction) / a};
+        double t = PF_Vector::dotP( vpc, direction) / a;
         if( //!isConstruction()
                 onEntity
                 && ( t <= -PF_TOLERANCE
@@ -73,20 +75,18 @@ PF_Vector PF_Line::getNearestPointOnEntity(const PF_Vector &coord, bool onEntity
             //projection point not within range, find the nearest endpoint
             return getNearestEndpoint( coord, dist);
         }
-
-        vpc = data.startpoint + direction * t;
+        vpc = data.startpoint->getCenter() + direction * t;
     }
 
     if (dist) {
         *dist = vpc.distanceTo( coord);
     }
-
     return vpc;
 }
 
 PF_Vector PF_Line::getNearestCenter(const PF_Vector &coord, double *dist) const
 {
-    PF_Vector p = (data.startpoint + data.endpoint) * 0.5;
+    PF_Vector p = (data.startpoint->getCenter() + data.endpoint->getCenter()) * 0.5;
 
     if(dist)
         *dist = p.distanceTo(coord);
@@ -142,10 +142,10 @@ PF_Vector PF_Line::getNearestDist(double distance, bool startp) const
     PF_Vector ret;
 
     if (startp) {
-        ret = data.startpoint + dv;
+        ret = data.startpoint->getCenter() + dv;
     }
     else {
-        ret = data.endpoint - dv;
+        ret = data.endpoint->getCenter() - dv;
     }
 
     return ret;
@@ -177,8 +177,8 @@ void PF_Line::move(const PF_Vector &offset)
 
     //    RS_DEBUG->print("RS_Line::move1: offset: %f/%f", offset.x, offset.y);
 
-    data.startpoint.move(offset);
-    data.endpoint.move(offset);
+    data.startpoint->getCenter().move(offset);
+    data.endpoint->getCenter().move(offset);
     moveBorders(offset);
     //    RS_DEBUG->print("RS_Line::move2: sp: %f/%f, ep: %f/%f",
     //                    data.startpoint.x, data.startpoint.y,
@@ -192,8 +192,8 @@ void PF_Line::rotate(const PF_Vector &center, const double &angle)
     //                    data.startpoint.x, data.startpoint.y,
     //                    data.endpoint.x, data.endpoint.y);
     PF_Vector rvp(angle);
-    data.startpoint.rotate(center, rvp);
-    data.endpoint.rotate(center, rvp);
+    data.startpoint->getCenter().rotate(center, rvp);
+    data.endpoint->getCenter().rotate(center, rvp);
     //    RS_DEBUG->print("RS_Line::rotate2: sp: %f/%f, ep: %f/%f",
     //                    data.startpoint.x, data.startpoint.y,
     //                    data.endpoint.x, data.endpoint.y);
@@ -203,8 +203,8 @@ void PF_Line::rotate(const PF_Vector &center, const double &angle)
 
 void PF_Line::rotate(const PF_Vector &center, const PF_Vector &angleVector)
 {
-    data.startpoint.rotate(center, angleVector);
-    data.endpoint.rotate(center, angleVector);
+    data.startpoint->getCenter().rotate(center, angleVector);
+    data.endpoint->getCenter().rotate(center, angleVector);
     calculateBorders();
 }
 
@@ -213,8 +213,8 @@ void PF_Line::scale(const PF_Vector &factor)
     //    RS_DEBUG->print("RS_Line::scale1: sp: %f/%f, ep: %f/%f",
     //                    data.startpoint.x, data.startpoint.y,
     //                    data.endpoint.x, data.endpoint.y);
-    data.startpoint.scale(factor);
-    data.endpoint.scale(factor);
+    data.startpoint->getCenter().scale(factor);
+    data.endpoint->getCenter().scale(factor);
     //    RS_DEBUG->print("RS_Line::scale2: sp: %f/%f, ep: %f/%f",
     //                    data.startpoint.x, data.startpoint.y,
     //                    data.endpoint.x, data.endpoint.y);
@@ -226,8 +226,8 @@ void PF_Line::scale(const PF_Vector &center, const PF_Vector &factor)
     //    RS_DEBUG->print("RS_Line::scale1: sp: %f/%f, ep: %f/%f",
     //                    data.startpoint.x, data.startpoint.y,
     //                    data.endpoint.x, data.endpoint.y);
-    data.startpoint.scale(center, factor);
-    data.endpoint.scale(center, factor);
+    data.startpoint->getCenter().scale(center, factor);
+    data.endpoint->getCenter().scale(center, factor);
     //    RS_DEBUG->print("RS_Line::scale2: sp: %f/%f, ep: %f/%f",
     //                    data.startpoint.x, data.startpoint.y,
     //                    data.endpoint.x, data.endpoint.y);
@@ -236,8 +236,8 @@ void PF_Line::scale(const PF_Vector &center, const PF_Vector &factor)
 
 void PF_Line::mirror(const PF_Vector &axisPoint1, const PF_Vector &axisPoint2)
 {
-    data.startpoint.mirror(axisPoint1, axisPoint2);
-    data.endpoint.mirror(axisPoint1, axisPoint2);
+    data.startpoint->getCenter().mirror(axisPoint1, axisPoint2);
+    data.endpoint->getCenter().mirror(axisPoint1, axisPoint2);
     calculateBorders();
 }
 
@@ -268,13 +268,13 @@ void PF_Line::draw(QCPPainter *painter)
         pen.setColor(QColor(0,0,255));
         painter->setPen(pen);
     }
-    QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));
-    QPointF end(mParentPlot->toGuiX(data.endpoint.x),mParentPlot->toGuiY(data.endpoint.y));
+    QPointF start(mParentPlot->toGuiX(data.startpoint->getCenter().x),mParentPlot->toGuiY(data.startpoint->getCenter().y));
+    QPointF end(mParentPlot->toGuiX(data.endpoint->getCenter().x),mParentPlot->toGuiY(data.endpoint->getCenter().y));
 
     painter->drawLine(start,end);
 
-    painter->drawText(start,data.startpoint.toString());
-    painter->drawText(end,data.endpoint.toString());
+    painter->drawText(start,data.startpoint->getCenter().toString());
+    painter->drawText(end,data.endpoint->getCenter().toString());
     painter->drawText((start+end)/2,QString("line:%1").arg(m_index));
 
     /** 绘制控制点 **/
@@ -301,24 +301,30 @@ void PF_Line::draw(QCPPainter *painter)
 
 void PF_Line::calculateBorders()
 {
-    minV = PF_Vector::minimum(data.startpoint, data.endpoint);
-    maxV = PF_Vector::maximum(data.startpoint, data.endpoint);
+    minV = PF_Vector::minimum(data.startpoint->getCenter(), data.endpoint->getCenter());
+    maxV = PF_Vector::maximum(data.startpoint->getCenter(), data.endpoint->getCenter());
 }
 
 QString PF_Line::toGeoString()
 {
     //Line (1) = {1, 2} ;
-    return QString("Line (%1) = {%2, %3} ;").arg(m_index).arg(data.startIndex).arg(data.endIndex);
+    return QString("Line (%1) = {%2, %3} ;").arg(m_index).arg(data.startpoint->index()).arg(data.endpoint->index());
 }
 
-int PF_Line::index()
+int PF_Line::index() const
 {
     return m_index;
 }
 
-PF_LineData::PF_LineData(PF_Vector &startpoint, PF_Vector &endpoint)
+PF_LineData::PF_LineData(PF_Point* startpoint, PF_Point* endpoint)
     :startpoint(startpoint)
     ,endpoint(endpoint)
 {
 
+}
+
+PF_LineData::PF_LineData(const PF_LineData &data)
+{
+    this->startpoint = data.startpoint;
+    this->endpoint = data.endpoint;
 }

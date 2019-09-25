@@ -15,7 +15,7 @@ public:
         return PF::EntityPreview;
     }
     QString toGeoString() override;
-    int index() override;
+    int index() const override;
 };
 
 #endif // PF_PREVIEW_H

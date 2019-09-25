@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include "pf_graphicview.h"
-#include "pf_point.h"
+#include "pf_line.h"
 #include "pf_face.h"
 #include "pf_preview.h"
 
@@ -19,8 +19,8 @@ PF_ActionDrawFace::PF_ActionDrawFace(PF_EntityContainer *container, PF_GraphicVi
     reset();
     /** 设置捕捉模式 **/
     this->snapMode.snapGrid = false;
-    this->snapMode.snapFree = false;
-    this->snapMode.snapEndpoint = true;
+    this->snapMode.snapFree = true;
+    this->snapMode.snapEndpoint = false;
 }
 
 PF_ActionDrawFace::~PF_ActionDrawFace()
@@ -75,7 +75,7 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
     PF_Vector mouse = snapPoint(e);
     if(!mouse.valid)
         return;
-    PF_Entity* entity = catchEntity(mouse,PF::EntityPoint);
+    PF_Entity* entity = catchEntity(mouse,PF::EntityLine);
     if(!entity)
         return;
 
@@ -96,7 +96,7 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
         view->setCurrentLayer(QLatin1String("overlay"));
         PF_FaceData tmpdata = *data;
 
-        PF_Face* face = new PF_Face(container,view, tmpdata,dynamic_cast<PF_Point*>(entity));
+        PF_Face* face = new PF_Face(container,view, tmpdata,dynamic_cast<PF_Line*>(entity));
 
         view->setCurrentLayer(QLatin1String("main"));
         preview->addEntity(face);
@@ -115,7 +115,7 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
         PF_Vector mouse = snapPoint(e);
         if(!mouse.valid)
             return;
-        PF_Entity* entity = catchEntity(mouse,PF::EntityPoint);
+        PF_Entity* entity = catchEntity(mouse,PF::EntityLine);
         if(!entity)
             return;
         /** 标记为选中 **/
@@ -126,20 +126,18 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
         case SetFirstLoop:
             qDebug()<<Q_FUNC_INFO<<"SetFirstLoop";
             data->faceData.append(new PF_LineLoop());
-            data->faceData.last()->points.append(dynamic_cast<PF_Point*>(entity));
+            data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
             setStatus(SetOtherLoop);
             updateMouseButtonHints();
             break;
         case SetOtherLoop:/** 不断地设置下一个点，直到闭合 **/
             qDebug()<<Q_FUNC_INFO<<"SetOtherLoop";
-            data->faceData.last()->points.append(dynamic_cast<PF_Point*>(entity));
+            data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
 
             /** 判断最后一个点与第一个点是否重合 **/
-            if(data->faceData.last()->points.last()->index() == data->faceData.last()->points.first()->index()){
-//                qDebug()<<Q_FUNC_INFO<<"over";
-//                trigger();
-                setStatus(SetFirstLoop);
-            }
+//            if(data->faceData.last()->lines.last()->index() == data->faceData.last()->lines.first()->index()){
+//                setStatus(SetFirstLoop);
+//            }
             break;
         default:
             break;
@@ -149,7 +147,7 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
         drawPreview();
         /** 取消选择 **/
         for(auto e : data->faceData){
-            for(auto l : e->points){
+            for(auto l : e->lines){
                 l->setSelected(false);
             }
         }

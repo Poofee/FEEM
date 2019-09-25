@@ -14,7 +14,7 @@ public:
         return true;
     }
     QString toGeoString() override;
-    int index() override;
+    int index() const override;
 protected:
     bool modified;
     QString fileName;

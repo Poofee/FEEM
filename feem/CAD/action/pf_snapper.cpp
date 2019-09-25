@@ -381,7 +381,6 @@ PF_Entity *PF_Snapper::catchEntity(QMouseEvent *e, PF::ResolveLevel level)
  */
 PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::EntityType enType, PF::ResolveLevel level)
 {
-    qDebug()<<"RS_Snapper::catchEntity";
     // set default distance for points inside solids
     double dist(0.);
     PF_Entity* entity = nullptr;
@@ -398,7 +397,7 @@ PF_Entity *PF_Snapper::catchEntity(const PF_Vector &pos, PF::EntityType enType, 
 
     if (entity /*&& dist<=getSnapRange()*/) {
         // highlight:
-        qDebug()<<"PF_Snapper::catchEntity: found:"<<entity->index();
+        qDebug()<<"PF_Snapper::catchEntity: found:"<<entity->toGeoString();
         return entity;
     } else {
         qDebug()<<"PF_Snapper::catchEntity: not found";

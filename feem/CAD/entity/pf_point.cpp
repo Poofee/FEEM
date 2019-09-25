@@ -185,7 +185,7 @@ QString PF_Point::toGeoString()
     return QString("Point (%1) = {%2, %3, 0, 1e-3} ;").arg(m_index).arg(data.pos.x).arg(data.pos.y);
 }
 
-int PF_Point::index()
+int PF_Point::index() const
 {
     return m_index;
 }

@@ -160,19 +160,7 @@ bool PF_EntityContainer::removeEntity(PF_Entity *entity)
 }
 
 
-/**
- * @brief 在实体当中添加一个矩形
- *
- * @param corner1
- * @param corner2
- */
-void PF_EntityContainer::addRectangle(const PF_Vector &corner1, const PF_Vector &corner2)
-{
-    addEntity(new PF_Line{this,mParentPlot, corner1, {corner2.x, corner1.y}});
-    addEntity(new PF_Line{this,mParentPlot, {corner2.x, corner1.y}, corner2});
-    addEntity(new PF_Line{this,mParentPlot, corner2, {corner1.x, corner2.y}});
-    addEntity(new PF_Line{this,mParentPlot, {corner1.x, corner2.y}, corner1});
-}
+
 
 void PF_EntityContainer::draw(QCPPainter *painter)
 {
@@ -746,7 +734,7 @@ bool PF_EntityContainer::exportGeofile()
     return true;
 }
 
-int PF_EntityContainer::index()
+int PF_EntityContainer::index() const
 {
     return 0;
 }

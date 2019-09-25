@@ -67,12 +67,12 @@ public:
     void mirror(const PF_Vector& axisPoint1, const PF_Vector& axisPoint2) override;
     void moveRef(const PF_Vector& ref, const PF_Vector& offset) override;
 
-    void draw(QCPPainter* painter) ;
+    void draw(QCPPainter* painter) override;
 
     void calculateBorders() override;
 
     QString toGeoString() override;
-    int index() override;
+    int index() const override;
 protected:
     PF_CircleData data;
 };

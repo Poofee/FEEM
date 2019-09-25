@@ -1,4 +1,4 @@
-#include "pf_point.h"
+#include "pf_line.h"
 #include "pf_face.h"
 #include "pf_graphicview.h"
 #include <QPainter>
@@ -12,12 +12,12 @@ PF_Face::PF_Face(PF_EntityContainer *parent, PF_GraphicView *view, const PF_Face
     m_index = face_index;
 }
 
-PF_Face::PF_Face(PF_EntityContainer *parent, PF_GraphicView *view, const PF_FaceData &d, PF_Point *mouse)
+PF_Face::PF_Face(PF_EntityContainer *parent, PF_GraphicView *view, const PF_FaceData &d, PF_Line *mouse)
     :PF_AtomicEntity(parent,view)
     ,data(d)
 {
     if(!data.faceData.isEmpty())
-        data.faceData.last()->points.append(mouse);/**有问题**/
+        data.faceData.last()->lines.append(mouse);/**有问题**/
     m_index = face_index;
 }
 
@@ -118,15 +118,16 @@ void PF_Face::draw(QCPPainter *painter)
     }
     /** 绘制面 **/
     QPainterPath path;
-    qDebug()<<Q_FUNC_INFO;
     for(auto e : data.faceData){
         /** 生成lineloop，实际的gui坐标 **/
         e->loop.clear();
-        qDebug()<<data.faceData.size();
-        for(auto p : e->points){
-            PF_Vector pos = p->getCenter();
+        for(auto p : e->lines){
+            /** 要注意线的方向 **/
+            PF_Vector pos = p->data.startpoint->getCenter();
             e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
         }
+        PF_Vector pos = e->lines.last()->data.startpoint->getCenter();
+        e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
 
         path.addPolygon(e->loop);
     }
@@ -176,7 +177,7 @@ QString PF_Face::toGeoString()
     return "";
 }
 
-int PF_Face::index()
+int PF_Face::index() const
 {
     return m_index;
 }
@@ -191,7 +192,7 @@ PF_FaceData::PF_FaceData(const PF_FaceData &data)
     faceData.clear();
     for(auto d : data.faceData){
         PF_LineLoop* l = new PF_LineLoop();
-        l->points = d->points;
+        l->lines = d->lines;
         l->loop = d->loop;
         faceData.push_back(l);
     }
@@ -208,7 +209,7 @@ PF_FaceData &PF_FaceData::operator=(const PF_FaceData &data)
     faceData.clear();
     for(auto d : data.faceData){
         PF_LineLoop* l = new PF_LineLoop();
-        l->points = d->points;
+        l->lines = d->lines;
         l->loop = d->loop;
         faceData.push_back(l);
     }

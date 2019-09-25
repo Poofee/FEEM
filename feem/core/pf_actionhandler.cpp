@@ -44,7 +44,7 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
         a = new PF_ActionDrawPoint(document,view);
         break;
     case PF::ActionDrawRectangle:
-        a = new PF_ActionDrawRectangle(document,view);
+        //a = new PF_ActionDrawRectangle(document,view);
         break;
     case PF::ActionDrawFace:
         a = new PF_ActionDrawFace(document,view);

@@ -5,7 +5,7 @@
 
 class QPainterPath;
 class QPolygonF;
-class PF_Point;
+class PF_Line;
 /*!
  \brief 保存闭合的曲线数据
 
@@ -13,7 +13,7 @@ class PF_Point;
 struct PF_LineLoop{
     PF_LineLoop()=default;
 
-    QList<PF_Point* > points;/** 保存对应的点的编号 **/
+    QList<PF_Line* > lines;/** 保存对应的点的编号 **/
     QPolygonF loop;/** 保存所有的点，闭合模式 **/
 };
 
@@ -44,7 +44,7 @@ class PF_Face : public PF_AtomicEntity
 public:
     PF_Face()=default;
     PF_Face(PF_EntityContainer* parent, PF_GraphicView* view, const PF_FaceData &d);
-    PF_Face(PF_EntityContainer* parent, PF_GraphicView* view, const PF_FaceData &d,PF_Point* mouse);
+    PF_Face(PF_EntityContainer* parent, PF_GraphicView* view, const PF_FaceData &d,PF_Line* mouse);
     ~PF_Face()=default;
 
     /**	@return PF::EntityFace */
@@ -89,7 +89,7 @@ public:
     void calculateBorders() override;
 
     QString toGeoString() override;
-    int index() override;
+    int index() const override;
 
     static int face_index;
 protected:

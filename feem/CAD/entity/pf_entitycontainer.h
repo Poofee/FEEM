@@ -42,7 +42,6 @@ public:
     virtual void insertEntity(int index, PF_Entity* entity);
     virtual bool removeEntity(PF_Entity* entity);
 
-    void addRectangle(PF_Vector const& v0, PF_Vector const& v1);
 
     /**一系列对Entity的操作**/
     PF_Vector getNearestEndpoint(const PF_Vector& coord,
@@ -115,7 +114,7 @@ public:
 
     QString toGeoString() override;
     bool exportGeofile();
-    int index() override;
+    int index() const override;
 protected:
     QList<PF_Entity*> entities;/**保存所有实体**/
 private:

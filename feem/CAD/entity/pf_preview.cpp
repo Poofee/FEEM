@@ -38,7 +38,7 @@ QString PF_Preview::toGeoString()
     return "";
 }
 
-int PF_Preview::index()
+int PF_Preview::index() const
 {
     return 0;
 }
