@@ -151,6 +151,13 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
     action->setIcon(QIcon(":/main/square.png"));
     a_map["DrawRectangle"] = action;
 
+    /**画闭合面**/
+    action = new QAction(tr("DrawFace"), agm->file);
+    connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDrawFace()));
+    action->setObjectName("DrawFace");
+    action->setIcon(QIcon(":/main/square.png"));
+    a_map["DrawFace"] = action;
+
 	//View
 	action = new QAction(tr("ZoomIn"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotZoomIn()));

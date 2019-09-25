@@ -44,6 +44,7 @@ public slots:
     void slotDrawArc();
     void slotDrawCircle();
     void slotDrawRectangle();
+    void slotDrawFace();
 
     void slotSetSnaps(PF_SnapMode const& s);
     void slotSnapFree();

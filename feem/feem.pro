@@ -121,7 +121,9 @@ HEADERS += \
     fem/solver/magnetodynamics2d.h \
     fem/solver/types.h \
     CAD/action/pf_actionselectall.h \
-    CAD/action/pf_selection.h
+    CAD/action/pf_selection.h \
+    CAD/entity/pf_face.h \
+    CAD/action/pf_actiondrawface.h
 
 SOURCES += \
     ./CAD/action/pf_eventhandler.cpp \
@@ -194,7 +196,9 @@ SOURCES += \
     fem/solver/magnetodynamics2d.cpp \
     fem/solver/types.cpp \
     CAD/action/pf_actionselectall.cpp \
-    CAD/action/pf_selection.cpp
+    CAD/action/pf_selection.cpp \
+    CAD/entity/pf_face.cpp \
+    CAD/action/pf_actiondrawface.cpp
 
 
 include($$PWD/../qtribbon/ribbonsample/shared/aboutdialog.pri)

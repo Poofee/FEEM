@@ -4,6 +4,7 @@
 #include "pf_actiondrawpoint.h"
 #include "pf_actiondrawline.h"
 #include "pf_actiondrawrectangle.h"
+#include "pf_actiondrawface.h"
 #include "pf_actionselectall.h"
 #include "pf_actionselectsingle.h"
 #include "pf_document.h"
@@ -44,6 +45,9 @@ PF_ActionInterface *PF_ActionHandler::setCurrentAction(PF::ActionType typeId)
         break;
     case PF::ActionDrawRectangle:
         a = new PF_ActionDrawRectangle(document,view);
+        break;
+    case PF::ActionDrawFace:
+        a = new PF_ActionDrawFace(document,view);
         break;
     case PF::ActionEditCopy:
 
@@ -222,6 +226,11 @@ void PF_ActionHandler::slotDrawCircle()
 void PF_ActionHandler::slotDrawRectangle()
 {
     setCurrentAction(PF::ActionDrawRectangle);
+}
+
+void PF_ActionHandler::slotDrawFace()
+{
+    setCurrentAction(PF::ActionDrawFace);
 }
 
 void PF_ActionHandler::slotSetSnaps(const PF_SnapMode &s)

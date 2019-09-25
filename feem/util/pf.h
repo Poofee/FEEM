@@ -80,6 +80,7 @@ public:
         ActionDrawCircle,
         ActionDrawRectangle,
         ActionDrawLine,
+        ActionDrawFace,
         ActionDrawArc,
 
         ActionViewZoomIn,
@@ -132,6 +133,7 @@ public:
         EntityGraphic,      /**< Graphic with layers */
         EntityPoint,        /**< Point */
         EntityLine,         /**< Line */
+        EntityFace,         /**< Face */
         EntityPolyline,     /**< Polyline */
         EntityVertex,       /**< Vertex (part of a polyline) */
         EntityArc,          /**< Arc */

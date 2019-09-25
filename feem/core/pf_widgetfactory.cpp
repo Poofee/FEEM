@@ -309,6 +309,7 @@ void PF_WidgetFactory::createGroupDraw(RibbonPage *page)
     {
         groupDraw->addAction(a_map["DrawPoint"], Qt::ToolButtonTextUnderIcon);
         groupDraw->addAction(a_map["DrawLine"], Qt::ToolButtonTextUnderIcon);
+        groupDraw->addAction(a_map["DrawFace"], Qt::ToolButtonTextUnderIcon);
 
         QMenu* menuSquare = new QMenu(mainwindow);
 
