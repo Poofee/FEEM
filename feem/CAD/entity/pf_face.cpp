@@ -122,20 +122,36 @@ void PF_Face::draw(QCPPainter *painter)
     for(auto e : data.faceData){
         /** 生成lineloop，实际的gui坐标 **/
         e->loop.clear();
+        /** 保存上一次的终点 **/
+        int indexLast = e->lines.first()->data.startpoint->index();
+        PF_Vector pos;
         for(auto p : e->lines){
             /** 要注意线的方向 **/
-            PF_Vector pos = p->data.startpoint->getCenter();
+            if(indexLast == p->data.startpoint->index()){
+                pos = p->data.startpoint->getCenter();
+                e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+                pos = p->data.endpoint->getCenter();
+                e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+                indexLast = p->data.endpoint->index();
+                continue;
+            }
+            if(indexLast == p->data.endpoint->index()){
+                pos = p->data.endpoint->getCenter();
+                e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+                pos = p->data.startpoint->getCenter();
+                e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+                indexLast = p->data.startpoint->index();
+                continue;
+            }
 //            qDebug()<<p->index()<<","<<pos.toString();
 //            qDebug()<<p->data.startpoint->index();
-            e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
-            pos = p->data.endpoint->getCenter();
-            e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+
 //            qDebug()<<p->index()<<","<<pos.toString();
 //            qDebug()<<p->data.endpoint->index();
         }
         path.addPolygon(e->loop);
     }
-//    qDebug()<<path;
+    qDebug()<<path;
 
     path.setFillRule(Qt::OddEvenFill);
     painter->setBrush(QColor(180,180,242,180));
@@ -189,11 +205,24 @@ QString PF_Face::toGeoString()
     QString loopstr;
     QString surfstr = QString("Plane Surface(%1) = {").arg(this->index());
 
+    PF_Vector pos;
+
     /** 迭代所有的lineloop **/
     for(auto l : data.faceData){
         loopstr += QString("Curve Loop(%1) = {").arg(l->index());
+        int indexLast = l->lines.first()->data.startpoint->index();
         for(auto e : l->lines){
-            loopstr += QString("%1,").arg(e->index());
+            /** 要注意线的方向 **/
+            if(indexLast == e->data.startpoint->index()){
+                indexLast = e->data.endpoint->index();
+                loopstr += QString("%1,").arg(e->index());
+                continue;
+            }
+            if(indexLast == e->data.endpoint->index()){
+                indexLast = e->data.startpoint->index();
+                loopstr += QString("%1,").arg(e->index()*(-1));
+                continue;
+            }
         }
         loopstr += "};\n";
         surfstr += QString("%1,").arg(l->index());
