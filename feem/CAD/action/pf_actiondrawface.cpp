@@ -97,6 +97,8 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
         PF_FaceData tmpdata = *data;
 
         PF_Face* face = new PF_Face(container,view, tmpdata,dynamic_cast<PF_Line*>(entity));
+        PF_Line* line = dynamic_cast<PF_Line*>(entity);
+        qDebug()<<line->index()<<line->toGeoString();
 
         view->setCurrentLayer(QLatin1String("main"));
         preview->addEntity(face);
@@ -121,23 +123,31 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
         /** 标记为选中 **/
         entity->setSelected(true);
         view->replot();
+        PF_Line* line;
+        int firstIndex,endIndex1,endIndex2;
         switch(getStatus()){
         /** 应当是设置loop中的点，直到闭合 **/
         case SetFirstLoop:
             qDebug()<<Q_FUNC_INFO<<"SetFirstLoop";
             data->faceData.append(new PF_LineLoop());
             data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
+            line = dynamic_cast<PF_Line*>(entity);
+            qDebug()<<line->index()<<line->toGeoString();
             setStatus(SetOtherLoop);
             updateMouseButtonHints();
             break;
         case SetOtherLoop:/** 不断地设置下一个点，直到闭合 **/
             qDebug()<<Q_FUNC_INFO<<"SetOtherLoop";
             data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
-
-            /** 判断最后一个点与第一个点是否重合 **/
-//            if(data->faceData.last()->lines.last()->index() == data->faceData.last()->lines.first()->index()){
-//                setStatus(SetFirstLoop);
-//            }
+            line = dynamic_cast<PF_Line*>(entity);
+            qDebug()<<line->index()<<line->toGeoString();
+            /** 判断面是否闭合 **/
+            firstIndex = data->faceData.last()->lines.first()->data.startpoint->index();
+            endIndex1 = data->faceData.last()->lines.last()->data.startpoint->index();
+            endIndex2 = data->faceData.last()->lines.last()->data.endpoint->index();
+            if(firstIndex==endIndex1 || firstIndex==endIndex2){
+                setStatus(SetFirstLoop);
+            }
             break;
         default:
             break;

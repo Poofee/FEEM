@@ -124,17 +124,20 @@ void PF_Face::draw(QCPPainter *painter)
         for(auto p : e->lines){
             /** 要注意线的方向 **/
             PF_Vector pos = p->data.startpoint->getCenter();
+            qDebug()<<p->index()<<","<<pos.toString();
+            qDebug()<<p->data.startpoint->index();
             e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+            pos = p->data.endpoint->getCenter();
+            e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
+            qDebug()<<p->index()<<","<<pos.toString();
+            qDebug()<<p->data.endpoint->index();
         }
-        PF_Vector pos = e->lines.last()->data.startpoint->getCenter();
-        e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
-
         path.addPolygon(e->loop);
     }
-//    qDebug()<<path;
+    qDebug()<<path;
 
     path.setFillRule(Qt::OddEvenFill);
-    painter->setBrush(QColor(180,180,242,50));
+    painter->setBrush(QColor(180,180,242,180));
     painter->setPen(Qt::NoPen);
     painter->drawPath(path);
     //QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));

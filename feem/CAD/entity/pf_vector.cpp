@@ -13,6 +13,24 @@ PF_Vector::PF_Vector(double vx, double vy, double vz)
 {
 
 }
+
+PF_Vector::PF_Vector(const PF_Vector &v)
+{
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->valid = v.valid;
+}
+
+PF_Vector &PF_Vector::operator=(const PF_Vector &v)
+{
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->valid = v.valid;
+
+    return *this;
+}
 /**构造一个单位向量**/
 PF_Vector::PF_Vector(double angle)
     :x(cos(angle))

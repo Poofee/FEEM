@@ -11,6 +11,8 @@ class PF_Vector
 public:
     PF_Vector()=default;
     PF_Vector(double vx, double vy, double vz=0.0);
+    PF_Vector(const PF_Vector& v);
+    PF_Vector& operator=(const PF_Vector& v);
     explicit PF_Vector(double angle);
     explicit PF_Vector(bool valid);
     ~PF_Vector()=default;
