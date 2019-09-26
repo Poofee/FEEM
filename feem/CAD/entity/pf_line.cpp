@@ -273,9 +273,9 @@ void PF_Line::draw(QCPPainter *painter)
 
     painter->drawLine(start,end);
 
-    painter->drawText(start,data.startpoint->getCenter().toString());
-    painter->drawText(end,data.endpoint->getCenter().toString());
-    painter->drawText((start+end)/2,QString("line:%1").arg(m_index));
+//    painter->drawText(start,data.startpoint->getCenter().toString());
+//    painter->drawText(end,data.endpoint->getCenter().toString());
+//    painter->drawText((start+end)/2,QString("line:%1").arg(m_index));
 
     /** 绘制控制点 **/
     if (isSelected() || isHighlighted()) {

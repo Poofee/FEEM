@@ -5,23 +5,7 @@
 #include <stdio.h>
 
 #include <QDebug>
-enum GmshElementType{
-    LINE_NODE2=1,
-    TRIANGLE_NODE3,
-    QUAD_NODE4
-};
-typedef struct _CNode
-{
-    double x, y, z;
-}CNode;
 
-typedef struct _CElement
-{
-    int n[3];// ni, nj, nk;//
-    int ele_type;
-    int physic_tag;
-    int geometry_tag;
-}CElement;
 int next_int(char **start)
 {
     int i;
@@ -50,14 +34,17 @@ $EndElements
  \param mshFilename
  \return bool
 */
-bool loadGmsh22(const char fn[]){
+CMesh* PF_EntityContainer::loadGmsh22(const char fn[]){
     char *ch = (char *)calloc(256,sizeof (char));
     //------------open file----------------------------------
     FILE * fp = nullptr;
+    CElement *elementList = nullptr;
+    CNode *nodeList = nullptr;
+    CMesh* mesh = new CMesh;
     fp = fopen(fn, "r");
     if (fp == nullptr) {
         qDebug() << "Error: openning file!";
-        return 1;
+        return nullptr;
     }
     while(!feof(fp)){
         fgets(ch, 256, fp);
@@ -68,12 +55,12 @@ bool loadGmsh22(const char fn[]){
             int data_size;
             if(fscanf(fp,"%lf %d %d\n",&version,&file_type,&data_size) != 3){
                 qDebug()<<"error reading format";
-                return false;
+                return nullptr;
             }else{
                 qDebug()<<version<<file_type<<data_size;
                 if(version > 2.2){
                     qDebug()<<"Can only open gmsh version 2.2 format";
-                    return false;
+                    return nullptr;
                 }
             }
             fgets(ch, 256, fp);
@@ -84,10 +71,11 @@ bool loadGmsh22(const char fn[]){
             int number_nodes;
             if(fscanf(fp,"%d\n",&number_nodes) != 1)
             {
-                return false;
+                return nullptr;
             }else{
                 /**读取节点坐标**/
-                CNode *nodeList = (CNode *)malloc(number_nodes * sizeof (CNode));
+                nodeList = (CNode *)malloc(number_nodes * sizeof (CNode));
+                mesh->numNode = number_nodes;
                 int index;
                 for(int i = 0;i < number_nodes;++i){
                     fscanf(fp,"%d %lf %lf %lf\n",&index,&nodeList[i].x,&nodeList[i].y,&nodeList[i].z);
@@ -105,10 +93,10 @@ bool loadGmsh22(const char fn[]){
             int number_of_tags;
             char * chtmp;
             if(fscanf(fp,"%d\n",&number_ele) != 1){
-                return false;
+                return nullptr;
             }else{
-                CElement *elementList = (CElement *)calloc(number_ele, sizeof (CElement));
-
+                elementList = (CElement *)calloc(number_ele, sizeof (CElement));
+                mesh->numEle = number_ele;
                 for(int i = 0;i < number_ele;++i){
                     chtmp = fgets(ch, 256, fp);
                     ele_number = next_int(&chtmp);
@@ -147,8 +135,10 @@ bool loadGmsh22(const char fn[]){
         }
     }
 
+    mesh->nodes = nodeList;
+    mesh->eles = elementList;
     fclose(fp);
-    return true;
+    return mesh;
 }
 PF_EntityContainer::PF_EntityContainer(PF_EntityContainer *parent, PF_GraphicView *view, bool owner)
     :PF_Entity(parent,view)
@@ -896,7 +886,26 @@ void PF_EntityContainer::doMesh()
     gmsh::open("D:/model.geo");
     gmsh::model::mesh::generate(2);
     gmsh::write("D:/model.msh");
-    loadGmsh22("D:/model.msh");
+    CMesh* mesh = loadGmsh22("D:/model.msh");
+    PF_Point** points = (PF_Point**)malloc(mesh->numNode * sizeof (PF_Point*));
+    for(int i = 0;i < mesh->numNode;++i){
+        double x = mesh->nodes[i].x;
+        double y = mesh->nodes[i].y;
+        points[i] = new PF_Point(this,this->mParentPlot,PF_PointData(PF_Vector(x,y)));
+        this->addEntity(points[i]);
+    }
+    for(int i = 0;i < mesh->numEle;++i){
+        if(mesh->eles[i].ele_type == TRIANGLE_NODE3){
+            int n0 = mesh->eles[i].n[0];
+            int n1 = mesh->eles[i].n[1];
+            int n2 = mesh->eles[i].n[2];
+            this->addEntity(new PF_Line(this,this->mParentPlot,points[n0],points[n1]));
+            this->addEntity(new PF_Line(this,this->mParentPlot,points[n1],points[n2]));
+            this->addEntity(new PF_Line(this,this->mParentPlot,points[n2],points[n0]));
+
+        }
+    }
+    this->mParentPlot->replot();
     gmsh::finalize();
 }
 
