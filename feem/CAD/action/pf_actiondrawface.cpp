@@ -62,7 +62,7 @@ void PF_ActionDrawFace::trigger()
 
     //view->redraw(PF::RedrawDrawing);
     view->replot();
-//    qDebug()<<line->toGeoString();
+    qDebug()<<"Face created:"<<face->toGeoString();
 }
 
 /*!
@@ -94,11 +94,11 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
     if(getStatus() == SetOtherLoop){
         deletePreview();
         view->setCurrentLayer(QLatin1String("overlay"));
-        PF_FaceData tmpdata = *data;
+        PF_FaceData tmpdata = *data;/** 注意这里需要实现拷贝构造函数 **/
 
         PF_Face* face = new PF_Face(container,view, tmpdata,dynamic_cast<PF_Line*>(entity));
-        PF_Line* line = dynamic_cast<PF_Line*>(entity);
-        qDebug()<<line->index()<<line->toGeoString();
+//        PF_Line* line = dynamic_cast<PF_Line*>(entity);
+//        qDebug()<<line->index()<<line->toGeoString();
 
         view->setCurrentLayer(QLatin1String("main"));
         preview->addEntity(face);
@@ -131,21 +131,23 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
             qDebug()<<Q_FUNC_INFO<<"SetFirstLoop";
             data->faceData.append(new PF_LineLoop());
             data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
-            line = dynamic_cast<PF_Line*>(entity);
-            qDebug()<<line->index()<<line->toGeoString();
+//            line = dynamic_cast<PF_Line*>(entity);
+//            qDebug()<<line->index()<<line->toGeoString();
             setStatus(SetOtherLoop);
             updateMouseButtonHints();
             break;
         case SetOtherLoop:/** 不断地设置下一个点，直到闭合 **/
             qDebug()<<Q_FUNC_INFO<<"SetOtherLoop";
             data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
-            line = dynamic_cast<PF_Line*>(entity);
-            qDebug()<<line->index()<<line->toGeoString();
+//            line = dynamic_cast<PF_Line*>(entity);
+//            qDebug()<<line->index()<<line->toGeoString();
             /** 判断面是否闭合 **/
             firstIndex = data->faceData.last()->lines.first()->data.startpoint->index();
             endIndex1 = data->faceData.last()->lines.last()->data.startpoint->index();
             endIndex2 = data->faceData.last()->lines.last()->data.endpoint->index();
+//            qDebug()<<firstIndex<<","<<endIndex1<<","<<endIndex2;
             if(firstIndex==endIndex1 || firstIndex==endIndex2){
+                PF_LineLoop::lineloop_index++;
                 setStatus(SetFirstLoop);
             }
             break;

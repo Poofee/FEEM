@@ -3,7 +3,8 @@
 #include "pf_graphicview.h"
 #include <QPainter>
 
-int PF_Face::face_index = 0;
+int PF_Face::face_index = 1;
+int PF_LineLoop::lineloop_index = 1;
 
 PF_Face::PF_Face(PF_EntityContainer *parent, PF_GraphicView *view, const PF_FaceData &d)
     :PF_AtomicEntity(parent,view)
@@ -124,17 +125,17 @@ void PF_Face::draw(QCPPainter *painter)
         for(auto p : e->lines){
             /** 要注意线的方向 **/
             PF_Vector pos = p->data.startpoint->getCenter();
-            qDebug()<<p->index()<<","<<pos.toString();
-            qDebug()<<p->data.startpoint->index();
+//            qDebug()<<p->index()<<","<<pos.toString();
+//            qDebug()<<p->data.startpoint->index();
             e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
             pos = p->data.endpoint->getCenter();
             e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
-            qDebug()<<p->index()<<","<<pos.toString();
-            qDebug()<<p->data.endpoint->index();
+//            qDebug()<<p->index()<<","<<pos.toString();
+//            qDebug()<<p->data.endpoint->index();
         }
         path.addPolygon(e->loop);
     }
-    qDebug()<<path;
+//    qDebug()<<path;
 
     path.setFillRule(Qt::OddEvenFill);
     painter->setBrush(QColor(180,180,242,180));
@@ -175,9 +176,34 @@ void PF_Face::calculateBorders()
 
 }
 
+/*!
+ \brief 应该添加线的正反判断
+
+Curve Loop(1) = {2, 3, -11, -6, -5, -7, -4, 9};
+Plane Surface(1) = {1};
+
+ \return QString
+*/
 QString PF_Face::toGeoString()
 {
-    return "";
+    QString loopstr;
+    QString surfstr = QString("Plane Surface(%1) = {").arg(this->index());
+
+    /** 迭代所有的lineloop **/
+    for(auto l : data.faceData){
+        loopstr += QString("Curve Loop(%1) = {").arg(l->index());
+        for(auto e : l->lines){
+            loopstr += QString("%1,").arg(e->index());
+        }
+        loopstr += "};\n";
+        surfstr += QString("%1,").arg(l->index());
+//        qDebug()<<loopstr;
+    }
+    surfstr += "};\n";
+    loopstr.append(surfstr);
+    loopstr.replace(",};"," };");
+//    qDebug()<<loopstr;
+    return loopstr;
 }
 
 int PF_Face::index() const
@@ -197,6 +223,7 @@ PF_FaceData::PF_FaceData(const PF_FaceData &data)
         PF_LineLoop* l = new PF_LineLoop();
         l->lines = d->lines;
         l->loop = d->loop;
+        l->m_index = d->m_index;
         faceData.push_back(l);
     }
 }
@@ -217,4 +244,15 @@ PF_FaceData &PF_FaceData::operator=(const PF_FaceData &data)
         faceData.push_back(l);
     }
     return *this;
+}
+
+PF_LineLoop::PF_LineLoop()
+{
+    m_index = lineloop_index;
+//    qDebug()<<"lineloop_index"<<m_index;
+}
+
+int PF_LineLoop::index() const
+{
+    return m_index;
 }

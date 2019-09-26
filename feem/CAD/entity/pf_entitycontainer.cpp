@@ -727,7 +727,12 @@ bool PF_EntityContainer::exportGeofile()
         }
     }
     /** 导出所有的面 **/
-
+    for(auto e:entities){
+        if(e->rtti() == PF::EntityFace && e->isVisible()){
+            qDebug()<<"export face";
+            out<<e->toGeoString()<<"\n";
+        }
+    }
 
     file.flush();
     file.close();

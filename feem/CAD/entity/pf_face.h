@@ -10,11 +10,15 @@ class PF_Line;
  \brief 保存闭合的曲线数据
 
 */
-struct PF_LineLoop{
-    PF_LineLoop()=default;
+class PF_LineLoop{
+public:
+    PF_LineLoop();
 
+    int index() const;
+    static int lineloop_index;
     QList<PF_Line* > lines;/** 保存对应的点的编号 **/
     QPolygonF loop;/** 保存所有的点，闭合模式 **/
+    int m_index;
 };
 
 /*!
