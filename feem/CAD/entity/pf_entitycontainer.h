@@ -114,6 +114,7 @@ public:
 
     QString toGeoString() override;
     bool exportGeofile();
+    void doMesh();
     int index() const override;
 protected:
     QList<PF_Entity*> entities;/**保存所有实体**/

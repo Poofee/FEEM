@@ -379,7 +379,7 @@ void PF_WidgetFactory::createGroupBuildMesh(RibbonPage *page)
 {
     if(Qtitan::RibbonGroup* groupBuildMesh = page->addGroup(QIcon(":/main/project.png"), tr("BuildMesh")))
     {
-        groupBuildMesh->addAction(QIcon(":/main/buildmesh.png"), tr("Build mesh"), Qt::ToolButtonTextUnderIcon);
+        groupBuildMesh->addAction(a_map["DoMesh"], Qt::ToolButtonTextUnderIcon);
     }
 }
 

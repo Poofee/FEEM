@@ -38,6 +38,7 @@ INCLUDEPATH += \
     ./project \
     ./fem \
     ./core \
+    "./includes/gmsh"
 
 RESOURCES += \
     ./res/main.qrc
@@ -46,6 +47,8 @@ RC_FILE = ./res/icon.rc
 
 HEADERS += \    
     ./util/pf.h \
+    ./include/gmsh/gmsh.h \
+    ./include/gmsh/gmshc.h \
     ./CAD/action/pf_eventhandler.h \
     ./core/pf_widgetfactory.h \
     ./CAD/action/pf_actiondrawcircle.h \
@@ -123,7 +126,8 @@ HEADERS += \
     CAD/action/pf_actionselectall.h \
     CAD/action/pf_selection.h \
     CAD/entity/pf_face.h \
-    CAD/action/pf_actiondrawface.h
+    CAD/action/pf_actiondrawface.h \
+
 
 SOURCES += \
     ./CAD/action/pf_eventhandler.cpp \
@@ -200,6 +204,8 @@ SOURCES += \
     CAD/entity/pf_face.cpp \
     CAD/action/pf_actiondrawface.cpp
 
+win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lgmsh
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$_PRO_FILE_PWD_/../bin/ -lgmsh
 
 include($$PWD/../qtribbon/ribbonsample/shared/aboutdialog.pri)
 include($$PWD/../qtribbon/ribbonsample/shared/ribbonwindow.pri)

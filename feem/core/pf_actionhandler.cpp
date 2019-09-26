@@ -315,7 +315,7 @@ void PF_ActionHandler::slotSetGrid() {
 }
 
 void PF_ActionHandler::slotDoMesh() {
-    setCurrentAction(PF::ActionMeshDoMesh);
+    document->doMesh();
 }
 
 void PF_ActionHandler::slotShowMesh() {
