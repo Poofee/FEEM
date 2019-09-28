@@ -109,9 +109,6 @@ void PF_Face::draw(QCPPainter *painter)
         qDebug()<<Q_FUNC_INFO<<":NULL";
         return;
     }
-    /** set Pen **/
-    //    QPen oldpen = painter->pen();
-    //    QBrush oldbursh = painter->brush();
     painter->save();
     if(isSelected()){
         pen.setColor(QColor(0,0,255));
@@ -119,12 +116,28 @@ void PF_Face::draw(QCPPainter *painter)
     }
     /** 绘制面 **/
     QPainterPath path;
+    PF_Line* line1,*line2;
+    PF_Vector pos;
+    int indexLast = -1;
     for(auto e : data.faceData){
         /** 生成lineloop，实际的gui坐标 **/
         e->loop.clear();
         /** 保存上一次的终点 **/
-        int indexLast = e->lines.first()->data.startpoint->index();
-        PF_Vector pos;
+        if(e->lines.size() < 2)
+            break;
+        /** 找到前两条线段的公共点，然后算出起始点 **/
+        line1 = e->lines.at(0);
+        line2 = e->lines.at(1);
+        if(line1->data.startpoint->index() == line2->data.startpoint->index() ||
+                line1->data.startpoint->index() == line2->data.endpoint->index()){
+            indexLast = line1->data.endpoint->index();
+        }else if(line1->data.endpoint->index() == line2->data.startpoint->index() ||
+                line1->data.endpoint->index() == line2->data.endpoint->index()){
+            indexLast = line1->data.startpoint->index();
+        }else{
+            break;/** 第一条和第二条并没有相连 **/
+        }
+
         for(auto p : e->lines){
             /** 要注意线的方向 **/
             if(indexLast == p->data.startpoint->index()){
@@ -134,20 +147,16 @@ void PF_Face::draw(QCPPainter *painter)
                 e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
                 indexLast = p->data.endpoint->index();
                 continue;
-            }
-            if(indexLast == p->data.endpoint->index()){
+            }else if(indexLast == p->data.endpoint->index()){
                 pos = p->data.endpoint->getCenter();
                 e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
                 pos = p->data.startpoint->getCenter();
                 e->loop.append(QPointF(mParentPlot->toGuiX(pos.x),mParentPlot->toGuiY(pos.y)));
                 indexLast = p->data.startpoint->index();
                 continue;
+            }else{
+                break;/** 第一条和第二条并没有相连 **/
             }
-//            qDebug()<<p->index()<<","<<pos.toString();
-//            qDebug()<<p->data.startpoint->index();
-
-//            qDebug()<<p->index()<<","<<pos.toString();
-//            qDebug()<<p->data.endpoint->index();
         }
         path.addPolygon(e->loop);
     }
@@ -157,33 +166,7 @@ void PF_Face::draw(QCPPainter *painter)
     painter->setBrush(QColor(180,180,242,180));
     painter->setPen(Qt::NoPen);
     painter->drawPath(path);
-    //QPointF start(mParentPlot->toGuiX(data.startpoint.x),mParentPlot->toGuiY(data.startpoint.y));
 
-    //painter->drawLine(start,end);
-
-    //painter->drawText(start,data.startpoint.toString());
-    //painter->drawText(end,data.endpoint.toString());
-    //painter->drawText((start+end)/2,QString("line:%1").arg(m_index));
-
-    /** 绘制控制点 **/
-//    if (isSelected() || isHighlighted()) {
-//        //		if (!e->isParentSelected()) {
-//        PF_VectorSolutions const& s = this->getRefPoints();
-//        double x,y;
-//        int size = 4;
-//        for (size_t i=0; i<s.getNumber(); ++i) {
-//            x = mParentPlot->toGuiX(s.get(i).x);
-//            y = mParentPlot->toGuiY(s.get(i).y);
-
-//            painter->drawLine(QPointF(x-size,y-size),QPointF(x+size,y-size));
-//            painter->drawLine(QPointF(x+size,y-size),QPointF(x+size,y+size));
-//            painter->drawLine(QPointF(x+size,y+size),QPointF(x-size,y+size));
-//            painter->drawLine(QPointF(x-size,y+size),QPointF(x-size,y-size));
-//        }
-//        //		}
-//    }
-    //    painter->setPen(oldpen);
-    //    painter->setBrush(oldbursh);
     painter->restore();
 }
 
@@ -205,33 +188,43 @@ QString PF_Face::toGeoString()
     QString loopstr;
     QString surfstr = QString("Plane Surface(%1) = {").arg(this->index());
 
-    PF_Vector pos;
-
+    int indexLast;
+    PF_Line* line1,*line2;
     /** 迭代所有的lineloop **/
     for(auto l : data.faceData){
         loopstr += QString("Curve Loop(%1) = {").arg(l->index());
-        int indexLast = l->lines.first()->data.startpoint->index();
+        line1 = l->lines.at(0);
+        line2 = l->lines.at(1);
+        if(line1->data.startpoint->index() == line2->data.startpoint->index() ||
+                line1->data.startpoint->index() == line2->data.endpoint->index()){
+            indexLast = line1->data.endpoint->index();
+        }else if(line1->data.endpoint->index() == line2->data.startpoint->index() ||
+                line1->data.endpoint->index() == line2->data.endpoint->index()){
+            indexLast = line1->data.startpoint->index();
+        }else{
+            break;/** 第一条和第二条并没有相连 **/
+        }
         for(auto e : l->lines){
             /** 要注意线的方向 **/
             if(indexLast == e->data.startpoint->index()){
                 indexLast = e->data.endpoint->index();
                 loopstr += QString("%1,").arg(e->index());
                 continue;
-            }
-            if(indexLast == e->data.endpoint->index()){
+            }else if(indexLast == e->data.endpoint->index()){
                 indexLast = e->data.startpoint->index();
                 loopstr += QString("%1,").arg(e->index()*(-1));
                 continue;
+            }else{
+                break;/** 第一条和第二条并没有相连 **/
             }
         }
         loopstr += "};\n";
         surfstr += QString("%1,").arg(l->index());
-//        qDebug()<<loopstr;
     }
     surfstr += "};\n";
     loopstr.append(surfstr);
     loopstr.replace(",};"," };");
-//    qDebug()<<loopstr;
+
     return loopstr;
 }
 
@@ -266,8 +259,9 @@ PF_FaceData::PF_FaceData(const PF_FaceData &data)
 PF_FaceData &PF_FaceData::operator=(const PF_FaceData &data)
 {
     faceData.clear();
+    PF_LineLoop* l;
     for(auto d : data.faceData){
-        PF_LineLoop* l = new PF_LineLoop();
+        l = new PF_LineLoop();
         l->lines = d->lines;
         l->loop = d->loop;
         faceData.push_back(l);
@@ -278,7 +272,6 @@ PF_FaceData &PF_FaceData::operator=(const PF_FaceData &data)
 PF_LineLoop::PF_LineLoop()
 {
     m_index = lineloop_index;
-//    qDebug()<<"lineloop_index"<<m_index;
 }
 
 int PF_LineLoop::index() const

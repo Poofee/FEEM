@@ -2,7 +2,7 @@
 #include "pf_graphicview.h"
 #include <QPainter>
 
-int PF_Point::point_index = 0;
+int PF_Point::point_index = 1;
 PF_Point::PF_Point(PF_EntityContainer *parent, PF_GraphicView *view, const PF_PointData &d)
     :PF_AtomicEntity(parent,view)
     ,data(d)

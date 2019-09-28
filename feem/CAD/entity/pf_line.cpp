@@ -2,7 +2,7 @@
 #include "pf_graphicview.h"
 #include <QPainter>
 
-int PF_Line::line_index = 0;
+int PF_Line::line_index = 1;
 PF_Line::PF_Line(PF_EntityContainer *parent, PF_GraphicView *view, const PF_LineData &d)
     :PF_AtomicEntity(parent,view)
     ,data(d)

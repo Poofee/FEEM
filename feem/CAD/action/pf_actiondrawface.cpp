@@ -97,8 +97,6 @@ void PF_ActionDrawFace::mouseMoveEvent(QMouseEvent *e)
         PF_FaceData tmpdata = *data;/** 注意这里需要实现拷贝构造函数 **/
 
         PF_Face* face = new PF_Face(container,view, tmpdata,dynamic_cast<PF_Line*>(entity));
-//        PF_Line* line = dynamic_cast<PF_Line*>(entity);
-//        qDebug()<<line->index()<<line->toGeoString();
 
         view->setCurrentLayer(QLatin1String("main"));
         preview->addEntity(face);
@@ -123,7 +121,7 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
         /** 标记为选中 **/
         entity->setSelected(true);
         view->replot();
-        PF_Line* line;
+        PF_Line* line1,*line2;
         int firstIndex,endIndex1,endIndex2;
         switch(getStatus()){
         /** 应当是设置loop中的点，直到闭合 **/
@@ -131,21 +129,28 @@ void PF_ActionDrawFace::mouseReleaseEvent(QMouseEvent *e)
             qDebug()<<Q_FUNC_INFO<<"SetFirstLoop";
             data->faceData.append(new PF_LineLoop());
             data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
-//            line = dynamic_cast<PF_Line*>(entity);
-//            qDebug()<<line->index()<<line->toGeoString();
+
             setStatus(SetOtherLoop);
             updateMouseButtonHints();
             break;
         case SetOtherLoop:/** 不断地设置下一个点，直到闭合 **/
             qDebug()<<Q_FUNC_INFO<<"SetOtherLoop";
             data->faceData.last()->lines.append(dynamic_cast<PF_Line*>(entity));
-//            line = dynamic_cast<PF_Line*>(entity);
-//            qDebug()<<line->index()<<line->toGeoString();
-            /** 判断面是否闭合 **/
-            firstIndex = data->faceData.last()->lines.first()->data.startpoint->index();
+            /** 判断面是否闭合，需要正确的判断第一条线段是正向还是反向 **/
+            line1 = data->faceData.last()->lines.at(0);
+            line2 = data->faceData.last()->lines.at(1);
+            if(line1->data.startpoint->index() == line2->data.startpoint->index() ||
+                    line1->data.startpoint->index() == line2->data.endpoint->index()){
+                firstIndex = line1->data.endpoint->index();
+            }else if(line1->data.endpoint->index() == line2->data.startpoint->index() ||
+                    line1->data.endpoint->index() == line2->data.endpoint->index()){
+                firstIndex = line1->data.startpoint->index();
+            }else{
+                break;/** 第一条和第二条并没有相连 **/
+            }
             endIndex1 = data->faceData.last()->lines.last()->data.startpoint->index();
             endIndex2 = data->faceData.last()->lines.last()->data.endpoint->index();
-//            qDebug()<<firstIndex<<","<<endIndex1<<","<<endIndex2;
+            /** 形成闭合曲面 **/
             if(firstIndex==endIndex1 || firstIndex==endIndex2){
                 PF_LineLoop::lineloop_index++;
                 setStatus(SetFirstLoop);
