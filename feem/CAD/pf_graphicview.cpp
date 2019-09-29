@@ -2131,11 +2131,11 @@ void PF_GraphicView::zoomAuto(bool axis, bool keepAspectRatio)
         sy = container->getSize().y;
 
         /** 判断在xy哪个方向上进行缩放  **/
-        if(sx > PF_TOLERANCE && sy > PF_TOLERANCE){
+//        if(sx > PF_TOLERANCE && sy > PF_TOLERANCE){
             auto const center = (container->getMax()+container->getMin())*0.5;
             double factor = xAxis->range().size()/yAxis->range().size();
             if((sx/xAxis->range().size())>=(sy/yAxis->range().size())){
-                qDebug()<<"zoom in x direction";
+//                qDebug()<<"zoom in x direction";
                 xAxis->setRange(QCPRange(center.x-sx*0.505,center.x+sx*0.505));
                 yAxis->setRange(QCPRange(center.y-(sx/factor)*0.51,center.y+(sx/factor)*0.51));
             }else{
@@ -2143,7 +2143,7 @@ void PF_GraphicView::zoomAuto(bool axis, bool keepAspectRatio)
                 yAxis->setRange(QCPRange(center.y-sy*0.505,center.y+sy*0.505));
                 xAxis->setRange(QCPRange(center.x-(sy*factor)*0.51,center.x+(sy*factor)*0.51));
             }
-        }
+//        }
 
 //        qDebug()<<"sx,"<<sx<<"sy,"<<sy;
 
