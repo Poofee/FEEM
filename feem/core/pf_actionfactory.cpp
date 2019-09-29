@@ -192,6 +192,7 @@ void PF_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, PF_Ac
 	action = new QAction(tr("DoMesh"), agm->file);
 	connect(action, SIGNAL(triggered()), action_handler, SLOT(slotDoMesh()));
 	action->setObjectName("DoMesh");
+    action->setIcon(QIcon(":/main/buildgeometry.png"));
 	a_map["DoMesh"] = action;
 
 	action = new QAction(tr("ShowMesh"), agm->file);

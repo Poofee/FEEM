@@ -110,10 +110,7 @@ void PF_Face::draw(QCPPainter *painter)
         return;
     }
     painter->save();
-    if(isSelected()){
-        pen.setColor(QColor(0,0,255));
-        painter->setPen(pen);
-    }
+
     /** 绘制面 **/
     QPainterPath path;
     PF_Line* line1,*line2;
@@ -160,11 +157,44 @@ void PF_Face::draw(QCPPainter *painter)
         }
         path.addPolygon(e->loop);
     }
-    qDebug()<<path;
-
+//    qDebug()<<path;
+    QColor q;
+    switch (this->index() % 7) {
+    case 0:
+        q.setNamedColor("#EA0000");
+        break;
+    case 1:
+        q.setNamedColor("#0080FF");
+        break;
+    case 2:
+        q.setNamedColor("#00CACA");
+        break;
+    case 3:
+        q.setNamedColor("#FFBFFF");
+        break;
+    case 4:
+        q.setNamedColor("#A6A600");
+        break;
+    case 5:
+        q.setNamedColor("#FFA042");
+        break;
+    case 6:
+        q.setNamedColor("#A6A6D2");
+        break;
+    default:
+        q.setNamedColor("#B4B4F2");
+        break;
+    }
+    q.setAlpha(180);
     path.setFillRule(Qt::OddEvenFill);
-    painter->setBrush(QColor(180,180,242,180));
-    painter->setPen(Qt::NoPen);
+    if(isSelected()){
+        pen.setColor(QColor(0,0,255));
+        painter->setPen(pen);
+        painter->setBrush(QColor(255,255,0,180));
+    }else{
+        painter->setBrush(q);
+        painter->setPen(Qt::NoPen);
+    }
     painter->drawPath(path);
 
     painter->restore();
