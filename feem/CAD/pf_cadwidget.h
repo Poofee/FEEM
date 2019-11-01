@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class QPushButton;
+class QToolButton;
 class PF_GraphicView;
 class QToolBar;
 class QAction;
@@ -34,11 +34,11 @@ public:
 
 private:
     QWidget* toolBar;
-    QPushButton* zoom;
-    QPushButton* zoomextents;
-    QPushButton* zoomin;
-    QPushButton* zoomout;
-    QPushButton* zoomselected;
+    QToolButton* zoom;
+    QToolButton* zoomextents;
+    QToolButton* zoomin;
+    QToolButton* zoomout;
+    QToolButton* zoomselected;
 
     PF_GraphicView* view;
     PF_Document* document;

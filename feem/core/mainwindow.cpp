@@ -196,7 +196,7 @@ void MainWindow::setupStatusBar()
 {
     //创建状态栏
     QStatusBar* status_bar = statusBar();
-    QLabel* label1 = new QLabel("Make by Poofee");
+    QLabel* label1 = new QLabel("Made by Poofee");
     QLabel* statusLabel = new QLabel();
     statusLabel->setMinimumWidth(200);
     statusLabel->setAlignment(Qt::AlignHCenter);

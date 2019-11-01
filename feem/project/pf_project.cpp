@@ -78,7 +78,7 @@ PF_Project::~PF_Project()
 QString PF_Project::displayName() const
 {
     if(d->m_displayName.isEmpty()){
-        d->m_displayName = QString(tr("untitled"))+QString(".mph");
+        d->m_displayName = QString(tr("untitled"))+QString(".fem");
     }
 
     return d->m_displayName;
